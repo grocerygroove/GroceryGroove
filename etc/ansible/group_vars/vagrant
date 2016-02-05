@@ -1,0 +1,4 @@
+deploy_user: vagrant
+node_environment: development
+purpose: development
+

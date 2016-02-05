@@ -1,0 +1,11 @@
+# This playbook provisions a local dev vagrant
+
+- name: invoke all the roles necessary for a local dev vagrant
+  hosts: vagrant
+  remote_user: "{{ deploy_user }}"
+  sudo: yes
+  roles:
+    - common
+    - node
+    - postgres
+    - nginx

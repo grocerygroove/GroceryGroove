@@ -1,0 +1,31 @@
+- name: add the apt key for pgdg
+  apt_key: id=ACCC4CF8 url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc
+
+- name: add the apt repo for pgdg
+  apt_repository: repo="deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main"
+
+- name: update the cache for apt-get
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: install packages
+  apt: name={{ item }} state=present
+  with_items:
+    - "postgresql={{ postgres_version }}*"
+    - "postgresql-contrib={{ postgres_version }}*"
+    - "python-psycopg2=2.4*"
+    - "libpq-dev={{ postgres_version }}*"
+
+- name: start service and enable at boot
+  service: name=postgresql enabled=yes state=started
+
+#- name: configure maps
+#  template: src=../templates/pg_ident.conf.j2 dest={{ postgres_conf_path }}/pg_ident.conf
+#  register: postgres_ident
+
+#- name: configure access
+#  template: src=../templates/pg_hba.conf.j2 dest={{ postgres_conf_path }}/pg_hba.conf
+#  register: postgres_hba
+
+#- name: restart postgres immediately if there were config changes
+#  service: name=postgresql state=reloaded
+#  when: postgres_ident.changed or postgres_hba.changed

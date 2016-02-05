@@ -1,0 +1,5 @@
+deploy_user: ubuntu
+dev_group: node-dev
+log_path: "/var/log"
+project_basepath: "/opt"
+purpose: deploy

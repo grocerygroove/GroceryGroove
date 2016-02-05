@@ -1,0 +1,10 @@
+- name: update the cache for apt-get
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: install nginx
+  apt: name=nginx state=latest
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started

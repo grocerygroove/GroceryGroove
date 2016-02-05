@@ -1,0 +1,11 @@
+- name: download setup script
+  get_url: url={{ node_setup_url }} dest={{ node_setup_pathname }} mode=0755
+
+- name: run setup script
+  command: "{{ node_setup_pathname }} creates=/etc/apt/sources.list.d/nodesource.list"
+
+- name: install packages
+  apt: name={{ item }} state=present
+  with_items:
+    - nodejs
+    - build-essential=11.*
