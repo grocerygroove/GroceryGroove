@@ -31,7 +31,7 @@ Vagrant.configure(2) do |config|
     end
 
     # Allow the user to edit files on the host and have them turn up on the guest
-    config.vm.synced_folder ".", "/opt/grocerygetter", :create => true
+    config.vm.synced_folder ".", "/opt/grocerygroove", :create => true
 
     # We'll need ssh forwarding for git
     config.ssh.forward_agent = true
