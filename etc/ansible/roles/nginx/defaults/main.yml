@@ -1,0 +1,5 @@
+site_config_path: "{{ project_basepath }}/grocerygroove/etc/ansible/roles/nginx/siteconfig"
+config_destination_path: "/etc/nginx/sites-available/siteconfig"
+config_symlink_destination_path: "/etc/nginx/sites-enabled/siteconfig"
+default_destination_path: "/etc/nginx/sites-available/default"
+default_symlink_destination_path: "/etc/nginx/sites-enabled/default"
