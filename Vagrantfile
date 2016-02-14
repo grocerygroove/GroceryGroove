@@ -23,6 +23,7 @@ Vagrant.configure(2) do |config|
         [22,   'ssh'        ],
         [80,    'http1'     ],
         [8080,   'http2'     ],
+        [5432,  'postgres'   ],
     ]
     port_offset = 10000
     ports.each do |port, service|

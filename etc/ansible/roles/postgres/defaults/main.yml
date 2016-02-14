@@ -5,3 +5,5 @@ postgres_conf_path: /etc/postgresql/{{ postgres_version }}/main
 postgres_host: localhost
 postgres_port: 5432
 postgres_version: 9.5
+postgres_db_name: grocerygroove
+postgres_db_owner_role: ggowner

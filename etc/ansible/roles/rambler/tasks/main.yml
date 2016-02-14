@@ -1,0 +1,36 @@
+- name: install software-properties-common
+  apt: name=software-properties-common state=latest
+
+- name: add the golang ppa
+  apt_repository: repo="ppa:evarlast/golang1.4"
+
+- name: update the cache again
+  apt: update_cache=yes
+
+- name: install go
+  apt: name=golang state=latest
+
+- name: set up the profile
+  template: src=../templates/profile.sh.j2 dest=/etc/profile.d/rambler.sh
+
+- name: check out the rambler repo
+  git: repo={{ rambler_repo }} dest={{ rambler_go_path }}/src/{{ rambler_package_name }}
+  sudo: no
+
+- name: fetch dependencies
+  environment:
+    GOPATH: "{{ rambler_go_path }}"
+  command: "go get chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
+  sudo: no
+
+- name: install rambler
+  environment:
+    GOPATH: "{{ rambler_go_path }}"
+  command: "go install {{ rambler_package_name }} chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
+  sudo: no
+
+- name: add the migration skeleton
+  template: src=../templates/migration_skeleton.sql.j2 dest={{ rambler_script_location }}/migration_skeleton.sql mode=0664
+
+#- name: add the rambler configuration
+#  template: src=../templates/ramblerconf.json dest={{ rambler_script_location }}/ramblerconf.json mode=0664

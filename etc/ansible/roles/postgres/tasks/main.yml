@@ -18,14 +18,14 @@
 - name: start service and enable at boot
   service: name=postgresql enabled=yes state=started
 
-#- name: configure maps
-#  template: src=../templates/pg_ident.conf.j2 dest={{ postgres_conf_path }}/pg_ident.conf
-#  register: postgres_ident
+- name: configure maps
+  template: src=../templates/pg_ident.conf.j2 dest={{ postgres_conf_path }}/pg_ident.conf
+  register: postgres_ident
 
-#- name: configure access
-#  template: src=../templates/pg_hba.conf.j2 dest={{ postgres_conf_path }}/pg_hba.conf
-#  register: postgres_hba
+- name: configure access
+  template: src=../templates/pg_hba.conf.j2 dest={{ postgres_conf_path }}/pg_hba.conf
+  register: postgres_hba
 
-#- name: restart postgres immediately if there were config changes
-#  service: name=postgresql state=reloaded
-#  when: postgres_ident.changed or postgres_hba.changed
+- name: restart postgres immediately if there were config changes
+  service: name=postgresql state=reloaded
+  when: postgres_ident.changed or postgres_hba.changed
