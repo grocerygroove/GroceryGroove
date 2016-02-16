@@ -1,3 +1,2 @@
-node_environment: production
 node_setup_url: "https://deb.nodesource.com/setup_5.x"
 node_setup_pathname: "/home/{{ deploy_user }}/setup_5.x"

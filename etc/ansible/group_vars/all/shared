@@ -1,5 +1,8 @@
 deploy_user: ubuntu
 dev_group: node-dev
+
 log_path: "/var/log"
-project_basepath: "/opt"
+node_environment: production
 purpose: deploy
+
+webclient_path: /opt/grocerygroove-webclient

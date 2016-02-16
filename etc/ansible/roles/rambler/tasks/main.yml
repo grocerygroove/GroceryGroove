@@ -1,14 +1,15 @@
-- name: install software-properties-common
-  apt: name=software-properties-common state=latest
-
 - name: add the golang ppa
   apt_repository: repo="ppa:evarlast/golang1.4"
 
-- name: update the cache again
-  apt: update_cache=yes
+- name: update the cache for apt-get
+  apt: update_cache=yes cache_valid_time=3600
 
-- name: install go
-  apt: name=golang state=latest
+- name: install packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - git
+    - golang
+    - software-properties-common
 
 - name: set up the profile
   template: src=../templates/profile.sh.j2 dest=/etc/profile.d/rambler.sh

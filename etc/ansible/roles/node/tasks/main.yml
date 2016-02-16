@@ -4,8 +4,11 @@
 - name: run setup script
   command: "{{ node_setup_pathname }} creates=/etc/apt/sources.list.d/nodesource.list"
 
+- name: update the cache for apt-get
+  apt: update_cache=yes cache_valid_time=3600
+
 - name: install packages
   apt: name={{ item }} state=present
   with_items:
     - nodejs
-    - build-essential=11.*
+    - build-essential
