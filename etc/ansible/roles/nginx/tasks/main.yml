@@ -1,22 +1,12 @@
 - name: update the cache for apt-get
   apt: update_cache=yes cache_valid_time=3600
 
-- name: install nginx
+- name: install packages
   apt: name=nginx state=latest
 
-- name: remove the symlink to default config file
-  file: path={{ default_symlink_destination_path }} state=absent
+- name: start service and enable at boot
+  service: name=nginx enabled=yes state=started
 
-- name: remove the default config file
-  file: path={{ default_destination_path }} state=absent
-
-- name: insert new config file
-  command: "cp {{ site_config_path }} {{ config_destination_path }}"
-
-- name: create new config file symlink
-  file: src={{ config_destination_path }} dest={{ config_symlink_destination_path }} state=link
-
-- name: start nginx
-  service:
-    name: nginx
-    state: restarted
+- name: deploy nginx config file
+  template: src=../templates/nginx.conf.j2 dest=/etc/nginx/sites-available/default
+  notify: restart nginx

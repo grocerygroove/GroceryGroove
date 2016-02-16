@@ -1,0 +1,10 @@
+server {
+  listen 80;
+  root {{ webclient_path }};
+
+  location / {
+    index index.html;
+
+    try_files $uri $uri/ =404;
+  }
+}
