@@ -1,0 +1,2 @@
+- name: rebuild deps
+  command: npm rebuild chdir={{ grocerygroove_path }}

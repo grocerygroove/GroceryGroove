@@ -29,8 +29,9 @@ Vagrant.configure(2) do |config|
     end
 
     # Allow the user to edit files on the host and have them turn up on the guest
-    config.vm.synced_folder "./app/webclient", "/opt/webclient", :create => true
-    config.vm.synced_folder "./etc/migrations", "/opt/migrations", :create => true
+    config.vm.synced_folder "./apps/api", "/opt/api", :create => true
+    config.vm.synced_folder "./apps/webclient", "/opt/webclient", :create => true
+    config.vm.synced_folder "./etc/migrations", "/var/migrations", :create => true
 
     # We'll need ssh forwarding for git
     config.ssh.forward_agent = true
