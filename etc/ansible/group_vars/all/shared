@@ -1,8 +1,12 @@
+db_migrations_pathname: /opt/database-migrations
+db_name: grocerygroove
+db_owner_username: grocerygroove_owner
+db_owner_password: oq9urqwe09r8yr89q432yr8huirhgjbvh
+db_runtime_username: grocerygroove_runtime
+db_runtime_password: nf0qjvjnjhubc2ygvc7gv8feb271974r8gfyr
 deploy_user: ubuntu
 dev_group: node-dev
-
 log_path: "/var/log"
 node_environment: production
 purpose: deploy
-
 webclient_path: /opt/grocerygroove-webclient

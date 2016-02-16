@@ -24,7 +24,7 @@
   command: "go get chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
   sudo: no
 
-- name: install rambler
+- name: install
   environment:
     GOPATH: "{{ rambler_go_path }}"
   command: "go install {{ rambler_package_name }} chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
@@ -32,6 +32,3 @@
 
 - name: add the migration skeleton
   template: src=../templates/migration_skeleton.sql.j2 dest={{ rambler_script_location }}/migration_skeleton.sql mode=0664
-
-#- name: add the rambler configuration
-#  template: src=../templates/ramblerconf.json dest={{ rambler_script_location }}/ramblerconf.json mode=0664

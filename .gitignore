@@ -1,2 +1,4 @@
-.*
-!/.gitignore
+.*.sw?
+
+/.vagrant
+/node_modules
