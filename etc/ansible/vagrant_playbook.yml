@@ -6,5 +6,5 @@
     - common
     - nginx
     - node
-#    - postgres
-#    - rambler
+    - postgres
+    - rambler

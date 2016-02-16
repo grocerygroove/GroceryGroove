@@ -1,5 +1,2 @@
----
-# Handlers for postgres
-
 - name: restart postgres
   service: name=postgresql state=reloaded
