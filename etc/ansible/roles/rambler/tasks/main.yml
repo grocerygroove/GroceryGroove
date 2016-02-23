@@ -32,3 +32,6 @@
 
 - name: add the migration skeleton
   template: src=../templates/migration_skeleton.sql.j2 dest={{ rambler_script_location }}/migration_skeleton.sql mode=0664
+
+- name: add the rambler config
+  template: src=../templates/conf.json.j2 dest={{ rambler_script_location }}/rambler.json mode=0664

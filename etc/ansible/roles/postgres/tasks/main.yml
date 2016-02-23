@@ -18,6 +18,16 @@
 - name: start service and enable at boot
   service: name=postgresql enabled=yes state=started
 
+- name: create db
+  postgresql_db: name={{ db_name }}
+  become: true
+  become_user: postgres
+
+- name: ensure user has access to database
+  postgresql_user: db={{ db_name }} name={{ db_owner_username }} password={{ db_owner_password }} priv="ALL"
+  become: true
+  become_user: postgres
+
 - name: configure maps
   template: src=../templates/pg_ident.conf.j2 dest={{ postgres_conf_path }}/pg_ident.conf
   register: postgres_ident
