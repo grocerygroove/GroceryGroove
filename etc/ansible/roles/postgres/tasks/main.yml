@@ -23,8 +23,16 @@
   become: true
   become_user: postgres
 
-- name: ensure user has access to database
+- name: create user
   postgresql_user: db={{ db_name }} name={{ db_owner_username }} password={{ db_owner_password }} priv="ALL"
+  become: true
+  become_user: postgres
+
+- name: template create extensions script
+  template: src=../templates/createextensions.sql.j2 dest={{ postgres_scripts_path }}/createextensions.sql
+
+- name: create extensions
+  command: "psql -d {{ db_name }} -qAtw -f {{ postgres_scripts_path }}/createextensions.sql"
   become: true
   become_user: postgres
 

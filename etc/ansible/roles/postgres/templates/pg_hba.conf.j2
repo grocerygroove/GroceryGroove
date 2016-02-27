@@ -85,7 +85,7 @@
 local   all             postgres                                peer
 
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
-local   {{ db_name }}   {{ db_owner_username }}               ident map=deploy
+local   {{ db_name }}   {{ db_owner_username }}                 ident map=deploy
 
 # "local" is for Unix domain socket connections only
 local   all             all                                     peer
