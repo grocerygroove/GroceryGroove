@@ -1,7 +1,8 @@
 - name: provision development vagrant
   hosts: vagrant
   remote_user: "{{ deploy_user }}"
-  sudo: yes
+  become: yes
+  become_method: sudo
   roles:
     - common
     - nginx
