@@ -8,4 +8,5 @@
     - nginx
     - node
     - postgres
+    - plv8
     - rambler

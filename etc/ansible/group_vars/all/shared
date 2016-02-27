@@ -11,3 +11,4 @@ log_path: /var/log
 node_environment: production
 purpose: deploy
 webclient_path: /opt/webclient
+postgres_version: 9.5

@@ -1,0 +1,5 @@
+---
+# Defaults for plv8
+plv8_package_name: "github.com/plv8/plv8"
+plv8_repo: "https://{{ plv8_package_name }}.git"
+plv8_path: "/home/{{ deploy_user }}/plv8"
