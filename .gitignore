@@ -2,3 +2,4 @@
 npm-debug.log
 
 /.vagrant
+/etc/ansible/vagrant_playbook.retry
