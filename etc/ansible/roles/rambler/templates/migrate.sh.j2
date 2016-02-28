@@ -1,0 +1,52 @@
+#!/bin/bash
+
+__CWD__=$( pwd )
+
+MIGRATIONS_PATH="{{ db_migrations_path }}"
+CONFIG_PATHNAME="{{ rambler_conf_path }}/conf.json"
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+    new)
+        MIGRATION_NAME="$1"
+
+        if [[ -z $MIGRATION_NAME ]]; then
+            echo "Please enter a name for this migration"
+            exit 1
+        elif [[ $MIGRATION_NAME =~ [^a-z_0-9] ]]; then
+            echo "Migration names must contain only numbers, lowercase letters, or underscores"
+            exit 2
+        fi
+
+        DATESTAMP=$(date -u +%Y%m%d%H%M%S)
+        PATHNAME="$MIGRATIONS_PATH/${DATESTAMP}_${MIGRATION_NAME}.sql"
+
+        cp "{{ rambler_script_location }}/migration_skeleton.sql" "$PATHNAME"
+        echo "Added $PATHNAME"
+    ;;
+
+    up)
+        echo -n "Upgrading database using ${CONFIG_PATHNAME}... "
+        {{ rambler_go_path }}/bin/rambler -c "$CONFIG_PATHNAME" apply --all
+        echo "done."
+    ;;
+
+    down)
+        echo -n "Reverting last migration using $CONFIG_PATHNAME... "
+        {{ rambler_go_path }}/bin/rambler -c "$CONFIG_PATHNAME" reverse
+        echo "done."
+    ;;
+
+    reset)
+        echo -n "Reverting all migrations using $CONFIG_PATHNAME... "
+        {{ rambler_go_path }}/bin/rambler -c "$CONFIG_PATHNAME" reverse --all
+        echo "done."
+    ;;
+
+    *)
+        echo "USAGE: $0 new|up|down|reset"
+        exit 3
+    ;;
+esac

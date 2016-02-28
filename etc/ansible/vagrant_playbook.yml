@@ -7,6 +7,6 @@
     - common
     - nginx
     - node
-    - postgres
     - plv8
+    - postgres
     - rambler

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# http://stackoverflow.com/a/246128
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+__DIR__="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+$__DIR__/ssh migrate "$@"

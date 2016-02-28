@@ -6,3 +6,21 @@
 
 - name: add the deploy user to the dev group
   user: name={{ deploy_user }} groups={{ dev_group }} append=yes
+
+- name: add bin/ssh util
+  template:
+    src=../templates/ssh.sh.j2
+    dest=/vagrant/bin/ssh
+    mode=0775
+
+- name: add bin/migrate util
+  template:
+    src=../templates/migrate.sh.j2
+    dest=/vagrant/bin/migrate
+    mode=0775
+
+- name: add bin/psql util
+  template:
+    src=../templates/psql.sh.j2
+    dest=/vagrant/bin/psql
+    mode=0775

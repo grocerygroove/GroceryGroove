@@ -1,4 +1,7 @@
 api_path: /opt/api
+db_extensions:
+  - citext
+  - plv8
 db_migrations_path: /var/migrations
 db_name: grocerygroove
 db_owner_username: "{{ db_name }}_owner"
@@ -9,6 +12,7 @@ deploy_user: ubuntu
 dev_group: node-dev
 log_path: /var/log
 node_environment: production
-purpose: deploy
-webclient_path: /opt/webclient
 postgres_version: 9.5
+purpose: deploy
+rambler_conf_path: /etc/rambler
+webclient_path: /opt/webclient

@@ -2,4 +2,7 @@
 npm-debug.log
 
 /.vagrant
+/bin/ssh
+/bin/migrate
+/bin/psql
 /etc/ansible/vagrant_playbook.retry

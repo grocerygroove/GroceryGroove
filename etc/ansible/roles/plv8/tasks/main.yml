@@ -2,12 +2,32 @@
   apt: update_cache=yes cache_valid_time=3600
 
 - name: install packages
-  apt: name={{ item }} state=latest
+  apt:
+    state=latest
+    name={{ item }}
   with_items:
     - git
-    - libv8-dev
+      #- libv8-dev
     - postgresql-server-dev-{{ postgres_version }}
 
 - name: check out the plv8 repo
-  git: repo={{ plv8_repo }} dest={{ plv8_path }}
+  git:
+    repo={{ plv8_repo }}
+    dest={{ plv8_path }}
+    version={{ plv8_version }}
   become: no
+
+- name: compile extension (this will take a while)
+  register: compile_extension
+  become: no
+  command: "make static"
+  args:
+    chdir: /home/{{ deploy_user }}/plv8
+    creates: /home/{{ deploy_user }}/plv8/plv8.so
+
+- name: install extension
+  when: compile_extension.changed
+  command: "make install"
+  args:
+    chdir: /home/{{ deploy_user }}/plv8
+

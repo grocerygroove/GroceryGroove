@@ -12,10 +12,15 @@
     - software-properties-common
 
 - name: set up the profile
-  template: src=../templates/profile.sh.j2 dest=/etc/profile.d/rambler.sh
+  template:
+    src=../templates/profile.sh.j2
+    dest=/etc/profile.d/rambler.sh
 
 - name: check out the rambler repo
-  git: repo={{ rambler_repo }} dest={{ rambler_go_path }}/src/{{ rambler_package_name }}
+  git:
+    repo={{ rambler_repo }}
+    dest={{ rambler_go_path }}/src/{{ rambler_package_name }}
+    version={{ rambler_version }}
   become: no
 
 - name: fetch dependencies
@@ -30,8 +35,29 @@
   command: "go install {{ rambler_package_name }} chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
   become: no
 
+- name: make etc dir
+  file:
+    path={{ rambler_conf_path }}
+    state=directory
+
 - name: add the migration skeleton
-  template: src=../templates/migration_skeleton.sql.j2 dest={{ rambler_script_location }}/migration_skeleton.sql mode=0664
+  template:
+    src=../templates/migration_skeleton.sql.j2
+    dest={{ rambler_conf_path }}/migration_skeleton.sql
+    mode=0664
 
 - name: add the rambler config
-  template: src=../templates/conf.json.j2 dest={{ rambler_script_location }}/rambler.json mode=0664
+  template:
+    src=../templates/conf.json.j2
+    dest={{ rambler_conf_path }}/conf.json
+    mode=0664
+
+- name: add the migrate command
+  template:
+    src=../templates/migrate.sh.j2
+    dest=/bin/migrate
+    mode=0775
+
+- name: run migrations
+  command: "/bin/migrate up"
+

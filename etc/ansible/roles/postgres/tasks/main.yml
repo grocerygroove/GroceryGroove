@@ -10,40 +10,52 @@
 - name: install packages
   apt: name={{ item }} state=present
   with_items:
-    - "postgresql={{ postgres_version }}*"
-    - "postgresql-contrib={{ postgres_version }}*"
-    - "python-psycopg2=2.4*"
-    - "libpq-dev={{ postgres_version }}*"
+    - postgresql={{ postgres_version }}*
+    - postgresql-contrib={{ postgres_version }}*
+    - python-psycopg2=2.4*
+    - libpq-dev={{ postgres_version }}*
 
 - name: start service and enable at boot
   service: name=postgresql enabled=yes state=started
 
-- name: create db
-  postgresql_db: name={{ db_name }}
-  become: true
-  become_user: postgres
-
-- name: create user
-  postgresql_user: db={{ db_name }} name={{ db_owner_username }} password={{ db_owner_password }} priv="ALL"
-  become: true
-  become_user: postgres
-
-- name: template create extensions script
-  template: src=../templates/createextensions.sql.j2 dest={{ postgres_scripts_path }}/createextensions.sql
-
-- name: create extensions
-  command: "psql -d {{ db_name }} -qAtw -f {{ postgres_scripts_path }}/createextensions.sql"
-  become: true
-  become_user: postgres
-
 - name: configure maps
-  template: src=../templates/pg_ident.conf.j2 dest={{ postgres_conf_path }}/pg_ident.conf
+  template:
+    src=../templates/pg_ident.conf.j2
+    dest={{ postgres_conf_path }}/pg_ident.conf
   register: postgres_ident
 
 - name: configure access
-  template: src=../templates/pg_hba.conf.j2 dest={{ postgres_conf_path }}/pg_hba.conf
+  template:
+    src=../templates/pg_hba.conf.j2
+    dest={{ postgres_conf_path }}/pg_hba.conf
   register: postgres_hba
 
 - name: restart postgres immediately if there were config changes
   service: name=postgresql state=reloaded
   when: postgres_ident.changed or postgres_hba.changed
+
+- name: create db
+  postgresql_db: name={{ db_name }}
+  become: true
+  become_user: postgres
+  notify: restart postgres
+
+- name: create user
+  postgresql_user:
+    db={{ db_name }}
+    name={{ db_owner_username }}
+    password={{ db_owner_password }}
+    priv="ALL"
+  become: true
+  become_user: postgres
+  notify: restart postgres
+
+- name: create extensions
+  become: true
+  become_user: postgres
+  postgresql_ext:
+    db={{ db_name }}
+    state=present
+    name={{ item }}
+  with_items: "{{ db_extensions }}"
+  notify: restart postgres

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [[ "$@" == "" ]]; then
+    COMMAND="/bin/bash -l"
+else
+    COMMAND="$@"
+fi
+
+run_string=$( echo "cd /vagrant && $COMMAND" )
+vagrant ssh -c "$run_string"
