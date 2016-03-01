@@ -1,13 +1,9 @@
-- name: update the cache for apt-get
-  apt: update_cache=yes cache_valid_time=3600
-
 - name: install packages
   apt:
     state=latest
     name={{ item }}
   with_items:
     - git
-      #- libv8-dev
     - postgresql-server-dev-{{ postgres_version }}
 
 - name: check out the plv8 repo

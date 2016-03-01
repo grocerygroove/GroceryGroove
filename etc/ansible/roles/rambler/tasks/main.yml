@@ -1,9 +1,3 @@
-- name: add the golang ppa
-  apt_repository: repo="ppa:evarlast/golang1.4"
-
-- name: update the cache for apt-get
-  apt: update_cache=yes cache_valid_time=3600
-
 - name: install packages
   apt: name={{ item }} state=latest
   with_items:
@@ -35,11 +29,6 @@
   command: "go install {{ rambler_package_name }} chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
   become: no
 
-- name: make etc dir
-  file:
-    path={{ rambler_conf_path }}
-    state=directory
-
 - name: add the migration skeleton
   template:
     src=../templates/migration_skeleton.sql.j2
@@ -57,7 +46,4 @@
     src=../templates/migrate.sh.j2
     dest=/bin/migrate
     mode=0775
-
-- name: run migrations
-  command: "/bin/migrate up"
 

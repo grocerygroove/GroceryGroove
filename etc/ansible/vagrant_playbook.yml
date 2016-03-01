@@ -4,9 +4,13 @@
   become: yes
   become_method: sudo
   roles:
+    - ppa_postgres
+    - ppa_golang
     - common
     - nginx
     - node
     - plv8
     - postgres
     - rambler
+    - gg_db
+    - gg_api

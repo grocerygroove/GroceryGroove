@@ -2,7 +2,7 @@ api_path: /opt/api
 db_extensions:
   - citext
   - plv8
-db_migrations_path: /var/migrations
+db_migrations_path: /etc/migrations
 db_name: grocerygroove
 db_owner_username: "{{ db_name }}_owner"
 db_owner_password: oq9urqwe09r8yr89q432yr8huirhgjbvh

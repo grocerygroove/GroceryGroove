@@ -6,3 +6,6 @@ npm-debug.log
 /bin/migrate
 /bin/psql
 /etc/ansible/vagrant_playbook.retry
+
+/etc/rambler/*
+!/etc/rambler/.gitkeep
