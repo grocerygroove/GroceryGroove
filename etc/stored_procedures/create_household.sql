@@ -1,5 +1,6 @@
-CREATE OR REPLACE FUNCTION
-    create_household(name TEXT)
+CREATE OR REPLACE FUNCTION create_household(
+  name households.name%TYPE
+)
     RETURNS INTEGER
 AS $$
     DECLARE

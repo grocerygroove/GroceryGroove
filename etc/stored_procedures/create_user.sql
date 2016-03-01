@@ -3,6 +3,7 @@ CREATE OR REPLACE FUNCTION create_user(
     password     users.password%TYPE,
     household_id users.household_id%TYPE DEFAULT NULL
 )
+RETURNS VOID
 AS $$
     BEGIN
         IF household_id IS NULL THEN

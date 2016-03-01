@@ -8,8 +8,18 @@
   },
   "keywords": [],
   "contributors": [
-      { "name": "Jared Johnson", "email": "" },
-      { "name": "Shawn Dellysse", "email": "sdellysse@gmail.com" }
+    {
+      "name": "Jared Johnson",
+      "email": ""
+    },
+    {
+      "name": "Shawn Dellysse",
+      "email": "sdellysse@gmail.com"
+    }
   ],
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "pg": "^4.5.1"
+  }
 }
