@@ -11,10 +11,9 @@ CREATE TABLE users (
 
     UNIQUE (email),
 
-    CHECK (username != ''),
     CHECK (email != ''),
 
-    PRIMARY KEY (username)
+    PRIMARY KEY (email)
 );
 
 -- rambler down

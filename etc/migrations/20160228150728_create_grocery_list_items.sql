@@ -6,8 +6,8 @@ CREATE TABLE grocery_list_items (
     quantity_type_name      TEXT        NOT NULL,
     quantity                DECIMAL     NOT NULL,
     purchased_at            TIMESTAMP   NULL DEFAULT NULL,
-    purchased_by_username   TEXT        NULL DEFAULT NULL,
-    added_by_username       TEXT        NOT NULL,
+    purchased_by_email      CITEXT      NULL DEFAULT NULL,
+    added_by_email          CITEXT      NOT NULL,
     unit_cost               MONEY       NULL DEFAULT NULL,
 
     FOREIGN KEY (household_id) REFERENCES households(id)
@@ -26,11 +26,11 @@ CREATE TABLE grocery_list_items (
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY (purchased_by_username) REFERENCES users(username)
+    FOREIGN KEY (purchased_by_email) REFERENCES users(email)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY (added_by_username) REFERENCES users(username)
+    FOREIGN KEY (added_by_email) REFERENCES users(email)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

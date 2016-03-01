@@ -19,7 +19,7 @@ CREATE TABLE inventory (
         ON DELETE CASCADE
     ,
 
-    PRIMARY KEY (household_id, item_id, quantity_type_name)
+    PRIMARY KEY (household_id, item_name, quantity_type_name)
 );
 
 -- rambler down

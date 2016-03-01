@@ -1,6 +1,7 @@
 api_path: /opt/api
 db_extensions:
   - citext
+  - pgcrypto
   - plv8
 db_migrations_path: /etc/migrations
 db_name: grocerygroove
