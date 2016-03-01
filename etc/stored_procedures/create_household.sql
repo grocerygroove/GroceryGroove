@@ -1,18 +1,21 @@
-CREATE OR REPLACE FUNCTION create_household(
-  name households.name%TYPE
-)
-    RETURNS INTEGER
-AS $$
-    DECLARE
-        v_id INTEGER;
-    BEGIN
-        INSERT INTO households(name)
-        VALUES(name)
-        RETURNING id INTO STRICT v_id;
+{
+    language: "plpgsql",
 
-        RETURN v_id;
-    END;
-$$
-LANGUAGE plpgsql
-VOLATILE
-STRICT
+    returns: { typealias: "households.id" },
+    arguments: [
+        { name: "name", typealias: "households.name" },
+    ],
+
+    declare: [
+        { name: "v_id", typealias: "households.id" },
+    ],
+
+    volatile: true,
+    strict: true,
+}
+
+INSERT INTO households(name)
+VALUES(name)
+RETURNING id INTO STRICT v_id;
+
+RETURN v_id;
