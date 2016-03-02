@@ -13,46 +13,8 @@ const app = express();
 app.use(bodyParser.json());
 
 //Routes
-app.post('/user', (req, res, next) => {
-  getClient((err, client, done) => {
-    if(err){
-      next(err);
-      return;
-    }
-
-    client.query('SELECT create_user($1, $2)', [req.body.email, req.body.password], (err) => {
-      done();
-      if (err){
-        next(err);
-        return;
-      }
-      else {
-        res.send("All good");
-      }
-    });
-  });
-});
-
-app.get('/user/household_id', (req, res, next) => {
-  getClient((err, client, done) => {
-    if(err){
-      next(err);
-      return;
-    }
-
-    client.query('SELECT household_id FROM users WHERE email = $1', [req.body.email], (err, result) => {
-      done();
-      if (err){
-        next(err);
-        return;
-      }
-      else {
-        res.send(result);
-      }
-    });
-  });
-});
-
+require('./routes/userRoutes.js')(app,getClient);
+require('./routes/householdRoutes.js')(app,getClient);
 
 
 
