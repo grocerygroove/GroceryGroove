@@ -9,7 +9,7 @@
     - common
     - nginx
     - node
-    - plv8
+      #- plv8
     - postgres
     - rambler
     - gg_db

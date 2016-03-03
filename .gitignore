@@ -2,6 +2,7 @@
 npm-debug.log
 
 /.vagrant
+/apps/api/node_modules
 /bin/ssh
 /bin/migrate
 /bin/psql
