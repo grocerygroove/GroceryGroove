@@ -40,3 +40,4 @@ CREATE TABLE grocery_list_items (
 );
 
 -- rambler down
+DROP TABLE grocery_list_items;

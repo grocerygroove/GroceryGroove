@@ -1,5 +1,5 @@
 -- rambler up
-CREATE TABLE inventory (
+CREATE TABLE inventory_items (
     household_id        INTEGER     NOT NULL,
     item_name           TEXT        NOT NULL,
     quantity_type_name  TEXT        NULL,
