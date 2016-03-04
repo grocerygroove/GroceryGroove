@@ -1,6 +1,6 @@
 const json5 = require("json5");
-const makeParameterManager = require("./make-parameter-manager")
-const readDirSync = require("fs").readDirSync
+const makeParameterManager = require("./make-parameter-manager");
+const readDirSync = require("fs").readdirSync;
 const readFileSync = require("fs").readFileSync;
 
 const queryPath = `${ __dirname }/queries`;

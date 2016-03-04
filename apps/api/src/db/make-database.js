@@ -1,4 +1,4 @@
-const pg = require("pg.promised")(require("pg-native"));
+const pg = require("pg.promised")(require("pg").native);
 const phinally = require("phinally");
 const queries = require("./queries");
 
