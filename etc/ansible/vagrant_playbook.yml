@@ -1,5 +1,5 @@
 - name: provision development vagrant
-  hosts: vagrant
+  hosts: all
   remote_user: "{{ deploy_user }}"
   become: yes
   become_method: sudo

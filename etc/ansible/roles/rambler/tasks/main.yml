@@ -29,17 +29,23 @@
   command: "go install {{ rambler_package_name }} chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
   become: no
 
-- name: add the migration skeleton
+- name: create the migration skeleton
   template:
     src=../templates/migration_skeleton.sql.j2
-    dest={{ rambler_conf_path }}/migration_skeleton.sql
+    dest=/tmp/ansible-migration_skeleton.sql
     mode=0664
+
+- name: install the migration skeleton
+  command: mv /tmp/ansible-migration_skeleton.sql "{{ rambler_conf_path }}/migration_skeleton.sql"
 
 - name: add the rambler config
   template:
     src=../templates/conf.json.j2
-    dest={{ rambler_conf_path }}/conf.json
+    dest=/tmp/ansible-conf.json
     mode=0664
+
+- name: install the rambler config
+  command: mv /tmp/ansible-conf.json "{{ rambler_conf_path }}/conf.json"
 
 - name: add the migrate command
   template:

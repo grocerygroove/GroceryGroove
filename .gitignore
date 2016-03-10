@@ -1,6 +1,6 @@
 .*.sw?
 npm-debug.log
-/apps/api/node_modules
+
 /.vagrant
 /apps/api/node_modules
 /bin/ssh
