@@ -33,25 +33,29 @@ Vagrant.configure(2) do |config|
     config.ssh.forward_agent = true
 
     if FFI::Platform::IS_WINDOWS
-      config.vm.provision :shell, :inline => %Q{
-        if [ ! -f /usr/bin/ansible-playbook ]; then
-          apt-get install software-properties-common
-          apt-add-repository ppa:ansible/ansible
-          apt-get update
-          apt-get install -y ansible
-        fi
-        exit
-        ansible-playbook --inventory="localhost," -c local /vagrant/etc/ansible/vagrant_playbook.yml
-      }
+        config.vm.provision :shell, :inline => %Q{
+            if [ ! -f /usr/bin/ansible-playbook ]; then
+                apt-get install software-properties-common
+                apt-add-repository ppa:ansible/ansible
+                apt-get update
+                apt-get install -y ansible
+            fi
+            ansible-playbook \
+                --inventory="localhost," \
+                -c local \
+                /vagrant/etc/ansible/vagrant_playbook.yml
+        }
     else
       config.vm.provision "ansible" do |ansible|
           ansible.playbook = "etc/ansible/vagrant_playbook.yml"
           ansible.sudo = true
-          ansible.groups = { 'vagrant' => ['default'] }
+          ansible.groups = {
+            'vagrant' => ['default']
+          }
           ansible.extra_vars = {
               ansible_ssh_user: 'vagrant',
               ansible_connection: 'ssh',
-              ansible_ssh_args: '-o ForwardAgent=yes -o ControlMaster=no',
+              ansible_ssh_args: '-o ForwardAgent=yes',
               is_vagrant: 'yes'
           }
       end

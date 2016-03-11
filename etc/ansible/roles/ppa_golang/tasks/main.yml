@@ -1,2 +1,0 @@
-- name: add the apt repo
-  apt_repository: repo="ppa:evarlast/golang1.4"
