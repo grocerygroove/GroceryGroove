@@ -3,6 +3,9 @@ npm-debug.log
 
 /.vagrant
 /apps/api/node_modules
+/apps/webclient-dev/node_modules
+/apps/webclient/bundle.js
+/apps/api/.env
 /bin/ssh
 /bin/migrate
 /bin/psql
