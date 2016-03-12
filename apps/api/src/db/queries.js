@@ -61,7 +61,7 @@ const generatePostQueryFilter = function (attributes) {
 const queryFunctions = {};
 for (let filename of readDirSync(queryPath)) {
     const pathname = `${ queryPath }/${ filename }`;
-    const name = filename.split(".")[0];
+    const name = filename.split(".")[0].replace('-','');//can't have '-' char in variable name
 
     if (filename.endsWith(".sql")) {
         const parsed = parseJssql(readFileSync(pathname, {

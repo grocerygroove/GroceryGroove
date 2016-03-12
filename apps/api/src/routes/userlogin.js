@@ -7,7 +7,8 @@ module.exports = (app, radford) => {
 
     radford.require(['db']).then((db)=>{
       db.using((client) => {
-        if(client.queries.validateuser(email, password))//We have a vaild user
+        const queryResults = client.queries.validateuser(email, password);
+        if(queryResults && queryResults[0] == 1)//We have a vaild user
         {
           //Return a JWT token
           const expires = moment().add('days', 7).valueOf();

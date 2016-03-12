@@ -7,6 +7,8 @@ module.exports = (radford) => {
 
   //Routes
   require('./routes/userlogin')(app,radford);
+  require('./routes/user')(app, radford);
+  require('./routes/household')(app, radford);
 
   radford.require(['db']).then(()=>{
     console.log(arguments);
