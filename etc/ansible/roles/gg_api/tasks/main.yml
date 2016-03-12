@@ -2,3 +2,8 @@
   command: npm rebuild
   args:
     chdir: "{{ api_path }}"
+
+- name: setup environment variables
+  template:
+    src=../templates/api.env.j2
+    dest="{{ api_path}}/.env"

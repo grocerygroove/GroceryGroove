@@ -1,8 +1,9 @@
 global.Promise = require("bluebird");
+require('dotenv').config();
 const bunyan = require("bunyan");
 const makeDatabase = require("./db/make-database");
 const Radford = require("radford");
-//const Server = require("./server");
+
 
 try{
   const radford = new Radford({
@@ -11,11 +12,12 @@ try{
               cache: true,
               dependencies: ["logger"],
               create: ({ logger }) => {
-                  return makeDatabase(logger, process.env.DB_CONN_STRING);
+                  return makeDatabase(logger, process.env.DBCONNSTRING);
               },
           },
           logger: {
               cache: ({ name }) => name,
+              dependencies: ['db'],
               create: ({}, { name }) => {
                   if (process.env.NODE_ENV === "production") {
                       return bunyan.createLogger({
@@ -32,7 +34,10 @@ try{
       },
   });
 
-  radford.require(['db']).then(()=>{
+  require("./server")(radford);
+
+  const args = ['db'];
+  radford.require(args).then(()=>{
     console.log(arguments);
   })
   .catch((e)=>{

@@ -1,15 +1,14 @@
-module.exports () => {
+module.exports = (radford) => {
   //Express setup
   const express = require('express');
   const bodyParser = require('body-parser');
   const app = express();
   app.use(bodyParser.json());
 
-
   //Routes
-  //app.get('/user')
+  require('./routes/userlogin')(app,radford);
 
-  radford.require('db').then(()=>{
+  radford.require(['db']).then(()=>{
     console.log(arguments);
   });
 
