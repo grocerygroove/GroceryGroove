@@ -1,0 +1,2 @@
+#!/bin/bash
+browserify -t [ babelify --presets [ react es2015 ] ] index.js -o ../webclient/bundle.js
