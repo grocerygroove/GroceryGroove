@@ -1,5 +1,13 @@
-const createLoginRouter = function (radford, jwtsecret) {
-    const router = require("../route-templates/nonauthenticated-route")(radford); 
+const createRouter = require("../../express/create-router");
+
+const createLoginRouter = function({
+    db,
+    jwtAuthMw,
+    jwtIdentifierExtractor,
+    jwtTokenCreator,
+    logger,
+}) {
+    const router = createRouter();
 
     router.post("/", (req, res, next) => {
         const email = req.body.email;
@@ -11,11 +19,7 @@ const createLoginRouter = function (radford, jwtsecret) {
             .then(rows => {
                 if(queryResults && queryResults[0] == 1) {//We have a vaild user
                     //Return a JWT token
-                    const expires = moment().add('days', 7).valueOf();
-                    const token = jwt.encode({
-                        iss: email,
-                        exp: expires
-                    }, jwtsecret); 
+                    const token = jwtTokenCreator(email); 
 
                     res.json({
                         token : token,
@@ -39,3 +43,5 @@ const createLoginRouter = function (radford, jwtsecret) {
 };
 
 module.exports = createLoginRouter;
+
+

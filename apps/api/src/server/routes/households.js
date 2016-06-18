@@ -1,9 +1,25 @@
-const createHouseholdRouter = function (radford, jwtsecret) {
-    const router = require("../route-templates/authenticated-route")(radford, jwtsecret);    
+const createRouter = require("../../express/create-router");
+
+const createHouseholdsRouter = function ({
+    db,
+    jwtAuthMw,
+    jwtIdentifierExtractor,
+    logger,
+}) {
+    logger = logger.child({
+        router_creator: "households",
+    });
+
+    const router = createRouter();
+
+    router.use(jwtAuthMw);
+
     router.post("/", (req, res) => {
+        //Do something....
     });
 
     return router;
+
 };
 
-module.exports = createHouseholdRouter;
+module.exports = createHouseholdsRouter;

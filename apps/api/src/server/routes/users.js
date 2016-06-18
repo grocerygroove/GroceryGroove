@@ -3,6 +3,7 @@ const createRouter = require("../../express/create-router");
 const createUsersRouter = function ({
     db,
     jwtAuthMw,
+    jwtIdentifierExtractor,
     logger,
 }) {
     logger = logger.child({
@@ -15,12 +16,14 @@ const createUsersRouter = function ({
 
     //return household info about a user (if they are validated to have access)
     router.get('/:email', (req, res) => {
-        if(req.email !== req.params.email) {
+        const email = jwtIdentifierExtractor(req.token);
+        
+        if(email !== req.params.email) {
             res.end('Insufficient Access', 401);
         }
 
         //The token's email and the requested email match up. Lets get and return the info
-        return db.using(client => client.queries.getuser(req.email))
+        return db.using(client => client.queries.getuser(email))
         .then(householdId => {
             // do something here? getuser returns householdid?
             if(queryResults){

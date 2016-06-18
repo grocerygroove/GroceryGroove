@@ -3,7 +3,7 @@
  * This should really be separated. Also, better naming needed for this file.
  */
 const extractJwtToken = require("../http/extract-jwt-token");
-const jwt = require('jwt-simple');
+const decodeJwtToken = require("./decode-jwt-token");
 
 const createJwtAuthMw = function (secret) {
   return (req, res, next) => {
@@ -11,15 +11,19 @@ const createJwtAuthMw = function (secret) {
       if (token) {
         try
         {
-          const decoded = jwt.decode(token, secret);
+          
+          const decoded = decodeJwtToken(token, secret); 
 
           if (decoded.exp <= Date.now()) {
             res.end('Access token has expired', 400);
           }
-          if(typeof req.email === "undefined")
+          if(typeof decoded.email === "undefined")
             res.end('Invalid token', 400);//If they don't have a valid token, fail
 
-          req.email = decoded.email;
+
+          //set token
+          req.token = token;
+          
           next();
 
         } catch (err) {
