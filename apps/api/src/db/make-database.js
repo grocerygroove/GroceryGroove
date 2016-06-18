@@ -1,5 +1,4 @@
 const pg = require("pg.promised")(require("pg").native);
-const phinally = require("phinally");
 const queries = require("./queries");
 
 const makeDatabase = function (logger, connString) {
@@ -34,9 +33,16 @@ const makeDatabase = function (logger, connString) {
     const using = function (promisor) {
         return connect()
         .then(({ client, done }) => {
-            return Promise.resolve(promisor(client))
-            ::phinally(() => done())
-            ;
+            return Promise.resolve(promisor(client)).then(
+                value => {
+                    done();
+                    return Promise.resolve(value);
+                },
+                error => {
+                    done();
+                    return Promise.reject(error);
+                }
+            );
         })
         ;
     };

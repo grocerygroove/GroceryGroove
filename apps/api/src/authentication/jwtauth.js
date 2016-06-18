@@ -1,9 +1,13 @@
+/**
+ * This file has a lot of processing code coupled to side-effect producing code.
+ * This should really be separated. Also, better naming needed for this file.
+ */
+const extractJwtToken = require("../http/extract-jwt-token");
 const jwt = require('jwt-simple');
 
 const createJWTAuth = (jwtsecret) =>{
   return (req, res, next) => {
-    const token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
-
+      const token = extractJwtToken(req);
       if (token) {
         try
         {
