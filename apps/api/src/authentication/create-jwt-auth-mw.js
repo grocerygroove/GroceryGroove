@@ -5,13 +5,13 @@
 const extractJwtToken = require("../http/extract-jwt-token");
 const jwt = require('jwt-simple');
 
-const createJWTAuth = (jwtsecret) =>{
+const createJwtAuthMw = function (secret) {
   return (req, res, next) => {
       const token = extractJwtToken(req);
       if (token) {
         try
         {
-          const decoded = jwt.decode(token, jwtsecret);
+          const decoded = jwt.decode(token, secret);
 
           if (decoded.exp <= Date.now()) {
             res.end('Access token has expired', 400);
@@ -31,4 +31,4 @@ const createJWTAuth = (jwtsecret) =>{
     };
 };
 
-module.exports = createJWTAuth;
+module.exports = createJwtAuthMw;

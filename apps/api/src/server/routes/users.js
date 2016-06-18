@@ -1,6 +1,17 @@
-const createUsersRouter = function (radford, jwtsecret) {
-    const router = require("../route-templates/authenticated-route")(radford, jwtsecret);    
+const createRouter = require("../../express/create-router");
 
+const createUsersRouter = function ({
+    db,
+    jwtAuthMw,
+    logger,
+}) {
+    logger = logger.child({
+        router_creator: "users",
+    });
+
+    const router = createRouter();
+
+    router.use(jwtAuthMw);
 
     //return household info about a user (if they are validated to have access)
     router.get('/:email', (req, res) => {
@@ -9,19 +20,15 @@ const createUsersRouter = function (radford, jwtsecret) {
         }
 
         //The token's email and the requested email match up. Lets get and return the info
-        return radford.require([ "db" ])
-        .then(({ db }) => {
-            return db.using(client => client.queries.getuser(req.email))
-            .then(householdId => {
-                // do something here? getuser returns householdid?
-                if(queryResults){
-                    res.json(queryResults);
-                }
-                else {
-                    res.end('Invalid Request', 400);//
-                }
-            })
-            ;
+        return db.using(client => client.queries.getuser(req.email))
+        .then(householdId => {
+            // do something here? getuser returns householdid?
+            if(queryResults){
+                res.json(queryResults);
+            }
+            else {
+                res.end('Invalid Request', 400);//
+            }
         })
         ;
     });
