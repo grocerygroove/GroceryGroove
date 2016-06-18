@@ -7,11 +7,12 @@ const routes = [
     { path: "/login",       routerCreator: require("./routes/login")      },
 ];
 
-const Server = function (radford) {
+const Server = function (radford, jwtsecret) {
     if (typeof(radford) === "undefined") {
         throw new Error("Must pass radford");
     }
     this.radford = radford;
+    this.jwtsecret = jwtsecret;
 
     this.servers = {};
 };
@@ -22,7 +23,7 @@ Object.assign(Server.prototype, {
             this.express = express();
             this.express.use(bodyParser.json());
             for (let { path, routerCreator } of routes) {
-                this.express.use(path, routerCreator(this.radford));
+                this.express.use(path, routerCreator(this.radford, this.jwtsecret));
             }
             this.express.use((error, req, res, next) => {
                 res.sendStatus(503);

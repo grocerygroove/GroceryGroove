@@ -1,7 +1,5 @@
-const createRouter = require("express").Router;
-
-const createLoginRouter = function (radford) {
-    const router = createRouter();
+const createLoginRouter = function (radford, jwtsecret) {
+    const router = require("../routeTemplates/nonAuthenticatedRoute")(radford); 
 
     router.post("/", (req, res, next) => {
         const email = req.body.email;
@@ -17,7 +15,7 @@ const createLoginRouter = function (radford) {
                     const token = jwt.encode({
                         iss: email,
                         exp: expires
-                    }, process.env.JWTSECRET); // This is bad, nothing outside of the entry point should access the outside world
+                    }, jwtsecret); 
 
                     res.json({
                         token : token,

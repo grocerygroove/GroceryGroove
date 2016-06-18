@@ -1,10 +1,5 @@
-const createRouter = require("express").Router;
-const jwtauth = require("../../jwtauth.js");
-
-const createHouseholdRouter = function (radford) {
-    const router = createRouter();
-
-    router.use(jwtauth);
+const createHouseholdRouter = function (radford, jwtsecret) {
+    const router = require("../routeTemplates/authenticatedRoute")(radford, jwtsecret);    
     router.post("/", (req, res) => {
     });
 

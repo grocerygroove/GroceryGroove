@@ -1,10 +1,6 @@
-const createRouter = require("express").Router;
-const jwtauth = require("../../jwtauth.js");
+const createUsersRouter = function (radford, jwtsecret) {
+    const router = require("../routeTemplates/authenticatedRoute")(radford, jwtsecret);    
 
-const createUsersRouter = function (radford) {
-    const router = createRouter();
-
-    router.use(jwtauth);//Validate token for every path in these routes
 
     //return household info about a user (if they are validated to have access)
     router.get('/:email', (req, res) => {

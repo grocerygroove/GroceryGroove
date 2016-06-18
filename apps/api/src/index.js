@@ -6,6 +6,8 @@ const makeDatabase = require("./db/make-database");
 const Radford = require("radford");
 const Server = require("./server");
 
+const JWTSecret = process.env.JWTSECRET;
+
 try {
     const radford = new Radford({
         db: {
@@ -39,7 +41,7 @@ try {
         },
     });
 
-    const server = new Server(radford);
+    const server = new Server(radford, JWTSecret);
 
     server.start(8080)
     .then(() => {
