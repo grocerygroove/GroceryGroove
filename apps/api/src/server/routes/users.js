@@ -1,5 +1,5 @@
 const createUsersRouter = function (radford, jwtsecret) {
-    const router = require("../routeTemplates/authenticatedRoute")(radford, jwtsecret);    
+    const router = require("../route-templates/authenticated-route")(radford, jwtsecret);    
 
 
     //return household info about a user (if they are validated to have access)

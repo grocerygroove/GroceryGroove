@@ -1,5 +1,5 @@
 const createLoginRouter = function (radford, jwtsecret) {
-    const router = require("../routeTemplates/nonAuthenticatedRoute")(radford); 
+    const router = require("../route-templates/nonauthenticated-route")(radford); 
 
     router.post("/", (req, res, next) => {
         const email = req.body.email;
