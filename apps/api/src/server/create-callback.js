@@ -19,17 +19,13 @@ const createCallback = function (services) {
 
     expressApp.use(bodyParser.json());
 
-    expressApp.use((req, res, next) => {
-        services.logger.info(req, "request incoming");
-        next();
-    });
     for (let { path, routerCreator } of routes) {
         expressApp.use(path, routerCreator(services));
     }
 
     expressApp.use((error, req, res, next) => {
         res.sendStatus(503);
-        logger.error(error);
+        services.logger.error(error);
     });
 
     return expressApp;

@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "node --require babel-register index.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "contributors": [
@@ -30,7 +30,6 @@
     "moment": "^2.13.0",
     "pg": "~4.5.1",
     "pg-native": "~1.10.0",
-    "pg-types": "^1.10.0",
-    "pg.promised": "~2.0.2"
+    "pg-types": "^1.10.0"
   }
 }

@@ -59,10 +59,11 @@ const generatePostQueryFilter = function (attributes) {
     }
 };
 
+
 const queryFunctions = {};
 for (let filename of readDirSync(queryPath)) {
     const pathname = `${ queryPath }/${ filename }`;
-    const name = camelize(filename);
+    const name = camelize(filename.split(".")[0]);
 
     if (filename.endsWith(".sql")) {
         const parsed = parseJssql(readFileSync(pathname, {
@@ -107,7 +108,7 @@ module.exports = {
     queryFunctions,
     prepareFor: function (client) {
         const retval = {};
-        for (let name in Object.keys(queryFunctions)) {
+        for (let name of Object.keys(queryFunctions)) {
             const queryFunction = queryFunctions[name];
 
             retval[name] = function (...args) {

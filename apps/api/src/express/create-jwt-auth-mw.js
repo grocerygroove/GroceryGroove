@@ -1,5 +1,5 @@
 const createJwtAuthMw = function (jwt, logger) {
-    logger = log.child({
+    logger = logger.child({
         middleware: "jwt_auth",
     });
 

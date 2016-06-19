@@ -1,4 +1,5 @@
 const createRouter = require("../../express/create-router");
+const inPromise = require("../../util/in-promise");
 
 const createUsersRouter = function ({
     db,
@@ -37,8 +38,11 @@ const createUsersRouter = function ({
     router.post("/", (req, res) => {
         return inPromise(() => {
             const { email, password } = req.body;
-            return db.using(client => client.queries.createUserAndHousehold(email, password));
+            return db.using(client => {
+                return client.queries.createUserAndHousehold(email, password);
+            });
         })
+        .then(() => res.sendStatus(200))
         .catch(error => {
             logger.info(error);
         });

@@ -4,7 +4,7 @@ const moment = require("moment");
 const encode = function (secret, email) {
     const payload = {
         email,
-        expiration_date: moment().add(7, "days").valueOf();
+        expiration_date: moment().add(7, "days").valueOf(),
     };
 
     return jwt.encode(payload, secret);

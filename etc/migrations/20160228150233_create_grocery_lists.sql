@@ -18,7 +18,7 @@ CREATE TABLE grocery_lists (
         ON DELETE CASCADE
     ,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (grocery_list_id)
 );
 
 -- rambler down
