@@ -3,7 +3,6 @@ const createRouter = require("../../express/create-router");
 const createHouseholdsRouter = function ({
     db,
     jwtAuthMw,
-    jwtIdentifierExtractor,
     logger,
 }) {
     logger = logger.child({

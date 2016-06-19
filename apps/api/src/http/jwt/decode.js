@@ -1,7 +1,7 @@
-const InvalidTokenError = require("../errors/invalid-token-error");
+const InvalidTokenError = require("../../errors/invalid-token-error");
 const jwt = require('jwt-simple');
 
-const decodeJwtToken = function (secret, expirationDate, token) {
+const decode = function (secret, expirationDate, token) {
     // If we get a null token give back a null decoded token.
     if (token == null) {
         return null;
@@ -9,7 +9,7 @@ const decodeJwtToken = function (secret, expirationDate, token) {
 
     const decodedToken = jwt.decode(token, secret);
 
-    if (decodedToken.exp <= expirationDate) {
+    if (decodedToken.expiration_date <= expirationDate) {
         throw new InvalidTokenError(token, "Expired");
     }
     if (decodedToken.email === void(0)) {
@@ -20,4 +20,4 @@ const decodeJwtToken = function (secret, expirationDate, token) {
     return decodedToken;
 };
 
-module.exports = decodeJwtToken;
+module.exports = decode;

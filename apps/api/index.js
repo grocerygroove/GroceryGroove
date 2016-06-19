@@ -2,12 +2,11 @@ require('dotenv').load();
 global.Promise = require("bluebird");
 
 const bunyan = require("bunyan");
-const makeDatabase = require("./src/db/make-database");
+const createJwtAuthMw = require("./src/express/create-jwt-auth-mw");
+const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");
+const makeDatabase = require("./src/db/make-database");
 const openPort = require("./src/http/open-port");
-const createJwtAuthMw = require("./src/authentication/create-jwt-auth-mw.js");
-const createJwtTokenIdentiferExtractor = require("./src/authentication/get-token-identifier");
-const createJwtTokenCreator = require("./src/authentication/create-jwt-token");
 
 const logger = bunyan.createLogger({
     name: "api",
@@ -15,15 +14,14 @@ const logger = bunyan.createLogger({
 });
 
 const db = makeDatabase(logger, process.env.DBCONNSTRING);
-const jwtAuthMw = createJwtAuthMw(process.env.JWTSECRET);
-const jwtIdentifierExtractor = createJwtTokenIdentiferExtractor(process.env.JWTSECRET);
-const jwtTokenCreator = createJwtTokenCreator(process.env.JWTSECRET);
+const jwt = createJwtService(process.env.JWTSECRET);
+
+const jwtAuthMw = createJwtAuthMw(jwt, logger);
 
 const serverCallback = createServerCallback({
     db,
+    jwt,
     jwtAuthMw,
-    jwtIdentifierExtractor,
-    jwtTokenCreator,
     logger,
 });
 
