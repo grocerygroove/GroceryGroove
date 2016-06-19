@@ -17,5 +17,5 @@ postgres_version: 9.5
 purpose: deploy
 rambler_conf_path: /etc/rambler
 webclient_path: /opt/webclient
-dbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@locahost:5432/{{ db_name }}"
+dbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@localhost:5432/{{ db_name }}"
 jwtsecret: tQg1c6xLkBQ9GtZqjLON
