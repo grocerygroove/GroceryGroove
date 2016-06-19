@@ -11,10 +11,9 @@ const createUsersRouter = function ({
 
     const router = createRouter();
 
-    router.use(jwtAuthMw);
 
     //return household info about a user (if they are validated to have access)
-    router.get('/:email', (req, res) => {
+    router.get('/:email', jwtAuthMw, (req, res) => {
         const email = req.token.email;
 
         if(email !== req.params.email) {
@@ -33,6 +32,16 @@ const createUsersRouter = function ({
             }
         })
         ;
+    });
+
+    router.post("/", (req, res) => {
+        return inPromise(() => {
+            const { email, password } = req.body;
+            return db.using(client => client.queries.createUserAndHousehold(email, password));
+        })
+        .catch(error => {
+            logger.info(error);
+        });
     });
 
     return router;

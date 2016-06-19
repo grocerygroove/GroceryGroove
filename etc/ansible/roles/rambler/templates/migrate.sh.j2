@@ -23,7 +23,7 @@ case "$COMMAND" in
         DATESTAMP=$(date -u +%Y%m%d%H%M%S)
         PATHNAME="$MIGRATIONS_PATH/${DATESTAMP}_${MIGRATION_NAME}.sql"
 
-        cp "{{ rambler_script_location }}/migration_skeleton.sql" "$PATHNAME"
+        cp "{{ rambler_conf_path }}/migration_skeleton.sql" "$PATHNAME"
         echo "Added $PATHNAME"
     ;;
 

@@ -1,3 +1,4 @@
+const camelize = require("change-case").camelCase;
 const json5 = require("json5");
 const makeParameterManager = require("./make-parameter-manager");
 const readDirSync = require("fs").readdirSync;
@@ -61,7 +62,7 @@ const generatePostQueryFilter = function (attributes) {
 const queryFunctions = {};
 for (let filename of readDirSync(queryPath)) {
     const pathname = `${ queryPath }/${ filename }`;
-    const name = filename.split(".")[0].replace('-','');//can't have '-' char in variable name
+    const name = camelize(filename);
 
     if (filename.endsWith(".sql")) {
         const parsed = parseJssql(readFileSync(pathname, {
@@ -102,10 +103,6 @@ for (let filename of readDirSync(queryPath)) {
     }
 }
 
-const fixCasing = function (input) {
-    /// TODO convert to js case
-};
-
 module.exports = {
     queryFunctions,
     prepareFor: function (client) {
@@ -113,7 +110,7 @@ module.exports = {
         for (let name in Object.keys(queryFunctions)) {
             const queryFunction = queryFunctions[name];
 
-            retval[fixCasing(name)] = function (...args) {
+            retval[name] = function (...args) {
                 return queryFunction(client, args);
             };
         }

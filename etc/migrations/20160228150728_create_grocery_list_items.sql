@@ -10,11 +10,11 @@ CREATE TABLE grocery_list_items (
     added_by_email          CITEXT      NOT NULL,
     unit_cost               MONEY       NULL DEFAULT NULL,
 
-    FOREIGN KEY (household_id) REFERENCES households(id)
+    FOREIGN KEY (household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY (grocery_list_id) REFERENCES grocery_lists(id)
+    FOREIGN KEY (grocery_list_id) REFERENCES grocery_lists(grocery_list_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

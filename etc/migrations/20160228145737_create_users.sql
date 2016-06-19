@@ -4,7 +4,7 @@ CREATE TABLE users (
     password        TEXT    NOT NULL,
     household_id    INTEGER NOT NULL,
 
-    FOREIGN KEY (household_id) REFERENCES households(id)
+    FOREIGN KEY (household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

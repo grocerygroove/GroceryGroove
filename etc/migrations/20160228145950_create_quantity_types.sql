@@ -5,7 +5,7 @@ CREATE TABLE quantity_types (
 
     CHECK (name != ''),
 
-    FOREIGN KEY (household_id) REFERENCES households(id)
+    FOREIGN KEY (household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

@@ -6,7 +6,7 @@ CREATE TABLE inventory_items (
     quantity            DECIMAL     NULL DEFAULT NULL,
     expiration_date     TIMESTAMP   DEFAULT NULL,
 
-    FOREIGN KEY (household_id) REFERENCES households(id)
+    FOREIGN KEY (household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

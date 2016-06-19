@@ -1,6 +1,6 @@
 -- rambler up
 CREATE TABLE grocery_lists (
-    id                    SERIAL,
+    grocery_list_id       SERIAL,
     household_id          INTEGER,
     name                  TEXT      NOT NULL,
     created_by_email      CITEXT    NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE grocery_lists (
     completed_at          TIMESTAMP NULL,
     total_estimated_cost  MONEY     NULL,
 
-    FOREIGN KEY (household_id) REFERENCES households(id)
+    FOREIGN KEY (household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
