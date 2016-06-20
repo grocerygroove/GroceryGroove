@@ -14,8 +14,7 @@ const createUsersRouter = function ({
 
 
     //return household info about a user (if they are validated to have access)
-    router.get('/:email', jwtAuthMw, (req, res) => {
-        console.log('got here');
+    router.get('/:email', jwtAuthMw, (req, res) => {        
         const email = req.token.email;
 
         if(email !== req.params.email) {
