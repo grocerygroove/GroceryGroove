@@ -10,6 +10,7 @@ const createJwtAuthMw = function (jwt, logger) {
             next();
         } catch (err) {
             logger.info(err);
+            req.end('Failed to authenticate', 403);
         }        
     };
 };
