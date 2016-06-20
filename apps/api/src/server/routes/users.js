@@ -15,6 +15,7 @@ const createUsersRouter = function ({
 
     //return household info about a user (if they are validated to have access)
     router.get('/:email', jwtAuthMw, (req, res) => {
+        console.log('got here');
         const email = req.token.email;
 
         if(email !== req.params.email) {
@@ -22,11 +23,11 @@ const createUsersRouter = function ({
         }
 
         //The token's email and the requested email match up. Lets get and return the info
-        return db.using(client => client.queries.getuser(email))
-        .then(householdId => {
+        return db.using(client => client.queries.getUserInformation(email))
+        .then(row => {
             // do something here? getuser returns householdid?
-            if(queryResults){
-                res.json(queryResults);
+            if(row){
+                res.json(row);
             }
             else {
                 res.end('Invalid Request', 400);//

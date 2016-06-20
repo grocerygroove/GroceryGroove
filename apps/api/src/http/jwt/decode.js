@@ -9,6 +9,7 @@ const decode = function (secret, expirationDate, token) {
 
     const decodedToken = jwt.decode(token, secret);
 
+    console.log(decodedToken);
     if (decodedToken.expiration_date <= expirationDate) {
         throw new InvalidTokenError(token, "Expired");
     }

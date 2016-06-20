@@ -12,15 +12,14 @@ const createLoginRouter = function({
         const email = req.body.email;
         const pass = req.body.password;
 
-        return db.using(client => client.queries.validateuser(email, password))
-        .then(rows => {
-            if(queryResults && queryResults[0] == 1) {//We have a vaild user
+        return db.using(client => client.queries.checkLogin(email, pass))
+        .then(row => {
+            if(row) {//We have a vaild user
                 //Return a JWT token
                 const token = jwt.encode(email);
 
                 res.json({
                     token : token,
-                    expires: expires,
                     email: email
                 });
             } else {

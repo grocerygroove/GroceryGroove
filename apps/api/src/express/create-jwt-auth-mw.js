@@ -4,12 +4,13 @@ const createJwtAuthMw = function (jwt, logger) {
     });
 
     return (req, res, next) => {
-        const token = req.query.token;
+        const token = req.query.token;        
         try {
             req.token = jwt.decode(Date.now(), token);
+            next();
         } catch (err) {
             logger.info(err);
-        }
+        }        
     };
 };
 
