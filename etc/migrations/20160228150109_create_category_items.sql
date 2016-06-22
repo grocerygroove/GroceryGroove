@@ -8,7 +8,7 @@ CREATE TABLE category_items (
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY (category_name, household_id) REFERENCES categories(name, household_id)
+    FOREIGN KEY (category_name) REFERENCES categories(name)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

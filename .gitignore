@@ -3,6 +3,7 @@
 npm-debug.log
 
 /.vagrant
+/.eslintrc.json
 /apps/api/node_modules
 /apps/webclient-dev/node_modules
 /apps/webclient/bundle.js

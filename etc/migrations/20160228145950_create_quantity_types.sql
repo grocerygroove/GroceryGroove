@@ -1,17 +1,20 @@
 -- rambler up
 CREATE TABLE quantity_types (
     name TEXT NOT NULL,
-    household_id INTEGER NULL DEFAULT NULL,
+    
 
     CHECK (name != ''),
 
-    FOREIGN KEY (household_id) REFERENCES households(household_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-    ,
-
-    PRIMARY KEY (name, household_id)
+    PRIMARY KEY (name)
 );
+
+INSERT INTO quantity_types (name) VALUES ('pc(s)');
+INSERT INTO quantity_types (name) VALUES ('cup(s)');
+INSERT INTO quantity_types (name) VALUES ('gal(s)');
+INSERT INTO quantity_types (name) VALUES ('oz(s)');
+INSERT INTO quantity_types (name) VALUES ('pt(s)');
+INSERT INTO quantity_types (name) VALUES ('qt(s)');
+INSERT INTO quantity_types (name) VALUES ('lb(s)');
 
 -- rambler down
 DROP TABLE quantity_types;
