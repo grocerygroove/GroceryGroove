@@ -4,7 +4,7 @@ CREATE TABLE category_items (
     category_name   TEXT    NOT NULL,
     household_id    INTEGER NULL DEFAULT NULL,
 
-    FOREIGN KEY (item_name, household_id) REFERENCES items(name, household_id)
+    FOREIGN KEY (item_name) REFERENCES items(name)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

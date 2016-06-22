@@ -1,16 +1,12 @@
 -- rambler up
 CREATE TABLE items (
-    name TEXT NOT NULL,
-    household_id INTEGER NULL DEFAULT NULL,
+    name TEXT NOT NULL,    
 
     CHECK (name != ''),
 
-    FOREIGN KEY (household_id) REFERENCES households(household_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-    ,
+    
 
-    PRIMARY KEY (name, household_id)
+    PRIMARY KEY (name)
 );
 
 -- rambler down
