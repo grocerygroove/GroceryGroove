@@ -7,6 +7,7 @@ const routes = [
     { path: "/login",           routerCreator: require("./routes/login")            },
     { path: "/categories",      routerCreator: require("./routes/categories")       },
     { path: "/quantity-types",  routerCreator: require("./routes/quantity-types")   },
+    { path: "/grocery-lists",  routerCreator: require("./routes/grocery-lists")   },
 ];
 
 const createCallback = function (services) {
