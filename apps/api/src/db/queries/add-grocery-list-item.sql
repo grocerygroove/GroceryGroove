@@ -6,31 +6,17 @@
 -- 5: quantity_type_name
 -- 6: quantity
 -- 7: added_by_email
-with existing_item as (
-    SELECT TRUE
-    FROM items
-    where name = $1 
-), new_item as (
-    insert INTO items (name)
-    select $1
-    where existing_item IS NULL
-), existing_category_item as (
-    SELECT TRUE
-    FROM category_items
-    WHERE item_name = $1
-        AND category_name = $2
-        AND household_id = $3
-), existing_category_item as (
+with item_insert AS(
+    INSERT INTO items (name)
+    VALUES ($1)
+    ON CONFLICT DO NOTHING
+), category_item_insert as (
     INSERT INTO category_items (item_name, category_name, household_id)
-    SELECT $1, $2, $3
-    WHERE existing_category_item IS NULL
+    VALUES ($1, $2, $3)
+    ON CONFLICT DO NOTHING
+), grocery_list_items_insert AS (
+    INSERT INTO grocery_list_items (grocery_list_id, household_id, item_name, quantity_type_name, quantity, added_by_email)
+    VALUES                         ($4,              $3,           $1,        $5,                 $6,       $7)
 )
-BEGIN;
-INSERT INTO grocery_list_items (grocery_list_id, household_id, item_name, quantity_type_name, quantity, added_by_email)
-VALUES                         ($4,              $3,           $1,        $5,                 $6,       $7)
-
-COMMIT;
-
-
-
-
+INSERT INTO grocery_list_access_log (grocery_list_id, household_id, access_time)
+VALUES                              ($4,              $3,           CURRENT_TIMESTAMP)
