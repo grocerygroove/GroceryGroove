@@ -3,5 +3,5 @@
 }
 
 SELECT name
-FROM quantity_types
+FROM categories
 ORDER BY name
