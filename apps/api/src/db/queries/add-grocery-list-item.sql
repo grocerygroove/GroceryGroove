@@ -18,5 +18,5 @@ with item_insert AS(
     INSERT INTO grocery_list_items (grocery_list_id, household_id, item_name, quantity_type_name, quantity, added_by_email)
     VALUES                         ($4,              $3,           $1,        $5,                 $6,       $7)
 )
-INSERT INTO grocery_list_access_log (grocery_list_id, household_id, access_time)
+INSERT INTO grocery_lists_access_log (grocery_list_id, household_id, access_time)
 VALUES                              ($4,              $3,           CURRENT_TIMESTAMP)
