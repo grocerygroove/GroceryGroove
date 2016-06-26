@@ -84,38 +84,33 @@ for (let filename of readDirSync(queryPath)) {
         const jsQuery = require(pathname);
         const filterRows = generatePostQueryFilter(jsQuery.attributes);
 
-        if (jsQuery.freeform) {
-            queryFunctions[name] = function (name, client, items) {
-                return jsQuery.run(client, items);
+        queryFunctions[name] = function (client, items) {
+            const resources = {
+                name,
+                pm: makeParameterManager(),
             };
-        } else {
-            queryFunctions[name] = function (client, items) {
-                const resources = {
-                    name,
-                    pm: makeParameterManager(),
-                };
 
-                return Promise.resolve()
-                .then(() => client.query(jsQuery.run(resources, items)))
-                .then(filterRows)
-                ;
-            };
-        }
+            return Promise.resolve()
+            .then(() => client.query(jsQuery.run(resources, items)))
+            .then(filterRows)
+            ;
+        };
     }
 }
 
-module.exports = {
-    queryFunctions,
-    prepareFor: function (client) {
-        const retval = {};
-        for (let name of Object.keys(queryFunctions)) {
-            const queryFunction = queryFunctions[name];
-
-            retval[name] = function (...args) {
-                return queryFunction(client, args);
-            };
-        }
-
-        return retval;
-    },
-};
+module.exports = queryFunctions;
+//module.exports = {
+//    queryFunctions,
+//    prepareFor: function (client) {
+//        const retval = {};
+//        for (let name of Object.keys(queryFunctions)) {
+//            const queryFunction = queryFunctions[name];
+//
+//            retval[name] = function (...args) {
+//                return queryFunction(client, args);
+//            };
+//        }
+//
+//        return retval;
+//    },
+//};
