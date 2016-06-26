@@ -1,4 +1,6 @@
+const a = require("../../util/asyncify");
 const createRouter = require("../../express/create-router");
+const queries = require("../../db/queries");
 
 module.exports = function createCategoriesRouter ({
     db,
@@ -8,24 +10,9 @@ module.exports = function createCategoriesRouter ({
         router_creator: "categories",
     });
 
-    const router = createRouter();
-
-    router.get("/", (req, res, next) => {
-        return db.using(client => client.queries.getCategories())
-        .then(results => {
-            // This is bad, like really bad. When asking the server "give me a
-            // list of the category names you have", if the server doesn't have
-            // any categories then it shouldn't say "404(ERROR: NO CATEGORIES)".
-            // It should say "200([])".
-            if(results){
-                res.json(results);
-            }
-            else {
-                res.end('No categories defined', 404);//
-            }
-        })
-        ;
+    return createRouter(r => {
+        r.get("/", a(function* (req, res) {
+            res.json(yield queries.getCategories(db));
+        }));
     });
-
-    return router;
 };
