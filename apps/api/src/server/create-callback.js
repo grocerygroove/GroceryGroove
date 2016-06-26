@@ -2,15 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const routes = [
-    { path: "/users",           routerCreator: require("./routes/users")            },
-    { path: "/households",      routerCreator: require("./routes/households")       },
-    { path: "/login",           routerCreator: require("./routes/login")            },
-    { path: "/categories",      routerCreator: require("./routes/categories")       },
-    { path: "/quantity-types",  routerCreator: require("./routes/quantity-types")   },
-    { path: "/grocery-lists",  routerCreator: require("./routes/grocery-lists")   },
+    { path: "/users",          routerCreator: require("./routes/users")          },
+    { path: "/households",     routerCreator: require("./routes/households")     },
+    { path: "/login",          routerCreator: require("./routes/login")          },
+    { path: "/categories",     routerCreator: require("./routes/categories")     },
+    { path: "/quantity-types", routerCreator: require("./routes/quantity-types") },
+    { path: "/grocery-lists",  routerCreator: require("./routes/grocery-lists")  },
 ];
 
-const createCallback = function (services) {
+module.exports = function createCallback (services) {
     if (!services.logger) {
         throw new Error("missing logger");
     }
@@ -33,5 +33,3 @@ const createCallback = function (services) {
 
     return expressApp;
 };
-
-module.exports = createCallback;

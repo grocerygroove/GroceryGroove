@@ -1,6 +1,6 @@
 const http = require("http");
 
-const openHttpPort = function (port, callback) {
+module.exports = function openHttpPort (port, callback) {
     return new Promise((resolve, reject) => {
         const listener = http.createServer(callback);
         listener.on("listening", () => {
@@ -12,5 +12,3 @@ const openHttpPort = function (port, callback) {
         listener.listen(port);
     });
 };
-
-module.exports = openHttpPort;

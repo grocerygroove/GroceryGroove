@@ -1,4 +1,4 @@
-const inPromise = function (func) {
+module.exports = function inPromise (func) {
     return new Promise((resolve, reject) => {
         try {
             resolve(func());
@@ -7,5 +7,3 @@ const inPromise = function (func) {
         }
     });
 };
-
-module.exports = inPromise;

@@ -1,7 +1,5 @@
 const co = require("co");
 
-const asyncify = function (generatorFunction) {
+module.exports = function asyncify (generatorFunction) {
     return co.wrap(generatorFunction);
 };
-
-module.exports = asyncify;

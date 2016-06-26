@@ -1,6 +1,6 @@
 const createRouter = require("../../express/create-router");
 
-const createCategoriesRouter = function ({
+module.exports = function createCategoriesRouter ({
     db,
     logger,
 }) {
@@ -12,7 +12,7 @@ const createCategoriesRouter = function ({
 
     router.get("/", (req, res, next) => {
         return db.using(client => client.queries.getCategories())
-        .then(results => {            
+        .then(results => {
             if(results){
                 res.json(results);
             }
@@ -25,5 +25,3 @@ const createCategoriesRouter = function ({
 
     return router;
 };
-
-module.exports = createCategoriesRouter;

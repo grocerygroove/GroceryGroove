@@ -1,7 +1,7 @@
 const createRouter = require("../../express/create-router");
 const inPromise = require("../../util/in-promise");
 
-const createGroceryListsRouter = function ({
+module.exports = function createGroceryListsRouter ({
     db,
     jwtAuthMw,
     logger,
@@ -12,7 +12,7 @@ const createGroceryListsRouter = function ({
 
     const router = createRouter();
 
-    router.get("/", jwtAuthMw, (req, res) => {        
+    router.get("/", jwtAuthMw, (req, res) => {
         const email = req.token.email;
 
         //The token's email and the requested email match up. Lets get and return the info
@@ -26,7 +26,7 @@ const createGroceryListsRouter = function ({
                 res.end('Invalid Request', 400);//
             }
         })
-        ;      
+        ;
     });
 
     router.post("/", jwtAuthMw, (req, res) => {
@@ -42,9 +42,7 @@ const createGroceryListsRouter = function ({
             }
         })
         ;
-        
+
     });
     return router;
 };
-
-module.exports = createGroceryListsRouter;

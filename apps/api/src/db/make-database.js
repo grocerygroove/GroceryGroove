@@ -2,7 +2,7 @@ const a = require("../util/asyncify");
 const pg = require("pg").native;
 const queries = require("./queries");
 
-const makeDatabase = function (logger, connString) {
+module.exports = function makeDatabase (logger, connString) {
     const connect = function () {
         return new Promise((resolve, reject) => {
             pg.connect(connString, (error, client, done) => {
@@ -65,5 +65,3 @@ const makeDatabase = function (logger, connString) {
         transaction,
     };
 };
-
-module.exports = makeDatabase;

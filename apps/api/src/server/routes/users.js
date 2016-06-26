@@ -1,7 +1,7 @@
 const createRouter = require("../../express/create-router");
 const inPromise = require("../../util/in-promise");
 
-const createUsersRouter = function ({
+module.exports = function createUsersRouter ({
     db,
     jwtAuthMw,
     logger,
@@ -14,7 +14,7 @@ const createUsersRouter = function ({
 
 
     //return household info about a user (if they are validated to have access)
-    router.get('/:email', jwtAuthMw, (req, res) => {        
+    router.get('/:email', jwtAuthMw, (req, res) => {
         const email = req.token.email;
 
         if(email !== req.params.email) {
@@ -50,5 +50,3 @@ const createUsersRouter = function ({
 
     return router;
 };
-
-module.exports = createUsersRouter;

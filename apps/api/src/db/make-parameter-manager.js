@@ -1,4 +1,4 @@
-const makeParameterManager = function () {
+module.exports = function makeParameterManager () {
     const parameterManager = {
         offset: 1,
         values: [],
@@ -16,5 +16,3 @@ const makeParameterManager = function () {
 
     return parameterManager;
 };
-
-module.exports = makeParameterManager;

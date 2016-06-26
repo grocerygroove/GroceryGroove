@@ -1,6 +1,6 @@
 const createRouter = require("../../express/create-router");
 
-const createLoginRouter = function({
+module.exports = function createLoginRouter ({
     db,
     jwt,
     jwtAuthMw,
@@ -34,7 +34,3 @@ const createLoginRouter = function({
 
     return router;
 };
-
-module.exports = createLoginRouter;
-
-

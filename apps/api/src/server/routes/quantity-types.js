@@ -1,6 +1,6 @@
 const createRouter = require("../../express/create-router");
 
-const createQuantityTypesRouter = function ({
+module.exports = function createQuantityTypesRouter ({
     db,
     logger,
 }) {
@@ -12,7 +12,7 @@ const createQuantityTypesRouter = function ({
 
     router.get("/", (req, res, next) => {
         return db.using(client => client.queries.getQuantityTypes())
-        .then(results => {            
+        .then(results => {
             if(results){
                 res.json(results);
             }
@@ -25,5 +25,3 @@ const createQuantityTypesRouter = function ({
 
     return router;
 };
-
-module.exports = createQuantityTypesRouter;
