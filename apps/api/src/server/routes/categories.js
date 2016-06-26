@@ -13,6 +13,10 @@ module.exports = function createCategoriesRouter ({
     router.get("/", (req, res, next) => {
         return db.using(client => client.queries.getCategories())
         .then(results => {
+            // This is bad, like really bad. When asking the server "give me a
+            // list of the category names you have", if the server doesn't have
+            // any categories then it shouldn't say "404(ERROR: NO CATEGORIES)".
+            // It should say "200([])".
             if(results){
                 res.json(results);
             }
