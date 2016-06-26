@@ -1,3 +1,4 @@
+const a = require("../util/asyncify");
 const pg = require("pg").native;
 const queries = require("./queries");
 
@@ -10,6 +11,7 @@ const makeDatabase = function (logger, connString) {
                 }
 
                 resolve({
+                    done,
                     client: {
                         query: function (...args) {
                             return new Promise((resolve, reject) => {
@@ -23,49 +25,38 @@ const makeDatabase = function (logger, connString) {
                             });
                         },
                     },
-                    done,
                 });
             });
         });
     };
 
-    const using = function (promisor) {
-        return connect()
-        .then(({ client, done }) => {
-            return Promise.resolve(promisor(client)).then(
-                value => {
-                    done();
-                    return Promise.resolve(value);
-                },
-                error => {
-                    done();
-                    return Promise.reject(error);
-                }
-            );
-        })
-        ;
-    };
+    const using = a(function* (promisor) {
+        const { client, done } = yield(connect());
+        try {
+            return Promise.resolve(promisor(client));
+        } finally {
+            done();
+        }
+    });
 
     const query = function (...args) {
         return using(client => client.query(...args));
     };
 
-    const transaction = function (promisor) {
-        return using(client => promisor(client)
-            .then(
-                value => {
-                    return client.query("COMMIT")
-                    .then(Promise.resolve(value))
-                    ;
-                },
-                error => {
-                    return client.query("ROLLBACK")
-                    .then(Promise.reject(error))
-                    ;
-                }
-            )
-        );
-    };
+    const transaction = a(function* (promisor) {
+        return using(a(function* (client) {
+            yield(query("BEGIN"));
+
+            try {
+                const value = yield(Promse.resolve(promisor(client)));
+                yield(client.query("COMMIT"));
+                return value;
+            } catch (e) {
+                yield(client.query("ROLLBACK"));
+                throw e;
+            }
+        }));
+    });
 
     return {
         connect,
