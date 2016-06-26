@@ -9,23 +9,21 @@ const makeDatabase = function (logger, connString) {
                     return reject(error);
                 }
 
-                const promisedClient = {};
-                promisedClient.query = function (...args) {
-                    return new Promise((resolve, reject) => {
-                        client.query(...args, (error, result) => {
-                            if (error) {
-                                return reject(error);
-                            }
-
-                            return resolve(result.rows);
-                        });
-                    });
-                };
-                promisedClient.queries = queries.prepareFor(promisedClient);
-
                 resolve({
+                    client: {
+                        query: function (...args) {
+                            return new Promise((resolve, reject) => {
+                                client.query(...args, (error, result) => {
+                                    if (error) {
+                                        return reject(error);
+                                    }
+
+                                    return resolve(result.rows);
+                                });
+                            });
+                        },
+                    },
                     done,
-                    client: promisedClient,
                 });
             });
         });
@@ -48,9 +46,32 @@ const makeDatabase = function (logger, connString) {
         ;
     };
 
+    const query = function (...args) {
+        return using(client => client.query(...args));
+    };
+
+    const transaction = function (promisor) {
+        return using(client => promisor(client)
+            .then(
+                value => {
+                    return client.query("COMMIT")
+                    .then(Promise.resolve(value))
+                    ;
+                },
+                error => {
+                    return client.query("ROLLBACK")
+                    .then(Promise.reject(error))
+                    ;
+                }
+            )
+        );
+    };
+
     return {
         connect,
         using,
+        query,
+        transaction,
     };
 };
 
