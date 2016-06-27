@@ -16,7 +16,7 @@ module.exports = function createUsersRouter ({
             const email    = req.body.email;
             const password = req.body.password;
 
-            yield queries.createUserAndHousehold(db, [
+            yield queries.createUserAndHousehold(db, logger, [
                 email,
                 password,
             ]);

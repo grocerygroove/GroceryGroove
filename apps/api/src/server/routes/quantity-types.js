@@ -13,7 +13,7 @@ module.exports = function createQuantityTypesRouter ({
     return createRoute(r => {
         r.get("/", a(function* (req, res, next) {
             res.json({
-                quantity_types: yield queries.getQuantityTypes(db),
+                quantity_types: yield queries.getQuantityTypes(db, logger),
             });
         }));
     });

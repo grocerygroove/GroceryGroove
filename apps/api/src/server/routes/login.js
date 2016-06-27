@@ -16,7 +16,7 @@ module.exports = function createLoginRouter ({
             const email    = req.body.email;
             const password = req.body.password;
 
-            const validLogin = yield queries.checkLogin(db, [
+            const validLogin = yield queries.checkLogin(db, logger, [
                 email,
                 password,
             ]);

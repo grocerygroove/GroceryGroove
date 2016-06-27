@@ -2,7 +2,7 @@ const a = require("../util/asyncify");
 const pg = require("pg").native;
 const queries = require("./queries");
 
-module.exports = function makeDatabase (logger, connString) {
+module.exports = function makeDatabase (connString) {
     const connect = function () {
         return new Promise((resolve, reject) => {
             pg.connect(connString, (error, client, done) => {
@@ -13,8 +13,10 @@ module.exports = function makeDatabase (logger, connString) {
                 resolve({
                     done,
                     client: {
-                        query: function (...args) {
+                        query: function (logger, ...args) {
                             return new Promise((resolve, reject) => {
+                                logger.info({ db_query: args });
+
                                 client.query(...args, (error, result) => {
                                     if (error) {
                                         return reject(error);
@@ -40,20 +42,20 @@ module.exports = function makeDatabase (logger, connString) {
         }
     });
 
-    const query = function (...args) {
-        return using(client => client.query(...args));
+    const query = function (logger, ...args) {
+        return using(client => client.query(logger, ...args));
     };
 
-    const transaction = a(function* (promisor) {
+    const transaction = a(function* (logger, promisor) {
         return using(a(function* (client) {
-            yield client.query("BEGIN");
+            yield client.query(logger, "BEGIN");
 
             try {
                 const value = yield Promse.resolve(promisor(client));
-                yield client.query("COMMIT");
+                yield client.query(logger, "COMMIT");
                 return value;
             } catch (e) {
-                yield client.query("ROLLBACK");
+                yield client.query(logger, "ROLLBACK");
                 throw e;
             }
         }));

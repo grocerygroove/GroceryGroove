@@ -21,8 +21,8 @@ for (let filename of readDirSync(queryPath)) {
 
         const applyRowFilter = getRowFilter(parsed.attributes.returns);
 
-        queryFunctions[name] = a(function* (client, values) {
-            const rows = yield(client.query({ name, text, values }));
+        queryFunctions[name] = a(function* (client, logger, values) {
+            const rows = yield(client.query(logger, { name, text, values }));
             return applyRowFilter(rows);
         });
     }
@@ -31,14 +31,14 @@ for (let filename of readDirSync(queryPath)) {
         const jsQuery = require(pathname);
         const applyRowFilter = generatePostQueryFilter(jsQuery.attributes.returns);
 
-        queryFunctions[name] = a(function* (client, items) {
+        queryFunctions[name] = a(function* (client, logger, items) {
             const resources = {
                 name,
                 pm: makeParameterManager(),
             };
 
             const queryArguments = jsQuery.run(resources, items);
-            const rows = yield(client.query(queryArguments));
+            const rows = yield(client.query(logger, queryArguments));
             return applyRowFilter(rows);
         });
     }

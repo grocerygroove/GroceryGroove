@@ -19,7 +19,7 @@ module.exports = function createGroceryListsRouter ({
             const email = req.token.email;
 
             res.json({
-                grocery_lists: yield queries.getGroceryList(db, [
+                grocery_lists: yield queries.getGroceryList(db, logger, [
                     email
                 ]),
             });
@@ -30,7 +30,7 @@ module.exports = function createGroceryListsRouter ({
             const name = req.body.name;
 
 
-            const groceryListId = yield queries.createGroceryList(db, [
+            const groceryListId = yield queries.createGroceryList(db, logger, [
                 email,
                 name,
             ]);
@@ -39,7 +39,9 @@ module.exports = function createGroceryListsRouter ({
                 grocery_list_id: groceryListId,
             });
 
-            yield queries.touchGroceryListAccessLog(db, [ groceryListId ]);
+            yield queries.touchGroceryListAccessLog(db, logger, [
+                groceryListId,
+            ]);
         }));
     });
 };
