@@ -1,6 +1,6 @@
 const a = require("../../util/asyncify");
 const createRouter = require("../../express/create-router");
-const inPromise = require("../../util/in-promise");
+const queries = require("../../db/queries");
 
 module.exports = function createGroceryListsRouter ({
     db,
@@ -12,13 +12,19 @@ module.exports = function createGroceryListsRouter ({
     });
 
     return createRouter(r => {
-        r.get("/", jwtAuthMw, a(function* (req, res) {
+        r.use(jwtAuthMw);
+
+        r.get("/", a(function* (req, res) {
             const email = req.token.email;
 
-            res.json(yield queries.getGroceryList(db, [ email ]));
+            res.json({
+                grocery_lists: yield queries.getGroceryList(db, [
+                    email
+                ]),
+            });
         }));
 
-        r.post("/", jwtAuthMw, a(function* (req, res) {
+        r.post("/", a(function* (req, res) {
             const email = req.token.email;
             const name = req.body.name;
 

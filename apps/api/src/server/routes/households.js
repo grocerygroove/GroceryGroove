@@ -1,4 +1,6 @@
+const a = require("../../util/asyncify");
 const createRouter = require("../../express/create-router");
+const queries = require("../../db/queries");
 
 module.exports = function createHouseholdsRouter ({
     db,
@@ -9,14 +11,7 @@ module.exports = function createHouseholdsRouter ({
         router_creator: "households",
     });
 
-    const router = createRouter();
-
-    router.use(jwtAuthMw);
-
-    router.post("/", (req, res) => {
-        //Do something....
+    return createRouter(r => {
+        r.use(jwtAuthMw);
     });
-
-    return router;
-
 };

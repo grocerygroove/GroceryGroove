@@ -1,4 +1,6 @@
+const a = require("../../util/asyncify");
 const createRouter = require("../../express/create-router");
+const queries = require("../../db/queries");
 
 module.exports = function createQuantityTypesRouter ({
     db,
@@ -8,19 +10,12 @@ module.exports = function createQuantityTypesRouter ({
         router_creator: "quantity_types",
     });
 
-    const router = createRouter();
-
-    router.get("/", (req, res, next) => {
-        return db.using(client => client.queries.getQuantityTypes())
-        .then(results => {
-            if(results){
-                res.json(results);
-            }
-            else {
-                res.end('No quantity types defined', 404);//
-            }
-        })
-        ;
+    return createRoute(r => {
+        r.get("/", a(function* (req, res, next) {
+            res.json({
+                quantity_types: yield queries.getQuantityTypes(db),
+            });
+        }));
     });
 
     return router;

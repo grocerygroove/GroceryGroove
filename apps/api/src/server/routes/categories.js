@@ -12,7 +12,9 @@ module.exports = function createCategoriesRouter ({
 
     return createRouter(r => {
         r.get("/", a(function* (req, res) {
-            res.json(yield queries.getCategories(db));
+            res.json({
+                category_names: yield queries.getCategoryNames(db),
+            });
         }));
     });
 };

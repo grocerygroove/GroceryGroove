@@ -1,4 +1,6 @@
+const a = require("../../util/asyncify");
 const createRouter = require("../../express/create-router");
+const queries = require("../../db/queries");
 
 module.exports = function createLoginRouter ({
     db,
@@ -6,31 +8,27 @@ module.exports = function createLoginRouter ({
     jwtAuthMw,
     logger,
 }) {
-    const router = createRouter();
-
-    router.post("/", (req, res, next) => {
-        const email = req.body.email;
-        const pass = req.body.password;
-
-        return db.using(client => client.queries.checkLogin(email, pass))
-        .then(row => {
-            if(row) {//We have a vaild user
-                //Return a JWT token
-                const token = jwt.encode(email);
-
-                res.json({
-                    token : token,
-                    email: email
-                });
-            } else {
-                //If we make it here, we didn't validate the user
-                res.json({
-                    error: 'Invalid Username or Password'
-                });
-            }
-        })
-        ;
+    logger = logger.child({
+        router_creator: "login",
     });
 
-    return router;
+    return createRoute(r => {
+        router.post("/", a(function* (req, res) {
+            const email    = req.body.email;
+            const password = req.body.password;
+
+            const validLogin = yield queries.checkLogin(db, [
+                email,
+                password,
+            ]);
+
+            if (validLogin) {
+                res.json({
+                    token: jwt.encode(email),
+                });
+            } else {
+                res.sendStatus(403);
+            }
+        }));
+    });
 };
