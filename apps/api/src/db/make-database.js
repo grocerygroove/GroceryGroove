@@ -31,7 +31,8 @@ module.exports = function makeDatabase (logger, connString) {
     };
 
     const using = a(function* (promisor) {
-        const { client, done } = yield(connect());
+        const { client, done } = yield connect();
+
         try {
             return Promise.resolve(promisor(client));
         } finally {
@@ -45,14 +46,14 @@ module.exports = function makeDatabase (logger, connString) {
 
     const transaction = a(function* (promisor) {
         return using(a(function* (client) {
-            yield(query("BEGIN"));
+            yield client.query("BEGIN");
 
             try {
-                const value = yield(Promse.resolve(promisor(client)));
-                yield(client.query("COMMIT"));
+                const value = yield Promse.resolve(promisor(client));
+                yield client.query("COMMIT");
                 return value;
             } catch (e) {
-                yield(client.query("ROLLBACK"));
+                yield client.query("ROLLBACK");
                 throw e;
             }
         }));
