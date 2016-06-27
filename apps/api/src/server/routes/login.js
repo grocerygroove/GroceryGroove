@@ -5,7 +5,6 @@ const queries = require("../../db/queries");
 module.exports = function createLoginRouter ({
     db,
     jwt,
-    jwtAuthMw,
     logger,
 }) {
     logger = logger.child({
@@ -13,7 +12,7 @@ module.exports = function createLoginRouter ({
     });
 
     return createRoute(r => {
-        router.post("/", a(function* (req, res) {
+        router.post("/", jsonBodyParser, a(function* (req, res) {
             const email    = req.body.email;
             const password = req.body.password;
 

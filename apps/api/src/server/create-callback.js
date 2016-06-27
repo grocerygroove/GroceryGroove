@@ -11,25 +11,23 @@ const routes = [
 ];
 
 module.exports = function createCallback (services) {
+    if (typeof services !== "object") {
+        throw new Error("services must be map");
+    }
     if (!services.logger) {
         throw new Error("missing logger");
     }
     if (!services.db) {
         throw new Error("missing db");
     }
+    services = Object.assign(services, {
+        jsonBodyParser: bodyParser.json(),
+    });
 
     var expressApp = express();
-
-    expressApp.use(bodyParser.json());
-
-    for (let { path, routerCreator } of routes) {
+    for (const { path, routerCreator } of routes) {
         expressApp.use(path, routerCreator(services));
     }
-
-    expressApp.use((error, req, res, next) => {
-        res.sendStatus(503);
-        services.logger.error(error);
-    });
 
     return expressApp;
 };

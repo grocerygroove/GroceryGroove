@@ -5,6 +5,7 @@ const queries = require("../../db/queries");
 module.exports = function createGroceryListsRouter ({
     db,
     jwtAuthMw,
+    jsonBodyParser,
     logger,
 }) {
     logger = logger.child({
@@ -24,7 +25,7 @@ module.exports = function createGroceryListsRouter ({
             });
         }));
 
-        r.post("/", a(function* (req, res) {
+        r.post("/", jsonBodyParser, a(function* (req, res) {
             const email = req.token.email;
             const name = req.body.name;
 
