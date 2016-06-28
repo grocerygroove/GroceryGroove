@@ -1,4 +1,4 @@
-const a = require("../util/asyncify");
+const a = require("../utils/asyncify");
 const pg = require("pg").native;
 const queries = require("./queries");
 

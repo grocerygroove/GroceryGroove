@@ -1,4 +1,4 @@
-const a = require("../../util/asyncify");
+const a = require("../../utils/asyncify");
 const createRouter = require("../../express/create-router");
 const queries = require("../../db/queries");
 
