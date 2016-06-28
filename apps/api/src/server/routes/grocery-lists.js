@@ -29,7 +29,6 @@ module.exports = function createGroceryListsRouter ({
             const email = req.token.email;
             const name = req.body.name;
 
-
             const groceryListId = yield queries.createGroceryList(db, logger, [
                 email,
                 name,

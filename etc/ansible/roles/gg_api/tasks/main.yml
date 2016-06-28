@@ -1,5 +1,5 @@
 - name: rebuild deps
-  command: npm rebuild
+  command: npm install
   args:
     chdir: "{{ api_path }}"
 
