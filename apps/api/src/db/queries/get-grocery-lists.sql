@@ -6,8 +6,10 @@ WITH users_lookup AS (
 
 SELECT
     gl.grocery_list_id,
+    gl.created_by_email,
     gl.name,
-    gl.total_estimated_cost,
+    gl.created_at,
+    gl.completed_at,
     MAX(glal.access_time) AS last_touched
 FROM       users_lookup
 INNER JOIN grocery_lists            gl   ON (gl.household_id      = users_lookup.household_id)
