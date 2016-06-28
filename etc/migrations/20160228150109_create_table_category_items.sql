@@ -1,23 +1,18 @@
 -- rambler up
-CREATE TABLE category_items (
-    item_name       TEXT    NOT NULL,
-    category_name   TEXT    NOT NULL,
-    household_id    INTEGER NULL DEFAULT NULL,
+CREATE TABLE category_items(
+    category_id TEXT    NOT NULL,
+    item_id     INTEGER NOT NULL,
 
-    FOREIGN KEY (item_name) REFERENCES items(name)
+    FOREIGN KEY(item_id) REFERENCES items(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY (category_name) REFERENCES categories(name)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-    ,
-    FOREIGN KEY (household_id) REFERENCES households(household_id)
+    FOREIGN KEY(category_id) REFERENCES categories(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
 
-    PRIMARY KEY (item_name, category_name, household_id)
+    PRIMARY KEY(category_id, item_id)
 );
 
 -- rambler down

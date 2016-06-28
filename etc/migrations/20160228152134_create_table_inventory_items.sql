@@ -1,25 +1,28 @@
 -- rambler up
-CREATE TABLE inventory_items (
-    household_id        INTEGER     NOT NULL,
-    item_name           TEXT        NOT NULL,
-    quantity_type_name  TEXT        NULL,
-    quantity            DECIMAL     NULL DEFAULT NULL,
-    expiration_date     TIMESTAMP   DEFAULT NULL,
+CREATE TABLE inventory_items(
+    inventory_item_id SERIAL,
+    household_id      INTEGER   NOT NULL,
+    item_id           INTEGER   NOT NULL,
+    quantity_type_id  INTEGER       NULL,
+    quantity          DECIMAL       NULL,
+    expiration_date   TIMESTAMP     NULL,
 
-    FOREIGN KEY (household_id) REFERENCES households(household_id)
+    FOREIGN KEY(household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY (item_name) REFERENCES items(name)
+    FOREIGN KEY(item_id) REFERENCES items(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY (quantity_type_name) REFERENCES quantity_types(name)
+    FOREIGN KEY(quantity_type_id) REFERENCES quantity_types(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
 
-    PRIMARY KEY (household_id, item_name, quantity_type_name)
+    UNIQUE(household_id, item_id, quantity_type_id),
+
+    PRIMARY KEY(inventory_item_id)
 );
 
 -- rambler down

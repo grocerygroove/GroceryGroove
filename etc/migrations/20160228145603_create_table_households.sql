@@ -1,11 +1,11 @@
 -- rambler up
-CREATE TABLE households (
+CREATE TABLE households(
     household_id SERIAL,
-    name         TEXT    NOT NULL,
+    name         TEXT   NOT NULL,
 
-    CHECK (name != ''),
+    CHECK(name != ''),
 
-    PRIMARY KEY (household_id)
+    PRIMARY KEY(household_id)
 );
 
 -- rambler down

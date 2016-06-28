@@ -1,8 +1,8 @@
 -- rambler up
 
 CREATE TABLE grocery_list_access_logs (
-    grocery_list_id        INTEGER     NOT NULL,
-    access_time  	       TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    grocery_list_id INTEGER   NOT NULL,
+    access_time  	TIMESTAMP NOT NULL DEFAULT NOW(),
 
     FOREIGN KEY (grocery_list_id) REFERENCES grocery_lists(grocery_list_id)
         ON UPDATE CASCADE
