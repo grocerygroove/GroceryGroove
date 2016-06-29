@@ -25,6 +25,16 @@ module.exports = function createGroceryListsRouter ({
             });
         }));
 
+        r.get("/:id", a(function* (req, res) {
+            const email = req.token.email;
+            const grocery_list_id = req.params.id;
+
+            res.json(yield queries.getGroceryList(db, logger, [
+                email,
+                grocery_list_id
+            ]));
+        }));
+
         r.post("/", jsonBodyParser, a(function* (req, res) {
             const email = req.token.email;
             const name = req.body.name;
