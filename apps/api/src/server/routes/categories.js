@@ -13,7 +13,7 @@ module.exports = function createCategoriesRouter ({
     return createRouter(r => {
         r.get("/", a(function* (req, res) {
             res.json({
-                category_names: yield queries.getCategoryNames(db, logger),
+                category_names: yield queries.categories.getAllNames(db, logger),
             });
         }));
     });
