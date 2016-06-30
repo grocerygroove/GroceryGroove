@@ -1,12 +1,12 @@
 const jwt = require("jwt-simple");
 const moment = require("moment");
 
-module.exports = function encode (secret, email, expirationDate) {
-    expirationDate = expirationDate || moment().add(7, "days").valueOf();
+module.exports = function encode (secret, email, createdDate) {
+    createdDate = createdDate || moment().valueOf();
 
     const payload = {
         email,
-        expiration_date: expirationDate.toString(),
+        created_date: createdDate,
     };
 
     return jwt.encode(payload, secret);

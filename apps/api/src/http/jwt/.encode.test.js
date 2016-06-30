@@ -3,17 +3,42 @@ const encode = require('./encode');
 const moment = require("moment");
 
 //Test vars
-const testSecretKey = 'thisisthetestsecretkey';
-const email = 'test@test.com';
-const expiration_date = moment('1900-01-01');
 
-const expectedToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJleHBpcmF0aW9uX2RhdGUiOiJNb24gSmFuIDAxIDE5MDAgMDA6MDA6MDAgR01UKzAwMDAifQ.UietgS4B7HIHBGH2fyw1IOpgziypmImm1NS1nVkITMs';
 
 var test = require('tape');
 
 test('encode tests', function (t) {
-    t.plan(2);
+    t.plan(3);
 
-    t.equal(expectedToken, encode(testSecretKey, email, expiration_date), 'should be equal - know token vs generated token with same payload');
-    t.notEqual(expectedToken, encode(testSecretKey, email), 'should not be equal - known token vs generated token with automatic expiration date');
+    //Shared vars
+    const testSecretKey = 'thisisthetestsecretkey';
+    const email = 'test@test.com';
+    const expectedToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.bHOlRiKoIpweT4Mpk7n-2GwaK3jiPAE-2Bp6pp-ZM50';
+
+    const test1Actual = function(){
+        const created_date = moment('1999-01-01').valueOf();
+
+        return encode(testSecretKey, email, created_date);
+    }();
+
+    const test1Expected = function(){
+        return expectedToken;
+    }();
+    t.equal(test1Actual, test1Expected, `
+        should be equal - know token vs generated token
+        with same payload
+    `);
+
+    const test2Actual = function(){
+        return encode(testSecretKey, email);
+    }();
+    const test2Expected = function(){
+        return expectedToken;
+    }();
+    t.notEqual(test2Actual, test2Expected, `
+        should not be equal - known token vs generated token with
+        automatic expiration date
+    `);
+
+    t.equal(typeof encode, "function");
 });

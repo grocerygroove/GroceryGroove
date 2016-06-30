@@ -1,4 +1,4 @@
-module.exports = function createJwtAuthMw (jwt, logger) {
+module.exports = function createJwtAuthMw (jwtService, logger) {
     logger = logger.child({
         middleware: "jwt_auth",
     });
@@ -6,7 +6,7 @@ module.exports = function createJwtAuthMw (jwt, logger) {
     return (req, res, next) => {
         const token = req.query.token;
         try {
-            req.token = jwt.decode(Date.now(), token);
+            req.token = jwtService.decode(Date.now(), token);
             next();
         } catch (err) {
             logger.info(err);
