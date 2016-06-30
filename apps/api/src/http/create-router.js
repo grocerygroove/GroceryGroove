@@ -1,7 +1,7 @@
-const express = require("express");
+const router = require("koa-router");
 
 module.exports = function createRouter (cb) {
-    const retval = express.Router();
+    const retval = router();
 
     if (cb) {
         cb(retval);
