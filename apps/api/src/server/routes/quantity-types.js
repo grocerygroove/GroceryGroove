@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const createRouter = require("../../express/create-router");
+const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
 module.exports = function createQuantityTypesRouter ({
@@ -11,10 +11,10 @@ module.exports = function createQuantityTypesRouter ({
     });
 
     return createRouter(r => {
-        r.get("/", a(function* (req, res, next) {
-            res.json({
+        r.get("/", a(function* (ctx, next) {
+            ctx.body = {
                 quantity_types: yield queries.quantityTypes.getAll(db, logger),
-            });
+            };
         }));
     });
 };

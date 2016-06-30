@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const createRouter = require("../../express/create-router");
+const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
 module.exports = function createCategoriesRouter ({
@@ -11,10 +11,10 @@ module.exports = function createCategoriesRouter ({
     });
 
     return createRouter(r => {
-        r.get("/", a(function* (req, res) {
-            res.json({
+        r.get("/", a(function* (ctx, next) {
+            ctx.body = {
                 category_names: yield queries.categories.getAllNames(db, logger),
-            });
+            };
         }));
     });
 };

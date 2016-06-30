@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const createRouter = require("../../express/create-router");
+const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
 module.exports = function createLoginRouter ({
@@ -13,9 +13,9 @@ module.exports = function createLoginRouter ({
     });
 
     return createRouter(r => {
-        r.post("/", jsonBodyParser, a(function* (req, res) {
-            const email    = req.body.email;
-            const password = req.body.password;
+        r.post("/", jsonBodyParser, a(function* (ctx, next) {
+            const email    = ctx.request.body.email;
+            const password = ctx.request.body.password;
 
             const validLogin = yield queries.users.check(db, logger, [
                 email,
@@ -23,11 +23,11 @@ module.exports = function createLoginRouter ({
             ]);
 
             if (validLogin) {
-                res.json({
+                ctx.body = {
                     token: jwtService.encode(email),
-                });
+                };
             } else {
-                res.sendStatus(403);
+                ctx.status = 403;
             }
         }));
     });

@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const createRouter = require("../../express/create-router");
+const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
 module.exports = function createUsersRouter ({
@@ -12,16 +12,16 @@ module.exports = function createUsersRouter ({
     });
 
     return createRouter(r => {
-        r.post("/", jsonBodyParser, a(function* (req, res) {
-            const email    = req.body.email;
-            const password = req.body.password;
+        r.post("/", jsonBodyParser, a(function* (ctx, next) {
+            const email    = ctx.request.body.email;
+            const password = ctx.request.body.password;
 
             yield queries.users.createUserAndHousehold(db, logger, [
                 email,
                 password,
             ]);
 
-            res.sendStatus(200);
+            ctx.status = 200;
         }));
     });
 };

@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const createRouter = require("../../express/create-router");
+const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
 module.exports = function createHouseholdsRouter ({
