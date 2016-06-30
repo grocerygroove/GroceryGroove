@@ -1,5 +1,5 @@
-const co = require("co");
+const bluebird = require("bluebird");
 
 module.exports = function asyncify (generatorFunction) {
-    return co.wrap(generatorFunction);
+    return bluebird.coroutine(generatorFunction);
 };
