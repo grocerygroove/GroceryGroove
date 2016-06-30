@@ -7,6 +7,7 @@ const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");
 const makeDatabase = require("./src/db/make-database");
 const openHttpPort = require("./src/http/open-http-port");
+const getTime = require('./src/utils/get-time');
 
 const logger = bunyan.createLogger({
     name: "api",
@@ -14,13 +15,13 @@ const logger = bunyan.createLogger({
 });
 
 const db = makeDatabase(process.env.DBCONNSTRING);
-const jwt = createJwtService(process.env.JWTSECRET);
+const jwtService = createJwtService(process.env.JWTSECRET);
 
-const jwtAuthMw = createJwtAuthMw(jwt, logger);
+const jwtAuthMw = createJwtAuthMw(jwtService, logger, getTime);
 
 const serverCallback = createServerCallback({
     db,
-    jwt,
+    jwtService,
     jwtAuthMw,
     logger,
 });

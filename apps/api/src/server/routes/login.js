@@ -4,7 +4,7 @@ const queries = require("../../db/queries");
 
 module.exports = function createLoginRouter ({
     db,
-    jwt,
+    jwtService,
     jsonBodyParser,
     logger,
 }) {
@@ -24,7 +24,7 @@ module.exports = function createLoginRouter ({
 
             if (validLogin) {
                 res.json({
-                    token: jwt.encode(email),
+                    token: jwtService.encode(email),
                 });
             } else {
                 res.sendStatus(403);
