@@ -1,5 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const koa = require('koa');
+const createJsonBodyParser = require("koa-json-body");
 
 const routes = [
     { path: "/users",          routerCreator: require("./routes/users")          },
@@ -21,13 +21,13 @@ module.exports = function createCallback (services) {
         throw new Error("missing db");
     }
     services = Object.assign(services, {
-        jsonBodyParser: bodyParser.json(),
+        jsonBodyParser: createJsonBodyParser(),
     });
 
-    var expressApp = express();
+    var koaApp = koa();
     for (const { path, routerCreator } of routes) {
-        expressApp.use(path, routerCreator(services));
+        koaApp.use(path, routerCreator(services));
     }
 
-    return expressApp;
+    return koaApp.callback();
 };
