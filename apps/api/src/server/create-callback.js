@@ -1,5 +1,6 @@
-const koa = require('koa');
 const createJsonBodyParser = require("koa-json-body");
+const createRouter = require("../http/create-router");
+const Koa = require('koa');
 
 const routes = [
     { path: "/users",          routerCreator: require("./routes/users")          },
@@ -24,10 +25,16 @@ module.exports = function createCallback (services) {
         jsonBodyParser: createJsonBodyParser(),
     });
 
-    var koaApp = koa();
-    for (const { path, routerCreator } of routes) {
-        koaApp.use(path, routerCreator(services));
-    }
+    const koaApp = new Koa();
+
+    // I really don't like this. I need to fully investigate routing in koa
+    // but for now this will work.
+    koaApp.use(createRouter(r => {
+        for (const { path, routerCreator } of routes) {
+            const router = routerCreator(services);
+            r.use(path, router.routes());
+        }
+    }).routes());
 
     return koaApp.callback();
 };
