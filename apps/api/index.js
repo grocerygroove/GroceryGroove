@@ -13,7 +13,7 @@ const logger = bunyan.createLogger({
     src: true,
 });
 
-const db = makeDatabase(logger, process.env.DBCONNSTRING);
+const db = makeDatabase(process.env.DBCONNSTRING);
 const jwt = createJwtService(process.env.JWTSECRET);
 
 const jwtAuthMw = createJwtAuthMw(jwt, logger);
