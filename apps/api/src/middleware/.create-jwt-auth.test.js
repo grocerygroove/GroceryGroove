@@ -1,9 +1,9 @@
+const test = require("blue-tape");
+
 const a = require("../utils/asyncify");
 const createJwtAuthMw = require("./create-jwt-auth");
-const test = require('blue-tape');
 
-
-test('middleware/create-jwt-auth', a(function* (t) {
+test("middleware/create-jwt-auth", a(function* (t) {
     const jwtService = {
         decode: function (time, token) {
             return token;
@@ -20,22 +20,22 @@ test('middleware/create-jwt-auth', a(function* (t) {
     };
     const jwtAuthMw = createJwtAuthMw(jwtService, logger, getTime);
 
-    const expected = {
-        token: 'testtoken',
-    };
+    const expected = "testtoken";
 
     const actual = yield a(function* (){
         const ctx = {
             query: {
-                token: 'testtoken',
+                token: "testtoken",
             },
             state: {},
         };
 
-        yield jwtAuthMw(ctx, () => {});
-        return ctx.state.token;
+
+        return yield jwtAuthMw(ctx, a(function* () {
+            return ctx.state.token;
+        }));
     })();
 
     t.deepEqual(actual, expected);
 
-});
+}));

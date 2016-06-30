@@ -1,11 +1,10 @@
-const test = require("tape");
+const test = require("blue-tape");
+
+const a = require("../../utils/asyncify");
+const createService = require("./create-service");
 const moment = require("moment");
 
-const createService = require("./create-service");
-
-test("http/jwt/create-service:works", t => {
-    t.plan(3);
-
+test("http/jwt/create-service", a(function* (t) {
     const service = createService("some secret here");
     t.equal(typeof service.encode, "function");
     t.equal(typeof service.decode, "function");
@@ -27,5 +26,4 @@ test("http/jwt/create-service:works", t => {
     }();
 
     t.deepEqual(actual, expected);
-
-});
+}));
