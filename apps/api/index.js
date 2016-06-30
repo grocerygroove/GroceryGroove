@@ -17,7 +17,7 @@ const logger = bunyan.createLogger({
 const db = makeDatabase(process.env.DBCONNSTRING);
 const jwtService = createJwtService(process.env.JWTSECRET);
 
-const jwtAuthMw = createJwtAuthMw(jwtService, logger, getTime);
+const jwtAuthMw = createJwtAuthMw(jwtService, logger, () => Date.now());
 
 const serverCallback = createServerCallback({
     db,

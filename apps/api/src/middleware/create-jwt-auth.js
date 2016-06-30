@@ -1,6 +1,6 @@
 const a = require("../utils/asyncify");
 
-module.exports = function createJwtAuth (jwtService, logger, getTime) {
+module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
     logger = logger.child({
         middleware: "jwt_auth",
     });
@@ -8,7 +8,7 @@ module.exports = function createJwtAuth (jwtService, logger, getTime) {
     return a(function* (ctx, next) {
         const token = ctx.query.token;
         try {
-            ctx.state.token = jwtService.decode(getTime(), token);
+            ctx.state.token = jwtService.decode(getCurrentTime(), token);
             return yield next();
         } catch (err) {
             logger.info(err);
