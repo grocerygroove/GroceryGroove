@@ -18,6 +18,7 @@ CREATE TABLE households(
     city              TEXT        NULL,
     state             TEXT        NULL,
     zip               TEXT        NULL,
+    created_by_id     INTEGER     NULL,
 
     FOREIGN KEY(location_type) REFERENCES household_location_types(type)
         ON UPDATE CASCADE

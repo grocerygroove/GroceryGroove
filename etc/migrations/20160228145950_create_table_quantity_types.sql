@@ -28,7 +28,9 @@ INSERT INTO quantity_types
 ('ounce',       'ounces',    'oz',                  NULL               ),
 ('pint',        'pints',     'pt',                  NULL               ),
 ('quart',       'quarts',    'qt',                  NULL               ),
-('pound',       'pounds',    'lb',                  'lbs'              );
+('pound',       'pounds',    'lb',                  'lbs'              ),
+('liter',       'liters',    'l',                   NULL               ),
+('gram',        'grams',     'g',                   NULL               );
 
 -- rambler down
 DROP TABLE quantity_types;
