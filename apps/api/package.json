@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "blue-tape 'src/**/.*.test.js' | tap-spec"
+    "test": "blue-tape 'src/**/.*.test.js' | ./node_modules/tap-spec/bin/cmd.js"
   },
   "keywords": [],
   "contributors": [
