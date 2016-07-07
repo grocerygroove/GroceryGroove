@@ -1,13 +1,13 @@
 -- rambler up
 CREATE TABLE category_items(
-    category_id TEXT    NOT NULL,
+    category_id INTEGER NOT NULL,
     item_id     INTEGER NOT NULL,
 
-    FOREIGN KEY(item_id) REFERENCES items(id)
+    FOREIGN KEY(item_id) REFERENCES items(item_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY(category_id) REFERENCES categories(id)
+    FOREIGN KEY(category_id) REFERENCES categories(category_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

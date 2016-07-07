@@ -11,11 +11,11 @@ CREATE TABLE inventory_items(
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY(item_id) REFERENCES items(id)
+    FOREIGN KEY(item_id) REFERENCES items(item_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY(quantity_type_id) REFERENCES quantity_types(id)
+    FOREIGN KEY(quantity_type_id) REFERENCES quantity_types(quantity_type_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

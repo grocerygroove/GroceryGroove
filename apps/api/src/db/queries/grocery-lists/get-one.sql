@@ -13,7 +13,7 @@ SELECT
     MAX(glal.access_time) AS last_touched
 FROM       users_lookup
 INNER JOIN grocery_lists            gl   ON (gl.household_id      = users_lookup.household_id)
-INNER JOIN grocery_lists_access_log glal ON (glal.grocery_list_id = gl.grocery_list_id)
+INNER JOIN grocery_list_access_logs glal ON (glal.grocery_list_id = gl.grocery_list_id)
 WHERE gl.grocery_list_id = $2
 GROUP BY gl.grocery_list_id,
          gl.created_by_email,

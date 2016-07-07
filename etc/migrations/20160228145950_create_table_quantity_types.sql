@@ -7,7 +7,10 @@ CREATE TABLE quantity_types(
     singular_abbreviation TEXT    NOT NULL,
     plural_abbreviation   TEXT    NOT NULL,
 
-    CHECK(name != ''),
+    CHECK(singular_name != ''),
+    CHECK(plural_name != ''),
+    CHECK(singular_abbreviation != ''),
+    CHECK(plural_abbreviation != ''),
 
     UNIQUE(household_id, singular_name),
     UNIQUE(household_id, plural_name),
