@@ -1,14 +1,14 @@
 -- rambler up
 CREATE TABLE grocery_list_item (
-    grocery_list_id         INTEGER   NOT NULL,
-    item_id                 INTEGER   NOT NULL,
-    quantity_type_id        INTEGER   NOT NULL,
-    quantity                DECIMAL   NOT NULL,
-    added_by_email          CITEXT    NOT NULL,
-
-    purchased_at            TIMESTAMP     NULL,
-    purchased_by_email      CITEXT        NULL,
-    unit_cost               MONEY         NULL,
+    grocery_list_item_id SERIAL    NOT NULL,
+    grocery_list_id      INTEGER   NOT NULL,
+    item_id              INTEGER   NOT NULL,
+    quantity_type_id     INTEGER   NOT NULL,
+    quantity             DECIMAL   NOT NULL,
+    added_by_email       CITEXT    NOT NULL,
+    purchased_at         TIMESTAMP     NULL,
+    purchased_by_id      INTEGER       NULL,
+    unit_cost            MONEY         NULL,
 
     FOREIGN KEY(grocery_list_id) REFERENCES grocery_lists(grocery_list_id)
         ON UPDATE CASCADE
@@ -22,16 +22,21 @@ CREATE TABLE grocery_list_item (
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY(purchased_by_email) REFERENCES users(email)
+    FOREIGN KEY(purchased_by_id) REFERENCES users(user_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY(added_by_email) REFERENCES users(email)
+    FOREIGN KEY(added_by_id) REFERENCES users(user_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
 
-    PRIMARY KEY (grocery_list_id, item_id)
+    CONSTRAINT unique_grocery_list_item UNIQUE(grocery_list_id, item_id),
+    CONSTRAINT consistent_grocery_list_purchase_data CHECK(
+        (purchased_at IS NULL) = (purchased_by_id IS NULL)
+    ),
+
+    PRIMARY KEY(grocery_list_item_id)
 );
 
 -- rambler down
