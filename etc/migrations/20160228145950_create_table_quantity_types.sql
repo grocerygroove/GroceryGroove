@@ -4,18 +4,13 @@ CREATE TABLE quantity_types(
     household_id          INTEGER     NULL,
     singular_name         TEXT    NOT NULL,
     plural_name           TEXT    NOT NULL,
-    singular_abbreviation TEXT    NOT NULL,
-    plural_abbreviation   TEXT    NOT NULL,
+    singular_abbreviation TEXT        NULL,
+    plural_abbreviation   TEXT        NULL,
 
-    CHECK(singular_name != ''),
-    CHECK(plural_name != ''),
-    CHECK(singular_abbreviation != ''),
-    CHECK(plural_abbreviation != ''),
-
-    UNIQUE(household_id, singular_name),
-    UNIQUE(household_id, plural_name),
-    UNIQUE(household_id, singular_abbreviation),
-    UNIQUE(household_id, plural_abbreviation),
+    CONSTRAINT unique_quanity_type_singular_name         UNIQUE(COALESCE(household_id, -1), singular_name),
+    CONSTRAINT unique_quanity_type_plural_name           UNIQUE(COALESCE(household_id, -1), plural_name),
+    CONSTRAINT unique_quanity_type_singular_abbreviation UNIQUE(COALESCE(household_id, -1), singular_abbreviation),
+    CONSTRAINT unique_quanity_type_plural_abbreviation   UNIQUE(COALESCE(household_id, -1), plural_abbreviation),
 
     FOREIGN KEY(household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
@@ -28,12 +23,14 @@ CREATE TABLE quantity_types(
 INSERT INTO quantity_types
 (singular_name, plural_name, singular_abbreviation, plural_abbreviation) VALUES
 ('piece',       'pieces',    'pc',                  'pcs'              ),
-('cup',         'cups',      'cup',                 'cups'             ),
-('gallon',      'gallons',   'gal',                 'gal'              ),
-('ounce',       'ounces',    'oz',                  'oz'               ),
-('pint',        'pints',     'pt',                  'pt'               ),
-('quart',       'quarts',    'qt',                  'qt'               ),
-('pound',       'pounds',    'lb',                  'lbs'              );
+('cup',         'cups',      NULL,                  NULL               ),
+('gallon',      'gallons',   'gal',                 NULL               ),
+('ounce',       'ounces',    'oz',                  NULL               ),
+('pint',        'pints',     'pt',                  NULL               ),
+('quart',       'quarts',    'qt',                  NULL               ),
+('pound',       'pounds',    'lb',                  'lbs'              ),
+('liter',       'liters',    'l',                   NULL               ),
+('gram',        'grams',     'g',                   NULL               );
 
 -- rambler down
 DROP TABLE quantity_types;

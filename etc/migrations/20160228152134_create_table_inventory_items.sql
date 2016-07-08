@@ -5,7 +5,7 @@ CREATE TABLE inventory_items(
     item_id           INTEGER   NOT NULL,
     quantity_type_id  INTEGER       NULL,
     quantity          DECIMAL       NULL,
-    expiration_date   TIMESTAMP     NULL,
+    expires_at        TIMESTAMP     NULL,
 
     FOREIGN KEY(household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
@@ -20,7 +20,11 @@ CREATE TABLE inventory_items(
         ON DELETE CASCADE
     ,
 
-    UNIQUE(household_id, item_id, quantity_type_id),
+    CONSTRAINT unique_inventory_item_quantity UNIQUE(
+        COALESCE(household_id, -1),
+        item_id,
+        quantity_type_id
+    ),
 
     PRIMARY KEY(inventory_item_id)
 );
