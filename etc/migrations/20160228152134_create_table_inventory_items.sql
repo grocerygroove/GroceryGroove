@@ -20,7 +20,7 @@ CREATE TABLE inventory_items(
         ON DELETE CASCADE
     ,
 
-    CONSTRAINT unique_inventory_item_quantity UNIQUE(
+    CONSTRAINT unique_inventory_item_quantity_not_null UNIQUE(
         household_id,
         item_id,
         quantity_type_id
