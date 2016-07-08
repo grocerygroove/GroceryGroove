@@ -6,14 +6,15 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
     });
 
     return a(function* (ctx, next) {
-        const token = ctx.query.token;
         try {
-            ctx.state.token = jwtService.decode(getCurrentTime(), token);
-            return yield next();
+            ctx.state.token = jwtService.decode(getCurrentTime(), ctx.query.token);
         } catch (err) {
             logger.info(err);
             ctx.status = 403;
             ctx.body = "Failed to authenticate";
+            return;
         }
+        
+        return (yield next());
     });
 };
