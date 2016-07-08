@@ -7,10 +7,10 @@ CREATE TABLE quantity_types(
     singular_abbreviation TEXT        NULL,
     plural_abbreviation   TEXT        NULL,
 
-    CONSTRAINT unique_quanity_type_singular_name         UNIQUE(COALESCE(household_id, -1), singular_name),
-    CONSTRAINT unique_quanity_type_plural_name           UNIQUE(COALESCE(household_id, -1), plural_name),
-    CONSTRAINT unique_quanity_type_singular_abbreviation UNIQUE(COALESCE(household_id, -1), singular_abbreviation),
-    CONSTRAINT unique_quanity_type_plural_abbreviation   UNIQUE(COALESCE(household_id, -1), plural_abbreviation),
+    CONSTRAINT unique_quanity_type_singular_name         UNIQUE(COALESCE(household_id, NULL), singular_name),
+    CONSTRAINT unique_quanity_type_plural_name           UNIQUE(COALESCE(household_id, NULL), plural_name),
+    CONSTRAINT unique_quanity_type_singular_abbreviation UNIQUE(COALESCE(household_id, NULL), singular_abbreviation),
+    CONSTRAINT unique_quanity_type_plural_abbreviation   UNIQUE(COALESCE(household_id, NULL), plural_abbreviation),
 
     FOREIGN KEY(household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE

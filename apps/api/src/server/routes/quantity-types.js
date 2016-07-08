@@ -14,9 +14,9 @@ module.exports = function createQuantityTypesRouter ({
     return createRouter(r => {
         r.use(jwtAuthMw);
         r.get("/", a(function* (ctx, next) {
-            const email = ctx.state.token.email;
+            const userid = ctx.state.token.userid;
             ctx.body = {
-                quantity_types: yield queries.quantityTypes.getAll(db, logger, [ email ]),
+                quantity_types: yield queries.quantityTypes.getAll(db, logger, [ userid ]),
             };
         }));
     });

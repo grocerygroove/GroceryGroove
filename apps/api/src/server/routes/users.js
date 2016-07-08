@@ -12,13 +12,23 @@ module.exports = function createUsersRouter ({
     });
 
     return createRouter(r => {
-        r.post("/", jsonBodyParser, a(function* (ctx, next) {
+        r.post("/email", jsonBodyParser, a(function* (ctx, next) {
             const email    = ctx.request.body.email;
             const password = ctx.request.body.password;
 
-            yield queries.users.createUserAndHousehold(db, logger, [
-                email,
+            yield queries.users.createUserAndHouseholdByEmail(db, logger, [
+                userid,
                 password,
+            ]);
+
+            ctx.status = 200;
+        }));
+
+        r.post("/deviceid", jsonBodyParser, a(function* (ctx, next) {
+            const deviceid    = ctx.request.body.deviceid;
+
+            yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
+                deviceid,
             ]);
 
             ctx.status = 200;

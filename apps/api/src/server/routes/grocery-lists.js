@@ -16,33 +16,33 @@ module.exports = function createGroceryListsRouter ({
         r.use(jwtAuthMw);
 
         r.get("/", a(function* (ctx, next) {
-            const email = ctx.state.token.email;
+            const userid = ctx.state.token.userid;
 
             ctx.body = {
                 grocery_lists: yield queries.groceryLists.getAllByEmail(db, logger, [
-                    email
+                    userid
                 ]),
             };
         }));
 
         r.get("/:id", a(function* (ctx, next) {
-            const email = ctx.state.token.email;
+            const userid = ctx.state.token.userid;
             const grocery_list_id = ctx.params.id;
 
             ctx.body = {
                 grocery_list: yield queries.groceryLists.getOne(db, logger, [
-                    email,
+                    userid,
                     grocery_list_id
                 ]),
             };
         }));
 
         r.post("/", jsonBodyParser, a(function* (ctx, next) {
-            const email = ctx.state.token.email;
+            const userid = ctx.state.token.userid;
             const name = ctx.request.body.name;
 
             const groceryListId = yield queries.groceryLists.create(db, logger, [
-                email,
+                userid,
                 name,
             ]);
 

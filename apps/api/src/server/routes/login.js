@@ -13,18 +13,34 @@ module.exports = function createLoginRouter ({
     });
 
     return createRouter(r => {
-        r.post("/", jsonBodyParser, a(function* (ctx, next) {
+        r.post("/email", jsonBodyParser, a(function* (ctx, next) {
             const email    = ctx.request.body.email;
             const password = ctx.request.body.password;
 
-            const validLogin = yield queries.users.check(db, logger, [
+            const userid = yield queries.users.checkByEmail(db, logger, [
                 email,
                 password,
             ]);
 
-            if (validLogin) {
+            if (userid) {
                 ctx.body = {
-                    token: jwtService.encode(email),
+                    token: jwtService.encode(userid),
+                };
+            } else {
+                ctx.status = 403;
+            }
+        }));
+
+        r.post("/deviceid", jsonBodyParser, a(function* (ctx, next) {
+            const deviceid  = ctx.request.body.deviceid;
+
+            const userid = yield queries.users.checkByDeviceID(db, logger, [
+                deviceid,
+            ]);
+
+            if (userid) {
+                ctx.body = {
+                    token: jwtService.encode(userid),
                 };
             } else {
                 ctx.status = 403;
