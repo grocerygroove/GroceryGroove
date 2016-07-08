@@ -4,8 +4,10 @@ WITH my_quantity_types AS (
         singular_name,
         plural_name,
         singular_abbreviation,
-        plural_abbreviation
+        plural_abbreviation,
+        household_id
     FROM quantity_types
+    WHERE COALESCE(household_id, $1) = $1
     ORDER BY singular_name
 )
 

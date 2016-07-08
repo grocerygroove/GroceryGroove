@@ -4,6 +4,7 @@ const queries = require("../../db/queries");
 
 module.exports = function createCategoriesRouter ({
     db,
+    jwtAuthMw,
     logger,
 }) {
     logger = logger.child({

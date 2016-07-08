@@ -4,6 +4,7 @@ const queries = require("../../db/queries");
 
 module.exports = function createQuantityTypesRouter ({
     db,
+    jwtAuthMw,
     logger,
 }) {
     logger = logger.child({
@@ -11,9 +12,11 @@ module.exports = function createQuantityTypesRouter ({
     });
 
     return createRouter(r => {
+        r.use(jwtAuthMw);
         r.get("/", a(function* (ctx, next) {
+            const email = ctx.state.token.email;
             ctx.body = {
-                quantity_types: yield queries.quantityTypes.getAll(db, logger),
+                quantity_types: yield queries.quantityTypes.getAll(db, logger, [ email ]),
             };
         }));
     });
