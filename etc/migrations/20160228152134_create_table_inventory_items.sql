@@ -21,7 +21,7 @@ CREATE TABLE inventory_items(
     ,
 
     CONSTRAINT unique_inventory_item_quantity UNIQUE(
-        COALESCE(household_id, -1),
+        household_id,
         item_id,
         quantity_type_id
     ),

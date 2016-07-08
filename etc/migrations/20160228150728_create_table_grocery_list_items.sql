@@ -5,7 +5,7 @@ CREATE TABLE grocery_list_item (
     item_id              INTEGER   NOT NULL,
     quantity_type_id     INTEGER   NOT NULL,
     quantity             DECIMAL   NOT NULL,
-    added_by_email       CITEXT    NOT NULL,
+    added_by_id          INTEGER    NOT NULL,
     purchased_at         TIMESTAMP     NULL,
     purchased_by_id      INTEGER       NULL,
     unit_cost            MONEY         NULL,

@@ -14,7 +14,7 @@ CREATE TABLE categories(
         ON DELETE CASCADE
     ,
 
-    CONSTRAINT unique_category_name UNIQUE(COALESCE(household_id, NULL), name),
+    CONSTRAINT unique_category_name UNIQUE(household_id, name),
 
     PRIMARY KEY(category_id)
 );
