@@ -1,6 +1,7 @@
 const a = require("../../utils/asyncify");
 const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
+const DuplicateNameError = require("../../errors/duplicate-name-error");
 
 module.exports = function createGroceryListsRouter ({
     db,
@@ -53,9 +54,12 @@ module.exports = function createGroceryListsRouter ({
                     grocery_list_id: groceryListId,
                 };
 
-                void(queries.groceryLists.touchAccessLog(db, logger, [
-                    groceryListId,
-                ]));
+                //Only touch access log if a grocery was inserted
+                if(groceryListId){
+                    void(queries.groceryLists.touchAccessLog(db, logger, [
+                        groceryListId,
+                    ]));
+                }
             } catch (e) {
                 if (e instanceof DuplicateNameError) {
                     ctx.throw(400, "Grocery list name must be unique");
