@@ -7,7 +7,7 @@ const readFileSync = require("fs").readFileSync;
 const requireStringAsFile = require("../utils/require-string-as-file");
 const separateJsSql = require("./make-query-functions-from-directory/separate-js-sql");
 const statSync = require("fs").statSync;
-const transformSqlError = require("./make-query-functions-from-directory/transform-sql-error");
+const convertSqlError = require("./make-query-functions-from-directory/convert-sql-error");
 
 const isDirectory = (path => statSync(path).isDirectory());
 const stripExtension = (filename => filename.split(".").slice(0, -1).join("."));
@@ -78,8 +78,8 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
                         });
                         return applyRowFilter(attributes.returns, rows);
 
-                    } catch(e) {
-                        throw transformSqlError(pathname, attributes.errorstates || [], e);
+                    } catch(error) {
+                        throw (convertSqlError(pathname, attributes.errorHandling, error) || error);
                     }
                 }));
 
