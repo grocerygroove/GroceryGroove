@@ -14,6 +14,16 @@ const stripExtension = (filename => filename.split(".").slice(0, -1).join("."));
 
 module.exports = function makeQueryFunctionsFromDirectory (path) {
     const retval = {};
+
+    /**
+     * Helper function to help deal with the issue of having a
+     * `${path}/something.js` file and a bunch of files under the
+     * `${path}/something/` directory. This handles that by looking to see when
+     * you try to assign an item to a name, if one of them is an object (a
+     * directory) and one of the is a function (a file), then it applies all of
+     * the object's properties to the function and sets that function in the
+     * place of `name`.
+     */
     const assign = function (name, item) {
         if (retval[name]) {
             if (typeof(retval[name]) === typeof(item)) {
