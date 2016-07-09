@@ -1,12 +1,13 @@
 const a = require("../utils/asyncify");
 const camelize = require("change-case").camelCase;
 const getRowFilter = require("./get-row-filter");
-const transformSqlError = require("./transform-sql-error");
 const makeParameterManager = require("./make-parameter-manager");
-const parseJssql = require("./parse-jssql");
 const readDirSync = require("fs").readdirSync;
 const readFileSync = require("fs").readFileSync;
+const requireStringAsFile = require("../utils/require-string-as-file");
+const separateJsSql = require("./make-query-functions-from-directory/separate-js-sql");
 const statSync = require("fs").statSync;
+const transformSqlError = require("./make-query-functions-from-directory/transform-sql-error");
 
 const isDirectory = (path => statSync(path).isDirectory());
 const stripExtension = (filename => filename.split(".").slice(0, -1).join("."));
@@ -48,12 +49,15 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
             const name = camelize(stripExtension(filename));
 
             if (filename.endsWith(".sql")) {
-                const parsed = parseJssql(readFileSync(pathname, {
+                const { js, sql } = separateJsSql(readFileSync(pathname, {
                     encoding: "utf8",
                 }));
-                const text = parsed.sql;
 
-                const applyRowFilter = getRowFilter(parsed.attributes.returns);
+                const attributes = requireStringAsFile(pathname, `
+                    module.exports = ${ js };
+                `);
+
+                const applyRowFilter = getRowFilter(attributes.returns);
 
                 assign(name, a(function* (client, logger, values) {
                     try{
@@ -62,7 +66,7 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
                     }
                     catch(e)
                     {
-                        throw transformSqlError(pathname, parsed.attributes.errorstates || [], e);
+                        throw transformSqlError(pathname, attributes.errorstates || [], e);
                     }
                 }));
 
