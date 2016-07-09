@@ -1,3 +1,4 @@
+const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
 const createRouter = require("../http/create-router");
 const Koa = require('koa');
@@ -21,9 +22,13 @@ module.exports = function createCallback (services) {
     if (!services.db) {
         throw new Error("missing db");
     }
-    services = Object.assign(services, {
-        jsonBodyParser: createJsonBodyParser(),
-    });
+    services = Object.assign(
+        {
+            householdExtractor: createHouseholdExtractor(services.logger),
+            jsonBodyParser: createJsonBodyParser(),
+        },
+        services
+    );
 
     const koaApp = new Koa();
 
