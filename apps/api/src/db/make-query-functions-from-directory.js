@@ -81,8 +81,6 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
                     const rows = yield client.query(logger, queryArguments);
                     return applyRowFilter(rows);
                 }));
-            } else {
-                throw new Error(`Unrecognized query file type: "${ pathname }"`);
             }
         }
     }
