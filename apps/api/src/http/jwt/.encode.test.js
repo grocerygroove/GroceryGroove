@@ -12,13 +12,13 @@ test("http/jwt/encode", a(function* (t) {
 
     (function () {
         const testSecretKey = "thisisthetestsecretkey";
-        const email = "test@test.com";
-        const expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.bHOlRiKoIpweT4Mpk7n-2GwaK3jiPAE-2Bp6pp-ZM50";
+        const userid = 20;
+        const expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOjIwLCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.HJVkKobsW77CFI2zrKoAUo1pEt4XAs2FZy-fofvoM3c";
 
         const actual = (function(){
             const created_date = moment("1999-01-01").valueOf();
 
-            return encode(testSecretKey, email, created_date);
+            return encode(testSecretKey, userid, created_date);
         })();
 
         const expected = expectedToken;
@@ -30,10 +30,10 @@ test("http/jwt/encode", a(function* (t) {
 
     (function () {
         const testSecretKey = "thisisthetestsecretkey";
-        const email = "test@test.com";
-        const expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.bHOlRiKoIpweT4Mpk7n-2GwaK3jiPAE-2Bp6pp-ZM50";
+        const userid = 20;
+        const expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOjIwLCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.HJVkKobsW77CFI2zrKoAUo1pEt4XAs2FZy-fofvoM3c";
 
-        const actual = encode(testSecretKey, email);
+        const actual = encode(testSecretKey, userid);
         const expected = expectedToken;
 
         t.notEqual(actual, expected, `
