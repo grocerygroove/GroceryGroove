@@ -1,6 +1,6 @@
 const a = require("../utils/asyncify");
+const applyRowFilter = require("./make-query-functions-from-directory/apply-row-filter");
 const camelize = require("change-case").camelCase;
-const getRowFilter = require("./get-row-filter");
 const makeParameterManager = require("./make-parameter-manager");
 const readDirSync = require("fs").readdirSync;
 const readFileSync = require("fs").readFileSync;
@@ -57,22 +57,18 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
                     module.exports = ${ js };
                 `);
 
-                const applyRowFilter = getRowFilter(attributes.returns);
-
                 assign(name, a(function* (client, logger, values) {
-                    try{
+                    try {
                         const rows = yield client.query(logger, { name, text, values });
-                        return applyRowFilter(rows);
-                    }
-                    catch(e)
-                    {
+                        return applyRowFilter(attributes.returns, rows);
+
+                    } catch(e) {
                         throw transformSqlError(pathname, attributes.errorstates || [], e);
                     }
                 }));
 
             } else if (filename.endsWith(".js")) {
                 const jsQuery = require(pathname);
-                const applyRowFilter = getRowFilter(jsQuery.attributes.returns);
 
                 assign(name, a(function* (client, logger, items) {
                     const resources = {
@@ -83,7 +79,7 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
 
                     const queryArguments = jsQuery.main(resources, items);
                     const rows = yield client.query(logger, queryArguments);
-                    return applyRowFilter(rows);
+                    return applyRowFilter(jsQuery.attributes.returns, rows);
                 }));
             }
         }

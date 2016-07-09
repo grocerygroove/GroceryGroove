@@ -5,6 +5,8 @@ const rowFilters = {
     row: require("./row-filters/row"),
 };
 
-module.exports = function getRowFilter (type) {
-    return rowFilters[type] || rowFilters["noop"];
+module.exports = function applyRowFilter (type, rows) {
+    const rowFilter = rowFilters[type] || rowFilters["noop"];
+
+    return rowFilter(rows);
 };
