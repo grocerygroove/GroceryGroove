@@ -5,7 +5,7 @@ CREATE TABLE users(
     email                CITEXT      NULL,
     phone_number         TEXT        NULL,
     password             TEXT        NULL,
-    default_household_id INTEGER     NULL,
+    primary_household_id INTEGER     NULL,
     activated            BOOLEAN NOT NULL DEFAULT TRUE,
     activation_code      TEXT        NULL,
     invited_by_id        INTEGER     NULL,
@@ -15,7 +15,7 @@ CREATE TABLE users(
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-    FOREIGN KEY(default_household_id) REFERENCES households(household_id)
+    FOREIGN KEY(primary_household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,

@@ -5,9 +5,6 @@ CREATE TABLE items(
     name         TEXT    NOT NULL,
     description  TEXT    NOT NULL DEFAULT '',
 
-    CONSTRAINT unique_item_name         UNIQUE(household_id, name) WHERE household_id IS NOT NULL,
-    CONSTRAINT unique_item_name_null    UNIQUE(name) WHERE household_id IS NULL,
-
     FOREIGN KEY(household_id) REFERENCES households(household_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
@@ -16,5 +13,10 @@ CREATE TABLE items(
     PRIMARY KEY(item_id)
 );
 
+CREATE UNIQUE INDEX unique_item_name          ON items (household_id, name) WHERE household_id IS NOT NULL;
+CREATE UNIQUE INDEX unique_item_name_null     ON items (name) WHERE household_id IS NULL;
+
 -- rambler down
+DROP INDEX unique_item_name_null;
+DROP INDEX unique_item_name;
 DROP TABLE items;

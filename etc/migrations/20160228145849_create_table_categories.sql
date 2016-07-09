@@ -13,12 +13,11 @@ CREATE TABLE categories(
         ON UPDATE CASCADE
         ON DELETE CASCADE
     ,
-
-    CONSTRAINT unique_category_name         UNIQUE(household_id, name) WHERE household_id IS NOT NULL,
-    CONSTRAINT unique_category_name_null    UNIQUE(name) WHERE household_id IS NULL,
-
     PRIMARY KEY(category_id)
 );
+
+CREATE UNIQUE INDEX unique_category_name        ON categories (household_id, name) WHERE household_id IS NOT NULL;
+CREATE UNIQUE INDEX unique_category_name_null   ON categories (name) WHERE household_id IS NULL;
 
 INSERT INTO categories(household_id, created_by_id, name) VALUES
 (NULL, NULL, 'Beverages'),
@@ -34,4 +33,6 @@ INSERT INTO categories(household_id, created_by_id, name) VALUES
 (NULL, NULL, 'Other');
 
 -- rambler down
+DROP INDEX unique_category_name_null;
+DROP INDEX unique_category_name;
 DROP TABLE categories;
