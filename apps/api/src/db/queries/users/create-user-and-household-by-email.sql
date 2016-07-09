@@ -5,8 +5,8 @@ WITH
         RETURNING household_id
     ),
     my_user AS (
-        INSERT INTO users (email, password,                         household_id)
-        SELECT             $1,    my_hashed_password($2::TEXT), household_id
+        INSERT INTO users (email, password)
+        SELECT             $1,    create_hashed_password($2::TEXT)
         FROM my_household
         RETURNING user_id
     ),
@@ -21,10 +21,10 @@ WITH
             created_by_id = my_household_user.user_id
         FROM my_household_user
         WHERE my_household_user.household_id = households.household_id
-        RETURNING household_id, user_id
+        RETURNING households.household_id, user_id
     )
 
 UPDATE users SET
-    default_household_id = my_household_update.household_id
+    primary_household_id = my_household_update.household_id
 FROM my_household_update
 WHERE users.user_id = my_household_update.user_id

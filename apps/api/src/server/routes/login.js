@@ -34,7 +34,7 @@ module.exports = function createLoginRouter ({
         r.post("/deviceid", jsonBodyParser, a(function* (ctx, next) {
             const deviceid  = ctx.request.body.deviceid;
 
-            const userid = yield queries.users.checkByDeviceID(db, logger, [
+            const userid = yield queries.users.checkByDeviceIdentifier(db, logger, [
                 deviceid,
             ]);
 

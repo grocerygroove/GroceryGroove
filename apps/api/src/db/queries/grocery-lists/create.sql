@@ -1,14 +1,7 @@
 {
     returns: "one",
 }
-
-WITH users_lookup AS (
-    SELECT household_id
-    FROM users
-    WHERE email = $1
-)
-
-INSERT INTO grocery_lists(household_id, name, created_by_email)
-SELECT                    household_id, $2,   $1
-FROM users_lookup
+--TODO: Authenticate that the user has access to this household...
+INSERT INTO grocery_lists(household_id, name, created_by_id)
+VALUES ($3, $2, $1)
 RETURNING grocery_list_id

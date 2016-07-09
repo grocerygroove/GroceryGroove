@@ -17,7 +17,7 @@ module.exports = function createUsersRouter ({
             const password = ctx.request.body.password;
 
             yield queries.users.createUserAndHouseholdByEmail(db, logger, [
-                userid,
+                email,
                 password,
             ]);
 

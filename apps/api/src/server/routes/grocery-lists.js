@@ -40,10 +40,13 @@ module.exports = function createGroceryListsRouter ({
         r.post("/", jsonBodyParser, a(function* (ctx, next) {
             const userid = ctx.state.token.userid;
             const name = ctx.request.body.name;
+            const householdId = ctx.request.body.householdId;
 
+            console.log(ctx.state.token);
             const groceryListId = yield queries.groceryLists.create(db, logger, [
                 userid,
                 name,
+                householdId,
             ]);
 
             ctx.body = {
