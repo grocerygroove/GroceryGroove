@@ -11,7 +11,7 @@ INSERT INTO household_location_types(type) VALUES
 CREATE TABLE households(
     household_id      SERIAL,
     name              TEXT    NOT NULL,
-    physical_location BOOLEAN NOT NULL,
+    physical_location BOOLEAN NOT NULL DEFAULT FALSE,
     location_type     TEXT        NULL,
     street_address    TEXT        NULL,
     street_address2   TEXT        NULL,

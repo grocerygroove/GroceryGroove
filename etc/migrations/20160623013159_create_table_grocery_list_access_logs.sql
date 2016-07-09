@@ -13,4 +13,4 @@ CREATE TABLE grocery_list_access_logs (
 );
 
 -- rambler down
-DROP TABLE grocery_list_access_log;
+DROP TABLE grocery_list_access_logs;
