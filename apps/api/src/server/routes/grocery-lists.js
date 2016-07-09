@@ -43,28 +43,29 @@ module.exports = function createGroceryListsRouter ({
             const householdId = ctx.request.body.householdId;
 
             try{
-            const groceryListId = yield queries.groceryLists.create(db, logger, [
-                userid,
-                name,
-                householdId,
-            ]);
+                const groceryListId = yield queries.groceryLists.create(db, logger, [
+                    userid,
+                    name,
+                    householdId,
+                ]);
 
 
-            console.log("Shouldn't have gotten here");
-            ctx.body = {
-                grocery_list_id: groceryListId,
-            };
+                console.log("Shouldn't have gotten here");
+                ctx.body = {
+                    grocery_list_id: groceryListId,
+                };
 
-            void(queries.groceryLists.touchAccessLog(db, logger, [
-                groceryListId,
-            ]));
-            }
-            catch(e)
-            {
-                if(e.message === "User doesn't have permission to create grocery list for this household.")
+                void(yield queries.groceryLists.touchAccessLog(db, logger, [
+                    groceryListId,
+                ]));
+            } catch(e) {
+                if(e.message === "User doesn't have permission to create grocery list for this household.") {
                     ctx.throw(403);
-                else if(e.message === "Grocery list name must be unique.")
+                } else if(e.message === "Grocery list name must be unique.") {
                     ctx.throw(400, e.message);
+                } else {
+                    throw e;
+                }
             }
         }));
     });
