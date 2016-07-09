@@ -71,7 +71,11 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
 
                 assign(name, a(function* (client, logger, values) {
                     try {
-                        const rows = yield client.query(logger, { name, text, values });
+                        const rows = yield client.query(logger, {
+                            name,
+                            text: sql,
+                            values,
+                        });
                         return applyRowFilter(attributes.returns, rows);
 
                     } catch(e) {
