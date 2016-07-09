@@ -11,6 +11,7 @@
         },
     ],
 }
+
 WITH users_permission AS (
     SELECT household_id, user_id
     FROM households_users
