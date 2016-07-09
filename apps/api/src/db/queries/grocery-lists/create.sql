@@ -1,15 +1,11 @@
 {
     returns: "one",
-    errorstates: [
-        {
-            state   : "23502",
-            message : "User doesn't have permission to create grocery list for this household.",
+
+    errorHandling: {
+        states: {
+            23505: require("../../../errors/duplicate-name-error"),
         },
-        {
-            state   : "23505",
-            message : "Grocery list name must be unique.",
-        },
-    ],
+    },
 }
 
 WITH users_permission AS (
