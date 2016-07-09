@@ -1,6 +1,7 @@
 const a = require("../utils/asyncify");
 const camelize = require("change-case").camelCase;
 const getRowFilter = require("./get-row-filter");
+const getSqlErrorTransformer = require('./get-sql-error-transformer');
 const makeParameterManager = require("./make-parameter-manager");
 const parseJssql = require("./parse-jssql");
 const readDirSync = require("fs").readdirSync;
@@ -53,10 +54,17 @@ module.exports = function makeQueryFunctionsFromDirectory (path) {
                 const text = parsed.sql;
 
                 const applyRowFilter = getRowFilter(parsed.attributes.returns);
+                const sqlErrorTransformer = getSqlErrorTransformer(parsed.attributes.errorstates);
 
                 assign(name, a(function* (client, logger, values) {
-                    const rows = yield client.query(logger, { name, text, values });
-                    return applyRowFilter(rows);
+                    try{
+                        const rows = yield client.query(logger, { name, text, values });
+                        return applyRowFilter(rows);
+                    }
+                    catch(e)
+                    {
+                        throw sqlErrorTransformer(e);
+                    }
                 }));
 
             } else if (filename.endsWith(".js")) {
