@@ -50,16 +50,21 @@ module.exports = function createGroceryListsRouter ({
                     householdId,
                 ]);
 
+                if(!groceryListId){
+                    ctx.throw(401, "User doesn't have access to this household");
+                    return;
+                }
+
+
                 ctx.body = {
                     grocery_list_id: groceryListId,
                 };
 
-                //Only touch access log if a grocery was inserted
-                if(groceryListId){
-                    void(queries.groceryLists.touchAccessLog(db, logger, [
-                        groceryListId,
-                    ]));
-                }
+
+                void(queries.groceryLists.touchAccessLog(db, logger, [
+                    groceryListId,
+                ]));
+
             } catch (e) {
                 if (e instanceof DuplicateNameError) {
                     ctx.throw(400, "Grocery list name must be unique");
