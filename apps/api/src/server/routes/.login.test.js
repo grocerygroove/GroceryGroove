@@ -1,12 +1,12 @@
 const test = require("blue-tape");
 
-const a = require("../../utils/asyncify");
 const getRoute = require("../route-tools/get-route");
 const rootGroup = require("../routes");
 
-test("server/routes/login", a(function* (t) {
+test("server/routes/login", (function (t) {
     t.plan(2);
 
+    //Check to make sure given correct conditions, a token is attached to the response body
     (function(){
         //Setup
         const methodToTest = getRoute(rootGroup, "POST", "/login/by-email").handler;
@@ -21,12 +21,12 @@ test("server/routes/login", a(function* (t) {
         };
 
         let db = {
-            query : a(function*(logger, {name}){
+            query : function (logger, {name}){
                 if(name === "users/check-by-email")
                 {
                     return Promise.resolve([{ userId : 1}]);//UserId value
                 }
-            }),
+            },
         };
 
         let logger = {};
@@ -46,6 +46,7 @@ test("server/routes/login", a(function* (t) {
         });
     })();
 
+    //Check to make sure, given the wrong conditions, the method returns a status code of 403
     (function(){
         //Setup
         const methodToTest = getRoute(rootGroup, "POST", "/login/by-email").handler;
@@ -60,12 +61,12 @@ test("server/routes/login", a(function* (t) {
         };
 
         let db = {
-            query : a(function*(logger, {name}){
+            query : function (logger, {name}){
                 if(name === "users/check-by-email")
                 {
                     return Promise.resolve([]);//Empty result set array
                 }
-            }),
+            },
         };
 
         let logger = {};
