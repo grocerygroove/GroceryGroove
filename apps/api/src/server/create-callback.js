@@ -25,7 +25,7 @@ module.exports = function createCallback (services) {
     services = Object.assign(
         {
             householdExtractor: createHouseholdExtractor(services.logger),
-            jsonBodyParser: createJsonBodyParser(),
+            jsonBodyParserMw: createJsonBodyParser(),
         },
         services
     );

@@ -5,7 +5,7 @@ const queries = require("../../db/queries");
 module.exports = function createLoginRouter ({
     db,
     jwtService,
-    jsonBodyParser,
+    jsonBodyParserMw,
     logger,
 }) {
     logger = logger.child({
@@ -13,7 +13,7 @@ module.exports = function createLoginRouter ({
     });
 
     return createRouter(r => {
-        r.post("/email", jsonBodyParser, a(function* (ctx, next) {
+        r.post("/email", jsonBodyParserMw, a(function* (ctx, next) {
             const email    = ctx.request.body.email;
             const password = ctx.request.body.password;
 
@@ -31,7 +31,7 @@ module.exports = function createLoginRouter ({
             }
         }));
 
-        r.post("/deviceid", jsonBodyParser, a(function* (ctx, next) {
+        r.post("/deviceid", jsonBodyParserMw, a(function* (ctx, next) {
             const deviceid  = ctx.request.body.deviceid;
 
             const userid = yield queries.users.checkByDeviceIdentifier(db, logger, [

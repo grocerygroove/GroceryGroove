@@ -4,7 +4,7 @@ const queries = require("../../db/queries");
 
 module.exports = function createUsersRouter ({
     db,
-    jsonBodyParser,
+    jsonBodyParserMw,
     logger,
 }) {
     logger = logger.child({
@@ -12,7 +12,7 @@ module.exports = function createUsersRouter ({
     });
 
     return createRouter(r => {
-        r.post("/email", jsonBodyParser, a(function* (ctx, next) {
+        r.post("/email", jsonBodyParserMw, a(function* (ctx, next) {
             const email    = ctx.request.body.email;
             const password = ctx.request.body.password;
 
@@ -24,7 +24,7 @@ module.exports = function createUsersRouter ({
             ctx.status = 200;
         }));
 
-        r.post("/deviceid", jsonBodyParser, a(function* (ctx, next) {
+        r.post("/deviceid", jsonBodyParserMw, a(function* (ctx, next) {
             const deviceid    = ctx.request.body.deviceid;
 
             yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
