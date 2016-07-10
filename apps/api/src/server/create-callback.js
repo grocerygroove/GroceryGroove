@@ -4,7 +4,7 @@ const createRouter = require("../http/create-router");
 const Koa = require('koa');
 
 const routes = [
-    { path: "/users",          routerCreator: require("./routes/users")          },
+    { path: "/signup",         routerCreator: require("./routes/signup")         },
     { path: "/households",     routerCreator: require("./routes/households")     },
     { path: "/login",          routerCreator: require("./routes/login")          },
     { path: "/categories",     routerCreator: require("./routes/categories")     },

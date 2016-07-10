@@ -13,7 +13,7 @@ module.exports = function createLoginRouter ({
     });
 
     return createRouter(r => {
-        r.post("/email", jsonBodyParserMw, a(function* (ctx, next) {
+        r.post("/by-email", jsonBodyParserMw, a(function* (ctx, next) {
             const email    = ctx.request.body.email;
             const password = ctx.request.body.password;
 
@@ -31,7 +31,7 @@ module.exports = function createLoginRouter ({
             }
         }));
 
-        r.post("/deviceid", jsonBodyParserMw, a(function* (ctx, next) {
+        r.post("/by-device-identifier", jsonBodyParserMw, a(function* (ctx, next) {
             const deviceid  = ctx.request.body.deviceid;
 
             const userid = yield queries.users.checkByDeviceIdentifier(db, logger, [

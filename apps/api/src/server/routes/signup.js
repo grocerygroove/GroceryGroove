@@ -2,7 +2,7 @@ const a = require("../../utils/asyncify");
 const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
-module.exports = function createUsersRouter ({
+module.exports = function createSignupRouter ({
     db,
     jsonBodyParserMw,
     logger,
@@ -12,7 +12,7 @@ module.exports = function createUsersRouter ({
     });
 
     return createRouter(r => {
-        r.post("/email", jsonBodyParserMw, a(function* (ctx, next) {
+        r.post("/by-email", jsonBodyParserMw, a(function* (ctx, next) {
             const email    = ctx.request.body.email;
             const password = ctx.request.body.password;
 
@@ -24,7 +24,7 @@ module.exports = function createUsersRouter ({
             ctx.status = 200;
         }));
 
-        r.post("/deviceid", jsonBodyParserMw, a(function* (ctx, next) {
+        r.post("/by-device-identifier", jsonBodyParserMw, a(function* (ctx, next) {
             const deviceid    = ctx.request.body.deviceid;
 
             yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
