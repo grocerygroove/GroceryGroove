@@ -12,7 +12,7 @@ module.exports = function createUserExtractor (logger) {
                 token: ctx.state.token,
             });
 
-            ctx.status = 500
+            ctx.status = 500;
             return;
         }
 
