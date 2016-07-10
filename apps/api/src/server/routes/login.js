@@ -2,6 +2,12 @@ const a = require("../../utils/asyncify");
 const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
+const routes = {
+    post: {
+        byEmail: require("./login/post-by-email.js"),
+    },
+};
+
 module.exports = function createLoginRouter ({
     db,
     jwtService,
@@ -15,25 +21,7 @@ module.exports = function createLoginRouter ({
     return createRouter(r => {
         r.use(jsonBodyParserMw);
 
-        r.post("/by-email", a(function* (ctx, next) {
-            const email    = ctx.request.body.email;
-            const password = ctx.request.body.password;
-
-            const userId = yield queries.users.checkByEmail(db, logger, [
-                email,
-                password,
-            ]);
-
-            if (userId) {
-                ctx.body = {
-                    token: jwtService.encode({
-                        userId,
-                    });
-                };
-            } else {
-                ctx.status = 403;
-            }
-        }));
+        r.post("/by-email", (ctx, next) => routes.post.byEmail(db, jwtService, logger, ctx, next));
 
         r.post("/by-device-identifier", a(function* (ctx, next) {
             const deviceid  = ctx.request.body.deviceid;
