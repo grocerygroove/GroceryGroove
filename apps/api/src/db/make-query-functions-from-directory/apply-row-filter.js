@@ -15,9 +15,13 @@ const rowFilters = {
     };
 };
 module.exports = function applyRowFilter (type, rows) {
-    if (rowFilter[type]) {
-        return rowFilters[type](rows);
+    if (type) {
+        if (rowFilter[type]) {
+            return rowFilters[type](rows);
+        } else {
+            throw new InvalidRowFilterType(type);
+        }
     } else {
-        throw new InvalidRowFilterType(type);
+        return rows;
     }
 };
