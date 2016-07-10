@@ -5,8 +5,9 @@ const DuplicateNameError = require("../../errors/duplicate-name-error");
 
 module.exports = function createGroceryListsRouter ({
     db,
-    jwtAuthMw,
+    householdExtractorMw,
     jsonBodyParserMw,
+    jwtAuthMw,
     logger,
 }) {
     logger = logger.child({
@@ -15,6 +16,7 @@ module.exports = function createGroceryListsRouter ({
 
     return createRouter(r => {
         r.use(jwtAuthMw);
+        r.use(householdExtractorMw);
 
         r.get("/", a(function* (ctx, next) {
             const userid = ctx.state.token.userid;
@@ -41,7 +43,7 @@ module.exports = function createGroceryListsRouter ({
         r.post("/", jsonBodyParserMw, a(function* (ctx, next) {
             const userid = ctx.state.token.userid;
             const name = ctx.request.body.name;
-            const householdId = ctx.request.body.householdId;
+            const householdId = ctx.state.household_id;
 
             try {
                 const groceryListId = yield queries.groceryLists.create(db, logger, [

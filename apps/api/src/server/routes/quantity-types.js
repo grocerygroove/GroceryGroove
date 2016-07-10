@@ -4,6 +4,7 @@ const queries = require("../../db/queries");
 
 module.exports = function createQuantityTypesRouter ({
     db,
+    householdExtractorMw,
     jwtAuthMw,
     logger,
 }) {
@@ -13,6 +14,8 @@ module.exports = function createQuantityTypesRouter ({
 
     return createRouter(r => {
         r.use(jwtAuthMw);
+        r.use(householdExtractorMw);
+
         r.get("/", a(function* (ctx, next) {
             const userid = ctx.state.token.userid;
             ctx.body = {

@@ -4,6 +4,7 @@ const queries = require("../../db/queries");
 
 module.exports = function createCategoriesRouter ({
     db,
+    householdExtractorMw,
     jwtAuthMw,
     logger,
 }) {
@@ -12,6 +13,9 @@ module.exports = function createCategoriesRouter ({
     });
 
     return createRouter(r => {
+        r.use(jwtAuthMw);
+        r.use(householdExtractorMw);
+
         r.get("/", a(function* (ctx, next) {
             ctx.body = {
                 category_names: yield queries.categories.getAllNames(db, logger),
