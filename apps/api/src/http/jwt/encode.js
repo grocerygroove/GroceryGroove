@@ -1,11 +1,11 @@
 const jwt = require("jwt-simple");
 const moment = require("moment");
 
-module.exports = function encode (secret, userid, createdDate) {
+module.exports = function encode (secret, data, createdDate) {
     createdDate = createdDate || moment().valueOf();
 
     const payload = {
-        userid,
+        data,
         created_date: createdDate,
     };
 

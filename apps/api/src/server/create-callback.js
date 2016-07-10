@@ -1,5 +1,6 @@
 const applyDefaults = require("../utils/apply-defaults");
 const collapseRoutingGroup = require("./route-tools/collapse-group");
+const createUserExtractor = require("../middleware/create-user-extractor");
 const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
 const createKoaRouter = require("koa-router");
@@ -8,6 +9,7 @@ const rootGroup = require("./routes");
 
 module.exports = function createCallback (services) {
     services = applyDefaults(services, {
+        userExtractorMw : createUserExtractor(services.logger),
         householdExtractorMw: createHouseholdExtractor(services.logger),
         jsonBodyParserMw: createJsonBodyParser(),
     });

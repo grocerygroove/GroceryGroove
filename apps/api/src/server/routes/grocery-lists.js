@@ -21,10 +21,18 @@ module.exports = {
             method: "GET",
             path: "/",
 
+	        middlewares: [
+                "jwtAuth",
+                "userExtractor",
+                "householdExtractor",
+            ],
+
             handler: a(function* (db, logger, ctx, next) {
+                const userId = ctx.state.userId;
+                const householdId = ctx.state.household_id;
                 ctx.body = {
                     grocery_lists: yield queries.groceryLists.getAllByEmail(db, logger, [
-                        ctx.state.token.userId,
+                        ctx.state.userId,
                     ]),
                 };
             }),
@@ -34,7 +42,15 @@ module.exports = {
             method: "GET",
             path: "/:id",
 
+            middlewares: [
+                "jwtAuth",
+                "userExtractor",
+                "householdExtractor",
+            ],
+
             handler: a(function* (db, logger, ctx, next) {
+                const userId = ctx.state.userId;
+                const householdId = ctx.state.household_id;
                 ctx.body = {
                     grocery_list: yield queries.groceryLists.getOne(db, logger, [
                         userId,
@@ -50,11 +66,13 @@ module.exports = {
 
             middlewares: [
                 "jwtAuth",
+                "userExtractor",
+                "householdExtractor",
                 "jsonBodyParser",
             ],
 
             handler: a(function* (db, logger, ctx, next) {
-                const userId = ctx.state.token.userId;
+                const userId = ctx.state.userId;
                 const name = ctx.request.body.name;
                 const householdId = ctx.state.household_id;
 

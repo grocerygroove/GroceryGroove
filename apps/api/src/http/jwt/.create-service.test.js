@@ -10,17 +10,21 @@ test("http/jwt/create-service", a(function* (t) {
     t.equal(typeof service.decode, "function");
 
     const created_date = moment('1999-01-01').valueOf();
-    const userid = 20;
+    const data = {
+            userId: 20,
+        };
 
     let actual = function(){
         const checkAgainstDate = moment('2000-01-01').valueOf();
-        const encodedToken = service.encode(userid, created_date);
+        const encodedToken = service.encode(data, created_date);
         return service.decode(checkAgainstDate, encodedToken);
     }();
 
     let expected = function(){
         return {
-            userid,
+            data : {
+                userId : 20,
+            },
             created_date
         };
     }();

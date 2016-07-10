@@ -9,13 +9,15 @@ test("http/jwt/decode", a(function* (t) {
     t.equal(typeof decode, "function");
 
     const expected = {
-        userid: 20,
+        data: {
+            userId : 20,
+        },
         created_date: moment("1999-01-01").valueOf(),
     };
 
     const actual = (function () {
         const testSecretKey = "thisisthetestsecretkey";
-        const encodedPayload = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOjIwLCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.HJVkKobsW77CFI2zrKoAUo1pEt4XAs2FZy-fofvoM3c";
+        const encodedPayload = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M";
 
         return decode(testSecretKey, moment("2000-01-01").valueOf(), encodedPayload);
     })();
@@ -28,7 +30,7 @@ test("http/jwt/decode", a(function* (t) {
     t.throws(
         () => {
             const testSecretKey = "thisisthetestsecretkey";
-            const encodedPayload = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOjIwLCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.HJVkKobsW77CFI2zrKoAUo1pEt4XAs2FZy-fofvoM3c";
+            const encodedPayload = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M";
 
             return decode(testSecretKey, moment("1900-01-01").valueOf(), encodedPayload);
         },

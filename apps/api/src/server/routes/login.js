@@ -31,7 +31,9 @@ module.exports = {
 
                 if (userId) {
                     ctx.body = {
-                        token: jwtService.encode(userId),
+                        token: jwtService.encode({
+                            userId
+                        }),
                     };
                 } else {
                     ctx.status = 403;
@@ -53,7 +55,7 @@ module.exports = {
                 if (userId) {
                     ctx.body = {
                         token: jwtService.encode({
-                            userId,
+                            userId
                         }),
                     };
                 } else {
