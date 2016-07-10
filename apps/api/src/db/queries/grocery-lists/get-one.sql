@@ -1,9 +1,3 @@
-WITH users_lookup AS (
-    SELECT household_id
-    FROM users
-    WHERE email = $1
-)
-
 SELECT
     gl.grocery_list_id,
     gl.created_by_email,
@@ -11,10 +5,10 @@ SELECT
     gl.created_at,
     gl.completed_at,
     MAX(glal.access_time) AS last_touched
-FROM       users_lookup
-INNER JOIN grocery_lists            gl   ON (gl.household_id      = users_lookup.household_id)
+FROM       grocery_lists            gl
 INNER JOIN grocery_list_access_logs glal ON (glal.grocery_list_id = gl.grocery_list_id)
-WHERE gl.grocery_list_id = $2
+WHERE gl.grocery_list_id = $1
+  AND gl.household_id = $2
 GROUP BY gl.grocery_list_id,
          gl.created_by_email,
          gl.name,
