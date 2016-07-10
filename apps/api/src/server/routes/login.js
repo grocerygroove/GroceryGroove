@@ -34,7 +34,7 @@ module.exports = function createLoginRouter ({
                 ctx.body = {
                     token: jwtService.encode({
                         userId,
-                    });
+                    }),
                 };
             } else {
                 ctx.status = 403;
