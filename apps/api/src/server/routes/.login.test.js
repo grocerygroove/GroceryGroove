@@ -36,7 +36,7 @@ test("server/routes/login", a(function* (t){
             encode : function({userId}){
                 return {userId};
             },
-        }
+        };
         methodToTest(db, jwtService, logger, ctx, next).then(()=>{
             t.equals(ctx.body.token.userId, 1);
         });
