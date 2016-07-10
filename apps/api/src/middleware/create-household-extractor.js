@@ -11,7 +11,7 @@ module.exports = function createHouseholdExtractor (logger) {
 
             return (yield next());
         } else {
-            logger.info({
+            logger.error({
                 errorName: "Failed household_id check",
                 householdId: ctx.query.household_id,
             });

@@ -9,12 +9,12 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
         try {
             ctx.state.token = jwtService.decode(getCurrentTime(), ctx.query.token);
         } catch (err) {
-            logger.info(err);
+            logger.error(err);
             ctx.status = 403;
             ctx.body = "Failed to authenticate";
             return;
         }
-        
+
         return (yield next());
     });
 };

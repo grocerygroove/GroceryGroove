@@ -13,8 +13,8 @@ CREATE TABLE items(
     PRIMARY KEY(item_id)
 );
 
-CREATE UNIQUE INDEX unique_item_name          ON items (household_id, name) WHERE household_id IS NOT NULL;
-CREATE UNIQUE INDEX unique_item_name_null     ON items (name) WHERE household_id IS NULL;
+CREATE UNIQUE INDEX unique_item_name      ON items (household_id, name) WHERE household_id IS NOT NULL;
+CREATE UNIQUE INDEX unique_item_name_null ON items (name)               WHERE household_id IS     NULL;
 
 -- rambler down
 DROP INDEX unique_item_name_null;

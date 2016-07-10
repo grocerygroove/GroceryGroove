@@ -9,9 +9,9 @@ const rootGroup = require("./routes");
 
 module.exports = function createCallback (services) {
     services = applyDefaults(services, {
-        userExtractorMw : createUserExtractor(services.logger),
         householdExtractorMw: createHouseholdExtractor(services.logger),
-        jsonBodyParserMw: createJsonBodyParser(),
+        jsonBodyParserMw:     createJsonBodyParser(),
+        userExtractorMw:      createUserExtractor(services.logger),
     });
 
     const getService = (name) => {

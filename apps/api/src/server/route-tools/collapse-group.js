@@ -1,9 +1,8 @@
 const cleanGroup = require("./clean-group");
+const concat = require("../../utils/concat");
+const concatAll = require("../../utils/concat-all");
 const joinPaths = require("./join-paths");
 const typeofChild = require("./typeof-child");
-
-const concatAll = (arrays) => [].concat(...arrays);
-const concat = (...arrays) => concatAll(arrays);
 
 module.exports = function collapseGroup (group) {
     if (typeofChild(group) !== "group") {
