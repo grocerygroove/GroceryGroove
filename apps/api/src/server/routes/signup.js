@@ -1,39 +1,49 @@
 const a = require("../../utils/asyncify");
-const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
-module.exports = function createSignupRouter ({
-    db,
-    jsonBodyParserMw,
-    logger,
-}) {
-    logger = logger.child({
-        router_creator: "users",
-    });
+module.exports = {
+    path: "/signup",
 
-    return createRouter(r => {
-        r.use(jsonBodyParserMw);
+    middlewares: [
+        "jsonBodyParser",
+    ],
 
-        r.post("/by-email", a(function* (ctx, next) {
-            const email    = ctx.request.body.email;
-            const password = ctx.request.body.password;
+    deps: [
+        "db",
+        "logger",
+    ],
 
-            yield queries.users.createUserAndHouseholdByEmail(db, logger, [
-                email,
-                password,
-            ]);
+    routes: [
+        {
+            method: "POST",
+            path: "/by-email",
 
-            ctx.status = 200;
-        }));
+            handler: a(function* (db, logger, ctx, next) {
+                const email    = ctx.request.body.email;
+                const password = ctx.request.body.password;
 
-        r.post("/by-device-identifier", a(function* (ctx, next) {
-            const deviceIdentifier = ctx.request.body.deviceIdentifier;
+                yield queries.users.createUserAndHouseholdByEmail(db, logger, [
+                    email,
+                    password,
+                ]);
 
-            yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
-                deviceid,
-            ]);
+                ctx.status = 200;
+            }),
+        },
 
-            ctx.status = 200;
-        }));
-    });
+        {
+            method: "POST",
+            path: "/by-device-identifier",
+
+            handler: a(function* (db, logger, ctx, next) {
+                const deviceIdentifier = ctx.request.body.deviceIdentifier;
+
+                yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
+                    deviceid,
+                ]);
+
+                ctx.status = 200;
+            }),
+        },
+    ],
 };

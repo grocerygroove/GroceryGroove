@@ -1,29 +1,33 @@
 const a = require("../../utils/asyncify");
-const createRouter = require("../../http/create-router");
 const queries = require("../../db/queries");
 
-module.exports = function createQuantityTypesRouter ({
-    db,
-    householdExtractorMw,
-    jwtAuthMw,
-    logger,
-}) {
-    logger = logger.child({
-        router_creator: "quantity_types",
-    });
+module.exports = {
+    path: "/quantity-types",
 
-    return createRouter(r => {
-        r.use(jwtAuthMw);
-        r.use(householdExtractorMw);
+    middlewares: [
+        "jwtAuth",
+        "householdExtractor",
+    ],
 
-        r.get("/", a(function* (ctx, next) {
-            const userId = ctx.state.token.userId;
+    routes: [
+        {
+            method: "GET",
+            path: "/",
 
-            ctx.body = {
-                quantity_types: yield queries.quantityTypes.getAll(db, logger, [
-                    userId,
-                ]),
-            };
-        }));
-    });
+            deps: [
+                "db",
+                "logger",
+            ],
+
+            handler: a(function* (db, logger, ctx, next) {
+                const userId = ctx.state.token.userId;
+
+                ctx.body = {
+                    quantity_types: yield queries.quantityTypes.getAll(db, logger, [
+                        userId,
+                    ]),
+                };
+            }),
+        },
+    ],
 };
