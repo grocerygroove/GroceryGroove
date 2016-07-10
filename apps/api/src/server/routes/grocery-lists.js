@@ -8,6 +8,7 @@ module.exports = {
     middlewares: [
         "jwtAuth",
         "householdExtractor",
+        "userExtractor",
     ],
 
     deps: [
@@ -20,12 +21,6 @@ module.exports = {
         {
             method: "GET",
             path: "/",
-
-	        middlewares: [
-                "jwtAuth",
-                "userExtractor",
-                "householdExtractor",
-            ],
 
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;
@@ -41,12 +36,6 @@ module.exports = {
         {
             method: "GET",
             path: "/:id",
-
-            middlewares: [
-                "jwtAuth",
-                "userExtractor",
-                "householdExtractor",
-            ],
 
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;
@@ -65,9 +54,6 @@ module.exports = {
             path: "/",
 
             middlewares: [
-                "jwtAuth",
-                "userExtractor",
-                "householdExtractor",
                 "jsonBodyParser",
             ],
 
