@@ -6,19 +6,17 @@ module.exports = function createUserExtractor (logger) {
     });
 
     return a(function* (ctx, next) {
-        if (ctx.state.token.data.userId && ctx.state.token.data.userId.match(/^\d+$/)) {
-            ctx.state.userId = parseInt(ctx.state.token.data.userId, 10);
-
-            return (yield next());
-        } else {
+        if (!ctx.state.token || !ctx.state.token.data.userId) {
             logger.info({
-                errorName: "Failed user_id check",
-                userId: ctx.state.token.data.userId,
+                errorName: "userId missing from token, possible forgot to use jwtAuthMw before this one?",
+                token: ctx.state.token,
             });
-            ctx.status = 424;
-            ctx.body = "Invalid user_id";
 
+            ctx.status = 500
             return;
         }
+
+        ctx.state.userId = ctx.state.token.data.userId;
+        return (yield next());
     });
 };
