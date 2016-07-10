@@ -3,13 +3,17 @@ const createJsonBodyParser = require("koa-json-body");
 const createRouter = require("../http/create-router");
 const Koa = require('koa');
 
+/**
+ * Put these routes in order of most-used to least-used, as each incoming
+ * request will scan the entire list before finding the route.
+ */
 const routes = [
-    { path: "/signup",         routerCreator: require("./routes/signup")         },
+    { path: "/grocery-lists",  routerCreator: require("./routes/grocery-lists")  },
     { path: "/households",     routerCreator: require("./routes/households")     },
-    { path: "/login",          routerCreator: require("./routes/login")          },
     { path: "/categories",     routerCreator: require("./routes/categories")     },
     { path: "/quantity-types", routerCreator: require("./routes/quantity-types") },
-    { path: "/grocery-lists",  routerCreator: require("./routes/grocery-lists")  },
+    { path: "/login",          routerCreator: require("./routes/login")          },
+    { path: "/signup",         routerCreator: require("./routes/signup")         },
 ];
 
 module.exports = function createCallback (services) {
