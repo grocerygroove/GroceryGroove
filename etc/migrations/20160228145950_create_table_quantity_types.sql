@@ -15,14 +15,14 @@ CREATE TABLE quantity_types(
     PRIMARY KEY(quantity_type_id)
 );
 
-CREATE UNIQUE INDEX unique_quanity_type_singular_name                ON quantity_types (household_id, singular_name) WHERE household_id IS NOT NULL;
-CREATE UNIQUE INDEX unique_quanity_type_singular_name_null           ON quantity_types (singular_name) WHERE household_id IS NULL;
-CREATE UNIQUE INDEX unique_quanity_type_plural_name                  ON quantity_types (household_id, plural_name) WHERE household_id IS NOT NULL;
-CREATE UNIQUE INDEX unique_quanity_type_plural_name_null             ON quantity_types (plural_name) WHERE household_id IS NULL;
-CREATE UNIQUE INDEX unique_quanity_type_singular_abbreviation        ON quantity_types (household_id, singular_abbreviation) WHERE household_id IS NOT NULL;
-CREATE UNIQUE INDEX unique_quanity_type_singular_abbreviation_null   ON quantity_types (singular_abbreviation) WHERE household_id IS NULL;
-CREATE UNIQUE INDEX unique_quanity_type_plural_abbreviation          ON quantity_types (household_id, plural_abbreviation) WHERE household_id IS NOT NULL;
-CREATE UNIQUE INDEX unique_quanity_type_plural_abbreviation_null     ON quantity_types (plural_abbreviation) WHERE household_id IS NULL;
+CREATE UNIQUE INDEX unique_quanity_type_singular_name              ON quantity_types (household_id, singular_name)         WHERE household_id IS NOT NULL;
+CREATE UNIQUE INDEX unique_quanity_type_singular_name_null         ON quantity_types (singular_name)                       WHERE household_id IS     NULL;
+CREATE UNIQUE INDEX unique_quanity_type_plural_name                ON quantity_types (household_id, plural_name)           WHERE household_id IS NOT NULL;
+CREATE UNIQUE INDEX unique_quanity_type_plural_name_null           ON quantity_types (plural_name)                         WHERE household_id IS     NULL;
+CREATE UNIQUE INDEX unique_quanity_type_singular_abbreviation      ON quantity_types (household_id, singular_abbreviation) WHERE household_id IS NOT NULL;
+CREATE UNIQUE INDEX unique_quanity_type_singular_abbreviation_null ON quantity_types (singular_abbreviation)               WHERE household_id IS     NULL;
+CREATE UNIQUE INDEX unique_quanity_type_plural_abbreviation        ON quantity_types (household_id, plural_abbreviation)   WHERE household_id IS NOT NULL;
+CREATE UNIQUE INDEX unique_quanity_type_plural_abbreviation_null   ON quantity_types (plural_abbreviation)                 WHERE household_id IS     NULL;
 
 
 INSERT INTO quantity_types
