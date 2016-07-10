@@ -5,7 +5,7 @@ const queries = require("../../db/queries");
 module.exports = {
     path: "/grocery-lists",
 
-    middleware: [
+    middlewares: [
         "jwtAuth",
         "householdExtractor",
     ],
@@ -48,7 +48,8 @@ module.exports = {
             method: "POST",
             path: "/",
 
-            middleware: [
+            middlewares: [
+                "jwtAuth",
                 "jsonBodyParser",
             ],
 
