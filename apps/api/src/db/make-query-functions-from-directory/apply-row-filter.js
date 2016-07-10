@@ -16,7 +16,7 @@ const rowFilters = {
 };
 module.exports = function applyRowFilter (type, rows) {
     if (type) {
-        if (rowFilter[type]) {
+        if (rowFilters[type]) {
             return rowFilters[type](rows);
         } else {
             throw new InvalidRowFilterType(type);

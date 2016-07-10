@@ -1,5 +1,5 @@
 -- rambler up
-CREATE TABLE grocery_list_item (
+CREATE TABLE grocery_list_items (
     grocery_list_item_id SERIAL    NOT NULL,
     grocery_list_id      INTEGER   NOT NULL,
     item_id              INTEGER   NOT NULL,

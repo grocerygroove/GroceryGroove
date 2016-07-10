@@ -12,4 +12,4 @@ END
 $$;
 
 -- rambler down
-DROP FUNCTION hash_password(TEXT);
+DROP FUNCTION create_hashed_password(TEXT);
