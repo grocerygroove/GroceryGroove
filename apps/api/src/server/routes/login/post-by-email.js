@@ -1,4 +1,4 @@
-const a = require("../../utils/asyncify");
+const a = require("../../../utils/asyncify");
 
 module.exports = a(function* (db, jwtService, logger, ctx, next) {
     const email    = ctx.request.body.email;
@@ -11,9 +11,7 @@ module.exports = a(function* (db, jwtService, logger, ctx, next) {
 
     if (userId) {
         ctx.body = {
-            token: jwtService.encode({
-                userId,
-            });
+            token: jwtService.encode(userId),
         };
     } else {
         ctx.status = 403;
