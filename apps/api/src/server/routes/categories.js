@@ -18,7 +18,9 @@ module.exports = function createCategoriesRouter ({
 
         r.get("/", a(function* (ctx, next) {
             ctx.body = {
-                category_names: yield queries.categories.getAllNames(db, logger),
+                category_names: yield queries.categories.getAllNames(db, logger, [
+                    ctx.state.householdId,
+                ]),
             };
         }));
     });

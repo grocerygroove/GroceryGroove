@@ -17,9 +17,12 @@ module.exports = function createQuantityTypesRouter ({
         r.use(householdExtractorMw);
 
         r.get("/", a(function* (ctx, next) {
-            const userid = ctx.state.token.userid;
+            const userId = ctx.state.token.userId;
+
             ctx.body = {
-                quantity_types: yield queries.quantityTypes.getAll(db, logger, [ userid ]),
+                quantity_types: yield queries.quantityTypes.getAll(db, logger, [
+                    userId,
+                ]),
             };
         }));
     });

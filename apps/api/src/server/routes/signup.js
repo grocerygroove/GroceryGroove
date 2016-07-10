@@ -12,7 +12,9 @@ module.exports = function createSignupRouter ({
     });
 
     return createRouter(r => {
-        r.post("/by-email", jsonBodyParserMw, a(function* (ctx, next) {
+        r.use(jsonBodyParserMw);
+
+        r.post("/by-email", a(function* (ctx, next) {
             const email    = ctx.request.body.email;
             const password = ctx.request.body.password;
 
@@ -24,8 +26,8 @@ module.exports = function createSignupRouter ({
             ctx.status = 200;
         }));
 
-        r.post("/by-device-identifier", jsonBodyParserMw, a(function* (ctx, next) {
-            const deviceid    = ctx.request.body.deviceid;
+        r.post("/by-device-identifier", a(function* (ctx, next) {
+            const deviceIdentifier = ctx.request.body.deviceIdentifier;
 
             yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
                 deviceid,

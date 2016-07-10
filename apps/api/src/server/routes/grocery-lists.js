@@ -19,35 +19,30 @@ module.exports = function createGroceryListsRouter ({
         r.use(householdExtractorMw);
 
         r.get("/", a(function* (ctx, next) {
-            const userid = ctx.state.token.userid;
-
             ctx.body = {
                 grocery_lists: yield queries.groceryLists.getAllByEmail(db, logger, [
-                    userid
+                    ctx.state.token.userId,
                 ]),
             };
         }));
 
         r.get("/:id", a(function* (ctx, next) {
-            const userid = ctx.state.token.userid;
-            const grocery_list_id = ctx.params.id;
-
             ctx.body = {
                 grocery_list: yield queries.groceryLists.getOne(db, logger, [
-                    userid,
-                    grocery_list_id
+                    userId,
+                    groceryListId,
                 ]),
             };
         }));
 
         r.post("/", jsonBodyParserMw, a(function* (ctx, next) {
-            const userid = ctx.state.token.userid;
+            const userId = ctx.state.token.userId;
             const name = ctx.request.body.name;
             const householdId = ctx.state.household_id;
 
             try {
                 const groceryListId = yield queries.groceryLists.create(db, logger, [
-                    userid,
+                    userId,
                     name,
                     householdId,
                 ]);
@@ -57,11 +52,9 @@ module.exports = function createGroceryListsRouter ({
                     return;
                 }
 
-
                 ctx.body = {
-                    grocery_list_id: groceryListId,
+                    groceryListId,
                 };
-
 
                 void(queries.groceryLists.touchAccessLog(db, logger, [
                     groceryListId,
