@@ -3,7 +3,7 @@ const a = require("../utils/asyncify");
 module.exports = function createRequestIdentifier () {
     let currentId = 0;
 
-    return a(function* (ctx, next) {
+    return a(function* requestIdentifier (ctx, next) {
         currentId += 1;
 
         // Give the id to the request as a string because I could see this

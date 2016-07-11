@@ -72,7 +72,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     module.exports = ${ js };
                 `);
 
-                const queryFunction = a(function* (client, logger, values) {
+                const queryGeneratorFunction = function* (client, logger, values) {
                     try {
                         const rows = yield client.query(logger, {
                             name: queryName,
@@ -84,24 +84,34 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     } catch (error) {
                         throw (convertSqlError(pathname, attributes.errorHandling, error) || error);
                     }
+                };
+                Object.defineProperty(queryGeneratorFunction, "name", {
+                    value: `${ queryName.replace("/", "_") }_sql`,
                 });
 
+                const queryFunction = a(queryGeneratorFunction);
                 assign(name, queryFunction);
 
             } else if (filename.endsWith(".js")) {
                 const jsQuery = require(pathname);
 
-                assign(name, a(function* (client, logger, items) {
+                const queryGeneratorFunction = function* (client, logger, items) {
                     const resources = {
                         logger,
-                        name,
+                        name: queryName,
                         pm: makeParameterManager(),
                     };
 
                     const queryArguments = jsQuery.main(resources, items);
                     const rows = yield client.query(logger, queryArguments);
                     return applyRowFilter(jsQuery.attributes.returns, rows);
-                }));
+                };
+                Object.defineProperty(queryGeneratorFunction, "name", {
+                    value: `${ queryName.replace("/", "_") }_js`,
+                });
+
+                const queryFunction = a(queryGeneratorFunction);
+                assign(name, queryFunction);
             }
         }
     }

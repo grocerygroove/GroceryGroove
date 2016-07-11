@@ -5,7 +5,7 @@ module.exports = function createHouseholdExtractor (logger) {
         middleware: "household-extractor",
     });
 
-    return a(function* (ctx, next) {
+    return a(function* householdExtractor (ctx, next) {
         if (ctx.query.household_id && ctx.query.household_id.match(/^\d+$/)) {
             ctx.state.householdId = parseInt(ctx.query.household_id, 10);
 

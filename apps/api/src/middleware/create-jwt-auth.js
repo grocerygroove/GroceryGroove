@@ -5,7 +5,7 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
         middleware: "jwt_auth",
     });
 
-    return a(function* (ctx, next) {
+    return a(function* jwtAuth (ctx, next) {
         try {
             ctx.state.token = jwtService.decode(getCurrentTime(), ctx.query.token);
         } catch (err) {
