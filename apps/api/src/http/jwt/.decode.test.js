@@ -1,41 +1,30 @@
-const test = require("tap").test;
+const tap = require("tap");
 
 const a = require("../../utils/asyncify");
 const decode = require("./decode");
 const InvalidTokenError = require("../../errors/invalid-token-error");
 const moment = require("moment");
 
-test("http/jwt/decode", a(function* (t) {
-    t.equal(typeof decode, "function");
+tap.test("http/jwt/decode", a(function* (tap) {
+    tap.equal(typeof decode, "function", "function exists");
 
-    const expected = {
-        data: {
-            userId : 20,
-        },
-        created_date: moment("1999-01-01").valueOf(),
-    };
+    const testSecretKey = "thisisthetestsecretkey";
 
-    const actual = (function () {
-        const testSecretKey = "thisisthetestsecretkey";
-        const encodedPayload = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M";
-
-        return decode(testSecretKey, moment("2000-01-01").valueOf(), encodedPayload);
+    (function () {
+        const expected = {
+            data: {
+                userId : 20,
+            },
+            created_date: moment("1999-01-01").valueOf(),
+        };
+        const actual = decode(testSecretKey, moment("2000-01-01").valueOf(), "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M");
+        tap.strictSame(actual, expected, "correct token");
     })();
 
-    t.deepEqual(actual, expected, `
-        should be equal - non expired token with same email, created_date,
-        and encoded with same key
-    `);
-
-    t.throws(
-        () => {
-            const testSecretKey = "thisisthetestsecretkey";
-            const encodedPayload = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M";
-
-            return decode(testSecretKey, moment("1900-01-01").valueOf(), encodedPayload);
-        },
+    tap.throws(
+        () => decode(testSecretKey, moment("1986-11-23").valueOf(), "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M"),
         InvalidTokenError,
-        "Should throw expired InvalidTokenError"
+        "throws expired InvalidTokenError"
     );
 
 }));

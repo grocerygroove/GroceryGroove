@@ -1,9 +1,9 @@
-const test = require("tap").test;
+const tap = require("tap");
 
 const a = require("../utils/asyncify");
 const createJwtAuthMw = require("./create-jwt-auth");
 
-test("middleware/create-jwt-auth", a(function* (t) {
+tap.test("middleware/create-jwt-auth", a(function* (tap) {
     const jwtService = {
         decode: function (time, token) {
             return token;
@@ -15,27 +15,21 @@ test("middleware/create-jwt-auth", a(function* (t) {
         info:  function () {},
     };
 
-    const getTime = function(){
-        return true;
-    };
+    const getTime = function(){};
+
     const jwtAuthMw = createJwtAuthMw(jwtService, logger, getTime);
 
-    const expected = "testtoken";
+    const ctx = {
+        query: {
+            token: "testtoken",
+        },
+        state: {},
+    };
 
-    const actual = yield a(function* (){
-        const ctx = {
-            query: {
-                token: "testtoken",
-            },
-            state: {},
-        };
+    yield jwtAuthMw(ctx, a(function* () {
+        const expected = "testtoken";
+        const actual = ctx.state.token;
 
-
-        return yield jwtAuthMw(ctx, a(function* () {
-            return ctx.state.token;
-        }));
-    })();
-
-    t.deepEqual(actual, expected);
-
+        tap.equal(actual, expected);
+    }));
 }));

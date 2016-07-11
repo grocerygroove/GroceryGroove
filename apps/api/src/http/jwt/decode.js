@@ -2,7 +2,6 @@ const InvalidTokenError = require("../../errors/invalid-token-error");
 const jwt = require('jwt-simple');
 
 module.exports = function decode (secret, currentTime, token) {
-    // If we get a null token give back a null decoded token.
     if (token == null) {
         return null;
     }
