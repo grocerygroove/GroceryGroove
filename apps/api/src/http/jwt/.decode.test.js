@@ -1,11 +1,9 @@
-const tap = require("tap");
-
-const a = require("../../utils/asyncify");
 const decode = require("./decode");
 const InvalidTokenError = require("../../errors/invalid-token-error");
 const moment = require("moment");
+const tap = require("tap");
 
-tap.test("http/jwt/decode", a(function* (tap) {
+tap.test("http/jwt/decode", tap => {
     tap.equal(typeof decode, "function", "function exists");
 
     const testSecretKey = "thisisthetestsecretkey";
@@ -27,4 +25,5 @@ tap.test("http/jwt/decode", a(function* (tap) {
         "throws expired InvalidTokenError"
     );
 
-}));
+    tap.end();
+});

@@ -1,8 +1,7 @@
-const tap = require("tap");
-
 const a = require("../../utils/asyncify");
 const getRoute = require("../route-tools/get-route");
 const rootGroup = require("../routes");
+const tap = require("tap");
 
 tap.test("server/routes/login", tap => {
     tap.test("POST /login/by-email", a(function* (tap) {
@@ -77,8 +76,6 @@ tap.test("server/routes/login", tap => {
 
             tap.strictEqual(actual, expected, "Convert an invalid userid to an error");
         })();
-
-        tap.end();
     }));
 
     tap.end();

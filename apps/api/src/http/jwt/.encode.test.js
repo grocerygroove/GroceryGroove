@@ -1,11 +1,9 @@
-const tap = require("tap");
-
-const a = require("../../utils/asyncify");
 const encode = require("./encode");
 const jwt = require("jwt-simple");
 const moment = require("moment");
+const tap = require("tap");
 
-tap.test("http/jwt/encode", a(function* (tap) {
+tap.test("http/jwt/encode", tap => {
     tap.equal(typeof encode, "function", "function exists");
 
     const testSecretKey = "thisisthetestsecretkey";
@@ -16,4 +14,6 @@ tap.test("http/jwt/encode", a(function* (tap) {
     const expected = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M";
 
     tap.equal(actual, expected, "correct token");
-}));
+
+    tap.end();
+});

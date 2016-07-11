@@ -1,7 +1,6 @@
-const tap = require("tap");
-
 const a = require("../utils/asyncify");
 const createJwtAuthMw = require("./create-jwt-auth");
+const tap = require("tap");
 
 tap.test("middleware/create-jwt-auth", a(function* (tap) {
     const jwtService = {
@@ -32,4 +31,6 @@ tap.test("middleware/create-jwt-auth", a(function* (tap) {
 
         tap.equal(actual, expected);
     }));
+
+    tap.end();
 }));

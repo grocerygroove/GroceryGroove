@@ -1,8 +1,6 @@
-const tap = require("tap");
-
-const a = require("../../utils/asyncify");
 const createService = require("./create-service");
 const moment = require("moment");
+const tap = require("tap");
 
 tap.test("http/jwt/create-service", tap => {
     const service = createService("some secret here");
