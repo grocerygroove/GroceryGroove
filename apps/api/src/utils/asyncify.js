@@ -1,5 +1,12 @@
 const bluebird = require("bluebird");
 
 module.exports = function asyncify (generatorFunction) {
-    return bluebird.coroutine(generatorFunction);
+    const wrappedGenerator = bluebird.coroutine(generatorFunction);
+
+    Object.defineProperty(wrappedGenerator, "name", {
+        value: generatorFunction.name,
+    });
+    Object.defineProperty(wrappedGenerator, "length", {
+        value: generatorFunction.length,
+    });
 };
