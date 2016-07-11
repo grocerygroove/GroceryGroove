@@ -1,89 +1,85 @@
-const test = require("blue-tape");
+const tap = require("tap");
 
+const a = require("../../utils/asyncify");
 const getRoute = require("../route-tools/get-route");
 const rootGroup = require("../routes");
 
-test("server/routes/login", (function (t) {
-    t.plan(2);
-
-    //Check to make sure given correct conditions, a token is attached to the response body
-    (function(){
-        //Setup
-        const methodToTest = getRoute(rootGroup, "POST", "/login/by-email").handler;
-
-        let ctx = {
-            request : {
-                body : {
-                    email : "test@test.com",
-                    password : "testpass",
-                }
-            }
-        };
-
-        let db = {
-            query : function (logger, {name}){
-                if(name === "users/check-by-email")
-                {
-                    return Promise.resolve([{ userId : 1}]);//UserId value
-                }
+tap.test("server/routes/login", tap => {
+    tap.test("POST /login/by-email", a(function* (tap) {
+        const logger = {};
+        const next = () => {};
+        const jwtService = {
+            encode: function (data) {
+                return {
+                    data,
+                };
             },
         };
 
-        let logger = {};
-        let next = () => {};
-        let jwtService = {
-            encode : function({userId}){
-                return {userId};
-            },
-        };
+        const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
 
-        methodToTest(db, jwtService, logger, ctx, next).then(()=>{
-            const actual = ctx.body.token.userId;
-            const expected = 1;
-            t.equal(actual, expected, `
-                Valid row set returned from the db, should encode the
-                payload and inject in into the ctx.body.token property`);
-        });
-    })();
-
-    //Check to make sure, given the wrong conditions, the method returns a status code of 403
-    (function(){
-        //Setup
-        const methodToTest = getRoute(rootGroup, "POST", "/login/by-email").handler;
-
-        let ctx = {
-            request : {
-                body : {
-                    email : "test@test.com",
-                    password : "testpass",
+        yield a(function* () {
+            const ctx = {
+                request: {
+                    body: {
+                        email: "test@test.com",
+                        password: "testpass",
+                    }
                 }
-            }
-        };
+            };
 
-        let db = {
-            query : function (logger, {name}){
-                if(name === "users/check-by-email")
-                {
-                    return Promise.resolve([]);//Empty result set array
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "users/check-by-email") {
+                        return [ { userId: 1 } ];
+                    }
+                }),
+            };
+
+            yield handler(db, jwtService, logger, ctx, next);
+
+            const actual = ctx.body.token.data;
+            const expected = {
+                userId: 1,
+            };
+
+            tap.strictDeepEquals(actual, expected, "Convert a valid userid to a token");
+        })();
+
+        yield a(function* () {
+            const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
+
+            const ctx = {
+                request: {
+                    body: {
+                        email: "test@test.com",
+                        password: "testpass",
+                    }
                 }
-            },
-        };
+            };
 
-        let logger = {};
-        let next = () => {};
-        let jwtService = {
-            encode : function({userId}){
-                return {userId};
-            },
-        };
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "users/check-by-email") {
+                        return [];
+                    }
+                }),
+            };
 
-        methodToTest(db, jwtService, logger, ctx, next).then(()=>{
+            yield handler(db, jwtService, logger, ctx, next);
+
             const actual = ctx.status;
             const expected = 403;
-            t.equal(actual, expected, `
-                If no rows are returned,
-                the ctx response status should be 403`);
-        });
-    })();
 
-}));
+            tap.strictEqual(actual, expected, "Convert an invalid userid to an error");
+        })();
+
+        tap.end();
+    }));
+
+    tap.end();
+});

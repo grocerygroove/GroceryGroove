@@ -1,4 +1,4 @@
-const test = require("blue-tape");
+const test = require("tap").test;
 
 const a = require("../../utils/asyncify");
 const createService = require("./create-service");
