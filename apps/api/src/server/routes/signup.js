@@ -1,4 +1,5 @@
 const a = require("../../utils/asyncify");
+const DuplicateNameError = require("../../errors/duplicate-name-error");
 const queries = require("../../db/queries");
 
 module.exports = {
@@ -22,12 +23,20 @@ module.exports = {
                 const email    = ctx.request.body.email;
                 const password = ctx.request.body.password;
 
-                yield queries.users.createUserAndHouseholdByEmail(db, logger, [
-                    email,
-                    password,
-                ]);
+                try{
+                    yield queries.users.createUserAndHouseholdByEmail(db, logger, [
+                        email,
+                        password,
+                    ]);
 
-                ctx.status = 200;
+                    ctx.status = 200;
+                } catch (e) {
+                    if (e instanceof DuplicateNameError) {
+                        ctx.throw(400, "Email address must be unique");
+                    } else {
+                        throw e;
+                    }
+                }
             }),
         },
 
@@ -38,11 +47,18 @@ module.exports = {
             handler: a(function* (db, logger, ctx, next) {
                 const deviceIdentifier = ctx.request.body.deviceIdentifier;
 
-                yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
-                    deviceid,
-                ]);
-
-                ctx.status = 200;
+                try{
+                    yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
+                        deviceIdentifier,
+                    ]);
+                    ctx.status = 200;
+                } catch (e) {
+                     if (e instanceof DuplicateNameError) {
+                        ctx.throw(400, "Device Identifier must be unique");
+                    } else {
+                        throw e;
+                    }
+                }
             }),
         },
     ],
