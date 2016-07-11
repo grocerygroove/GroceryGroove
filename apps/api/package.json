@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node index.js | bunyan",
-    "test": "blue-tape 'src/**/.*.test.js' | ./node_modules/tap-spec/bin/cmd.js"
+    "test": "tap 'src/**/.*.test.js' | tap-spec"
   },
   "keywords": [],
   "contributors": [
