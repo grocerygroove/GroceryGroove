@@ -1,3 +1,10 @@
+{
+    errorHandling: {
+        states: {
+            23505: require("../../../errors/duplicate-name-error"),
+        },
+    },
+}
 WITH
     my_household AS (
         INSERT INTO households (name)
@@ -5,8 +12,8 @@ WITH
         RETURNING household_id
     ),
     my_user AS (
-        INSERT INTO users (household_id, device_identifier)
-        SELECT             household_id, $1
+        INSERT INTO users (device_identifier)
+        SELECT             $1
         FROM my_household
         RETURNING user_id
     ),
@@ -21,10 +28,10 @@ WITH
             created_by_id = my_household_user.user_id
         FROM my_household_user
         WHERE my_household_user.household_id = households.household_id
-        RETURNING household_id, user_id
+        RETURNING my_household_user.household_id, user_id
     )
 
 UPDATE users SET
-    default_household_id = my_household_update.household_id
+    primary_household_id = my_household_update.household_id
 FROM my_household_update
 WHERE users.user_id = my_household_update.user_id

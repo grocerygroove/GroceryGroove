@@ -1,3 +1,10 @@
+{
+    errorHandling: {
+        states: {
+            23505: require("../../../errors/duplicate-name-error"),
+        },
+    },
+}
 WITH
     my_household AS (
         INSERT INTO households (name)

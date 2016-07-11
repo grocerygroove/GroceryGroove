@@ -29,6 +29,8 @@ CREATE TABLE users(
     PRIMARY KEY(user_id)
 );
 
+CREATE UNIQUE INDEX unique_device_identifier    ON users (device_identifier) WHERE device_identifier IS NOT NULL;
+
 ALTER TABLE households
     ADD FOREIGN KEY(created_by_id)
     REFERENCES users(user_id)
@@ -54,4 +56,5 @@ CREATE TABLE households_users(
 
 
 -- rambler down
+DROP INDEX unique_device_identifier;
 DROP TABLE users;
