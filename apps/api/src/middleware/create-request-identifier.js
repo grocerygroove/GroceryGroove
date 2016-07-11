@@ -11,5 +11,7 @@ module.exports = function createRequestIdentifier () {
         // on this value.
         ctx.request.id = `${ currentId }`;
         ctx.response.set("X-Request-Id", ctx.request.id);
+
+        yield next();
     });
 };

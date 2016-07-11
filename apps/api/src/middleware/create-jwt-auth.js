@@ -15,6 +15,6 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
             return;
         }
 
-        return (yield next());
+        yield next();
     });
 };

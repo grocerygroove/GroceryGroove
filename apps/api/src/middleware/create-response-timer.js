@@ -8,10 +8,9 @@ const hrtimeToMilliseconds = require("../utils/hrtime-to-milliseconds");
 module.exports = function createResponseTimer () {
     return a(function* responseTimer (ctx, next) {
         const startHrtime = process.hrtime();
-        const retval = yield next();
+        yield next();
         const durationHrtime = process.hrtime(startHrtime);
 
         ctx.response.set("X-Response-Time", `${ hrtimeToMilliseconds(durationHrtime) }ms`);
-        return retval;
     });
 };

@@ -9,16 +9,16 @@ module.exports = function createHouseholdExtractor (logger) {
         if (ctx.query.household_id && ctx.query.household_id.match(/^\d+$/)) {
             ctx.state.householdId = parseInt(ctx.query.household_id, 10);
 
-            return (yield next());
+            yield next();
         } else {
             logger.error({
-                errorName: "Failed household_id check",
+                errorName:   "Failed household_id check",
                 householdId: ctx.query.household_id,
+                request_id:  ctx.request.id,
             });
+
             ctx.status = 424;
             ctx.body = "Invalid household_id";
-
-            return;
         }
     });
 };

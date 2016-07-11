@@ -10,6 +10,7 @@ module.exports = function createUserExtractor (logger) {
             logger.error({
                 errorName: "userId missing from token, possible forgot to use jwtAuthMw before this one?",
                 token: ctx.state.token,
+                request_id: ctx.request.id,
             });
 
             ctx.status = 500;
@@ -17,6 +18,6 @@ module.exports = function createUserExtractor (logger) {
         }
 
         ctx.state.userId = ctx.state.token.data.userId;
-        return (yield next());
+        yield next();
     });
 };

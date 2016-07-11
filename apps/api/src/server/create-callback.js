@@ -49,8 +49,8 @@ module.exports = function createCallback (services) {
                 switch (name) {
                     case "logger":
                         return services.logger.child({
-                            request: {
-                                id:     ctx.request.id,
+                            request_id: ctx.request.id,
+                            route: {
                                 method: route.method,
                                 path:   route.path,
                             },
