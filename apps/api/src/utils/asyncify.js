@@ -9,4 +9,6 @@ module.exports = function asyncify (generatorFunction) {
     Object.defineProperty(wrappedGenerator, "length", {
         value: generatorFunction.length,
     });
+
+    return wrappedGenerator;
 };

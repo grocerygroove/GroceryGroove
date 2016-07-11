@@ -3,7 +3,7 @@ const collapseRoutingGroup = require("./route-tools/collapse-group");
 const createUserExtractor = require("../middleware/create-user-extractor");
 const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
-const createRequestIdentifier = require("../middleware/create-request-identifer");
+const createRequestIdentifier = require("../middleware/create-request-identifier");
 const createResponseTimer = require("../middleware/create-response-timer");
 const createKoaRouter = require("koa-router");
 const Koa = require('koa');
@@ -43,7 +43,7 @@ module.exports = function createCallback (services) {
         // loop and some object lookups, and it allows us to do stuff like
         // automatically subclass the logger instance and give it the route
         // and request information.
-        router[method](path, ...middlewares, (ctx, next) => {
+        router[route.method.toLowerCase()](route.path, ...middlewares, (ctx, next) => {
             const deps = [];
             for (const name of route.deps) {
                 switch (name) {
