@@ -8,8 +8,13 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
     return a(function* jwtAuth (ctx, next) {
         try {
             ctx.state.token = jwtService.decode(getCurrentTime(), ctx.query.token);
-        } catch (err) {
-            logger.error(err);
+        } catch (error) {
+            logger.error({
+                errorName: "Bad Token",
+                request_id: ctx.request.id,
+                error: error,
+            });
+
             ctx.status = 403;
             ctx.body = "Failed to authenticate";
             return;
