@@ -1,4 +1,7 @@
 module.exports = {
+    middlewares: [
+        "responseTimer",
+    ],
     routes: [
         require("./routes/grocery-lists"),
         require("./routes/categories"),

@@ -3,6 +3,7 @@ const collapseRoutingGroup = require("./route-tools/collapse-group");
 const createUserExtractor = require("../middleware/create-user-extractor");
 const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
+const createResponseTimer = require("../middleware/create-response-timer");
 const createKoaRouter = require("koa-router");
 const Koa = require('koa');
 const rootGroup = require("./routes");
@@ -11,6 +12,7 @@ module.exports = function createCallback (services) {
     services = applyDefaults(services, {
         householdExtractorMw: createHouseholdExtractor(services.logger),
         jsonBodyParserMw:     createJsonBodyParser(),
+        responseTimerMw:      createResponseTimer(),
         userExtractorMw:      createUserExtractor(services.logger),
     });
 
