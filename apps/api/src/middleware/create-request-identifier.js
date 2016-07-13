@@ -1,7 +1,8 @@
 const a = require("../utils/asyncify");
 
 module.exports = function createRequestIdentifier () {
-    let currentId = 0;
+    let currentId;
+    currentId = 0;
 
     return a(function* requestIdentifier (ctx, next) {
         currentId += 1;

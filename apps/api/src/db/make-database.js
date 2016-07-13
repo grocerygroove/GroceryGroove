@@ -10,7 +10,7 @@ module.exports = function makeDatabase (connString) {
                     return reject(error);
                 }
 
-                resolve({
+                return resolve({
                     done,
                     client: {
                         query: function (logger, ...args) {
