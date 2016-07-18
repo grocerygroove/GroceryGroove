@@ -5,14 +5,14 @@ const tap = require("tap");
 
 tap.test("server/routes/login", tap => {
     const logger = {};
-        const next = () => {};
-        const jwtService = {
-            encode: function (data) {
-                return {
-                    data,
-                };
-            },
-        };
+    const next = () => {};
+    const jwtService = {
+        encode: function (data) {
+            return {
+                data,
+            };
+        },
+    };
     tap.test("POST /login/by-email", a(function* (tap) {
 
         yield a(function* () {
