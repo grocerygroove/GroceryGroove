@@ -26,5 +26,22 @@ module.exports = {
                 };
             }),
         },
+
+        {
+            method: "GET",
+            path: "/info",
+            deps: [
+                "db",
+                "logger",
+            ],
+
+            handler: a(function* (db, logger, ctx, next) {
+                ctx.body = {
+                    categories: yield queries.categories.getAll(db, logger, [
+                        ctx.state.householdId,
+                    ]),
+                };
+            }),
+        },
     ],
 };
