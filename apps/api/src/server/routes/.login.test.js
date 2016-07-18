@@ -4,8 +4,7 @@ const rootGroup = require("../routes");
 const tap = require("tap");
 
 tap.test("server/routes/login", tap => {
-    tap.test("POST /login/by-email", a(function* (tap) {
-        const logger = {};
+    const logger = {};
         const next = () => {};
         const jwtService = {
             encode: function (data) {
@@ -14,10 +13,10 @@ tap.test("server/routes/login", tap => {
                 };
             },
         };
-
-        const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
+    tap.test("POST /login/by-email", a(function* (tap) {
 
         yield a(function* () {
+            const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
             const ctx = {
                 request: {
                     body: {
@@ -76,7 +75,74 @@ tap.test("server/routes/login", tap => {
 
             tap.strictEqual(actual, expected, "Convert an invalid userid to an error");
         })();
+
+
+
+
+
     }));
+
+    tap.test("POST /login/by-device-identifier", a(function* (tap) {
+
+        yield a(function* () {
+            const handler = getRoute(rootGroup, "POST", "/login/by-device-identifier").handler;
+            const ctx = {
+                request: {
+                    body: {
+                        deviceid: "testdeviceid",
+                    }
+                }
+            };
+
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "users/check-by-device-identifier") {
+                        return [ { userId: 1 } ];
+                    }
+                }),
+            };
+
+            yield handler(db, jwtService, logger, ctx, next);
+
+            const actual = ctx.body.token.data;
+            const expected = {
+                userId: 1,
+            };
+
+            tap.strictDeepEquals(actual, expected, "Convert a valid deviceid to a token");
+        })();
+
+        yield a(function* () {
+            const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
+
+            const ctx = {
+                request: {
+                    body: {
+                        deviceid: "testdeviceid",
+                    }
+                }
+            };
+
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "users/check-by-email") {
+                        return [];
+                    }
+                }),
+            };
+
+            yield handler(db, jwtService, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 403;
+
+            tap.strictEqual(actual, expected, "Convert an invalid deviceid to an error");
+        })();
+     }));
 
     tap.end();
 });
