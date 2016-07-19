@@ -20,7 +20,7 @@ module.exports = {
             path: "/by-email",
 
             handler: a(function* (db, logger, ctx, next) {
-                const email    = ctx.request.body.email;
+                const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
 
                 try{
