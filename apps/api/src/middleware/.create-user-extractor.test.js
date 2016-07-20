@@ -3,18 +3,15 @@ const createUserExtractorMw = require("./create-user-extractor");
 const tap = require("tap");
 
 tap.test("middleware/create-user-extractor", a(function* (tap) {
-    const next = a(function* (){});
     const logger = {
-        child: function(obj){
-            return this;
-        },
-        error: function(obj){},
+        child: () => logger,
+        error: () => {},
     };
+    const next = a(function* (){});
 
-
+    const userExtractorMw = createUserExtractorMw(logger);
 
     yield a(function* (){
-        const userExtractorMw = createUserExtractorMw(logger);
         const ctx = {
             state: {
                 token: {
@@ -34,7 +31,6 @@ tap.test("middleware/create-user-extractor", a(function* (tap) {
     })();
 
     yield a(function* (){
-        const userExtractorMw = createUserExtractorMw(logger);
         const ctx = {
             state: {
                 token: "atoken",
