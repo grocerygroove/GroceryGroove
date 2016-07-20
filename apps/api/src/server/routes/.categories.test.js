@@ -22,7 +22,7 @@ tap.test("server/routes/categories", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if(name === "categories/get-all-names"){
+                    if (name === "categories/get-all-names") {
                         return [
                             "cleaners",
                             "dairy",
@@ -69,7 +69,7 @@ tap.test("server/routes/categories", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if(name === "categories/add-one"){
+                    if (name === "categories/add-one") {
                         return [];
                     }
                 }),
@@ -82,7 +82,7 @@ tap.test("server/routes/categories", tap => {
             tap.strictEquals(actual, expected, "Good data inserts and returns a status of 200");
         })();
 
-        yield a(function* (){
+        yield a(function* () {
             const handler = getRoute(rootGroup, "POST", "/categories").handler;
 
             const ctx = {
@@ -103,7 +103,7 @@ tap.test("server/routes/categories", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if(name === "categories/add-one"){
+                    if (name === "categories/add-one") {
                         return [];
                     }
                 }),
@@ -116,7 +116,7 @@ tap.test("server/routes/categories", tap => {
             tap.strictEquals(actual, expected, "Missing category name results in a 400 status");
         })();
 
-        yield a(function* (){
+        yield a(function* () {
             const handler = getRoute(rootGroup, "POST", "/categories").handler;
 
             const ctx = {
@@ -138,7 +138,7 @@ tap.test("server/routes/categories", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if(name === "categories/add-one"){
+                    if (name === "categories/add-one") {
                         throw new DuplicateNameError();
                     }
                 }),
@@ -156,7 +156,7 @@ tap.test("server/routes/categories", tap => {
         const logger = {};
         const next = () => {};
 
-        yield a(function* (){
+        yield a(function* () {
             const handler = getRoute(rootGroup, "GET", "/categories/info").handler;
 
             const ctx = {
