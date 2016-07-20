@@ -111,5 +111,6 @@ module.exports = {
             "before": true,
             "after": true, 
         }],
+        "space-before-blocks": ["error", "always"],
     },
 };
