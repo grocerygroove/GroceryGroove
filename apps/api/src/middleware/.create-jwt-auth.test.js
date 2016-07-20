@@ -14,7 +14,7 @@ tap.test("middleware/create-jwt-auth", a(function* (tap) {
         info:  function () {},
     };
 
-    const getTime = function(){};
+    const getTime = function() {};
 
     const jwtAuthMw = createJwtAuthMw(jwtService, logger, getTime);
 

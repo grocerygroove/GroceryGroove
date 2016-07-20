@@ -14,7 +14,7 @@ tap.test("server/routes/categories", tap => {
 
             const ctx = {
                 state: {
-                    householdId: 1
+                    householdId: 1,
                 },
             };
 
@@ -30,6 +30,7 @@ tap.test("server/routes/categories", tap => {
                             "meats",
                         ];
                     }
+                    return [];
                 }),
             };
 
@@ -72,6 +73,7 @@ tap.test("server/routes/categories", tap => {
                     if (name === "categories/add-one") {
                         return [];
                     }
+                    return [];
                 }),
             };
 
@@ -106,6 +108,7 @@ tap.test("server/routes/categories", tap => {
                     if (name === "categories/add-one") {
                         return [];
                     }
+                    return [];
                 }),
             };
 
@@ -152,7 +155,7 @@ tap.test("server/routes/categories", tap => {
         })();
     }));
 
-    tap.test("GET /categories/info", a(function* (tap){
+    tap.test("GET /categories/info", a(function* (tap) {
         const logger = {};
         const next = () => {};
 
@@ -161,7 +164,7 @@ tap.test("server/routes/categories", tap => {
 
             const ctx = {
                 state: {
-                    householdId: 1
+                    householdId: 1,
                 },
             };
 
@@ -169,7 +172,7 @@ tap.test("server/routes/categories", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if(name === "categories/get-all"){
+                    if (name === "categories/get-all") {
                         return [
                             {
                                 category_id: 1,
@@ -188,6 +191,7 @@ tap.test("server/routes/categories", tap => {
                             },
                         ];
                     }
+                    return [];
                 }),
             };
 

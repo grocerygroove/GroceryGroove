@@ -34,14 +34,13 @@ module.exports = {
                 "db",
                 "logger",
             ],
-            handler: a(function* (db, logger, ctx, next){
+            handler: a(function* (db, logger, ctx, next) {
                 const categoryName = ctx.request.body.name;
 
-                if(!categoryName){
+                if (!categoryName) {
                     ctx.throw(400, "Must include a category name");
-                }
-                else{
-                    try{
+                } else {
+                    try {
                         yield queries.categories.addOne(db, logger, [
                             ctx.state.householdId,
                             ctx.state.userId,

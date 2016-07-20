@@ -39,7 +39,6 @@ const collapseQueries = function (queries, name, item) {
 
             default:
                 throw new Error(`unknown type "${ typeof queries[name] }" for "${ name }"`);
-            break;
         }
     } else {
         queries[name] = item;
@@ -50,7 +49,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
     const retval = {};
     const assign = (name, item) => collapseQueries(retval, name, item);
 
-    for(const filename of readDirSync(path)){
+    for (const filename of readDirSync(path)) {
         const pathname = `${ path }/${ filename }`;
 
         if (isDirectory(pathname)) {

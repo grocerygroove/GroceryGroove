@@ -17,22 +17,23 @@ tap.test("server/routes/signup", tap =>{
                     body: {
                         email: "test@test.com",
                         password: "testpass",
-                    }
-                }
+                    },
+                },
             };
 
             const db = {
                 query: a(function* (logger, {
                     name,
-                })  {
-                    if(name === "users/create-user-and-household-by-email") {
+                }) {
+                    if (name === "users/create-user-and-household-by-email") {
                         return [];
                     }
+                    return [];
                 }),
             };
 
             yield handler(db, logger, ctx, next);
-            
+
             const actual = ctx.status;
             const expected = 200;
             tap.strictEqual(actual, expected, "Valid email insert returns 200 status");
@@ -46,7 +47,7 @@ tap.test("server/routes/signup", tap =>{
                     body: {
                         email: "test@test.com",
                         password: "testpass",
-                    }
+                    },
                 },
                 throw: function (statusCode) {
                     this.status = statusCode;
@@ -57,14 +58,14 @@ tap.test("server/routes/signup", tap =>{
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if(name === "users/create-user-and-household-by-email") {
+                    if (name === "users/create-user-and-household-by-email") {
                         throw new DuplicateNameError();
                     }
                 }),
             };
 
             yield handler(db, logger, ctx, next);
-            
+
             const actual = ctx.status;
             const expected = 400;
             tap.strictEqual(actual, expected, "Catch a duplicate email and return 400 status");
@@ -81,9 +82,9 @@ tap.test("server/routes/signup", tap =>{
 
             const ctx = {
                 request: {
-                    body : {
+                    body: {
                         deviceIdentifier: "testIdentifier12356",
-                    }
+                    },
                 },
             };
 
@@ -91,14 +92,15 @@ tap.test("server/routes/signup", tap =>{
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if(name === "users/create-user-and-household-by-device-identifier"){
+                    if (name === "users/create-user-and-household-by-device-identifier") {
                         return [];
                     }
+                    return [];
                 }),
             };
 
             yield handler(db, logger, ctx, next);
-            
+
             const actual = ctx.status;
             const expected = 200;
             tap.strictEqual(actual, expected, "Valid device id insert returns 200 status");
@@ -109,9 +111,9 @@ tap.test("server/routes/signup", tap =>{
 
             const ctx = {
                 request: {
-                    body : {
+                    body: {
                         deviceIdentifier: "testIdentifier12356",
-                    }
+                    },
                 },
                 throw: function (statusCode) {
                     this.status = statusCode;
@@ -121,15 +123,15 @@ tap.test("server/routes/signup", tap =>{
             const db = {
                 query: a(function* (logger, {
                    name,
-                })  {
-                    if(name === "users/create-user-and-household-by-device-identifier") {
+                }) {
+                    if (name === "users/create-user-and-household-by-device-identifier") {
                         throw new DuplicateNameError();
                     }
                 }),
             };
 
             yield handler(db, logger, ctx, next);
-            
+
             const actual = ctx.status;
             const expected = 400;
             tap.strictEqual(actual, expected, "Catch a duplicate device identifier and return 400 status");

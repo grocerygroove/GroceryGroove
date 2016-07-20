@@ -22,8 +22,8 @@ tap.test("server/routes/login", tap => {
                     body: {
                         email: "test@test.com",
                         password: "testpass",
-                    }
-                }
+                    },
+                },
             };
 
             const db = {
@@ -32,6 +32,8 @@ tap.test("server/routes/login", tap => {
                 }) {
                     if (name === "users/check-by-email") {
                         return [ { userId: 1 } ];
+                    } else {
+                        return [];
                     }
                 }),
             };
@@ -54,8 +56,8 @@ tap.test("server/routes/login", tap => {
                     body: {
                         email: "test@test.com",
                         password: "testpass",
-                    }
-                }
+                    },
+                },
             };
 
             const db = {
@@ -65,6 +67,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-email") {
                         return [];
                     }
+                    return [];
                 }),
             };
 
@@ -90,8 +93,8 @@ tap.test("server/routes/login", tap => {
                 request: {
                     body: {
                         deviceid: "testdeviceid",
-                    }
-                }
+                    },
+                },
             };
 
             const db = {
@@ -101,6 +104,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-device-identifier") {
                         return [ { userId: 1 } ];
                     }
+                    return [];
                 }),
             };
 
@@ -121,8 +125,8 @@ tap.test("server/routes/login", tap => {
                 request: {
                     body: {
                         deviceid: "testdeviceid",
-                    }
-                }
+                    },
+                },
             };
 
             const db = {
@@ -132,6 +136,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-email") {
                         return [];
                     }
+                    return [];
                 }),
             };
 

@@ -8,6 +8,8 @@ const rowFilters = {
         const row = rows[0];
         if (row) {
             return row[Object.keys(row)[0]];
+        } else {
+            return void(0);
         }
     },
     row: function (rows) {

@@ -69,7 +69,7 @@ module.exports = {
                         householdId,
                     ]);
 
-                    if(!groceryListId){
+                    if (!groceryListId) {
                         ctx.throw(401, "User doesn't have access to this household");
                         return;
                     }

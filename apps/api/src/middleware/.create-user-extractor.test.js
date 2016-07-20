@@ -7,11 +7,11 @@ tap.test("middleware/create-user-extractor", a(function* (tap) {
         child: () => logger,
         error: () => {},
     };
-    const next = a(function* (){});
+    const next = a(function* () {});
 
     const userExtractorMw = createUserExtractorMw(logger);
 
-    yield a(function* (){
+    yield a(function* () {
         const ctx = {
             state: {
                 token: {
@@ -30,14 +30,14 @@ tap.test("middleware/create-user-extractor", a(function* (tap) {
         tap.equal(actual, expected, "userId should be set as ctx.state.userId");
     })();
 
-    yield a(function* (){
+    yield a(function* () {
         const ctx = {
             state: {
                 token: "atoken",
             },
             request: {
                 id: 1,
-            }
+            },
         };
 
         yield userExtractorMw(ctx, next);

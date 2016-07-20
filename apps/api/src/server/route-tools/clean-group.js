@@ -3,9 +3,9 @@ const typeofChild = require("./typeof-child");
 
 module.exports = function cleanGroup (group) {
     return {
-        path:        group.path        || "/",
+        path:        group.path || "/",
         middlewares: group.middlewares || [],
-        deps:        group.deps        || [],
+        deps:        group.deps || [],
         routes:      group.routes.map(item => {
             if (typeofChild(item) === "group") {
                 return cleanGroup(item);
