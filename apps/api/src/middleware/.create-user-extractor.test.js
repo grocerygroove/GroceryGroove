@@ -27,7 +27,7 @@ tap.test("middleware/create-user-extractor", a(function* (tap) {
         const actual = ctx.state.userId;
         const expected = "testuser";
 
-        tap.equal(actual, expected, "With correct state, userId should be set as ctx.state.userId");
+        tap.equal(actual, expected, "userId should be set as ctx.state.userId");
     })();
 
     yield a(function* (){
@@ -44,7 +44,7 @@ tap.test("middleware/create-user-extractor", a(function* (tap) {
         const actual = ctx.status;
         const expected = 500;
 
-        tap.equal(actual, expected, "With no userId, should set ctx.status to 500");
+        tap.equal(actual, expected, "ctx.status should be set to 500");
     })();
 
     tap.end();
