@@ -112,5 +112,6 @@ module.exports = {
             "after": true, 
         }],
         "space-before-blocks": ["error", "always"],
+        "brace-style": ["error", "1tbs"],
     },
 };
