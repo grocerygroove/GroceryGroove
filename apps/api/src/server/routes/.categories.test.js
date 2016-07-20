@@ -5,11 +5,11 @@ const DuplicateNameError = require("../../errors/duplicate-name-error");
 const tap = require("tap");
 
 tap.test("server/routes/categories", tap => {
-    tap.test("GET /categories", a(function* (tap){
+    tap.test("GET /categories", a(function* (tap) {
         const logger = {};
         const next = () => {};
 
-        yield a(function* (){
+        yield a(function* () {
             const handler = getRoute(rootGroup, "GET", "/categories").handler;
 
             const ctx = {
@@ -23,10 +23,12 @@ tap.test("server/routes/categories", tap => {
                     name,
                 }) {
                     if(name === "categories/get-all-names"){
-                        return [ "cleaners",
-                                 "dairy",
-                                 "produce",
-                                 "meats"];
+                        return [
+                            "cleaners",
+                            "dairy",
+                            "produce",
+                            "meats",
+                        ];
                     }
                 }),
             };
@@ -34,20 +36,21 @@ tap.test("server/routes/categories", tap => {
             yield handler(db, logger, ctx, next);
 
             const actual = ctx.body.category_names;
-            const expected = ["cleaners",
-                              "dairy",
-                              "produce",
-                              "meats"];
+            const expected = [
+                "cleaners",
+                "dairy",
+                "produce",
+                "meats",
+            ];
             tap.strictDeepEquals(actual, expected, "Get list of categories");
-
         })();
     }));
 
-    tap.test("POST /categories", a(function* (tap){
+    tap.test("POST /categories", a(function* (tap) {
         const logger = {};
         const next = () => {};
 
-        yield a(function* (){
+        yield a(function* () {
             const handler = getRoute(rootGroup, "POST", "/categories").handler;
 
             const ctx = {
@@ -77,7 +80,6 @@ tap.test("server/routes/categories", tap => {
             const actual = ctx.status;
             const expected = 200;
             tap.strictEquals(actual, expected, "Good data inserts and returns a status of 200");
-
         })();
 
         yield a(function* (){
@@ -92,8 +94,8 @@ tap.test("server/routes/categories", tap => {
                     body: {
                     },
                 },
-                throw: function (statusCode) {
-                    this.status = statusCode;
+                throw: statusCode => {
+                    ctx.status = statusCode;
                 },
             };
 
@@ -112,7 +114,6 @@ tap.test("server/routes/categories", tap => {
             const actual = ctx.status;
             const expected = 400;
             tap.strictEquals(actual, expected, "Missing category name results in a 400 status");
-
         })();
 
         yield a(function* (){
@@ -128,8 +129,8 @@ tap.test("server/routes/categories", tap => {
                         name: "test category",
                     },
                 },
-                throw: function (statusCode) {
-                    this.status = statusCode;
+                throw: statusCode => {
+                    ctx.status = statusCode;
                 },
             };
 
@@ -148,7 +149,6 @@ tap.test("server/routes/categories", tap => {
             const actual = ctx.status;
             const expected = 400;
             tap.strictEquals(actual, expected, "Caught DuplicateNameError results in a 400 status");
-
         })();
     }));
 
@@ -170,21 +170,22 @@ tap.test("server/routes/categories", tap => {
                     name,
                 }) {
                     if(name === "categories/get-all"){
-                        return [ {
-                                    category_id: 1,
-                                    household_id: 1,
-                                    name: "beans",
-                                 },
-                                 {
-                                    category_id: 2,
-                                    household_id: 1,
-                                    name: "pork",
-                                 },
-                                 {
-                                    category_id: 3,
-                                    household_id: 1,
-                                    name: "bleach",
-                                 },
+                        return [
+                            {
+                                category_id: 1,
+                                household_id: 1,
+                                name: "beans",
+                            },
+                            {
+                                category_id: 2,
+                                household_id: 1,
+                                name: "pork",
+                            },
+                            {
+                                category_id: 3,
+                                household_id: 1,
+                                name: "bleach",
+                            },
                         ];
                     }
                 }),
@@ -193,22 +194,24 @@ tap.test("server/routes/categories", tap => {
             yield handler(db, logger, ctx, next);
 
             const actual = ctx.body.categories;
-            const expected = [ {
-                                    category_id: 1,
-                                    household_id: 1,
-                                    name: "beans",
-                                 },
-                                 {
-                                    category_id: 2,
-                                    household_id: 1,
-                                    name: "pork",
-                                 },
-                                 {
-                                    category_id: 3,
-                                    household_id: 1,
-                                    name: "bleach",
-                                 },
+            const expected = [
+                {
+                    category_id: 1,
+                    household_id: 1,
+                    name: "beans",
+                },
+                {
+                    category_id: 2,
+                    household_id: 1,
+                    name: "pork",
+                },
+                {
+                    category_id: 3,
+                    household_id: 1,
+                    name: "bleach",
+                },
             ];
+
             tap.strictDeepEquals(actual, expected, "Get categories info");
         })();
     }));
