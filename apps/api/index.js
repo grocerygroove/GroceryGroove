@@ -7,7 +7,23 @@ const createJwtAuthMw = require("./src/middleware/create-jwt-auth");
 const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");
 const makeDatabase = require("./src/db/make-database");
-const openHttpPort = require("./src/http/open-http-port");
+
+const openHttpPort = (function () {
+    const http = require("http");
+
+    return function openHttpPort (port, callback) {
+        return new Promise((resolve, reject) => {
+            const listener = http.createServer(callback);
+            listener.on("listening", () => {
+                resolve(listener);
+            });
+            listener.on("error", error => {
+                reject(error);
+            });
+            listener.listen(port);
+        });
+    };
+})();
 
 a(function* () {
     const logger = bunyan.createLogger({
