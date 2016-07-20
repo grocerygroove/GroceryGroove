@@ -107,5 +107,9 @@ module.exports = {
             "afterColon": true,
             "mode": "minimum",
         }],
+        "keyword-spacing": ["error", {
+            "before": true,
+            "after": true, 
+        }],
     },
 };
