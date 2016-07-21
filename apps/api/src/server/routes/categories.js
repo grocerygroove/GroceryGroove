@@ -8,6 +8,7 @@ module.exports = {
     middleware: [
         "jwtAuth",
         "householdExtractor",
+        "userExtractor",
     ],
 
     routes: [

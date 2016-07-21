@@ -24,7 +24,7 @@ module.exports = {
 
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;
-                const householdId = ctx.state.household_id;
+                const householdId = ctx.state.householdId;
                 ctx.body = {
                     grocery_lists: yield queries.groceryLists.getAllByEmail(db, logger, [
                         ctx.state.userId,
@@ -39,7 +39,7 @@ module.exports = {
 
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;
-                const householdId = ctx.state.household_id;
+                const householdId = ctx.state.householdId;
                 ctx.body = {
                     grocery_list: yield queries.groceryLists.getOne(db, logger, [
                         userId,
@@ -60,7 +60,7 @@ module.exports = {
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;
                 const name = ctx.request.body.name;
-                const householdId = ctx.state.household_id;
+                const householdId = ctx.state.householdId;
 
                 try {
                     const groceryListId = yield queries.groceryLists.create(db, logger, [

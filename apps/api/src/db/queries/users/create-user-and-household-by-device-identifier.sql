@@ -25,7 +25,8 @@ WITH
     ),
     my_household_update AS (
         UPDATE households SET
-            created_by_id = my_household_user.user_id
+            created_by_id = my_household_user.user_id,
+            household_admin = my_household_user.user_id
         FROM my_household_user
         WHERE my_household_user.household_id = households.household_id
         RETURNING my_household_user.household_id, user_id

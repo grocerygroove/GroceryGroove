@@ -9,5 +9,6 @@ module.exports = {
         require("./routes/quantity-types"),
         require("./routes/login"),
         require("./routes/signup"),
+        require("./routes/households"),
     ],
 };
