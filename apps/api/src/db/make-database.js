@@ -15,7 +15,9 @@ module.exports = function makeDatabase (connString) {
                     client: {
                         query: function (logger, ...args) {
                             return new Promise((resolve, reject) => {
-                                logger.info({ db_query: args });
+                                logger.info({
+                                    "db_query": args,
+                                });
 
                                 client.query(...args, (error, result) => {
                                     if (error) {

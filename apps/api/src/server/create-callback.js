@@ -49,10 +49,10 @@ module.exports = function createCallback (services) {
                 switch (name) {
                     case "logger":
                         deps.push(services.logger.child({
-                            request_id: ctx.request.id,
-                            route: {
-                                method: route.method,
-                                path:   route.path,
+                            "request_id": ctx.request.id,
+                            "route": {
+                                "method": route.method,
+                                "path":   route.path,
                             },
                         }));
                     break;

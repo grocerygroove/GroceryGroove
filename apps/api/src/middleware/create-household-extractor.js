@@ -2,7 +2,7 @@ const a = require("../utils/asyncify");
 
 module.exports = function createHouseholdExtractor (logger) {
     logger = logger.child({
-        middleware: "household-extractor",
+        "middleware": "household-extractor",
     });
 
     return a(function* householdExtractor (ctx, next) {
@@ -12,9 +12,9 @@ module.exports = function createHouseholdExtractor (logger) {
             yield next();
         } else {
             logger.error({
-                errorName:   "Failed household_id check",
-                householdId: ctx.query.household_id,
-                request_id:  ctx.request.id,
+                "error_name":   "Failed household_id check",
+                "household_id": ctx.query.household_id,
+                "request_id":  ctx.request.id,
             });
 
             ctx.status = 424;

@@ -2,7 +2,7 @@ const a = require("../utils/asyncify");
 
 module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
     logger = logger.child({
-        middleware: "jwt_auth",
+        "middleware": "jwt_auth",
     });
 
     return a(function* jwtAuth (ctx, next) {
@@ -10,9 +10,9 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
             ctx.state.token = jwtService.decode(getCurrentTime(), ctx.query.token);
         } catch (error) {
             logger.error({
-                errorName: "Bad Token",
-                request_id: ctx.request.id,
-                error: error,
+                "error": error,
+                "error_name": "Bad Token",
+                "request_id": ctx.request.id,
             });
 
             ctx.status = 403;
