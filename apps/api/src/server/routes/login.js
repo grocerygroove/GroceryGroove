@@ -20,7 +20,7 @@ module.exports = {
             path: "/by-email",
 
             handler: a(function* (db, jwtService, logger, ctx, next) {
-                const email    = ctx.request.body.email;
+                const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
 
 
@@ -32,7 +32,7 @@ module.exports = {
                 if (userId) {
                     ctx.body = {
                         token: jwtService.encode({
-                            userId
+                            userId,
                         }),
                     };
                 } else {
@@ -46,7 +46,7 @@ module.exports = {
             path: "/by-device-identifier",
 
             handler: a(function* (db, jwtService, logger, ctx, next) {
-                const deviceid  = ctx.request.body.deviceid;
+                const deviceid = ctx.request.body.deviceid;
 
                 const userId = yield queries.users.checkByDeviceIdentifier(db, logger, [
                     deviceid,
@@ -55,7 +55,7 @@ module.exports = {
                 if (userId) {
                     ctx.body = {
                         token: jwtService.encode({
-                            userId
+                            userId,
                         }),
                     };
                 } else {

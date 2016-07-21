@@ -5,9 +5,9 @@ module.exports = function cleanRoute (route) {
 
     return {
         method:      route.method.toUpperCase(),
-        path:        route.path        || "/",
+        path:        route.path || "/",
         middlewares: route.middlewares || [],
-        deps:        route.deps        || [],
+        deps:        route.deps || [],
         handler:     route.handler,
     };
 };

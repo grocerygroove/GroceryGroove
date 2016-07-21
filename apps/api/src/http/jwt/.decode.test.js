@@ -11,7 +11,7 @@ tap.test("http/jwt/decode", tap => {
     (function () {
         const expected = {
             data: {
-                userId : 20,
+                userId: 20,
             },
             created_date: moment("1999-01-01").valueOf(),
         };

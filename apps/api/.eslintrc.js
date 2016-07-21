@@ -169,6 +169,11 @@ module.exports = {
             "afterColon": true,
             "mode": "minimum",
         }],
-        //...
+        "keyword-spacing": ["error", {
+            "before": true,
+            "after": true,
+        }],
+        "space-before-blocks": ["error", "always"],
+        "brace-style": ["error", "1tbs"],
     },
 };

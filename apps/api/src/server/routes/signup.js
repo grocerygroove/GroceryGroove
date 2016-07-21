@@ -20,10 +20,10 @@ module.exports = {
             path: "/by-email",
 
             handler: a(function* (db, logger, ctx, next) {
-                const email    = ctx.request.body.email;
+                const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
 
-                try{
+                try {
                     yield queries.users.createUserAndHouseholdByEmail(db, logger, [
                         email,
                         password,
@@ -47,7 +47,7 @@ module.exports = {
             handler: a(function* (db, logger, ctx, next) {
                 const deviceIdentifier = ctx.request.body.deviceIdentifier;
 
-                try{
+                try {
                     yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
                         deviceIdentifier,
                     ]);
