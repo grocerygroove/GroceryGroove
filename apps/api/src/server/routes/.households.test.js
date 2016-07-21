@@ -65,15 +65,15 @@ tap.test("server/routes/households", tap => {
                     if (name === "users/get-users-in-household") {
                         return [
                             {
-                                user_id: 1,
+                                userId: 1,
                                 identifier: "test@test.com",
                             },
                             {
-                                user_id: 2,
+                                userId: 2,
                                 identifier: "deviceID123467",
                             },
                             {
-                                user_id: 3,
+                                userId: 3,
                                 identifier: "test2@test123.com",
                             },
                         ];
@@ -87,15 +87,15 @@ tap.test("server/routes/households", tap => {
             const actual = ctx.body.household_users;
             const expected = [
                             {
-                                user_id: 1,
+                                userId: 1,
                                 identifier: "test@test.com",
                             },
                             {
-                                user_id: 2,
+                                userId: 2,
                                 identifier: "deviceID123467",
                             },
                             {
-                                user_id: 3,
+                                userId: 3,
                                 identifier: "test2@test123.com",
                             },
                         ];
