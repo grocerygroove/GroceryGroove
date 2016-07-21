@@ -30,7 +30,7 @@ tap.test("server/routes/categories", tap => {
                             "meats",
                         ];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -73,7 +73,7 @@ tap.test("server/routes/categories", tap => {
                     if (name === "categories/add-one") {
                         return [];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -108,7 +108,7 @@ tap.test("server/routes/categories", tap => {
                     if (name === "categories/add-one") {
                         return [];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -144,6 +144,7 @@ tap.test("server/routes/categories", tap => {
                     if (name === "categories/add-one") {
                         throw new DuplicateNameError();
                     }
+                    return void(0);
                 }),
             };
 
@@ -191,7 +192,7 @@ tap.test("server/routes/categories", tap => {
                             },
                         ];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 

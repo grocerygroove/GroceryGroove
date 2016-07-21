@@ -30,7 +30,7 @@ tap.test("server/routes/households", tap => {
                             },
                         ];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -78,7 +78,7 @@ tap.test("server/routes/households", tap => {
                             },
                         ];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 

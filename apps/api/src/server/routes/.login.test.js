@@ -32,9 +32,8 @@ tap.test("server/routes/login", tap => {
                 }) {
                     if (name === "users/check-by-email") {
                         return [ { userId: 1 } ];
-                    } else {
-                        return [];
                     }
+                    return void(0);
                 }),
             };
 
@@ -67,7 +66,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-email") {
                         return [];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -104,7 +103,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-device-identifier") {
                         return [ { userId: 1 } ];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -136,7 +135,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-email") {
                         return [];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 

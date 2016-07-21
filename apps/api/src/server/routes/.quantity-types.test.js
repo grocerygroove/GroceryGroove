@@ -25,33 +25,32 @@ tap.test("server/routes/quantity-types", tap => {
                     if (name === "quantity-types/get-all") {
                         return [
                             {
-                                quantity_type_id: 1,
-                                singular_name: "piece",
-                                plural_name: "pieces",
-                                singular_abbreviation: "pc",
-                                plural_abbreviation: "pcs",
-                                household_id: void(0),
+                                quantityTypeId: 1,
+                                singularName: "piece",
+                                pluralName: "pieces",
+                                singularAbbreviation: "pc",
+                                pluralAbbreviation: "pcs",
+                                householdId: void(0),
                             },
                             {
-                                quantity_type_id: 2,
-                                singular_name: "cup",
-                                plural_name: "cups",
-                                singular_abbreviation: void(0),
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                quantityTypeId: 2,
+                                singularName: "cup",
+                                pluralName: "cups",
+                                singularAbbreviation: void(0),
+                                pluralAbbreviation: void(0),
+                                householdId: void(0),
                             },
                             {
-                                quantity_type_id: 3,
-                                singular_name: "gallon",
-                                plural_name: "gallons",
-                                singular_abbreviation: "gal",
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                quantityTypeId: 3,
+                                singularName: "gallon",
+                                pluralName: "gallons",
+                                singularAbbreviation: "gal",
+                                pluralAbbreviation: void(0),
+                                householdId: void(0),
                             },
                         ];
-                    } else {
-                        return [];
                     }
+                    return void(0);
                 }),
             };
 
@@ -59,28 +58,28 @@ tap.test("server/routes/quantity-types", tap => {
             const actual = ctx.body.quantity_types;
             const expected = [
                             {
-                                quantity_type_id: 1,
-                                singular_name: "piece",
-                                plural_name: "pieces",
-                                singular_abbreviation: "pc",
-                                plural_abbreviation: "pcs",
-                                household_id: void(0),
+                                quantityTypeId: 1,
+                                singularName: "piece",
+                                pluralName: "pieces",
+                                singularAbbreviation: "pc",
+                                pluralAbbreviation: "pcs",
+                                householdId: void(0),
                             },
                             {
-                                quantity_type_id: 2,
-                                singular_name: "cup",
-                                plural_name: "cups",
-                                singular_abbreviation: void(0),
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                quantityTypeId: 2,
+                                singularName: "cup",
+                                pluralName: "cups",
+                                singularAbbreviation: void(0),
+                                pluralAbbreviation: void(0),
+                                householdId: void(0),
                             },
                             {
-                                quantity_type_id: 3,
-                                singular_name: "gallon",
-                                plural_name: "gallons",
-                                singular_abbreviation: "gal",
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                quantityTypeId: 3,
+                                singularName: "gallon",
+                                pluralName: "gallons",
+                                singularAbbreviation: "gal",
+                                pluralAbbreviation: void(0),
+                                householdId: void(0),
                             },
                         ];
 
@@ -112,9 +111,8 @@ tap.test("server/routes/quantity-types", tap => {
                 }) {
                     if (name === "quantity-types/add-one") {
                         return [];
-                    } else {
-                        return [];
                     }
+                    return void(0);
                 }),
             };
 
@@ -149,9 +147,8 @@ tap.test("server/routes/quantity-types", tap => {
                 }) {
                     if (name === "quantity-types/add-one") {
                         return [];
-                    } else {
-                        return [];
                     }
+                    return void(0);
                 }),
             };
 
@@ -186,9 +183,8 @@ tap.test("server/routes/quantity-types", tap => {
                 }) {
                     if (name === "quantity-types/add-one") {
                         throw new DuplicateNameError();
-                    } else {
-                        return [];
                     }
+                    return void(0);
                 }),
             };
 

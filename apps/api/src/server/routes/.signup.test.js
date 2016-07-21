@@ -28,7 +28,7 @@ tap.test("server/routes/signup", tap =>{
                     if (name === "users/create-user-and-household-by-email") {
                         return [];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -61,6 +61,7 @@ tap.test("server/routes/signup", tap =>{
                     if (name === "users/create-user-and-household-by-email") {
                         throw new DuplicateNameError();
                     }
+                    return void(0);
                 }),
             };
 
@@ -95,7 +96,7 @@ tap.test("server/routes/signup", tap =>{
                     if (name === "users/create-user-and-household-by-device-identifier") {
                         return [];
                     }
-                    return [];
+                    return void(0);
                 }),
             };
 
@@ -127,6 +128,7 @@ tap.test("server/routes/signup", tap =>{
                     if (name === "users/create-user-and-household-by-device-identifier") {
                         throw new DuplicateNameError();
                     }
+                    return void(0);
                 }),
             };
 

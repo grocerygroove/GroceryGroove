@@ -1,6 +1,7 @@
 const a = require("../../utils/asyncify");
 const applyRowFilter = require("./apply-row-filter");
 const camelize = require("change-case").camelCase;
+const camelifyArray = require("../../utils/camelify-array");
 const concat = require("../../utils/concat");
 const isDirectory = require("../../utils/is-directory-sync");
 const makeParameterManager = require("../make-parameter-manager");
@@ -102,7 +103,8 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     };
 
                     const queryArguments = jsQuery.main(resources, items);
-                    const rows = yield client.query(logger, queryArguments);
+                    const rows = yield camelifyArray(client.query(logger, queryArguments));
+
                     return applyRowFilter(jsQuery.attributes.returns, rows);
                 };
                 Object.defineProperty(queryGeneratorFunction, "name", {
