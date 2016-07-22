@@ -66,7 +66,7 @@ module.exports = {
                 const name = ctx.request.body.name;
 
                 try {
-                    const groceryListId = yield queries.groceryLists.create(db, logger, [
+                    const groceryListId = yield queries.groceryLists.addOne(db, logger, [
                         userId,
                         name,
                         householdId,

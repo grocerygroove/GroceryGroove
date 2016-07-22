@@ -214,5 +214,124 @@ tap.test("server/routes/grocery-lists", tap => {
 
     }));
 
+    tap.test("POST /grocery-lists", a(function* (tap) {
+        const handler = getRoute(rootGroup, "POST", "/grocery-lists").handler;
+
+        yield a(function* () {
+
+            const ctx = {
+                state: {
+                    householdId: 1,
+                    userId: 1,
+                },
+                body: {},
+                request: {
+                    body: {
+                        name: "Test List",
+                    },
+                },
+            };
+
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "grocery-lists/add-one") {
+                        return [
+                            {
+                                groceryListId: 1,
+                            },
+                        ];
+                    }
+                    return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.body.groceryListId;
+            const expected = 1;
+
+            tap.strictEquals(actual, expected, "Create a grocery list");
+
+        })();
+
+        yield a(function* () {
+
+            const ctx = {
+                state: {
+                    householdId: 1,
+                    userId: 1,
+                },
+                body: {},
+                request: {
+                    body: {
+                        name: "Test List",
+                    },
+                },
+                throw: (status) => {
+                    ctx.status = status;
+                },
+            };
+
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "grocery-lists/add-one") {
+                        throw new DuplicateNameError();
+                    }
+                    return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 400;
+
+            tap.strictEquals(actual, expected, "Caught DuplicateNameError results in a status of 400");
+
+        })();
+
+        yield a(function* () {
+
+            const ctx = {
+                state: {
+                    householdId: 1,
+                    userId: 1,
+                },
+                body: {},
+                request: {
+                    body: {
+                        name: "Test List",
+                    },
+                },
+                throw: (status) => {
+                    ctx.status = status;
+                },
+            };
+
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "grocery-lists/add-one") {
+                        return [];
+                    }
+                    return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 401;
+
+            tap.strictEquals(actual, expected, "Empty result set results in an status of 401");
+
+        })();
+    }));
+
     tap.end();
 });
