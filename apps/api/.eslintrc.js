@@ -29,7 +29,7 @@ module.exports = {
         "no-irregular-whitespace": ["error"],
         "no-negated-in-lhs": ["error"],
         "no-obj-calls": ["error"],
-        "no-prototype-builtins": ["error"],
+        "no-prototype-builtins": ["warn"],
         "no-regex-spaces": ["error"],
         "no-sparse-arrays": ["error"],
         "no-unexpected-multiline": ["error"],

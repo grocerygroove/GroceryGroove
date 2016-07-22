@@ -24,7 +24,7 @@ module.exports = {
                 const householdId = ctx.state.householdId;
 
                 ctx.body = {
-                    household_info: yield queries.households.getHouseholdInfo(db, logger, [
+                    householdInfo: yield queries.households.getHouseholdInfo(db, logger, [
                         householdId,
                     ]),
                 };
@@ -38,7 +38,7 @@ module.exports = {
                 const householdId = ctx.state.householdId;
 
                 ctx.body = {
-                    household_users: yield queries.users.getUsersInHousehold(db, logger, [
+                    householdUsers: yield queries.users.getUsersInHousehold(db, logger, [
                         householdId,
                     ]),
                 };

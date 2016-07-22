@@ -36,7 +36,7 @@ tap.test("server/routes/categories", tap => {
 
             yield handler(db, logger, ctx, next);
 
-            const actual = ctx.body.category_names;
+            const actual = ctx.body.categoryNames;
             const expected = [
                 "cleaners",
                 "dairy",

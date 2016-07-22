@@ -22,7 +22,7 @@ module.exports = {
 
             handler: a(function* (db, logger, ctx, next) {
                 ctx.body = {
-                    category_names: yield queries.categories.getAllNames(db, logger, [
+                    categoryNames: yield queries.categories.getAllNames(db, logger, [
                         ctx.state.householdId,
                     ]),
                 };

@@ -35,13 +35,13 @@ tap.test("server/routes/households", tap => {
             };
 
             yield handler(db, logger, ctx, next);
-            const actual = ctx.body.household_info;
+            const actual = ctx.body.householdInfo;
             const expected = {
                 name: "Test House",
                 admin: "testadmin@test.com",
             };
 
-            tap.strictDeepEquals(actual, expected, "Get household on a valid household return household_info object");
+            tap.strictDeepEquals(actual, expected, "Get household on a valid household return householdInfo object");
         })();
 
 
@@ -84,7 +84,7 @@ tap.test("server/routes/households", tap => {
 
             yield handler(db, logger, ctx, next);
 
-            const actual = ctx.body.household_users;
+            const actual = ctx.body.householdUsers;
             const expected = [
                             {
                                 userId: 1,

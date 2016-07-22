@@ -25,7 +25,7 @@ module.exports = {
                 const userId = ctx.state.userId;
 
                 ctx.body = {
-                    quantity_types: yield queries.quantityTypes.getAll(db, logger, [
+                    quantityTypes: yield queries.quantityTypes.getAll(db, logger, [
                         userId,
                     ]),
                 };

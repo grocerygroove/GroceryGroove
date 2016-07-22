@@ -26,7 +26,7 @@ module.exports = {
                 const userId = ctx.state.userId;
                 const householdId = ctx.state.householdId;
                 ctx.body = {
-                    grocery_lists: yield queries.groceryLists.getAllByEmail(db, logger, [
+                    groceryLists: yield queries.groceryLists.getAllByEmail(db, logger, [
                         ctx.state.userId,
                     ]),
                 };
@@ -41,7 +41,7 @@ module.exports = {
                 const userId = ctx.state.userId;
                 const householdId = ctx.state.householdId;
                 ctx.body = {
-                    grocery_list: yield queries.groceryLists.getOne(db, logger, [
+                    groceryList: yield queries.groceryLists.getOne(db, logger, [
                         userId,
                         groceryListId,
                     ]),

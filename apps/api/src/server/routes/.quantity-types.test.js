@@ -55,7 +55,7 @@ tap.test("server/routes/quantity-types", tap => {
             };
 
             yield handler(db, logger, ctx, next);
-            const actual = ctx.body.quantity_types;
+            const actual = ctx.body.quantityTypes;
             const expected = [
                             {
                                 quantityTypeId: 1,
