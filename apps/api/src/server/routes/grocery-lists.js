@@ -23,10 +23,10 @@ module.exports = {
             path: "/",
 
             handler: a(function* (db, logger, ctx, next) {
-                const userId = ctx.state.userId;
-                const householdId = ctx.state.householdId;
+
                 ctx.body = {
-                    groceryLists: yield queries.groceryLists.getAllByEmail(db, logger, [
+                    groceryLists: yield queries.groceryLists.getAll(db, logger, [
+                        ctx.state.householdId,
                         ctx.state.userId,
                     ]),
                 };
@@ -38,14 +38,17 @@ module.exports = {
             path: "/:id",
 
             handler: a(function* (db, logger, ctx, next) {
-                const userId = ctx.state.userId;
-                const householdId = ctx.state.householdId;
-                ctx.body = {
-                    groceryList: yield queries.groceryLists.getOne(db, logger, [
-                        userId,
-                        groceryListId,
-                    ]),
-                };
+                if (!ctx.id || !ctx.id.match(/^\d+$/)) {
+                    ctx.throw(400, "Invalid or missing Grocery List id");
+                } else {
+                    ctx.body = {
+                        groceryList: yield queries.groceryLists.getOne(db, logger, [
+                            ctx.state.householdId,
+                            ctx.state.userId,
+                            ctx.id,
+                        ]),
+                    };
+                }
             }),
         },
 
@@ -59,8 +62,8 @@ module.exports = {
 
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;
-                const name = ctx.request.body.name;
                 const householdId = ctx.state.householdId;
+                const name = ctx.request.body.name;
 
                 try {
                     const groceryListId = yield queries.groceryLists.create(db, logger, [
