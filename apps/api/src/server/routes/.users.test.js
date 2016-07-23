@@ -8,6 +8,57 @@ tap.test("server/routes/users", tap => {
     const logger = {};
     const next = () => {};
 
+    tap.test("GET /users/households", a(function* (tap) {
+        const handler = getRoute(rootGroup, "GET", "/users/households").handler;
+
+        yield a(function* () {
+            const ctx = {
+                body: {},
+                state: {
+                    userId: 1,
+                },
+            };
+
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "users/get-user-households") {
+                        return [
+                            {
+                                householdId: 1,
+                            },
+                            {
+                                householdId: 2,
+                            },
+                            {
+                                householdId: 3,
+                            },
+                        ];
+                    }
+                    return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.body.households;
+            const expected = [
+                {
+                    householdId: 1,
+                },
+                {
+                    householdId: 2,
+                },
+                {
+                    householdId: 3,
+                },
+            ];
+
+            tap.strictDeepEquals(actual, expected, "Sets ctx.body.households to an array of results");
+        })();
+    }));
+
     tap.test("PUT /users/upgrade", a(function* (tap) {
         const handler = getRoute(rootGroup, "PUT", "/users/upgrade").handler;
 

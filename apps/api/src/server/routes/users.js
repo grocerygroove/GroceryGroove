@@ -16,6 +16,18 @@ module.exports = {
 
     routes: [
         {
+            method: "GET",
+            path: "/households",
+
+            handler: a(function* (db, logger, ctx, next) {
+                ctx.body = {
+                    households: yield queries.users.getUserHouseholds(db, logger, [
+                        ctx.state.userId,
+                    ]),
+                };
+            }),
+        },
+        {
             method: "PUT",
             path: "/upgrade",
 
