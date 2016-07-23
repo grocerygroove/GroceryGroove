@@ -12,5 +12,6 @@ module.exports = {
         require("./routes/login"),
         require("./routes/signup"),
         require("./routes/households"),
+        require("./routes/users"),
     ],
 };
