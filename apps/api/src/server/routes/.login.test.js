@@ -14,9 +14,9 @@ tap.test("server/routes/login", tap => {
         },
     };
     tap.test("POST /login/by-email", a(function* (tap) {
+        const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
 
         yield a(function* () {
-            const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
             const ctx = {
                 request: {
                     body: {
@@ -48,8 +48,6 @@ tap.test("server/routes/login", tap => {
         })();
 
         yield a(function* () {
-            const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
-
             const ctx = {
                 request: {
                     body: {
@@ -85,9 +83,9 @@ tap.test("server/routes/login", tap => {
     }));
 
     tap.test("POST /login/by-device-identifier", a(function* (tap) {
+        const handler = getRoute(rootGroup, "POST", "/login/by-device-identifier").handler;
 
         yield a(function* () {
-            const handler = getRoute(rootGroup, "POST", "/login/by-device-identifier").handler;
             const ctx = {
                 request: {
                     body: {
@@ -118,8 +116,6 @@ tap.test("server/routes/login", tap => {
         })();
 
         yield a(function* () {
-            const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
-
             const ctx = {
                 request: {
                     body: {
@@ -132,7 +128,7 @@ tap.test("server/routes/login", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if (name === "users/check-by-email") {
+                    if (name === "users/check-by-device-identifier") {
                         return [];
                     }
                     return void(0);
