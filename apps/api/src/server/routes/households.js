@@ -44,5 +44,29 @@ module.exports = {
                 };
             }),
         },
+        {
+            method: "DELETE",
+            path: "/users",
+
+            handler: a(function* (db, logger, ctx, next) {
+                const userToRemove = ctx.request.body.userId;
+
+                if (!userToRemove) {
+                    ctx.throw(400, "Must include userId in request body");
+                } else {
+                    const affected = yield queries.households.removeUser(db, logger, [
+                        ctx.state.userId,
+                        userToRemove,
+                        ctx.state.householdId,
+                    ]);
+
+                    if (affected && affected > 0) {
+                        ctx.status = 200;
+                    } else {
+                        ctx.throw(401, "User lacks permissions to perform deletion");
+                    }
+                }
+            }),
+        },
     ],
 };

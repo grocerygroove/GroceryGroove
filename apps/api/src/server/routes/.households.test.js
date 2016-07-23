@@ -105,5 +105,123 @@ tap.test("server/routes/households", tap => {
         })();
 
     }));
+
+    tap.test("DELETE /households/users", a(function* (tap) {
+        const handler = getRoute(rootGroup, "DELETE", "/households/users").handler;
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+                request: {
+                    body: {
+                        userId: 1,
+                    },
+                },
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/remove-user") {
+                            return [
+                                {
+                                    deletedCount: 1,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 200;
+
+            tap.strictEquals(actual, expected, "Successful deletion results in a status of 200");
+        })();
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+                request: {
+                    body: { },
+                },
+                throw: statusCode => {
+                    ctx.status = statusCode;
+                },
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/remove-user") {
+                            return [
+                                {
+                                    deletedCount: 0,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 400;
+
+            tap.strictEquals(actual, expected, "Missing userId in request body results in a status of 400");
+        })();
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+                request: {
+                    body: {
+                        userId: 1,
+                    },
+                },
+                throw: statusCode => {
+                    ctx.status = statusCode;
+                },
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/remove-user") {
+                            return [
+                                {
+                                    deletedCount: 0,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 401;
+
+            tap.strictEquals(actual, expected, "Unsuccessful deletion results in a status of 401");
+        })();
+
+    }));
+
     tap.end();
 });
