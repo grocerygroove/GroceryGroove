@@ -223,5 +223,125 @@ tap.test("server/routes/households", tap => {
 
     }));
 
+    tap.test("PUT /households/administrator", a(function* (tap) {
+        const handler = getRoute(rootGroup, "PUT", "/households/administrator").handler;
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+                request: {
+                    body: {
+                        userId: 1,
+                    },
+                },
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/set-administrator") {
+                            return [
+                                {
+                                    updatedCount: 1,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 200;
+
+            tap.strictEquals(actual, expected, "Successful promotion results in a status of 200");
+
+        })();
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+                request: {
+                    body: {
+                        userId: 1,
+                    },
+                },
+                throw: statusCode => {
+                    ctx.status = statusCode;
+                },
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/set-administrator") {
+                            return [
+                                {
+                                    updatedCount: 0,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 401;
+
+            tap.strictEquals(actual, expected, "Update affecting 0 rows results in a status of 401");
+
+        })();
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+                request: {
+                    body: {},
+                },
+                throw: statusCode => {
+                    ctx.status = statusCode;
+                },
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/set-administrator") {
+                            return [
+                                {
+                                    updatedCount: 0,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 400;
+
+            tap.strictEquals(actual, expected, "Missing userId in request body results in a status of 400");
+
+        })();
+
+    }));
+
     tap.end();
 });

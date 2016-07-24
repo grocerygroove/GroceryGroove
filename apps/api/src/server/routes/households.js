@@ -68,5 +68,29 @@ module.exports = {
                 }
             }),
         },
+        {
+            method: "PUT",
+            path: "/administrator",
+
+            handler: a(function* (db, logger, ctx, next) {
+                const userToPromote = ctx.request.body.userId;
+
+                if (!userToPromote) {
+                    ctx.throw(400, "Must include userId in request body");
+                } else {
+                    const affected = yield queries.households.setAdministrator(db, logger, [
+                        ctx.state.userId,
+                        userToPromote,
+                        ctx.state.householdId,
+                    ]);
+
+                    if (affected && affected === 1) {
+                        ctx.status = 200;
+                    } else {
+                        ctx.throw(401, "User lacks permissions to perform promotion");
+                    }
+                }
+            }),
+        },
     ],
 };
