@@ -47,6 +47,87 @@ tap.test("server/routes/households", tap => {
 
     }));
 
+    tap.test("POST /households", a(function* (tap) {
+        const handler = getRoute(rootGroup, "POST", "/households").handler;
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                },
+                request: {
+                    body: {
+                        name: "Household Name",
+                    },
+                },
+                body: {},
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/add-one") {
+                            return [
+                                {
+                                    householdId: 3,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.body.householdId;
+            const expected = 3;
+
+            tap.strictEquals(actual, expected, "Successful household creation returns a body with a householdId");
+
+        })();
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    userId: 1,
+                },
+                request: {
+                    body: {},
+                },
+                body: {},
+                throw: statusCode => {
+                    ctx.status = statusCode;
+                },
+            };
+
+            const db = {
+                    query: a(function* (logger, {
+                        name,
+                    }) {
+                        if (name === "households/add-one") {
+                            return [
+                                {
+                                    householdId: 3,
+                                },
+                            ];
+                        }
+                        return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 400;
+
+            tap.strictEquals(actual, expected, "Missing household name in request body results in a status of 400");
+
+        })();
+
+
+    }));
+
     tap.test("GET /households/users", a(function* (tap) {
 
         yield a(function* () {

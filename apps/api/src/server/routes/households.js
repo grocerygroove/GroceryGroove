@@ -31,6 +31,25 @@ module.exports = {
             }),
         },
         {
+            method: "POST",
+            path: "/",
+
+            handler: a(function* (db, logger, ctx, next) {
+                const householdName = ctx.request.body.name;
+
+                if (!householdName) {
+                    ctx.throw(400, "Must include household name in request body");
+                } else {
+                    ctx.body = {
+                        householdId: yield queries.households.addOne(db, logger, [
+                            ctx.state.userId,
+                            householdName,
+                        ]),
+                    };
+                }
+            }),
+        },
+        {
             method: "GET",
             path: "/users",
 
