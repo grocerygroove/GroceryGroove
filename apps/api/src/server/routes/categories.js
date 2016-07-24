@@ -20,6 +20,23 @@ module.exports = {
                 "logger",
             ],
 
+            parameters: {
+                query: {
+                    userId: "number",
+                    householdId: "number",
+                    token: "string",
+                },
+            },
+
+            returns: [
+                {
+                    status: 200,
+                    body: {
+                        categoryNames: "array",
+                    },
+                },
+            ],
+
             handler: a(function* (db, logger, ctx, next) {
                 ctx.body = {
                     categoryNames: yield queries.categories.getAllNames(db, logger, [
@@ -35,6 +52,27 @@ module.exports = {
                 "db",
                 "logger",
             ],
+
+            parameters: {
+                query: {
+                    userId: "number",
+                    householdId: "number",
+                    token: "string",
+                },
+                body: {
+                    name: "string",
+                },
+            },
+
+            returns: [
+                {
+                    status: 200,
+                },
+                {
+                    status: 400,
+                },
+            ],
+
             handler: a(function* (db, logger, ctx, next) {
                 const categoryName = ctx.request.body.name;
 
@@ -65,6 +103,23 @@ module.exports = {
             deps: [
                 "db",
                 "logger",
+            ],
+
+            parameters: {
+                query: {
+                    userId: "number",
+                    householdId: "number",
+                    token: "string",
+                },
+            },
+
+            returns: [
+                {
+                    status: 200,
+                    body: {
+                        categories: "array",
+                    },
+                },
             ],
 
             handler: a(function* (db, logger, ctx, next) {
