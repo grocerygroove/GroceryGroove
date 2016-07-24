@@ -19,6 +19,7 @@ tap.test("server/routes/items", tap => {
                 request: {
                     body: {
                         name: "Chicken",
+                        categoryId: 2,
                         description: void(0),
                     },
                 },
@@ -28,7 +29,7 @@ tap.test("server/routes/items", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if (name === "items/add-one") {
+                    if (name === "items/add-and-categorize-one") {
                         return [
                             {
                                 itemId: 2,
@@ -55,6 +56,7 @@ tap.test("server/routes/items", tap => {
                 },
                 request: {
                     body: {
+                        categoryId: 2,
                         description: void(0),
                     },
                 },
@@ -67,7 +69,7 @@ tap.test("server/routes/items", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if (name === "items/add-one") {
+                    if (name === "items/add-and-categorize-one") {
                         return [
                             {
                                 itemId: 2,
@@ -107,7 +109,49 @@ tap.test("server/routes/items", tap => {
                 query: a(function* (logger, {
                     name,
                 }) {
-                    if (name === "items/add-one") {
+                    if (name === "items/add-and-categorize-one") {
+                        return [
+                            {
+                                itemId: 2,
+                            },
+                        ];
+                    }
+                    return void(0);
+                }),
+            };
+
+            yield handler(db, logger, ctx, next);
+
+            const actual = ctx.status;
+            const expected = 400;
+
+            tap.strictEquals(actual, expected, "Missing categoryId in request body results in a status of 400");
+
+        })();
+
+
+        yield a(function* () {
+            const ctx = {
+                state: {
+                    householdId: 2,
+                },
+                request: {
+                    body: {
+                        name: "Chicken",
+                        categoryId: 2,
+                        description: void(0),
+                    },
+                },
+                throw: statusCode => {
+                    ctx.status = statusCode;
+                },
+            };
+
+            const db = {
+                query: a(function* (logger, {
+                    name,
+                }) {
+                    if (name === "items/add-and-categorize-one") {
                         throw new DuplicateNameError();
                     }
                     return void(0);
