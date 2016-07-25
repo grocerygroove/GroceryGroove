@@ -13,7 +13,7 @@ const swaggerObject = {
 
 rootGroup.routes.forEach((obj) => {
     obj.routes.forEach((route) => {
-        const currentPath = `${route.method} ${obj.path}${(!route.path) ? "" : route.path}`;
+        const currentPath = `${obj.path}${(!route.path) ? "" : route.path}`;
         if (!swaggerObject.paths[currentPath]) {
             swaggerObject.paths[currentPath] = {};
         }
