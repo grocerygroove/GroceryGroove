@@ -5,6 +5,7 @@ module.exports = {
     path: "/users",
 
     middlewares: [
+        "jwtAuth",
         "jsonBodyParser",
         "userExtractor",
     ],
@@ -19,6 +20,14 @@ module.exports = {
             method: "GET",
             path: "/households",
 
+            produces: [
+                "application/json",
+            ],
+
+            responses: {
+                200: {},
+            },
+
             handler: a(function* (db, logger, ctx, next) {
                 ctx.body = {
                     households: yield queries.users.getUserHouseholds(db, logger, [
@@ -30,6 +39,26 @@ module.exports = {
         {
             method: "PUT",
             path: "/upgrade",
+
+            parameters: [
+                {
+                    name: "email",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+                {
+                    name: "password",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const email = ctx.request.body.email;

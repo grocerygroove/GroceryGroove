@@ -6,6 +6,7 @@ module.exports = {
     path: "/items",
 
     middlewares: [
+        "jwtAuth",
         "jsonBodyParser",
         "householdExtractor",
         "userExtractor",
@@ -20,6 +21,38 @@ module.exports = {
         {
             method: "POST",
             path: "/",
+
+            produces: [
+                "application/json",
+            ],
+
+            parameters: [
+                {
+                    name: "name",
+                    in: "body",
+                    description: "Name of item to add",
+                    required: "true",
+                    type: "string",
+                },
+                {
+                    name: "description",
+                    in: "body",
+                    description: "Description of item to add",
+                    required: "false",
+                    type: "string",
+                },
+                {
+                    name: "categoryId",
+                    in: "body",
+                    required: "true",
+                    type: "integer",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const itemName = ctx.request.body.name;

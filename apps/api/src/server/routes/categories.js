@@ -5,7 +5,7 @@ const queries = require("../../db/queries");
 module.exports = {
     path: "/categories",
 
-    middleware: [
+    middlewares: [
         "jwtAuth",
         "householdExtractor",
         "userExtractor",
@@ -20,22 +20,9 @@ module.exports = {
                 "logger",
             ],
 
-            parameters: {
-                query: {
-                    userId: "number",
-                    householdId: "number",
-                    token: "string",
-                },
+            responses: {
+                200: {},
             },
-
-            returns: [
-                {
-                    status: 200,
-                    body: {
-                        categoryNames: "array",
-                    },
-                },
-            ],
 
             handler: a(function* (db, logger, ctx, next) {
                 ctx.body = {
@@ -53,25 +40,20 @@ module.exports = {
                 "logger",
             ],
 
-            parameters: {
-                query: {
-                    userId: "number",
-                    householdId: "number",
-                    token: "string",
-                },
-                body: {
-                    name: "string",
-                },
-            },
-
-            returns: [
+            parameters: [
                 {
-                    status: 200,
-                },
-                {
-                    status: 400,
+                    name: "name",
+                    in: "body",
+                    description: "Category Name",
+                    required: "true",
+                    type: "string",
                 },
             ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const categoryName = ctx.request.body.name;
@@ -105,22 +87,9 @@ module.exports = {
                 "logger",
             ],
 
-            parameters: {
-                query: {
-                    userId: "number",
-                    householdId: "number",
-                    token: "string",
-                },
+            responses: {
+                200: {},
             },
-
-            returns: [
-                {
-                    status: 200,
-                    body: {
-                        categories: "array",
-                    },
-                },
-            ],
 
             handler: a(function* (db, logger, ctx, next) {
                 ctx.body = {

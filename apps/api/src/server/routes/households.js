@@ -5,6 +5,7 @@ module.exports = {
     path: "/households",
 
     middlewares: [
+        "jwtAuth",
         "jsonBodyParser",
         "householdExtractor",
         "userExtractor",
@@ -20,6 +21,14 @@ module.exports = {
             method: "GET",
             path: "/",
 
+            produces: [
+                "application/json",
+            ],
+
+            responses: {
+                200: {},
+            },
+
             handler: a(function* (db, logger, ctx, next) {
                 const householdId = ctx.state.householdId;
 
@@ -33,6 +42,25 @@ module.exports = {
         {
             method: "POST",
             path: "/",
+
+            produces: [
+                "application/json",
+            ],
+
+            parameters: [
+                {
+                    name: "name",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
+
 
             handler: a(function* (db, logger, ctx, next) {
                 const householdName = ctx.request.body.name;
@@ -53,6 +81,14 @@ module.exports = {
             method: "GET",
             path: "/users",
 
+            produces: [
+                "application/json",
+            ],
+
+            responses: {
+                200: {},
+            },
+
             handler: a(function* (db, logger, ctx, next) {
                 const householdId = ctx.state.householdId;
 
@@ -66,6 +102,22 @@ module.exports = {
         {
             method: "DELETE",
             path: "/users",
+
+            parameters: [
+                {
+                    name: "userId",
+                    in: "body",
+                    description: "UserId to remove",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+                401: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const userToRemove = ctx.request.body.userId;
@@ -90,6 +142,22 @@ module.exports = {
         {
             method: "PUT",
             path: "/administrator",
+
+            parameters: [
+                {
+                    name: "userId",
+                    in: "body",
+                    description: "UserId to remove",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+                401: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const userToPromote = ctx.request.body.userId;

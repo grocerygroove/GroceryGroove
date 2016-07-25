@@ -19,6 +19,26 @@ module.exports = {
             method: "POST",
             path: "/by-email",
 
+            parameters: [
+                {
+                    name: "email",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+                {
+                    name: "password",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
+
             handler: a(function* (db, logger, ctx, next) {
                 const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
@@ -43,6 +63,20 @@ module.exports = {
         {
             method: "POST",
             path: "/by-device-identifier",
+
+            parameters: [
+                {
+                    name: "deviceIdentifier",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const deviceIdentifier = ctx.request.body.deviceIdentifier;

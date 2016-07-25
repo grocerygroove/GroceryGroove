@@ -21,6 +21,14 @@ module.exports = {
                 "logger",
             ],
 
+            produces: [
+                "application/json",
+            ],
+
+            responses: {
+                200: {},
+            },
+
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;
 
@@ -39,6 +47,38 @@ module.exports = {
                 "db",
                 "logger",
             ],
+
+            parameters: [
+                {
+                    name: "singularName",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+                {
+                    name: "pluralName",
+                    in: "body",
+                    required: "false",
+                    type: "string",
+                },
+                {
+                    name: "singularAbbreviation",
+                    in: "body",
+                    required: "false",
+                    type: "string",
+                },
+                {
+                    name: "pluralAbbreviationAbbreviation",
+                    in: "body",
+                    required: "false",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const householdId = ctx.state.householdId;

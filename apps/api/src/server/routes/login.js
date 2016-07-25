@@ -19,6 +19,30 @@ module.exports = {
             method: "POST",
             path: "/by-email",
 
+            produces: [
+                "application/json",
+            ],
+
+            parameters: [
+                {
+                    name: "email",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+                {
+                    name: "password",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                403: {},
+            },
+
             handler: a(function* (db, jwtService, logger, ctx, next) {
                 const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
@@ -45,11 +69,29 @@ module.exports = {
             method: "POST",
             path: "/by-device-identifier",
 
+            produces: [
+                "application/json",
+            ],
+
+            parameters: [
+                {
+                    name: "deviceIdentifier",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                403: {},
+            },
+
             handler: a(function* (db, jwtService, logger, ctx, next) {
-                const deviceid = ctx.request.body.deviceid;
+                const deviceIdentifier = ctx.request.body.deviceIdentifier;
 
                 const userId = yield queries.users.checkByDeviceIdentifier(db, logger, [
-                    deviceid,
+                    deviceIdentifier,
                 ]);
 
                 if (userId) {

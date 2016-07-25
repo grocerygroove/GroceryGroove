@@ -22,6 +22,14 @@ module.exports = {
             method: "GET",
             path: "/",
 
+            produces: [
+                "application/json",
+            ],
+
+            responses: {
+                200: {},
+            },
+
             handler: a(function* (db, logger, ctx, next) {
 
                 ctx.body = {
@@ -36,6 +44,15 @@ module.exports = {
         {
             method: "GET",
             path: "/:id",
+
+            produces: [
+                "application/json",
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 if (!ctx.id || !ctx.id.match(/^\d+$/)) {
@@ -59,6 +76,25 @@ module.exports = {
             middlewares: [
                 "jsonBodyParser",
             ],
+
+            produces: [
+                "application/json",
+            ],
+
+            parameters: [
+                {
+                    name: "name",
+                    in: "body",
+                    required: "true",
+                    type: "string",
+                },
+            ],
+
+            responses: {
+                200: {},
+                400: {},
+                401: {},
+            },
 
             handler: a(function* (db, logger, ctx, next) {
                 const userId = ctx.state.userId;

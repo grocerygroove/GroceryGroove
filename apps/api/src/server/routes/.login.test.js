@@ -89,7 +89,7 @@ tap.test("server/routes/login", tap => {
             const ctx = {
                 request: {
                     body: {
-                        deviceid: "testdeviceid",
+                        deviceIdentifier: "testdeviceid",
                     },
                 },
             };
@@ -119,7 +119,7 @@ tap.test("server/routes/login", tap => {
             const ctx = {
                 request: {
                     body: {
-                        deviceid: "testdeviceid",
+                        deviceIdentifier: "testdeviceid",
                     },
                 },
             };
