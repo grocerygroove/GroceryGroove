@@ -145,9 +145,9 @@ module.exports = {
         "brace-style": ["error", "1tbs", {
             "allowSingleLine": true,
         }],
-        //"camelcase": ["error", {
-        //    "properties": "always",
-        //}],
+        "camelcase": ["error", {
+           "properties": "always",
+        }],
         "comma-dangle": ["error", "always-multiline"],
         "comma-spacing": ["error", {
             "before": false,
@@ -174,7 +174,6 @@ module.exports = {
             "after": true,
         }],
         "space-before-blocks": ["error", "always"],
-        "eslint-snake-case/snake-case": ["error"],
 
     },
 };
