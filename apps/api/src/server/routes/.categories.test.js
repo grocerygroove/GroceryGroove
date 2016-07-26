@@ -176,18 +176,18 @@ tap.test("server/routes/categories", tap => {
                     if (name === "categories/get-all") {
                         return [
                             {
-                                categoryId: 1,
-                                householdId: 1,
+                                category_id: 1,
+                                household_id: 1,
                                 name: "beans",
                             },
                             {
-                                categoryId: 2,
-                                householdId: 1,
+                                category_id: 2,
+                                household_id: 1,
                                 name: "pork",
                             },
                             {
-                                categoryId: 3,
-                                householdId: 1,
+                                category_id: 3,
+                                household_id: 1,
                                 name: "bleach",
                             },
                         ];
@@ -201,18 +201,18 @@ tap.test("server/routes/categories", tap => {
             const actual = ctx.body.categories;
             const expected = [
                 {
-                    categoryId: 1,
-                    householdId: 1,
+                    category_id: 1,
+                    household_id: 1,
                     name: "beans",
                 },
                 {
-                    categoryId: 2,
-                    householdId: 1,
+                    category_id: 2,
+                    household_id: 1,
                     name: "pork",
                 },
                 {
-                    categoryId: 3,
-                    householdId: 1,
+                    category_id: 3,
+                    household_id: 1,
                     name: "bleach",
                 },
             ];

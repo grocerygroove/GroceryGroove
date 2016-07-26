@@ -28,20 +28,20 @@ tap.test("server/routes/grocery-lists", tap => {
                     if (name === "grocery-lists/get-all") {
                         return [
                             {
-                                groceryListId: 1,
-                                createdById: 1,
+                                grocery_list_id: 1,
+                                created_by_id: 1,
                                 name: "Test Grocery List One",
-                                createdAt: "1998-01-01",
-                                completedAt: void(0),
-                                lastTouched: "1999-01-01",
+                                created_at: "1998-01-01",
+                                completed_at: void(0),
+                                last_touched: "1999-01-01",
                             },
                             {
-                                groceryListId: 2,
-                                createdById: 2,
+                                grocery_list_id: 2,
+                                created_by_id: 2,
                                 name: "Test Grocery List Two",
-                                createdAt: "1999-01-01",
-                                completedAt: void(0),
-                                lastTouched: "2000-01-01",
+                                created_at: "1999-01-01",
+                                completed_at: void(0),
+                                last_touched: "2000-01-01",
                             },
                         ];
                     }
@@ -54,20 +54,20 @@ tap.test("server/routes/grocery-lists", tap => {
             const actual = ctx.body.groceryLists;
             const expected = [
                             {
-                                groceryListId: 1,
-                                createdById: 1,
+                                grocery_list_id: 1,
+                                created_by_id: 1,
                                 name: "Test Grocery List One",
-                                createdAt: "1998-01-01",
-                                completedAt: void(0),
-                                lastTouched: "1999-01-01",
+                                created_at: "1998-01-01",
+                                completed_at: void(0),
+                                last_touched: "1999-01-01",
                             },
                             {
-                                groceryListId: 2,
-                                createdById: 2,
+                                grocery_list_id: 2,
+                                created_by_id: 2,
                                 name: "Test Grocery List Two",
-                                createdAt: "1999-01-01",
-                                completedAt: void(0),
-                                lastTouched: "2000-01-01",
+                                created_at: "1999-01-01",
+                                completed_at: void(0),
+                                last_touched: "2000-01-01",
                             },
                     ];
 
@@ -98,12 +98,12 @@ tap.test("server/routes/grocery-lists", tap => {
                     if (name === "grocery-lists/get-one") {
                         return [
                                 {
-                                    groceryListId: 1,
-                                    createdById: 1,
+                                    grocery_list_id: 1,
+                                    created_by_id: 1,
                                     name: "Test Grocery List One",
-                                    createdAt: "1998-01-01",
-                                    completedAt: void(0),
-                                    lastTouched: "1999-01-01",
+                                    created_at: "1998-01-01",
+                                    completed_at: void(0),
+                                    last_touched: "1999-01-01",
                                 },
                             ];
                     }
@@ -116,12 +116,12 @@ tap.test("server/routes/grocery-lists", tap => {
 
             const actual = ctx.body.groceryList;
             const expected = {
-                                    groceryListId: 1,
-                                    createdById: 1,
+                                    grocery_list_id: 1,
+                                    created_by_id: 1,
                                     name: "Test Grocery List One",
-                                    createdAt: "1998-01-01",
-                                    completedAt: void(0),
-                                    lastTouched: "1999-01-01",
+                                    created_at: "1998-01-01",
+                                    completed_at: void(0),
+                                    last_touched: "1999-01-01",
                                 };
 
             tap.strictDeepEquals(actual, expected, "Get one grocery list");
@@ -147,12 +147,12 @@ tap.test("server/routes/grocery-lists", tap => {
                     if (name === "grocery-lists/get-one") {
                         return [
                                 {
-                                    groceryListId: 1,
-                                    createdById: 1,
+                                    grocery_list_id: 1,
+                                    created_by_id: 1,
                                     name: "Test Grocery List One",
-                                    createdAt: "1998-01-01",
-                                    completedAt: void(0),
-                                    lastTouched: "1999-01-01",
+                                    created_at: "1998-01-01",
+                                    completed_at: void(0),
+                                    last_touched: "1999-01-01",
                                 },
                             ];
                     }
@@ -190,12 +190,12 @@ tap.test("server/routes/grocery-lists", tap => {
                     if (name === "grocery-lists/get-one") {
                         return [
                                 {
-                                    groceryListId: 1,
-                                    createdById: 1,
+                                    grocery_list_id: 1,
+                                    created_by_id: 1,
                                     name: "Test Grocery List One",
-                                    createdAt: "1998-01-01",
-                                    completedAt: void(0),
-                                    lastTouched: "1999-01-01",
+                                    created_at: "1998-01-01",
+                                    completed_at: void(0),
+                                    last_touched: "1999-01-01",
                                 },
                             ];
                     }
@@ -239,7 +239,7 @@ tap.test("server/routes/grocery-lists", tap => {
                     if (name === "grocery-lists/add-one") {
                         return [
                             {
-                                groceryListId: 1,
+                                grocery_list_id: 1,
                             },
                         ];
                     }

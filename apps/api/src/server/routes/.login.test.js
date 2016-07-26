@@ -31,7 +31,11 @@ tap.test("server/routes/login", tap => {
                     name,
                 }) {
                     if (name === "users/check-by-email") {
-                        return [ { userId: 1 } ];
+                        return [
+                            {
+                                user_id: 1,
+                            },
+                         ];
                     }
                     return void(0);
                 }),
@@ -99,7 +103,11 @@ tap.test("server/routes/login", tap => {
                     name,
                 }) {
                     if (name === "users/check-by-device-identifier") {
-                        return [ { userId: 1 } ];
+                        return [
+                            {
+                                user_id: 1,
+                            },
+                         ];
                     }
                     return void(0);
                 }),

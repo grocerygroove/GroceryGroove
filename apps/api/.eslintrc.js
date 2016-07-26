@@ -29,7 +29,7 @@ module.exports = {
         "no-irregular-whitespace": ["error"],
         "no-negated-in-lhs": ["error"],
         "no-obj-calls": ["error"],
-        "no-prototype-builtins": ["warn"],
+        "no-prototype-builtins": ["error"],
         "no-regex-spaces": ["error"],
         "no-sparse-arrays": ["error"],
         "no-unexpected-multiline": ["error"],
@@ -145,9 +145,9 @@ module.exports = {
         "brace-style": ["error", "1tbs", {
             "allowSingleLine": true,
         }],
-        "camelcase": ["error", {
-            "properties": "always",
-        }],
+        //"camelcase": ["error", {
+        //    "properties": "always",
+        //}],
         "comma-dangle": ["error", "always-multiline"],
         "comma-spacing": ["error", {
             "before": false,
@@ -174,6 +174,7 @@ module.exports = {
             "after": true,
         }],
         "space-before-blocks": ["error", "always"],
-        "brace-style": ["error", "1tbs"],
+        "eslint-snake-case/snake-case": ["error"],
+
     },
 };

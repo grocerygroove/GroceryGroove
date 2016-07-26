@@ -32,7 +32,7 @@ tap.test("server/routes/items", tap => {
                     if (name === "items/add-and-categorize-one") {
                         return [
                             {
-                                itemId: 2,
+                                item_id: 2,
                             },
                         ];
                     }
@@ -72,7 +72,7 @@ tap.test("server/routes/items", tap => {
                     if (name === "items/add-and-categorize-one") {
                         return [
                             {
-                                itemId: 2,
+                                item_id: 2,
                             },
                         ];
                     }
@@ -112,7 +112,7 @@ tap.test("server/routes/items", tap => {
                     if (name === "items/add-and-categorize-one") {
                         return [
                             {
-                                itemId: 2,
+                                item_id: 2,
                             },
                         ];
                     }

@@ -26,13 +26,13 @@ tap.test("server/routes/users", tap => {
                     if (name === "users/get-user-households") {
                         return [
                             {
-                                householdId: 1,
+                                household_id: 1,
                             },
                             {
-                                householdId: 2,
+                                household_id: 2,
                             },
                             {
-                                householdId: 3,
+                                household_id: 3,
                             },
                         ];
                     }
@@ -45,13 +45,13 @@ tap.test("server/routes/users", tap => {
             const actual = ctx.body.households;
             const expected = [
                 {
-                    householdId: 1,
+                    household_id: 1,
                 },
                 {
-                    householdId: 2,
+                    household_id: 2,
                 },
                 {
-                    householdId: 3,
+                    household_id: 3,
                 },
             ];
 

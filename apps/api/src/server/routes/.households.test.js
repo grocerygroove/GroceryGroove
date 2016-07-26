@@ -70,7 +70,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/add-one") {
                             return [
                                 {
-                                    householdId: 3,
+                                    household_id: 3,
                                 },
                             ];
                         }
@@ -108,7 +108,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/add-one") {
                             return [
                                 {
-                                    householdId: 3,
+                                    household_id: 3,
                                 },
                             ];
                         }
@@ -146,15 +146,15 @@ tap.test("server/routes/households", tap => {
                     if (name === "users/get-users-in-household") {
                         return [
                             {
-                                userId: 1,
+                                user_id: 1,
                                 identifier: "test@test.com",
                             },
                             {
-                                userId: 2,
+                                user_id: 2,
                                 identifier: "deviceID123467",
                             },
                             {
-                                userId: 3,
+                                user_id: 3,
                                 identifier: "test2@test123.com",
                             },
                         ];
@@ -168,15 +168,15 @@ tap.test("server/routes/households", tap => {
             const actual = ctx.body.householdUsers;
             const expected = [
                             {
-                                userId: 1,
+                                user_id: 1,
                                 identifier: "test@test.com",
                             },
                             {
-                                userId: 2,
+                                user_id: 2,
                                 identifier: "deviceID123467",
                             },
                             {
-                                userId: 3,
+                                user_id: 3,
                                 identifier: "test2@test123.com",
                             },
                         ];
@@ -210,7 +210,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/remove-user") {
                             return [
                                 {
-                                    deletedCount: 1,
+                                    deleted_count: 1,
                                 },
                             ];
                         }
@@ -247,7 +247,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/remove-user") {
                             return [
                                 {
-                                    deletedCount: 0,
+                                    deleted_count: 0,
                                 },
                             ];
                         }
@@ -286,7 +286,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/remove-user") {
                             return [
                                 {
-                                    deletedCount: 0,
+                                    deleted_count: 0,
                                 },
                             ];
                         }
@@ -327,7 +327,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/set-administrator") {
                             return [
                                 {
-                                    updatedCount: 1,
+                                    updated_count: 1,
                                 },
                             ];
                         }
@@ -367,7 +367,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/set-administrator") {
                             return [
                                 {
-                                    updatedCount: 0,
+                                    updated_count: 0,
                                 },
                             ];
                         }
@@ -405,7 +405,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/set-administrator") {
                             return [
                                 {
-                                    updatedCount: 0,
+                                    updated_count: 0,
                                 },
                             ];
                         }
