@@ -102,7 +102,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     };
 
                     const queryArguments = jsQuery.main(resources, items);
-
+                    const rows = yield client.query(logger, queryArguments);
                     return applyRowFilter(jsQuery.attributes.returns, rows);
                 };
                 Object.defineProperty(queryGeneratorFunction, "name", {
