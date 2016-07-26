@@ -18,9 +18,9 @@ tap.test("server/routes/items", tap => {
                 },
                 request: {
                     body: {
-                        name: "Chicken",
-                        categoryId: 2,
-                        description: void(0),
+                        "name": "Chicken",
+                        "category_id": 2,
+                        "description": void(0),
                     },
                 },
             };
@@ -32,7 +32,7 @@ tap.test("server/routes/items", tap => {
                     if (name === "items/add-and-categorize-one") {
                         return [
                             {
-                                item_id: 2,
+                                "item_id": 2,
                             },
                         ];
                     }
@@ -42,7 +42,7 @@ tap.test("server/routes/items", tap => {
 
             yield handler(db, logger, ctx, next);
 
-            const actual = ctx.body.itemId;
+            const actual = ctx.body.item_id;
             const expected = 2;
 
             tap.strictEquals(actual, expected, "Item insert returns itemId in response body");
@@ -56,8 +56,8 @@ tap.test("server/routes/items", tap => {
                 },
                 request: {
                     body: {
-                        categoryId: 2,
-                        description: void(0),
+                        "category_id": 2,
+                        "description": void(0),
                     },
                 },
                 throw: statusCode => {
@@ -72,7 +72,7 @@ tap.test("server/routes/items", tap => {
                     if (name === "items/add-and-categorize-one") {
                         return [
                             {
-                                item_id: 2,
+                                "item_id": 2,
                             },
                         ];
                     }
@@ -96,8 +96,8 @@ tap.test("server/routes/items", tap => {
                 },
                 request: {
                     body: {
-                        name: "Chicken",
-                        description: void(0),
+                        "name": "Chicken",
+                        "description": void(0),
                     },
                 },
                 throw: statusCode => {
@@ -112,7 +112,7 @@ tap.test("server/routes/items", tap => {
                     if (name === "items/add-and-categorize-one") {
                         return [
                             {
-                                item_id: 2,
+                                "item_id": 2,
                             },
                         ];
                     }
@@ -137,9 +137,9 @@ tap.test("server/routes/items", tap => {
                 },
                 request: {
                     body: {
-                        name: "Chicken",
-                        categoryId: 2,
-                        description: void(0),
+                        "name": "Chicken",
+                        "category_id": 2,
+                        "description": void(0),
                     },
                 },
                 throw: statusCode => {

@@ -66,7 +66,7 @@ module.exports = {
 
             parameters: [
                 {
-                    name: "deviceIdentifier",
+                    name: "device_identifier",
                     in: "body",
                     required: "true",
                     type: "string",
@@ -79,7 +79,7 @@ module.exports = {
             },
 
             handler: a(function* (db, logger, ctx, next) {
-                const deviceIdentifier = ctx.request.body.deviceIdentifier;
+                const deviceIdentifier = ctx.request.body.device_identifier;
 
                 try {
                     yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [

@@ -33,7 +33,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-email") {
                         return [
                             {
-                                user_id: 1,
+                                "user_id": 1,
                             },
                          ];
                     }
@@ -45,7 +45,7 @@ tap.test("server/routes/login", tap => {
 
             const actual = ctx.body.token.data;
             const expected = {
-                userId: 1,
+                "user_id": 1,
             };
 
             tap.strictDeepEquals(actual, expected, "Convert a valid userid to a token");
@@ -93,7 +93,7 @@ tap.test("server/routes/login", tap => {
             const ctx = {
                 request: {
                     body: {
-                        deviceIdentifier: "testdeviceid",
+                        "device_identifier": "testdeviceid",
                     },
                 },
             };
@@ -105,7 +105,7 @@ tap.test("server/routes/login", tap => {
                     if (name === "users/check-by-device-identifier") {
                         return [
                             {
-                                user_id: 1,
+                                "user_id": 1,
                             },
                          ];
                     }
@@ -117,7 +117,7 @@ tap.test("server/routes/login", tap => {
 
             const actual = ctx.body.token.data;
             const expected = {
-                userId: 1,
+                "user_id": 1,
             };
 
             tap.strictDeepEquals(actual, expected, "Convert a valid deviceid to a token");
@@ -127,7 +127,7 @@ tap.test("server/routes/login", tap => {
             const ctx = {
                 request: {
                     body: {
-                        deviceIdentifier: "testdeviceid",
+                        "device_identifier": "testdeviceid",
                     },
                 },
             };

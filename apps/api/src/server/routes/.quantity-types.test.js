@@ -25,28 +25,28 @@ tap.test("server/routes/quantity-types", tap => {
                     if (name === "quantity-types/get-all") {
                         return [
                             {
-                                quantity_type_id: 1,
-                                singular_name: "piece",
-                                plural_name: "pieces",
-                                singular_abbreviation: "pc",
-                                plural_abbreviation: "pcs",
-                                household_id: void(0),
+                                "quantity_type_id": 1,
+                                "singular_name": "piece",
+                                "plural_name": "pieces",
+                                "singular_abbreviation": "pc",
+                                "plural_abbreviation": "pcs",
+                                "household_id": void(0),
                             },
                             {
-                                quantity_type_id: 2,
-                                singular_name: "cup",
-                                plural_name: "cups",
-                                singular_abbreviation: void(0),
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                "quantity_type_id": 2,
+                                "singular_name": "cup",
+                                "plural_name": "cups",
+                                "singular_abbreviation": void(0),
+                                "plural_abbreviation": void(0),
+                                "household_id": void(0),
                             },
                             {
-                                quantity_type_id: 3,
-                                singular_name: "gallon",
-                                plural_name: "gallons",
-                                singular_abbreviation: "gal",
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                "quantity_type_id": 3,
+                                "singular_name": "gallon",
+                                "plural_name": "gallons",
+                                "singular_abbreviation": "gal",
+                                "plural_abbreviation": void(0),
+                                "household_id": void(0),
                             },
                         ];
                     }
@@ -55,31 +55,31 @@ tap.test("server/routes/quantity-types", tap => {
             };
 
             yield handler(db, logger, ctx, next);
-            const actual = ctx.body.quantityTypes;
+            const actual = ctx.body.quantity_types;
             const expected = [
                             {
-                                quantity_type_id: 1,
-                                singular_name: "piece",
-                                plural_name: "pieces",
-                                singular_abbreviation: "pc",
-                                plural_abbreviation: "pcs",
-                                household_id: void(0),
+                                "quantity_type_id": 1,
+                                "singular_name": "piece",
+                                "plural_name": "pieces",
+                                "singular_abbreviation": "pc",
+                                "plural_abbreviation": "pcs",
+                                "household_id": void(0),
                             },
                             {
-                                quantity_type_id: 2,
-                                singular_name: "cup",
-                                plural_name: "cups",
-                                singular_abbreviation: void(0),
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                "quantity_type_id": 2,
+                                "singular_name": "cup",
+                                "plural_name": "cups",
+                                "singular_abbreviation": void(0),
+                                "plural_abbreviation": void(0),
+                                "household_id": void(0),
                             },
                             {
-                                quantity_type_id: 3,
-                                singular_name: "gallon",
-                                plural_name: "gallons",
-                                singular_abbreviation: "gal",
-                                plural_abbreviation: void(0),
-                                household_id: void(0),
+                                "quantity_type_id": 3,
+                                "singular_name": "gallon",
+                                "plural_name": "gallons",
+                                "singular_abbreviation": "gal",
+                                "plural_abbreviation": void(0),
+                                "household_id": void(0),
                             },
                         ];
 
@@ -97,10 +97,10 @@ tap.test("server/routes/quantity-types", tap => {
                 },
                 request: {
                     body: {
-                        singularName: "ounce",
-                        pluralName: "ounces",
-                        singularAbbreviation: "oz",
-                        pluralAbbreviation: void(0),
+                        "singular_name": "ounce",
+                        "plural_name": "ounces",
+                        "singular_abbreviation": "oz",
+                        "plural_abbreviation": void(0),
                     },
                 },
             };
@@ -131,9 +131,9 @@ tap.test("server/routes/quantity-types", tap => {
                 },
                 request: {
                     body: {
-                        pluralName: "ounces",
-                        singularAbbreviation: "oz",
-                        pluralAbbreviation: void(0),
+                        "plural_name": "ounces",
+                        "singular_abbreviation": "oz",
+                        "plural_abbreviation": void(0),
                     },
                 },
                 throw: statusCode => {
@@ -166,10 +166,10 @@ tap.test("server/routes/quantity-types", tap => {
                 },
                 request: {
                     body: {
-                        singularName: "ounce",
-                        pluralName: "ounces",
-                        singularAbbreviation: "oz",
-                        pluralAbbreviation: void(0),
+                        "singular_name": "ounce",
+                        "plural_name": "ounces",
+                        "singular_abbreviation": "oz",
+                        "plural_abbreviation": void(0),
                     },
                 },
                 throw: statusCode => {

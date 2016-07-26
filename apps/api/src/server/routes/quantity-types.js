@@ -33,7 +33,7 @@ module.exports = {
                 const userId = ctx.state.userId;
 
                 ctx.body = {
-                    quantityTypes: yield queries.quantityTypes.getAll(db, logger, [
+                    "quantity_types": yield queries.quantityTypes.getAll(db, logger, [
                         userId,
                     ]),
                 };
@@ -50,25 +50,25 @@ module.exports = {
 
             parameters: [
                 {
-                    name: "singularName",
+                    name: "singular_name",
                     in: "body",
                     required: "true",
                     type: "string",
                 },
                 {
-                    name: "pluralName",
+                    name: "plural_name",
                     in: "body",
                     required: "false",
                     type: "string",
                 },
                 {
-                    name: "singularAbbreviation",
+                    name: "singular_abbreviation",
                     in: "body",
                     required: "false",
                     type: "string",
                 },
                 {
-                    name: "pluralAbbreviationAbbreviation",
+                    name: "plural_abbreviation",
                     in: "body",
                     required: "false",
                     type: "string",
@@ -82,10 +82,10 @@ module.exports = {
 
             handler: a(function* (db, logger, ctx, next) {
                 const householdId = ctx.state.householdId;
-                const singularName = ctx.request.body.singularName;
-                const pluralName = ctx.request.body.pluralName;
-                const singularAbbreviation = ctx.request.body.singularAbbreviation;
-                const pluralAbbreviation = ctx.request.body.pluralAbbreviation;
+                const singularName = ctx.request.body.singular_name;
+                const pluralName = ctx.request.body.plural_name;
+                const singularAbbreviation = ctx.request.body.singular_abbreviation;
+                const pluralAbbreviation = ctx.request.body.plural_abbreviation;
 
                 if (!singularName) {
                     ctx.throw(400, "Must at least supply a singular name");

@@ -26,7 +26,7 @@ module.exports = {
 
             handler: a(function* (db, logger, ctx, next) {
                 ctx.body = {
-                    categoryNames: yield queries.categories.getAllNames(db, logger, [
+                    "category_names": yield queries.categories.getAllNames(db, logger, [
                         ctx.state.householdId,
                     ]),
                 };

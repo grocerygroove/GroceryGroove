@@ -25,8 +25,8 @@ tap.test("server/routes/households", tap => {
                     if (name === "households/get-household-info") {
                         return [
                             {
-                                name: "Test House",
-                                admin: "testadmin@test.com",
+                                "name": "Test House",
+                                "admin": "testadmin@test.com",
                             },
                         ];
                     }
@@ -35,7 +35,7 @@ tap.test("server/routes/households", tap => {
             };
 
             yield handler(db, logger, ctx, next);
-            const actual = ctx.body.householdInfo;
+            const actual = ctx.body.household_info;
             const expected = {
                 name: "Test House",
                 admin: "testadmin@test.com",
@@ -70,7 +70,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/add-one") {
                             return [
                                 {
-                                    household_id: 3,
+                                    "household_id": 3,
                                 },
                             ];
                         }
@@ -80,7 +80,7 @@ tap.test("server/routes/households", tap => {
 
             yield handler(db, logger, ctx, next);
 
-            const actual = ctx.body.householdId;
+            const actual = ctx.body.household_id;
             const expected = 3;
 
             tap.strictEquals(actual, expected, "Successful household creation returns a body with a householdId");
@@ -108,7 +108,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/add-one") {
                             return [
                                 {
-                                    household_id: 3,
+                                    "household_id": 3,
                                 },
                             ];
                         }
@@ -146,16 +146,16 @@ tap.test("server/routes/households", tap => {
                     if (name === "users/get-users-in-household") {
                         return [
                             {
-                                user_id: 1,
-                                identifier: "test@test.com",
+                                "user_id": 1,
+                                "identifier": "test@test.com",
                             },
                             {
-                                user_id: 2,
-                                identifier: "deviceID123467",
+                                "user_id": 2,
+                                "identifier": "deviceID123467",
                             },
                             {
-                                user_id: 3,
-                                identifier: "test2@test123.com",
+                                "user_id": 3,
+                                "identifier": "test2@test123.com",
                             },
                         ];
                     }
@@ -165,19 +165,19 @@ tap.test("server/routes/households", tap => {
 
             yield handler(db, logger, ctx, next);
 
-            const actual = ctx.body.householdUsers;
+            const actual = ctx.body.household_users;
             const expected = [
                             {
-                                user_id: 1,
-                                identifier: "test@test.com",
+                                "user_id": 1,
+                                "identifier": "test@test.com",
                             },
                             {
-                                user_id: 2,
-                                identifier: "deviceID123467",
+                                "user_id": 2,
+                                "identifier": "deviceID123467",
                             },
                             {
-                                user_id: 3,
-                                identifier: "test2@test123.com",
+                                "user_id": 3,
+                                "identifier": "test2@test123.com",
                             },
                         ];
 
@@ -198,7 +198,7 @@ tap.test("server/routes/households", tap => {
                 },
                 request: {
                     body: {
-                        userId: 1,
+                        "user_id": 1,
                     },
                 },
             };
@@ -210,7 +210,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/remove-user") {
                             return [
                                 {
-                                    deleted_count: 1,
+                                    "deleted_count": 1,
                                 },
                             ];
                         }
@@ -247,7 +247,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/remove-user") {
                             return [
                                 {
-                                    deleted_count: 0,
+                                    "deleted_count": 0,
                                 },
                             ];
                         }
@@ -271,7 +271,7 @@ tap.test("server/routes/households", tap => {
                 },
                 request: {
                     body: {
-                        userId: 1,
+                        "user_id": 1,
                     },
                 },
                 throw: statusCode => {
@@ -286,7 +286,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/remove-user") {
                             return [
                                 {
-                                    deleted_count: 0,
+                                    "deleted_count": 0,
                                 },
                             ];
                         }
@@ -315,7 +315,7 @@ tap.test("server/routes/households", tap => {
                 },
                 request: {
                     body: {
-                        userId: 1,
+                        "user_id": 1,
                     },
                 },
             };
@@ -327,7 +327,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/set-administrator") {
                             return [
                                 {
-                                    updated_count: 1,
+                                    "updated_count": 1,
                                 },
                             ];
                         }
@@ -352,7 +352,7 @@ tap.test("server/routes/households", tap => {
                 },
                 request: {
                     body: {
-                        userId: 1,
+                        "user_id": 1,
                     },
                 },
                 throw: statusCode => {
@@ -367,7 +367,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/set-administrator") {
                             return [
                                 {
-                                    updated_count: 0,
+                                    "updated_count": 0,
                                 },
                             ];
                         }
@@ -405,7 +405,7 @@ tap.test("server/routes/households", tap => {
                         if (name === "households/set-administrator") {
                             return [
                                 {
-                                    updated_count: 0,
+                                    "updated_count": 0,
                                 },
                             ];
                         }

@@ -33,7 +33,7 @@ module.exports = {
                 const householdId = ctx.state.householdId;
 
                 ctx.body = {
-                    householdInfo: yield queries.households.getHouseholdInfo(db, logger, [
+                    "household_info": yield queries.households.getHouseholdInfo(db, logger, [
                         householdId,
                     ]),
                 };
@@ -69,7 +69,7 @@ module.exports = {
                     ctx.throw(400, "Must include household name in request body");
                 } else {
                     ctx.body = {
-                        householdId: yield queries.households.addOne(db, logger, [
+                        "household_id": yield queries.households.addOne(db, logger, [
                             ctx.state.userId,
                             householdName,
                         ]),
@@ -93,7 +93,7 @@ module.exports = {
                 const householdId = ctx.state.householdId;
 
                 ctx.body = {
-                    householdUsers: yield queries.users.getUsersInHousehold(db, logger, [
+                    "household_users": yield queries.users.getUsersInHousehold(db, logger, [
                         householdId,
                     ]),
                 };
@@ -105,7 +105,7 @@ module.exports = {
 
             parameters: [
                 {
-                    name: "userId",
+                    name: "user_id",
                     in: "body",
                     description: "UserId to remove",
                     required: "true",
@@ -120,7 +120,7 @@ module.exports = {
             },
 
             handler: a(function* (db, logger, ctx, next) {
-                const userToRemove = ctx.request.body.userId;
+                const userToRemove = ctx.request.body.user_id;
 
                 if (!userToRemove) {
                     ctx.throw(400, "Must include userId in request body");
@@ -145,7 +145,7 @@ module.exports = {
 
             parameters: [
                 {
-                    name: "userId",
+                    name: "user_id",
                     in: "body",
                     description: "UserId to remove",
                     required: "true",
@@ -160,7 +160,7 @@ module.exports = {
             },
 
             handler: a(function* (db, logger, ctx, next) {
-                const userToPromote = ctx.request.body.userId;
+                const userToPromote = ctx.request.body.user_id;
 
                 if (!userToPromote) {
                     ctx.throw(400, "Must include userId in request body");

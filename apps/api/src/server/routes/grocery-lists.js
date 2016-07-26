@@ -33,7 +33,7 @@ module.exports = {
             handler: a(function* (db, logger, ctx, next) {
 
                 ctx.body = {
-                    groceryLists: yield queries.groceryLists.getAll(db, logger, [
+                    "grocery_lists": yield queries.groceryLists.getAll(db, logger, [
                         ctx.state.householdId,
                         ctx.state.userId,
                     ]),
@@ -59,7 +59,7 @@ module.exports = {
                     ctx.throw(400, "Invalid or missing Grocery List id");
                 } else {
                     ctx.body = {
-                        groceryList: yield queries.groceryLists.getOne(db, logger, [
+                        "grocery_list": yield queries.groceryLists.getOne(db, logger, [
                             ctx.state.householdId,
                             ctx.state.userId,
                             ctx.id,
@@ -114,7 +114,7 @@ module.exports = {
                     }
 
                     ctx.body = {
-                        groceryListId,
+                        "grocery_list_id": groceryListId,
                     };
 
                     void(queries.groceryLists.touchAccessLog(db, logger, [

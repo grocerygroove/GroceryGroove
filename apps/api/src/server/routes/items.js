@@ -42,7 +42,7 @@ module.exports = {
                     type: "string",
                 },
                 {
-                    name: "categoryId",
+                    name: "category_id",
                     in: "body",
                     required: "true",
                     type: "integer",
@@ -57,7 +57,7 @@ module.exports = {
             handler: a(function* (db, logger, ctx, next) {
                 const itemName = ctx.request.body.name;
                 const itemDescription = ctx.request.body.description;
-                const categoryId = ctx.request.body.categoryId;
+                const categoryId = ctx.request.body.category_id;
 
                 //TODO: Currently someone could pass an invalid categoryId and
                 //the insert would fail but it's not handled properly here in code
@@ -69,7 +69,7 @@ module.exports = {
                 } else {
                     try {
                         ctx.body = {
-                            itemId: yield queries.items.addAndCategorizeOne(db, logger, [
+                            "item_id": yield queries.items.addAndCategorizeOne(db, logger, [
                                 ctx.state.householdId,
                                 itemName,
                                 itemDescription,

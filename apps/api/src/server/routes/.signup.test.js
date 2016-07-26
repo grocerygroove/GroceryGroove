@@ -84,7 +84,7 @@ tap.test("server/routes/signup", tap =>{
             const ctx = {
                 request: {
                     body: {
-                        deviceIdentifier: "testIdentifier12356",
+                        "device_identifier": "testIdentifier12356",
                     },
                 },
             };
@@ -113,7 +113,7 @@ tap.test("server/routes/signup", tap =>{
             const ctx = {
                 request: {
                     body: {
-                        deviceIdentifier: "testIdentifier12356",
+                        "device_identifier": "testIdentifier12356",
                     },
                 },
                 throw: function (statusCode) {
