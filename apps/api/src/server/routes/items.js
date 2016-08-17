@@ -59,13 +59,10 @@ module.exports = {
                 const itemDescription = ctx.request.body.description;
                 const categoryId = ctx.request.body.category_id;
 
-                //TODO: Currently someone could pass an invalid categoryId and
-                //the insert would fail but it's not handled properly here in code
-
                 if (!itemName) {
-                    ctx.throw(400, "Must include item name in request body");
+                    ctx.throw(400, "Must include item 'name' in request body");
                 } else if (!categoryId) {
-                    ctx.throw(400, "Must include categoryId in the request body");
+                    ctx.throw(400, "Must include 'category_id' in the request body");
                 } else {
                     try {
                         ctx.body = {
