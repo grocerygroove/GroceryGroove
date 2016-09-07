@@ -3,7 +3,7 @@ CREATE TABLE households(
     household_id      SERIAL,
     name              TEXT    NOT NULL,
     created_by_id     INTEGER     NULL,
-    household_admin   INTEGER NOT NULL,
+    household_admin   INTEGER     NULL,
 
     PRIMARY KEY(household_id)
 );
