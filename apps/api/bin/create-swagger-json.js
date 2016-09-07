@@ -35,7 +35,7 @@ rootGroup.routes.forEach((obj) => {
         if (obj.middlewares && obj.middlewares.indexOf("householdExtractor") > -1) {
             //Add householdId parameter
             swaggerObject.paths[currentPath][route.method].parameters.push({
-                name: "householdId",
+                name: "household_id",
                 in: "path",
                 description: "Household Identifier",
                 required: "true",
