@@ -5,6 +5,7 @@ db_extensions:
   #- plv8
 db_migrations_path: /etc/migrations
 db_name: grocerygroove
+test_db_name: grocerygroove_test
 db_owner_username: "{{ db_name }}_owner"
 db_owner_password: oq9urqwe09r8yr89q432yr8huirhgjbvh
 db_runtime_username: "{{ db_name }}_runtime"
@@ -18,4 +19,5 @@ purpose: deploy
 rambler_conf_path: /etc/rambler
 webclient_path: /opt/webclient
 dbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@localhost:5432/{{ db_name }}"
+testdbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@localhost:5432/{{ test_db_name }}"
 jwtsecret: tQg1c6xLkBQ9GtZqjLON
