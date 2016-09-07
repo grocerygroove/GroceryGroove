@@ -2,32 +2,10 @@
   apt: name={{ item }} state=latest
   with_items:
     - git
-    - golang
     - software-properties-common
 
-- name: set up the profile
-  template:
-    src=../templates/profile.sh.j2
-    dest=/etc/profile.d/rambler.sh
-
-- name: check out the rambler repo
-  git:
-    repo={{ rambler_repo }}
-    dest={{ rambler_go_path }}/src/{{ rambler_package_name }}
-    version={{ rambler_version }}
-  become: no
-
-- name: fetch dependencies
-  environment:
-    GOPATH: "{{ rambler_go_path }}"
-  command: "go get chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
-  become: no
-
-- name: install
-  environment:
-    GOPATH: "{{ rambler_go_path }}"
-  command: "go install {{ rambler_package_name }} chdir={{ rambler_go_path }}/src/{{ rambler_package_name }}"
-  become: no
+- name : download rambler release
+  get_url: url={{ rambler_executable_url }} dest={{ rambler_executable_path }} mode=0755
 
 - name: create the migration skeleton
   template:

@@ -1,11 +1,5 @@
 ---
 # Default variables for the rambler role
 
-rambler_local_go: "/home/{{ deploy_user }}/go"
-rambler_go_root: /usr/lib/go
-rambler_go_bin: "{{ rambler_local_go }}/bin"
-rambler_go_path: "{{ rambler_local_go }}"
-rambler_package_name: "github.com/elwinar/rambler"
-rambler_repo: "https://{{ rambler_package_name }}.git"
-rambler_script_location: /usr/local/bin
-rambler_version: v3.2.0
+rambler_executable_url: "https://github.com/elwinar/rambler/releases/download/v3.3.0/rambler-linux-amd64"
+rambler_executable_path: "/home/{{ deploy_user }}/rambler"

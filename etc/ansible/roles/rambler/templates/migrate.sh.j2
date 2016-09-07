@@ -29,19 +29,19 @@ case "$COMMAND" in
 
     up)
         echo -n "Upgrading database using ${CONFIG_PATHNAME}... "
-        {{ rambler_go_path }}/bin/rambler -c "$CONFIG_PATHNAME" apply --all
+        {{ rambler_executable_path }} -c "$CONFIG_PATHNAME" apply --all
         echo "done."
     ;;
 
     down)
         echo -n "Reverting last migration using $CONFIG_PATHNAME... "
-        {{ rambler_go_path }}/bin/rambler -c "$CONFIG_PATHNAME" reverse
+        {{ rambler_executable_path }} -c "$CONFIG_PATHNAME" reverse
         echo "done."
     ;;
 
     reset)
         echo -n "Reverting all migrations using $CONFIG_PATHNAME... "
-        {{ rambler_go_path }}/bin/rambler -c "$CONFIG_PATHNAME" reverse --all
+        {{ rambler_executable_path }} -c "$CONFIG_PATHNAME" reverse --all
         echo "done."
     ;;
 
