@@ -6,9 +6,9 @@ module.exports = function createUserExtractor (logger) {
     });
 
     return a(function* userExtractor (ctx, next) {
-        if (!ctx.state.token || !ctx.state.token.data || !ctx.state.token.data.userId) {
+        if (!ctx.state.token || !ctx.state.token.data || !ctx.state.token.data.user_id) {
             logger.error({
-                "error_name": "userId missing from token, possible forgot to use jwtAuthMw before this one?",
+                "error_name": "user_id missing from token, possible forgot to use jwtAuthMw before this one?",
                 "request_id": ctx.request.id,
                 "token": ctx.state.token,
             });
@@ -17,7 +17,7 @@ module.exports = function createUserExtractor (logger) {
             return;
         }
 
-        ctx.state.userId = ctx.state.token.data.userId;
+        ctx.state.userId = ctx.state.token.data.user_id;
         yield next();
     });
 };

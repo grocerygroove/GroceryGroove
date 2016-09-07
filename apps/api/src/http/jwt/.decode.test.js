@@ -11,16 +11,16 @@ tap.test("http/jwt/decode", tap => {
     (function () {
         const expected = {
             data: {
-                userId: 20,
+                "user_id": 20,
             },
-            created_date: moment("1999-01-01").valueOf(),
+            "created_date": moment("1999-01-01").valueOf(),
         };
-        const actual = decode(testSecretKey, moment("2000-01-01").valueOf(), "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M");
+        const actual = decode(testSecretKey, moment("2000-01-01").valueOf(), "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjIwfSwiY3JlYXRlZF9kYXRlIjo5MTUxNDg4MDAwMDB9.lnanC8ytzM3s7QlOKvt_KSTYjE4F8jAGV9usyyBwPH8");
         tap.strictSame(actual, expected, "correct token");
     })();
 
     tap.throws(
-        () => decode(testSecretKey, moment("1986-11-23").valueOf(), "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M"),
+        () => decode(testSecretKey, moment("1986-11-23").valueOf(), "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjIwfSwiY3JlYXRlZF9kYXRlIjo5MTUxNDg4MDAwMDB9.lnanC8ytzM3s7QlOKvt_KSTYjE4F8jAGV9usyyBwPH8"),
         InvalidTokenError,
         "throws expired InvalidTokenError"
     );

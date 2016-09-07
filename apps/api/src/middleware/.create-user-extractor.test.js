@@ -16,7 +16,7 @@ tap.test("middleware/create-user-extractor", a(function* (tap) {
             state: {
                 token: {
                     data: {
-                        userId: "testuser",
+                        "user_id": "testuser",
                     },
                 },
             },

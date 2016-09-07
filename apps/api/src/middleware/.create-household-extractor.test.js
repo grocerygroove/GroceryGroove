@@ -14,7 +14,7 @@ tap.test("middleware/create-household-extractor", a(function* (tap) {
     yield a(function* () {
         const ctx = {
             query: {
-                household_id: "10",
+                "household_id": "10",
             },
             state: {},
         };
@@ -30,7 +30,7 @@ tap.test("middleware/create-household-extractor", a(function* (tap) {
     yield a(function* () {
         const ctx = {
             query: {
-                household_id: "notadigit",
+                "household_id": "notadigit",
             },
             state: {},
             request: {

@@ -8,10 +8,10 @@ tap.test("http/jwt/encode", tap => {
 
     const testSecretKey = "thisisthetestsecretkey";
     const data = {
-        userId: 20,
+        "user_id": 20,
     };
     const actual = encode(testSecretKey, data, moment("1999-01-01").valueOf());
-    const expected = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6MjB9LCJjcmVhdGVkX2RhdGUiOjkxNTE0ODgwMDAwMH0.dcTIRVp3rI54w-P5vQ_osOc-nr8Ftko0yoNSShKZ6_M";
+    const expected = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJfaWQiOjIwfSwiY3JlYXRlZF9kYXRlIjo5MTUxNDg4MDAwMDB9.lnanC8ytzM3s7QlOKvt_KSTYjE4F8jAGV9usyyBwPH8";
 
     tap.equal(actual, expected, "correct token");
 
