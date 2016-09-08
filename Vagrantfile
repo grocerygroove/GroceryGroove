@@ -18,6 +18,7 @@ Vagrant.configure(2) do |config|
         [   80,   'webclient' ],
         [ 5432,   'postgres'  ],
         [ 8080,   'api'       ],
+        [ 5858,   'nodejs-debug'],
     ]
     port_offset = (ENV['port_offset'] || 10000).to_i
     ports.each do |port, service|

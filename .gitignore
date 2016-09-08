@@ -2,6 +2,7 @@
 .DS_Store
 npm-debug.log
 
+/.vscode
 /.vagrant
 /.eslintrc.json
 /apps/api/node_modules
