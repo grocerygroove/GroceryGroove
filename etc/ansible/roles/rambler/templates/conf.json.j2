@@ -8,7 +8,7 @@
     "database": "{{ db_name }}",
     "directory": "{{ db_migrations_path }}",
     "environments": {
-        "testing": {
+        "{{ rambler_testing_environment }}": {
             "database": "{{ test_db_name }}"
         }
     }

@@ -1,2 +1,5 @@
 - name: migrate
   command: "/bin/migrate up"
+
+- name: migrate test db
+  command: "/bin/migrate uptesting"

@@ -31,9 +31,25 @@
   become_user: postgres
   notify: restart postgres
 
+- name: create test db
+  postgresql_db: name={{ test_db_name }}
+  become: true
+  become_user: postgres
+  notify: restart postgres
+
 - name: create user
   postgresql_user:
     db={{ db_name }}
+    name={{ db_owner_username }}
+    password={{ db_owner_password }}
+    priv="ALL"
+  become: true
+  become_user: postgres
+  notify: restart postgres
+
+- name: create test db user
+  postgresql_user:
+    db={{ test_db_name }}
     name={{ db_owner_username }}
     password={{ db_owner_password }}
     priv="ALL"
@@ -49,23 +65,6 @@
     state=present
     name={{ item }}
   with_items: "{{ db_extensions }}"
-  notify: restart postgres
-
-
-- name: create test db
-  postgresql_db: name={{ test_db_name }}
-  become: true
-  become_user: postgres
-  notify: restart postgres
-
-- name: create test db user
-  postgresql_user:
-    db={{ test_db_name }}
-    name={{ db_owner_username }}
-    password={{ db_owner_password }}
-    priv="ALL"
-  become: true
-  become_user: postgres
   notify: restart postgres
 
 - name: create test db extensions

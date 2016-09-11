@@ -17,6 +17,7 @@ node_environment: production
 postgres_version: 9.5
 purpose: deploy
 rambler_conf_path: /etc/rambler
+rambler_testing_environment: testing
 webclient_path: /opt/webclient
 dbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@localhost:5432/{{ db_name }}"
 testdbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@localhost:5432/{{ test_db_name }}"

@@ -4,6 +4,7 @@ __CWD__=$( pwd )
 
 MIGRATIONS_PATH="{{ db_migrations_path }}"
 CONFIG_PATHNAME="{{ rambler_conf_path }}/conf.json"
+TESTING_ENVIRONMENT="{{ rambler_testing_environment }}"
 
 COMMAND="$1"
 shift
@@ -33,6 +34,12 @@ case "$COMMAND" in
         echo "done."
     ;;
 
+    uptesting)
+        echo -n "Upgrading testing database using ${CONFIG_PATHNAME}... "
+        {{ rambler_executable_path }} -c "$CONFIG_PATHNAME" -e "$TESTING_ENVIRONMENT" apply --all
+        echo "done."
+    ;;
+
     down)
         echo -n "Reverting last migration using $CONFIG_PATHNAME... "
         {{ rambler_executable_path }} -c "$CONFIG_PATHNAME" reverse
@@ -46,7 +53,7 @@ case "$COMMAND" in
     ;;
 
     *)
-        echo "USAGE: $0 new|up|down|reset"
+        echo "USAGE: $0 new|up|down|reset|uptesting"
         exit 3
     ;;
 esac
