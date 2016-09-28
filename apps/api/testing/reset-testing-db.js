@@ -17,7 +17,7 @@ const promiseCommand = (command) => {
 
 
 module.exports = function resetTestingDb() {
-    a(function* () {
+    return a(function* () {
         //Bring down the testing db
         yield promiseCommand(`../../bin/migrate downtesting`);
         //Rebuild the testing db

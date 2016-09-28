@@ -2,7 +2,7 @@ require('dotenv').load();
 const a = require("../../../utils/asyncify");
 const makeDatabase = require("../../make-database");
 const db = makeDatabase(process.env.TESTDBCONNSTRING);
-const resetTestingDb = require("../../../../testing/reset-testing-db")
+const resetTestingDb = require("../../../../testing/reset-testing-db");
 const queries = require("../../queries");
 const tap = require("tap");
 
@@ -26,10 +26,11 @@ tap.test("db/queries/categories/add-one", a(function* (tap) {
             testCategory.name,
         ]);
         const rows = yield db.query(logger, `SELECT * FROM Categories WHERE name = '${testCategory.name}'`);
-        console.log(rows);
+        yield resetTestingDb();
 
-        resetTestingDb();
-        tap.equal(1, 1, "test");
+        const actual = rows[0];
+        const expected = testCategory;
+        tap.strictDeepEquals(actual, expected, "test");
     })();
 
 
