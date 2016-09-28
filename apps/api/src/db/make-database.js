@@ -1,6 +1,5 @@
 const a = require("../utils/asyncify");
 const pg = require("pg").native;
-const queries = require("./queries");
 
 module.exports = function makeDatabase (connString) {
     const connect = function () {
