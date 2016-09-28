@@ -25,12 +25,15 @@ tap.test("db/queries/categories/add-one", a(function* (tap) {
             testCategory.created_by_id,
             testCategory.name,
         ]);
-        const rows = yield db.query(logger, `SELECT * FROM Categories WHERE name = '${testCategory.name}'`);
+        const rows = yield db.query(logger, `
+SELECT *
+FROM Categories
+WHERE name = '${testCategory.name}'`);
         yield resetTestingDb();
 
         const actual = rows[0];
         const expected = testCategory;
-        tap.strictDeepEquals(actual, expected, "test");
+        tap.strictDeepEquals(actual, expected, "Add a category");
     })();
 
 
