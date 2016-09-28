@@ -1,28 +1,8 @@
-const exec = require('child_process').exec;
 const a = require("../src/utils/asyncify");
-const promiseCommand = (command) => {
-    return new Promise((resolve, reject) => {
-        try {
-            exec(command, function(error, dOut, stderr) {
-                if (error) {
-                    reject(error);
-                }
-                resolve(dOut);
-            });
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
+const execp = require("../src/utils/execp");
+const join = require("path").join;
 
-
-module.exports = function resetTestingDb() {
-    return a(function* () {
-        //Bring down the testing db
-        yield promiseCommand(`../../bin/migrate downtesting`);
-        //Rebuild the testing db
-        yield promiseCommand(`../../bin/migrate uptesting`);
-
-        console.log("Testing DB Reset");
-    })();
-};
+module.exports = a(function* resetTestingDb() {
+    yield execp(`/bin/migrate downtesting`);
+    yield execp(`/bin/migrate uptesting`);
+});
