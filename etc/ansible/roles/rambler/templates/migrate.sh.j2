@@ -46,6 +46,12 @@ case "$COMMAND" in
         echo "done."
     ;;
 
+    downtesting)
+        echo -n "Reverting last migration using $CONFIG_PATHNAME... "
+        {{ rambler_executable_path }} -c "$CONFIG_PATHNAME" -e "$TESTING_ENVIRONMENT" reverse --all
+        echo "done."
+    ;;
+
     reset)
         echo -n "Reverting all migrations using $CONFIG_PATHNAME... "
         {{ rambler_executable_path }} -c "$CONFIG_PATHNAME" reverse --all
