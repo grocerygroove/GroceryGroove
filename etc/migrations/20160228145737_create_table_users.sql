@@ -56,5 +56,9 @@ CREATE TABLE households_users(
 
 
 -- rambler down
+DROP TABLE households_users;
+ALTER TABLE households
+    DROP CONSTRAINT "households_created_by_id_fkey";
 DROP INDEX unique_device_identifier;
 DROP TABLE users;
+
