@@ -2,13 +2,13 @@ require('dotenv').load();
 const a = require("../../../utils/asyncify");
 const makeDatabase = require("../../make-database");
 const db = makeDatabase(process.env.TESTDBCONNSTRING);
-const resetTestingDb = require("../../../../testing/reset-testing-db");
+const resetTestingDb = require("../../../utils/reset-testing-database");
 const queries = require("../../queries");
 const tap = require("tap");
 
 tap.test("db/queries/categories/add-one", a(function* (tap) {
     const logger = {
-        info: ()=>{},
+        info: () => {},
     };
 
 
