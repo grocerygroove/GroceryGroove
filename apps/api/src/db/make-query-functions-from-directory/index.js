@@ -68,6 +68,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
         } else {
             const name = camelize(stripExtension(filename));
             const queryName = concat(parentFilenames, stripExtension(filename)).join("/");
+            const functionName = queryName.split("/").join("_");
 
             if (filename.endsWith(".sql")) {
                 const { js, sql } = separateJsSql(readFileSync(pathname, {
@@ -78,8 +79,12 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     module.exports = ${ js };
                 `);
 
-                assign(name, nf(`${ queryName.replace("/", "_") }_sql`, function (client, logger, values) {
-                    return client.query(logger, {
+                assign(name, nf(functionName, function (client, logger, values) {
+                    const queryLogger = logger.child({
+                        "query_name": queryName,
+                    });
+
+                    return client.query(queryLogger, {
                         name: queryName,
                         text: sql,
                         values,
@@ -93,17 +98,21 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
             } else if (!filename.startsWith(".") && filename.endsWith(".js")) {
                 const jsQuery = require(pathname);
 
-                assign(name, nf(`${ queryName.replace("/", "_") }_js`, function (client, logger, items) {
+                assign(name, nf(functionName, function (client, logger, items) {
                     try {
+                        const queryLogger = logger.child({
+                            "query_name": queryName,
+                        });
+
                         const resources = {
-                            logger,
+                            logger: queryLogger,
                             name: queryName,
                             pm: makeParameterManager(),
                         };
 
                         const queryArguments = jsQuery.main(resources, items);
 
-                        return client.query(logger, queryArguments)
+                        return client.query(queryLogger, queryArguments)
                         .then(
                             rows => applyRowFilter(jsQuery.attributes.returns, rows),
                             error => Promise.reject(convertSqlError(pathname, jsQuery.attributes.errorHandling, error) || error)
