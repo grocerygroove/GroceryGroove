@@ -104,7 +104,10 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                         const queryArguments = jsQuery.main(resources, items);
 
                         return client.query(logger, queryArguments)
-                        .then(rows => applyRowFilter(jsQuery.attributes.returns, rows));
+                        .then(
+                            rows => applyRowFilter(jsQuery.attributes.returns, rows),
+                            error => Promise.reject(convertSqlError(pathname, jsQuery.attributes.errorHandling, error) || error)
+                        );
                     } catch (e) {
                         return Promise.reject(e);
                     }
