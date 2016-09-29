@@ -90,7 +90,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     );
                 }));
 
-            } else if (filename.endsWith(".js") && filename[0] !== ".") {
+            } else if (!filename.startsWith(".") && filename.endsWith(".js")) {
                 const jsQuery = require(pathname);
 
                 assign(name, nf(`${ queryName.replace("/", "_") }_js`, function (client, logger, items) {
