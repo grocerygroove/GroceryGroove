@@ -78,34 +78,37 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     module.exports = ${ js };
                 `);
 
-                assign(name, a(nf(`${ queryName.replace("/", "_") }_sql`, function* (client, logger, values) {
-                    try {
-                        const rows = yield client.query(logger, {
-                            name: queryName,
-                            text: sql,
-                            values,
-                        });
-
-                        return applyRowFilter(attributes.returns, rows);
-                    } catch (error) {
-                        throw (convertSqlError(pathname, attributes.errorHandling, error) || error);
-                    }
-                })));
+                assign(name, nf(`${ queryName.replace("/", "_") }_sql`, function (client, logger, values) {
+                    return client.query(logger, {
+                        name: queryName,
+                        text: sql,
+                        values,
+                    })
+                    .then(
+                        rows => applyRowFilter(attributes.returns, rows),
+                        error => Promise.reject(convertSqlError(pathname, attributes.errorHandling, error) || error)
+                    );
+                }));
 
             } else if (filename.endsWith(".js") && filename[0] !== ".") {
                 const jsQuery = require(pathname);
 
-                assign(name, a(nf(`${ queryName.replace("/", "_") }_js`, function* (client, logger, items) {
-                    const resources = {
-                        logger,
-                        name: queryName,
-                        pm: makeParameterManager(),
-                    };
+                assign(name, nf(`${ queryName.replace("/", "_") }_js`, function (client, logger, items) {
+                    try {
+                        const resources = {
+                            logger,
+                            name: queryName,
+                            pm: makeParameterManager(),
+                        };
 
-                    const queryArguments = jsQuery.main(resources, items);
-                    const rows = yield client.query(logger, queryArguments);
-                    return applyRowFilter(jsQuery.attributes.returns, rows);
-                })));
+                        const queryArguments = jsQuery.main(resources, items);
+
+                        return client.query(logger, queryArguments)
+                        .then(rows => applyRowFilter(jsQuery.attributes.returns, rows));
+                    } catch (e) {
+                        return Promise.reject(e);
+                    }
+                }));
             }
         }
     }
