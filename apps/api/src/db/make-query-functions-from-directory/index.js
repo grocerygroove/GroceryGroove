@@ -2,15 +2,22 @@ const a = require("../../utils/asyncify");
 const applyRowFilter = require("./apply-row-filter");
 const camelize = require("change-case").camelCase;
 const concat = require("../../utils/concat");
+const convertSqlError = require("./convert-sql-error");
 const isDirectory = require("../../utils/is-directory-sync");
 const makeParameterManager = require("../make-parameter-manager");
 const readDirSync = require("fs").readdirSync;
 const readFileSync = require("fs").readFileSync;
 const requireStringAsFile = require("require-string-as-file");
 const separateJsSql = require("./separate-js-sql");
-const convertSqlError = require("./convert-sql-error");
 
 const stripExtension = (filename => filename.split(".").slice(0, -1).join("."));
+const nf = function (name, func) {
+    Object.defineProperty(func, "name", {
+        value: name,
+    });
+
+    return func;
+};
 
 /**
  * Helper function to help deal with the issue of having a
@@ -71,7 +78,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     module.exports = ${ js };
                 `);
 
-                const queryGeneratorFunction = function* (client, logger, values) {
+                assign(name, a(nf(`${ queryName.replace("/", "_") }_sql`, function* (client, logger, values) {
                     try {
                         const rows = yield client.query(logger, {
                             name: queryName,
@@ -83,18 +90,12 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     } catch (error) {
                         throw (convertSqlError(pathname, attributes.errorHandling, error) || error);
                     }
-                };
-                Object.defineProperty(queryGeneratorFunction, "name", {
-                    value: `${ queryName.replace("/", "_") }_sql`,
-                });
-
-                const queryFunction = a(queryGeneratorFunction);
-                assign(name, queryFunction);
+                })));
 
             } else if (filename.endsWith(".js") && filename[0] !== ".") {
                 const jsQuery = require(pathname);
 
-                const queryGeneratorFunction = function* (client, logger, items) {
+                assign(name, a(nf(`${ queryName.replace("/", "_") }_js`, function* (client, logger, items) {
                     const resources = {
                         logger,
                         name: queryName,
@@ -104,13 +105,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                     const queryArguments = jsQuery.main(resources, items);
                     const rows = yield client.query(logger, queryArguments);
                     return applyRowFilter(jsQuery.attributes.returns, rows);
-                };
-                Object.defineProperty(queryGeneratorFunction, "name", {
-                    value: `${ queryName.replace("/", "_") }_js`,
-                });
-
-                const queryFunction = a(queryGeneratorFunction);
-                assign(name, queryFunction);
+                })));
             }
         }
     }
