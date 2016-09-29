@@ -18,9 +18,9 @@ module.exports = function makeDatabase (connString) {
                     return reject(error);
                 }
 
-                return resolve(Object.assign({}, client, {
-                    done: done,
-                    query: function clientQuery (logger, ...args) {
+                return resolve(Object.assign(client, {
+                    done: client.end,
+                    queryit: function clientQuery (logger, ...args) {
                         return new Promise((resolve, reject) => {
                             logger.info({
                                 "db_query": args,
@@ -56,7 +56,7 @@ module.exports = function makeDatabase (connString) {
      */
     const query = function query (logger, ...args) {
         return getClient()
-        .then(client => client.query(logger, ...args)
+        .then(client => client.queryit(logger, ...args)
             .then(
                 value => {
                     client.done();
