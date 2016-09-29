@@ -31,7 +31,13 @@ a(function* () {
         src: true,
     });
 
-    const db = makeDatabase(process.env.DBCONNSTRING);
+    const db = makeDatabase({
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        name: process.env.DB_NAME,
+        port: process.env.DB_PORT,
+        host: process.env.DB_HOST,
+    });
     const jwtService = createJwtService(process.env.JWTSECRET);
 
     const jwtAuthMw = createJwtAuthMw(jwtService, logger, () => Date.now());

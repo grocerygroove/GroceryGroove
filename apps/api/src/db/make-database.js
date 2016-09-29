@@ -1,74 +1,54 @@
 const a = require("../utils/asyncify");
-const pg = require("pg").native;
+const Pool = require("pg").Pool;
 
-module.exports = function makeDatabase (connString) {
+const queryLogged = function (query, logger, ...args) {
+    logger.info({
+        "db_query": args,
+    });
+
+    return query(...args).then(result => {
+        // Swap these as we care more about the rows than the result object.
+        // Possible optimisation point: I've heard that `delete` is slow but
+        // not sure if that's still a thing.
+        const rows = result.rows;
+        delete result.rows;
+        rows.result = result;
+
+        return rows;
+    });
+};
+
+module.exports = function makeDatabase ({ user, password, name, host, port }) {
+    const pool = new Pool({
+        user,
+        password,
+        database: name,
+        port,
+        host,
+    });
+
     /**
      * Grab a connection from the pool. Extend the `client` object with its
      * function to release to the pool and override the query function to
      * be promise-based.
      *
-     * Note that it is up to the caller to call `client.done()` and release the
-     * client object back into the pool. `query`, and `transaction` do this
+     * Note that it is up to the caller to call `client.release()` and release
+     * the client object back into the pool. `query`, and `transaction` do this
      * automatically for you so use of this function is discouraged.
      */
-    const getClient = function getClient () {
-        return new Promise((resolve, reject) => {
-            pg.connect(connString, (error, client, done) => {
-                if (error) {
-                    return reject(error);
-                }
+    const connect = function connect () {
+        return pool.connect()
+        .then(client => {
+            if (!client._originalQueryBound) {
+                client._query = client.query;
+                client.query = queryLogged.bind(null, client._query.bind(client));
+            }
 
-                return resolve(Object.assign(client, {
-                    done: client.end,
-                    queryit: function clientQuery (logger, ...args) {
-                        return new Promise((resolve, reject) => {
-                            logger.info({
-                                "db_query": args,
-                            });
-
-                            client.query(...args, (error, result) => {
-                                if (error) {
-                                    return reject(error);
-                                }
-
-                                // Swap these as we care more about the rows
-                                // than the result object. Possible optimisation
-                                // point: I've heard that `delete` is slow but
-                                // not sure if that's still a thing.
-                                const rows = result.rows;
-                                delete result.rows;
-                                rows.result = result;
-
-                                return resolve(rows);
-                            });
-                        });
-                    },
-                }));
-            });
+            return client;
         });
     };
 
-    /**
-     * This function should be thought of `databasePool.query`. It grabs a
-     * client from the pool, runs the query, and releases the client. Subsequent
-     * invocations to this function should consider each client to be unique
-     * from the previous invocations.
-     */
-    const query = function query (logger, ...args) {
-        return getClient()
-        .then(client => client.queryit(logger, ...args)
-            .then(
-                value => {
-                    client.done();
-                    return value;
-                },
-                error => {
-                    client.done();
-                    return Promise.reject(error);
-                }
-            )
-        );
-    };
+    const query = queryLogged.bind(null, pool.query.bind(pool));
 
     /**
      * Run a callback inside a transaction. Essentially, this grabs a connection
@@ -86,44 +66,49 @@ module.exports = function makeDatabase (connString) {
      */
     const transaction = function transaction (logger, callback) {
         return new Promise((resolve, reject) => {
-            getClient().then(
+            connect().then(
                 client => {
                     client.query(logger, "BEGIN")
                     .then(() => callback(client))
                     .then(
                         callbackValue => client.query(logger, "COMMIT").then(
                             commitSuccess => {
-                                client.done();
+                                client.release();
                                 resolve(callbackValue);
                             },
                             commitError => {
-                                client.done();
+                                client.release();
                                 reject(commitError);
                             }
                         ),
 
                         callbackError => client.query(logger, "ROLLBACK").then(
                             rollbackSuccess => {
-                                client.done();
+                                client.release();
                                 reject(callbackError);
                             },
                             rollbackError => {
-                                client.done();
+                                client.release();
                                 rollbackError.callbackError = callbackError;
                                 reject(rollbackError);
                             }
                         )
                     )
                 },
-                getClientError => {
-                    reject(getClientError);
+                connectError => {
+                    reject(connectError);
                 }
             );
         });
     };
 
+    const end = function end () {
+        return pool.end();
+    };
+
     return {
-        getClient,
+        connect,
+        end,
         query,
         transaction,
     };

@@ -19,6 +19,5 @@ purpose: deploy
 rambler_conf_path: /etc/rambler
 rambler_testing_environment: testing
 webclient_path: /opt/webclient
-dbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@localhost:5432/{{ db_name }}"
-testdbconnstring: "postgresql://{{ db_owner_username }}:{{ db_owner_password }}@localhost:5432/{{ test_db_name }}"
+db_port: 5432
 jwtsecret: tQg1c6xLkBQ9GtZqjLON
