@@ -91,7 +91,7 @@ module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path
                 const queryFunction = a(queryGeneratorFunction);
                 assign(name, queryFunction);
 
-            } else if (filename.endsWith(".js")) {
+            } else if (filename.endsWith(".js") && !(filename.substring(0, 1) === ".")) {
                 const jsQuery = require(pathname);
 
                 const queryGeneratorFunction = function* (client, logger, items) {
