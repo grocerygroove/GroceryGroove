@@ -24,6 +24,7 @@ tap.test("db/queries/categories", tap => {
 
         yield a(function* () {
             yield resetTestingDb();
+
             const db = makeDatabase();
 
             const testCategory = {
@@ -40,15 +41,15 @@ tap.test("db/queries/categories", tap => {
                 testCategory.name,
             ]);
 
-            const rows = yield db.query(logger, `
+            const rows = (yield db.query(logger, `
                 SELECT *
                 FROM categories
                 WHERE name = '${testCategory.name}'
-            `);
+            `)).asPlainObjects();
 
             const actual = rows[0];
             const expected = testCategory;
-            tap.same(actual, expected, "Add a category");
+            tap.strictSame(actual, expected, "Add a category");
 
             yield db.end();
         })();

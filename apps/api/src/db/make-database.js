@@ -1,22 +1,33 @@
 const a = require("../utils/asyncify");
 const Pool = require("pg").Pool;
 
-const queryLogged = function (query, logger, ...args) {
-    logger.info({
-        "db_query": args,
-    });
+const queryLogged = (function () {
+    const rowsAsPlainObjects = function () {
+        return this.map(row => Object.assign({}, row));
+    };
 
-    return query(...args).then(result => {
-        // Swap these as we care more about the rows than the result object.
-        // Possible optimisation point: I've heard that `delete` is slow but
-        // not sure if that's still a thing.
-        const rows = result.rows;
-        delete result.rows;
-        rows.result = result;
+    return function queryLogged (query, logger, ...args) {
+        logger.info({
+            "db_query": args,
+        });
 
-        return rows;
-    });
-};
+        return query(...args).then(result => {
+            // Swap these as we care more about the rows than the result object.
+            // Possible optimisation point: I've heard that `delete` is slow but not
+            // sure if that's still a thing.
+            const rows = result.rows;
+            delete result.rows;
+            rows.result = result;
+
+            // Individual rows returned from pg aren't regular objects but
+            // actually prototype instances. Attaching this function to the rows
+            // array allows the caller to convert the rows back to plain objects
+            rows.asPlainObjects = rowsAsPlainObjects;
+
+            return rows;
+        });
+    };
+})();
 
 module.exports = function makeDatabase ({ user, password, name, host, port }) {
     const pool = new Pool({
