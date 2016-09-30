@@ -5,7 +5,10 @@ const rootGroup = require("../routes");
 const tap = require("tap");
 
 tap.test("server/routes/quantity-types", tap => {
-    const logger = {};
+    const logger = {
+        info: () => {},
+        child: () => { return logger; },
+    };
     const next = () => {};
 
     tap.test("GET /quantity-types", a(function* (tap) {

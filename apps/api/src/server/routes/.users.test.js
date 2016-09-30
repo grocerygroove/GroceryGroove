@@ -5,7 +5,10 @@ const tap = require("tap");
 
 tap.test("server/routes/users", tap => {
 
-    const logger = {};
+    const logger = {
+        info: () => {},
+        child: () => { return logger; },
+    };
     const next = () => {};
 
     tap.test("GET /users/households", a(function* (tap) {

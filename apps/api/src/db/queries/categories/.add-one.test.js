@@ -18,6 +18,7 @@ const tap = require("tap");
 tap.test("db/queries/categories", tap => {
     const logger = {
         info: () => {},
+        child: () => { return logger; },
     };
 
     tap.test("add-one", a(function* (tap) {

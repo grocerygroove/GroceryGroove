@@ -5,8 +5,11 @@ const DuplicateNameError = require("../../errors/duplicate-name-error");
 const tap = require("tap");
 
 tap.test("server/routes/signup", tap =>{
+    const logger = {
+        info: () => {},
+        child: () => { return logger; },
+    };
     tap.test("POST /signup/by-email", a(function* (tap) {
-        const logger = {};
         const next = () => {};
 
         yield a(function* () {
@@ -75,7 +78,6 @@ tap.test("server/routes/signup", tap =>{
 
 
     tap.test("POST /signup/by-device-identifier", a(function* (tap) {
-        const logger = {};
         const next = () => {};
 
         yield a(function* () {

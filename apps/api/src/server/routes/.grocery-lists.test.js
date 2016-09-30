@@ -5,7 +5,10 @@ const DuplicateNameError = require("../../errors/duplicate-name-error");
 const tap = require("tap");
 
 tap.test("server/routes/grocery-lists", tap => {
-    const logger = {};
+    const logger = {
+        info: () => {},
+        child: () => { return logger; },
+    };
     const next = () => {};
 
     tap.test("GET /grocery-lists", a(function* (tap) {

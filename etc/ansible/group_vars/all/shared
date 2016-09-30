@@ -14,7 +14,7 @@ deploy_user: ubuntu
 dev_group: node-dev
 log_path: /var/log
 node_environment: production
-postgres_version: 9.5
+postgres_version: 9.6
 purpose: deploy
 rambler_conf_path: /etc/rambler
 rambler_testing_environment: testing

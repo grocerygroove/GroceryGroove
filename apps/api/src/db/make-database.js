@@ -104,7 +104,7 @@ module.exports = function makeDatabase ({ user, password, name, host, port }) {
                                 reject(rollbackError);
                             }
                         )
-                    )
+                    );
                 },
                 connectError => {
                     reject(connectError);

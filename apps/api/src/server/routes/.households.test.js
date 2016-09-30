@@ -4,7 +4,10 @@ const rootGroup = require("../routes");
 const tap = require("tap");
 
 tap.test("server/routes/households", tap => {
-    const logger = {};
+    const logger = {
+        info: () => {},
+        child: () => { return logger; },
+    };
     const next = () => {};
 
 
