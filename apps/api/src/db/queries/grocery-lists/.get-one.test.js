@@ -4,6 +4,7 @@ const a = require("../../../utils/asyncify");
 const makeDatabaseReal = require("../../make-database");
 const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
+const objectLike = require("../../../utils/object-like");
 const queries = require("../../queries");
 const DuplicateNameError = require("../../../errors/duplicate-name-error");
 
@@ -46,14 +47,28 @@ tap.test("db/queries/grocery-lists/get-one", tap => {
                 groceryListId,
             ]);
 
-            const valuesWeAreConcernedAbout = ((actual.grocery_list_id === groceryListId) &&
-                (actual.created_by_id === defaultTestUser.user_id) &&
-                (actual.name === testGroceryListName) &&
-                (actual.created_at ? true : false) &&
-                (actual.last_touched ? true : false)) === true;
-
-
-            tap.ok(valuesWeAreConcernedAbout);
+            tap.ok(objectLike(actual, [
+                {
+                    propertyName: "grocery_list_id",
+                    comparisonValue: groceryListId,
+                },
+                {
+                    propertyName: "created_by_id",
+                    comparisonValue: defaultTestUser.user_id,
+                },
+                {
+                    propertyName: "name",
+                    comparisonValue: testGroceryListName,
+                },
+                {
+                    propertyName: "created_at",
+                    nonNull: true,
+                },
+                {
+                    propertyName: "last_touched",
+                    nonNull: true,
+                },
+            ]));
 
             yield db.end();
         })();
