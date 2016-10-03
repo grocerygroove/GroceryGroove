@@ -19,4 +19,4 @@ GROUP BY gl.grocery_list_id,
          gl.name,
          gl.created_at,
          gl.completed_at
-ORDER BY MAX(glal.access_time)
+ORDER BY MAX(glal.access_time) DESC
