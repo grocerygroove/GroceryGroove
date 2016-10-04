@@ -6,8 +6,9 @@
   roles:
     - ppa_postgres
     - common
-    - nginx
     - node
+    - gg_webclient
+    - nginx
     - postgres
     - rambler
     - gg_db

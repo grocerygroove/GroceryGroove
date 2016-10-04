@@ -6,13 +6,14 @@ npm-debug.log
 /.vagrant
 /.eslintrc.json
 /apps/api/node_modules
-/apps/webclient-dev/node_modules
-/apps/webclient/bundle.js
+/apps/webclient/node_modules
 /apps/api/.env
 /bin/ssh
 /bin/migrate
 /bin/psql
 /etc/ansible/vagrant_playbook.retry
+/apps/webclient/dist/bundle.js
+
 
 /etc/rambler/*
 !/etc/rambler/.gitkeep

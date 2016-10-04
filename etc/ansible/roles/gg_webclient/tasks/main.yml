@@ -1,0 +1,9 @@
+- name: rebuild deps
+  command: npm install
+  args:
+    chdir: "{{ webcode_path }}"
+
+- name: pack client code
+  command: npm run browserpack
+  args:
+    chdir: "{{ webcode_path }}"
