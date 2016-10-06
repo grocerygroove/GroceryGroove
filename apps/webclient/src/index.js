@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { white } from 'material-ui/styles/colors';
+import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import LoginComponent from './components/login';
