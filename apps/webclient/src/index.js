@@ -11,12 +11,20 @@ const styles = {
   container: {
     textAlign: 'center',
     paddingTop: 200,
+    backgroundColor: '#29B6F6',
+    height: '100%',
+    width: '100%',
+  },
+  h1: {
+      color: '#FAFAFA',
+      textAlign: 'center',
   },
 };
 
 const muiTheme = getMuiTheme({
-  palette: {
-    textColor: white,
+  raisedButton: {
+    primaryColor: greenA200,
+    secondaryColor: yellow600,
   },
 });
 
@@ -31,7 +39,7 @@ class App extends Component {
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div style={styles.container}>
-                <h1>Grocery Groove</h1>
+                <h1 style={styles.h1}>Grocery Groove</h1>
                 <LoginComponent />
             </div>
         </MuiThemeProvider>
@@ -39,7 +47,4 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(
-    <App />,
-    document.getElementById('container')
-);
+ReactDOM.render(<App />, document.getElementById('container'));

@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
-import { greenA200, yellow600 } from 'material-ui/styles/colors';
+import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import SignupDialog from './signupDialog';
 
 const style = {
-  margin: 12,
-
+  button: {
+    margin: 12,
+  },
+  textField: {
+    color: white,
+  },
 };
 
 class LoginComponent extends Component {
@@ -17,12 +22,25 @@ class LoginComponent extends Component {
   render() {
     return (
         <div>
-            <TextField hintText="Username" floatingLabelText="Username"/>
+            <TextField
+                hintText="Username"
+                floatingLabelText="Username"
+                style={style.textField}/>
             <br />
-            <TextField hintText="Password" floatingLabelText="Password" type="password"/>
+            <TextField
+                hintText="Password"
+                floatingLabelText="Password"
+                type="password"
+                style={style.textField}/>
             <br />
-            <RaisedButton label="Login" primary={true} style={style} />
-            <RaisedButton label="Signup" secondary={true} style={style} />
+            <span>
+                <RaisedButton
+                    label="Login"
+                    primary={true}
+                    style={style.button} />
+                <SignupDialog
+                    style={style.button}/>
+            </span>
         </div>
     );
   }
