@@ -13,7 +13,7 @@ module.exports = {
 
     routes: [
         {
-            method: "GET",
+            method: "get",
             path: "/",
 
             deps: [
@@ -40,7 +40,7 @@ module.exports = {
             }),
         },
         {
-            method: "POST",
+            method: "post",
             path: "/",
 
             deps: [

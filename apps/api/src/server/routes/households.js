@@ -18,7 +18,7 @@ module.exports = {
 
     routes: [
         {
-            method: "GET",
+            method: "get",
             path: "/",
 
             produces: [
@@ -40,7 +40,7 @@ module.exports = {
             }),
         },
         {
-            method: "POST",
+            method: "post",
             path: "/",
 
             produces: [
@@ -78,7 +78,7 @@ module.exports = {
             }),
         },
         {
-            method: "GET",
+            method: "get",
             path: "/users",
 
             produces: [
@@ -140,7 +140,7 @@ module.exports = {
             }),
         },
         {
-            method: "PUT",
+            method: "put",
             path: "/administrator",
 
             parameters: [

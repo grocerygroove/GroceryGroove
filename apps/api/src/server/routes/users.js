@@ -17,7 +17,7 @@ module.exports = {
 
     routes: [
         {
-            method: "GET",
+            method: "get",
             path: "/households",
 
             produces: [
@@ -37,7 +37,7 @@ module.exports = {
             }),
         },
         {
-            method: "PUT",
+            method: "put",
             path: "/upgrade",
 
             parameters: [

@@ -49,6 +49,15 @@ rootGroup.routes.forEach((obj) => {
         }
 
         if (route.responses) {
+            Object.keys(route.responses).forEach((key) => {
+                if (key === "200") {
+                    route.responses[key].description = "Good";
+                } else if (key === "400") {
+                    route.responses[key].description = "Bad";
+                } else if (key === "401") {
+                    route.responses[key].description = "Insufficient Permissions";
+                }
+            });
             swaggerObject.paths[currentPath][route.method].responses = route.responses;
         }
 

@@ -19,7 +19,7 @@ module.exports = {
 
     routes: [
         {
-            method: "POST",
+            method: "post",
             path: "/",
 
             produces: [

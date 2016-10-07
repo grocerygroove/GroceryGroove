@@ -16,7 +16,7 @@ module.exports = {
 
     routes: [
         {
-            method: "POST",
+            method: "post",
             path: "/by-email",
 
             produces: [
@@ -66,7 +66,7 @@ module.exports = {
         },
 
         {
-            method: "POST",
+            method: "post",
             path: "/by-device-identifier",
 
             produces: [

@@ -19,7 +19,7 @@ module.exports = {
 
     routes: [
         {
-            method: "GET",
+            method: "get",
             path: "/",
 
             produces: [
@@ -42,7 +42,7 @@ module.exports = {
         },
 
         {
-            method: "GET",
+            method: "get",
             path: "/:id",
 
             produces: [
@@ -79,7 +79,7 @@ module.exports = {
         },
 
         {
-            method: "POST",
+            method: "post",
             path: "/",
 
             middlewares: [
@@ -141,7 +141,7 @@ module.exports = {
         },
 
         {
-            method: "POST",
+            method: "post",
             path: "/:id/item",
 
             middlewares: [
