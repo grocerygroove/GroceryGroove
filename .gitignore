@@ -13,6 +13,8 @@ npm-debug.log
 /bin/psql
 /etc/ansible/vagrant_playbook.retry
 /apps/webclient/dist/bundle.js
+/apps/webclient/dist/swagger.json
+/apps/api/swagger.json
 
 
 /etc/rambler/*
