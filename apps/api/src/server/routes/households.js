@@ -51,7 +51,7 @@ module.exports = {
                 {
                     name: "name",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],
@@ -100,7 +100,7 @@ module.exports = {
             }),
         },
         {
-            method: "DELETE",
+            method: "delete",
             path: "/users",
 
             parameters: [
@@ -108,7 +108,7 @@ module.exports = {
                     name: "user_id",
                     in: "body",
                     description: "UserId to remove",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],
@@ -148,7 +148,7 @@ module.exports = {
                     name: "user_id",
                     in: "body",
                     description: "UserId to remove",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],

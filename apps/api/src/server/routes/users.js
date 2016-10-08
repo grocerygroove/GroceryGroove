@@ -44,13 +44,13 @@ module.exports = {
                 {
                     name: "email",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
                 {
                     name: "password",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],

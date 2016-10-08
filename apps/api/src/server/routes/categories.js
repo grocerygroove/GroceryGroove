@@ -45,7 +45,7 @@ module.exports = {
                     name: "name",
                     in: "body",
                     description: "Category Name",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],

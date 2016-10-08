@@ -53,7 +53,7 @@ module.exports = {
                 {
                     name: "id",
                     in: "path",
-                    required: "true",
+                    required: true,
                     type: "integer",
                 },
             ],
@@ -94,7 +94,7 @@ module.exports = {
                 {
                     name: "name",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],
@@ -156,26 +156,27 @@ module.exports = {
                 {
                     name: "id",
                     in: "path",
-                    required: "true",
+                    required: true,
                     type: "integer",
                 },
                 {
                     name: "item_id",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "integer",
                 },
                 {
                     name: "quantity_type_id",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "integer",
                 },
                 {
                     name: "quantity",
                     in: "body",
-                    required: "true",
-                    type: "double",
+                    required: true,
+                    type: "number",
+                    format: "double",
                 },
             ],
 

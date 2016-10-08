@@ -23,13 +23,13 @@ module.exports = {
                 {
                     name: "email",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
                 {
                     name: "password",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],
@@ -68,7 +68,7 @@ module.exports = {
                 {
                     name: "device_identifier",
                     in: "body",
-                    required: "true",
+                    required: true,
                     type: "string",
                 },
             ],
