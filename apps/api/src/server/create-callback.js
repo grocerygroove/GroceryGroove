@@ -3,11 +3,16 @@ const collapseRoutingGroup = require("./route-tools/collapse-group");
 const createUserExtractor = require("../middleware/create-user-extractor");
 const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
+const createKoaCorsMw = require("koa-cors");
 const createRequestIdentifier = require("../middleware/create-request-identifier");
 const createResponseTimer = require("../middleware/create-response-timer");
 const createKoaRouter = require("koa-router");
 const Koa = require('koa');
 const rootGroup = require("./routes");
+
+const callback = (req) => {
+    return true;
+};
 
 module.exports = function createCallback (services) {
     services = applyDefaults(services, {
@@ -16,6 +21,16 @@ module.exports = function createCallback (services) {
         requestIdentifierMw:  createRequestIdentifier(),
         responseTimerMw:      createResponseTimer(),
         userExtractorMw:      createUserExtractor(services.logger),
+        // corsMw:               createKoaCorsMw({
+        //                                         origin: "*",
+        //                                         methods: [
+        //                                             "PUT",
+        //                                             "POST",
+        //                                             "GET",
+        //                                             "DELETE",
+        //                                             "OPTIONS",
+        //                                         ],
+        //                                     }),
     });
 
     const router = createKoaRouter();
@@ -68,6 +83,18 @@ module.exports = function createCallback (services) {
     }
 
     const koaApp = new Koa();
+
+    //WHY DOES THIS WORK BUT NOT THE ABOVE?
+    koaApp.use(createKoaCorsMw({
+            origin: "*",
+            methods: [
+                "PUT",
+                "POST",
+                "GET",
+                "DELETE",
+                "OPTIONS",
+            ],
+    }));
     koaApp.use(router.routes());
 
     return koaApp.callback();

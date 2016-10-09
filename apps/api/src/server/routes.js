@@ -3,6 +3,7 @@
 module.exports = {
     middlewares: [
         "responseTimer",
+        //"cors",
         "requestIdentifier",
     ],
     routes: [

@@ -8,7 +8,7 @@ const swaggerObject = {
         title: "Grocery Groove API",
         version: "v1",
     },
-    host: "localhost:8080",
+    host: "localhost:18080",
     tags: [],
     paths: {},
     definitions: {},
