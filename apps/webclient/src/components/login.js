@@ -25,13 +25,13 @@ class LoginComponent extends Component {
             <TextField
                 hintText="Username"
                 floatingLabelText="Username"
-                style={style.textField}/>
+                inputStyle={style.textField}/>
             <br />
             <TextField
                 hintText="Password"
                 floatingLabelText="Password"
                 type="password"
-                style={style.textField}/>
+                inputStyle={style.textField}/>
             <br />
             <span>
                 <RaisedButton

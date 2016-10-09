@@ -6,8 +6,12 @@ import TextField from 'material-ui/TextField';
 import { greenA200 } from 'material-ui/styles/colors';
 
 const style = {
-    textAlign: 'center',
-    bodyColor: greenA200,
+    body: {
+        textAlign: 'center',
+    },
+    content: {
+        maxWidth: '400px',
+    },
 };
 
 export default class signupDialog extends React.Component {
@@ -33,7 +37,7 @@ export default class signupDialog extends React.Component {
       />,
       <FlatButton
         label="Cancel"
-        primary={true}
+        secondary={true}
         keyboardFocused={true}
         onTouchTap={this.handleClose}
       />,
@@ -48,7 +52,8 @@ export default class signupDialog extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          style = {style}
+          bodyStyle = {style.body}
+          contentStyle = {style.content}
         >
         <TextField hintText="Username" floatingLabelText="Username"/>
         <br />
