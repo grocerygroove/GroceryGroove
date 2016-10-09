@@ -14,5 +14,6 @@ module.exports = {
         require("./routes/households"),
         require("./routes/users"),
         require("./routes/items"),
+        require("./routes/api"),
     ],
 };
