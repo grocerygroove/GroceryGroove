@@ -16,6 +16,5 @@ npm-debug.log
 /apps/webclient/dist/swagger.json
 /apps/api/swagger.json
 
-
 /etc/rambler/*
 !/etc/rambler/.gitkeep

@@ -34,6 +34,7 @@
     "koa-cors": "0.0.16",
     "koa-json-body": "^5.0.0",
     "koa-router": "^7.0.1",
+    "koa-static": "^2.0.0",
     "moment": "^2.13.0",
     "pg": "^6.1.0",
     "require-string-as-file": "^1.0.1",

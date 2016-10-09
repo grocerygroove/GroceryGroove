@@ -6,6 +6,7 @@ const createJsonBodyParser = require("koa-json-body");
 const createKoaCorsMw = require("koa-cors");
 const createRequestIdentifier = require("../middleware/create-request-identifier");
 const createResponseTimer = require("../middleware/create-response-timer");
+const createKoaStatic = require("koa-static");
 const createKoaRouter = require("koa-router");
 const Koa = require('koa');
 const rootGroup = require("./routes");
@@ -91,6 +92,11 @@ module.exports = function createCallback (services) {
                 "OPTIONS",
             ],
     }));
+    koaApp.use(createKoaStatic(
+        "/opt/api/swagger",
+        {
+            defer: true,
+        }));
     koaApp.use(router.routes());
 
     return koaApp.callback();

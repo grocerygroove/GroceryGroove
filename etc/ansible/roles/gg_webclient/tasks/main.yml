@@ -7,6 +7,3 @@
   command: npm run browserpack
   args:
     chdir: "{{ webcode_path }}"
-
-- name: Generate swagger json
-  shell: "node {{ api_path }}/bin/create-swagger-json.js > {{ webcode_path }}/dist/swagger.json"

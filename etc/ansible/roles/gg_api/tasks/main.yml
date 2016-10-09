@@ -10,3 +10,7 @@
 
 - name: install the dotenv file
   command: mv /tmp/ansible-dotenv {{ api_path }}/.env
+
+- name: Generate swagger json
+  shell: "node {{ api_path }}/bin/create-swagger-json.js > {{ api_path }}/swagger/swagger.json"
+
