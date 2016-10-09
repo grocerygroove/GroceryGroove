@@ -10,10 +10,6 @@ const createKoaRouter = require("koa-router");
 const Koa = require('koa');
 const rootGroup = require("./routes");
 
-const callback = (req) => {
-    return true;
-};
-
 module.exports = function createCallback (services) {
     services = applyDefaults(services, {
         householdExtractorMw: createHouseholdExtractor(services.logger),
