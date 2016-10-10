@@ -4,10 +4,11 @@ const createUserExtractor = require("../middleware/create-user-extractor");
 const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
 const createKoaCorsMw = require("koa-cors");
+const createKoaRouter = require("koa-router");
+const createKoaStatic = require("koa-static");
 const createRequestIdentifier = require("../middleware/create-request-identifier");
 const createResponseTimer = require("../middleware/create-response-timer");
-const createKoaStatic = require("koa-static");
-const createKoaRouter = require("koa-router");
+const createSwagger = require("./create-swagger");
 const Koa = require('koa');
 const rootGroup = require("./routes");
 
@@ -40,6 +41,12 @@ module.exports = function createCallback (services) {
             }
         }
 
+        const method = route.method.toLowerCase();
+        const path = route.path;
+        if (!router[method]) {
+            throw new Error(`invalid method "${ route.method }"`);
+        }
+
         // Collect all of the route's middlewares in order they are requested.
         const middlewares = route.middlewares.map(name => {
             const serviceName = `${ name }Mw`;
@@ -55,7 +62,7 @@ module.exports = function createCallback (services) {
         // loop and some object lookups, and it allows us to do stuff like
         // automatically subclass the logger instance and give it the route
         // and request information.
-        router[route.method.toLowerCase()](route.path, ...middlewares, (ctx, next) => {
+        router[method](path, ...middlewares, (ctx, next) => {
             const deps = [];
             for (const name of route.deps) {
                 switch (name) {
@@ -79,6 +86,9 @@ module.exports = function createCallback (services) {
         });
     }
 
+    const swaggerObject = createSwagger(rootGroup);
+    router.get("/swagger.json", (ctx, next) => ctx.body = swaggerObject);
+
     const koaApp = new Koa();
 
     //WHY DOES THIS WORK BUT NOT THE ABOVE?
@@ -92,11 +102,9 @@ module.exports = function createCallback (services) {
                 "OPTIONS",
             ],
     }));
-    koaApp.use(createKoaStatic(
-        "/opt/api/swagger",
-        {
-            defer: true,
-        }));
+    koaApp.use(createKoaStatic(`${ __dirname }/../public`, {
+        defer: true,
+    }));
     koaApp.use(router.routes());
 
     return koaApp.callback();
