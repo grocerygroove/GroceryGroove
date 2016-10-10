@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const getRoute = require("../route-tools/get-route");
+const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const tap = require("tap");
@@ -17,42 +17,48 @@ tap.test("server/routes/grocery-lists", tap => {
         yield a(function* () {
 
             const ctx = {
+                body: {
+                },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/get-all") {
+                                return [
+                                    {
+                                        "grocery_list_id": 1,
+                                        "created_by_id": 1,
+                                        "name": "Test Grocery List One",
+                                        "created_at": "1998-01-01",
+                                        "completed_at": void(0),
+                                        "last_touched": "1999-01-01",
+                                    },
+                                    {
+                                        "grocery_list_id": 2,
+                                        "created_by_id": 2,
+                                        "name": "Test Grocery List Two",
+                                        "created_at": "1999-01-01",
+                                        "completed_at": void(0),
+                                        "last_touched": "2000-01-01",
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     householdId: 1,
                     userId: 1,
                 },
-                body: {},
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/get-all") {
-                        return [
-                            {
-                                "grocery_list_id": 1,
-                                "created_by_id": 1,
-                                "name": "Test Grocery List One",
-                                "created_at": "1998-01-01",
-                                "completed_at": void(0),
-                                "last_touched": "1999-01-01",
-                            },
-                            {
-                                "grocery_list_id": 2,
-                                "created_by_id": 2,
-                                "name": "Test Grocery List Two",
-                                "created_at": "1999-01-01",
-                                "completed_at": void(0),
-                                "last_touched": "2000-01-01",
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.grocery_lists;
             const expected = [
@@ -86,35 +92,42 @@ tap.test("server/routes/grocery-lists", tap => {
         yield a(function* () {
 
             const ctx = {
+                body: {
+                },
+
+                id: "1",
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/get-one") {
+                                return [
+                                        {
+                                            "grocery_list_id": 1,
+                                            "created_by_id": 1,
+                                            "name": "Test Grocery List One",
+                                            "created_at": "1998-01-01",
+                                            "completed_at": void(0),
+                                            "last_touched": "1999-01-01",
+                                        },
+                                    ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     householdId: 1,
                     userId: 1,
                 },
-                body: {},
-                id: "1",
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/get-one") {
-                        return [
-                                {
-                                    "grocery_list_id": 1,
-                                    "created_by_id": 1,
-                                    "name": "Test Grocery List One",
-                                    "created_at": "1998-01-01",
-                                    "completed_at": void(0),
-                                    "last_touched": "1999-01-01",
-                                },
-                            ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
 
             const actual = ctx.body.grocery_list;
@@ -133,37 +146,44 @@ tap.test("server/routes/grocery-lists", tap => {
         yield a(function* () {
 
             const ctx = {
+                body: {
+                },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/get-one") {
+                                return [
+                                        {
+                                            "grocery_list_id": 1,
+                                            "created_by_id": 1,
+                                            "name": "Test Grocery List One",
+                                            "created_at": "1998-01-01",
+                                            "completed_at": void(0),
+                                            "last_touched": "1999-01-01",
+                                        },
+                                    ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     householdId: 1,
                     userId: 1,
                 },
-                body: {},
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/get-one") {
-                        return [
-                                {
-                                    "grocery_list_id": 1,
-                                    "created_by_id": 1,
-                                    "name": "Test Grocery List One",
-                                    "created_at": "1998-01-01",
-                                    "completed_at": void(0),
-                                    "last_touched": "1999-01-01",
-                                },
-                            ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
 
             const actual = ctx.status;
@@ -175,38 +195,46 @@ tap.test("server/routes/grocery-lists", tap => {
        yield a(function* () {
 
             const ctx = {
+                body: {
+                },
+
+                id: "notadigit",
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/get-one") {
+                                return [
+                                        {
+                                            "grocery_list_id": 1,
+                                            "created_by_id": 1,
+                                            "name": "Test Grocery List One",
+                                            "created_at": "1998-01-01",
+                                            "completed_at": void(0),
+                                            "last_touched": "1999-01-01",
+                                        },
+                                    ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     householdId: 1,
                     userId: 1,
                 },
-                body: {},
+
                 throw: (status) => {
                     ctx.status = status;
                 },
-                id: "notadigit",
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/get-one") {
-                        return [
-                                {
-                                    "grocery_list_id": 1,
-                                    "created_by_id": 1,
-                                    "name": "Test Grocery List One",
-                                    "created_at": "1998-01-01",
-                                    "completed_at": void(0),
-                                    "last_touched": "1999-01-01",
-                                },
-                            ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
 
             const actual = ctx.status;
@@ -224,34 +252,41 @@ tap.test("server/routes/grocery-lists", tap => {
         yield a(function* () {
 
             const ctx = {
-                state: {
-                    householdId: 1,
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 request: {
                     body: {
                         name: "Test List",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    householdId: 1,
+                    userId: 1,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/add-one") {
-                        return [
-                            {
-                                "grocery_list_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.grocery_list_id;
             const expected = 1;
@@ -263,33 +298,41 @@ tap.test("server/routes/grocery-lists", tap => {
         yield a(function* () {
 
             const ctx = {
-                state: {
-                    householdId: 1,
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 request: {
                     body: {
                         name: "Test List",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/add-one") {
+                                throw new DuplicateNameError();
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    householdId: 1,
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/add-one") {
-                        throw new DuplicateNameError();
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
@@ -301,31 +344,39 @@ tap.test("server/routes/grocery-lists", tap => {
         yield a(function* () {
 
             const ctx = {
-                state: {
-                    householdId: 1,
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 request: {
                     body: {
                         name: "Test List",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/add-one") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    householdId: 1,
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/add-one") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
 
             yield handler(db, logger, ctx, next);
 
@@ -343,11 +394,11 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "1",
+
                 request: {
                     body: {
                         "item_id": "1",
@@ -355,24 +406,32 @@ tap.test("server/routes/grocery-lists", tap => {
                         "quantity": "2",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.grocery_list_item_id;
             const expected = 1;
@@ -382,37 +441,46 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "1",
+
                 request: {
                     body: {
                         "quantity_type_id": "1",
                         "quantity": "2",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -422,11 +490,11 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "1",
+
                 request: {
                     body: {
                         "item_id": "notadigit",
@@ -434,26 +502,35 @@ tap.test("server/routes/grocery-lists", tap => {
                         "quantity": "2",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -463,37 +540,46 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "1",
+
                 request: {
                     body: {
                         "item_id": "1",
                         "quantity": "2",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -503,11 +589,11 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "1",
+
                 request: {
                     body: {
                         "item_id": "1",
@@ -515,26 +601,35 @@ tap.test("server/routes/grocery-lists", tap => {
                         "quantity": "2",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -544,37 +639,46 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "1",
+
                 request: {
                     body: {
                         "item_id": "1",
                         "quantity_type_id": "1",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                }
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -584,11 +688,11 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "1",
+
                 request: {
                     body: {
                         "item_id": "1",
@@ -596,26 +700,35 @@ tap.test("server/routes/grocery-lists", tap => {
                         "quantity": "notadigit",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -626,10 +739,9 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 request: {
                     body: {
                         "item_id": "1",
@@ -637,26 +749,35 @@ tap.test("server/routes/grocery-lists", tap => {
                         "quantity": "2",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -666,11 +787,11 @@ tap.test("server/routes/grocery-lists", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
-                body: {},
+
                 id: "grocList",
+
                 request: {
                     body: {
                         "item_id": "1",
@@ -678,26 +799,35 @@ tap.test("server/routes/grocery-lists", tap => {
                         "quantity": "2",
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "grocery-lists/items/add-one") {
+                                return [
+                                    {
+                                        "grocery_list_item_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: (status) => {
                     ctx.status = status;
                 },
             };
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "grocery-lists/items/add-one") {
-                        return [
-                            {
-                                "grocery_list_item_id": 1,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 

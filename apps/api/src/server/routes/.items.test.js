@@ -16,9 +16,6 @@ tap.test("server/routes/items", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    householdId: 2,
-                },
                 request: {
                     body: {
                         "name": "Chicken",
@@ -26,24 +23,32 @@ tap.test("server/routes/items", tap => {
                         "description": void(0),
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "items/add-and-categorize-one") {
+                                return [
+                                    {
+                                        "item_id": 2,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    householdId: 2,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "items/add-and-categorize-one") {
-                        return [
-                            {
-                                "item_id": 2,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.item_id;
             const expected = 2;
@@ -54,36 +59,42 @@ tap.test("server/routes/items", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    householdId: 2,
-                },
                 request: {
                     body: {
                         "category_id": 2,
                         "description": void(0),
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "items/add-and-categorize-one") {
+                                return [
+                                    {
+                                        "item_id": 2,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    householdId: 2,
+                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "items/add-and-categorize-one") {
-                        return [
-                            {
-                                "item_id": 2,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
@@ -94,36 +105,42 @@ tap.test("server/routes/items", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    householdId: 2,
-                },
                 request: {
                     body: {
                         "name": "Chicken",
                         "description": void(0),
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "items/add-and-categorize-one") {
+                                return [
+                                    {
+                                        "item_id": 2,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    householdId: 2,
+                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "items/add-and-categorize-one") {
-                        return [
-                            {
-                                "item_id": 2,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
@@ -135,9 +152,6 @@ tap.test("server/routes/items", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    householdId: 2,
-                },
                 request: {
                     body: {
                         "name": "Chicken",
@@ -145,23 +159,32 @@ tap.test("server/routes/items", tap => {
                         "description": void(0),
                     },
                 },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "items/add-and-categorize-one") {
+                                throw new DuplicateNameError();
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    householdId: 2,
+                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "items/add-and-categorize-one") {
-                        throw new DuplicateNameError();
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;

@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const getRoute = require("../route-tools/get-route");
+const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const tap = require("tap");
 
@@ -10,34 +10,40 @@ tap.test("server/routes/households", tap => {
     };
     const next = () => {};
 
-
     tap.test("GET /households", a(function* (tap) {
         yield a(function* () {
             const handler = getRoute(rootGroup, "GET", "/households").handler;
+
             const ctx = {
+                body: {
+                },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "households/get-household-info") {
+                                return [
+                                    {
+                                        "name": "Test House",
+                                        "admin": "testadmin@test.com",
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     householdId: 1,
                 },
-                body: {},
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "households/get-household-info") {
-                        return [
-                            {
-                                "name": "Test House",
-                                "admin": "testadmin@test.com",
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.body.household_info;
             const expected = {
                 name: "Test House",
@@ -55,33 +61,40 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
+
                 request: {
                     body: {
                         name: "Household Name",
                     },
                 },
-                body: {},
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/add-one") {
+                                    return [
+                                        {
+                                            "household_id": 3,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/add-one") {
-                            return [
-                                {
-                                    "household_id": 3,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.household_id;
             const expected = 3;
@@ -92,34 +105,42 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
+                body: {
                 },
+
                 request: {
                     body: {},
                 },
-                body: {},
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/add-one") {
+                                    return [
+                                        {
+                                            "household_id": 3,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/add-one") {
-                            return [
-                                {
-                                    "household_id": 3,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
@@ -136,37 +157,43 @@ tap.test("server/routes/households", tap => {
         yield a(function* () {
             const handler = getRoute(rootGroup, "GET", "/households/users").handler;
             const ctx = {
+                body: {
+                },
+
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/get-users-in-household") {
+                                return [
+                                    {
+                                        "user_id": 1,
+                                        "identifier": "test@test.com",
+                                    },
+                                    {
+                                        "user_id": 2,
+                                        "identifier": "deviceID123467",
+                                    },
+                                    {
+                                        "user_id": 3,
+                                        "identifier": "test2@test123.com",
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     householdId: 1,
                 },
-                body: {},
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/get-users-in-household") {
-                        return [
-                            {
-                                "user_id": 1,
-                                "identifier": "test@test.com",
-                            },
-                            {
-                                "user_id": 2,
-                                "identifier": "deviceID123467",
-                            },
-                            {
-                                "user_id": 3,
-                                "identifier": "test2@test123.com",
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.household_users;
             const expected = [
@@ -195,33 +222,37 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
-                    householdId: 1,
-                },
                 request: {
                     body: {
                         "user_id": 1,
                     },
                 },
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/remove-user") {
+                                    return [
+                                        {
+                                            "deleted_count": 1,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/remove-user") {
-                            return [
-                                {
-                                    "deleted_count": 1,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
-
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 200;
@@ -231,34 +262,40 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
+                request: {
+                    body: { },
+                },
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/remove-user") {
+                                    return [
+                                        {
+                                            "deleted_count": 0,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     userId: 1,
                     householdId: 1,
                 },
-                request: {
-                    body: { },
-                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/remove-user") {
-                            return [
-                                {
-                                    "deleted_count": 0,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
@@ -268,36 +305,42 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
-                    householdId: 1,
-                },
                 request: {
                     body: {
                         "user_id": 1,
                     },
                 },
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/remove-user") {
+                                    return [
+                                        {
+                                            "deleted_count": 0,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/remove-user") {
-                            return [
-                                {
-                                    "deleted_count": 0,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 401;
@@ -312,33 +355,38 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
-                    householdId: 1,
-                },
                 request: {
                     body: {
                         "user_id": 1,
                     },
                 },
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/set-administrator") {
+                                    return [
+                                        {
+                                            "updated_count": 1,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/set-administrator") {
-                            return [
-                                {
-                                    "updated_count": 1,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 200;
@@ -349,36 +397,42 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
-                state: {
-                    userId: 1,
-                    householdId: 1,
-                },
                 request: {
                     body: {
                         "user_id": 1,
                     },
                 },
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/set-administrator") {
+                                    return [
+                                        {
+                                            "updated_count": 0,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
+                state: {
+                    userId: 1,
+                    householdId: 1,
+                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/set-administrator") {
-                            return [
-                                {
-                                    "updated_count": 0,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 401;
@@ -389,34 +443,40 @@ tap.test("server/routes/households", tap => {
 
         yield a(function* () {
             const ctx = {
+                request: {
+                    body: {},
+                },
+
+                services: {
+                    db: {
+                            query: a(function* (logger, {
+                                name,
+                            }) {
+                                if (name === "households/set-administrator") {
+                                    return [
+                                        {
+                                            "updated_count": 0,
+                                        },
+                                    ];
+                                }
+                                return void(0);
+                        }),
+                    },
+                    logger,
+                },
+
                 state: {
                     userId: 1,
                     householdId: 1,
                 },
-                request: {
-                    body: {},
-                },
+
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
             };
 
-            const db = {
-                    query: a(function* (logger, {
-                        name,
-                    }) {
-                        if (name === "households/set-administrator") {
-                            return [
-                                {
-                                    "updated_count": 0,
-                                },
-                            ];
-                        }
-                        return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
