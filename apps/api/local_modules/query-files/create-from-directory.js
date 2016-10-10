@@ -1,10 +1,8 @@
-const a = require("../../utils/asyncify");
 const applyRowFilter = require("./apply-row-filter");
 const camelize = require("change-case").camelCase;
-const concat = require("../../utils/concat");
 const convertSqlError = require("./convert-sql-error");
-const isDirectory = require("../../utils/is-directory-sync");
-const makeParameterManager = require("../make-parameter-manager");
+const isDirectory = require("./is-directory-sync");
+const makeParameterManager = require("./make-parameter-manager");
 const readDirSync = require("fs").readdirSync;
 const readFileSync = require("fs").readFileSync;
 const requireStringAsFile = require("require-string-as-file");
@@ -18,6 +16,8 @@ const nf = function (name, func) {
 
     return func;
 };
+
+const concat = (...arrays) => [].concat(...arrays);
 
 /**
  * Helper function to help deal with the issue of having a
@@ -52,7 +52,11 @@ const collapseQueries = function (queries, name, item) {
     }
 };
 
-module.exports = function makeQueryFunctionsFromDirectory (parentFilenames, path) {
+module.exports = function createFromDirectory (parentFilenames, path) {
+    if (arguments.length === 1) {
+        return createFromDirectory([], parentFilenames);
+    }
+
     const retval = {};
     const assign = (name, item) => collapseQueries(retval, name, item);
 

@@ -6,20 +6,20 @@ module.exports = {
     path: "/quantity-types",
 
     middlewares: [
-        "jwtAuth",
-        "householdExtractor",
-        "userExtractor",
+        "authJwt",
+        "extractHouseholdId",
+        "extractUserId",
+    ],
+
+    services: [
+        "db",
+        "logger",
     ],
 
     routes: [
         {
             method: "get",
             path: "/",
-
-            deps: [
-                "db",
-                "logger",
-            ],
 
             produces: [
                 "application/json",
@@ -29,7 +29,9 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const userId = ctx.state.userId;
 
                 ctx.body = {
@@ -80,7 +82,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const householdId = ctx.state.householdId;
                 const singularName = ctx.request.body.singular_name;
                 const pluralName = ctx.request.body.plural_name;

@@ -6,16 +6,15 @@ module.exports = {
     path: "/grocery-lists",
 
     middlewares: [
-        "jwtAuth",
-        "householdExtractor",
-        "userExtractor",
+        "authJwt",
+        "extractHouseholdId",
+        "extractUserId",
     ],
 
-    deps: [
+    services: [
         "db",
         "logger",
     ],
-
 
     routes: [
         {
@@ -30,7 +29,8 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
 
                 ctx.body = {
                     "grocery_lists": yield queries.groceryLists.getAll(db, logger, [
@@ -63,7 +63,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 if (!ctx.id || !ctx.id.match(/^\d+$/)) {
                     ctx.throw(400, "Invalid or missing Grocery List id");
                 } else {
@@ -105,7 +107,9 @@ module.exports = {
                 401: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const userId = ctx.state.userId;
                 const householdId = ctx.state.householdId;
                 const name = ctx.request.body.name;
@@ -185,7 +189,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const userId = ctx.state.userId;
                 const itemId = ctx.request.body.item_id;
                 const quantityTypeId = ctx.request.body.quantity_type_id;

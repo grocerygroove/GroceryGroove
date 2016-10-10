@@ -5,12 +5,12 @@ module.exports = {
     path: "/login",
 
     middlewares: [
-        "jsonBodyParser",
+        "parseJsonBody",
     ],
 
-    deps: [
+    services: [
         "db",
-        "jwtService",
+        "jwt",
         "logger",
     ],
 
@@ -43,7 +43,9 @@ module.exports = {
                 403: {},
             },
 
-            handler: a(function* (db, jwtService, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, jwt, logger } = ctx.services;
+
                 const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
 
@@ -55,7 +57,7 @@ module.exports = {
 
                 if (userId) {
                     ctx.body = {
-                        token: jwtService.encode({
+                        token: jwt.encode({
                             "user_id": userId,
                         }),
                     };
@@ -87,7 +89,9 @@ module.exports = {
                 403: {},
             },
 
-            handler: a(function* (db, jwtService, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, jwt, logger } = ctx.services;
+
                 const deviceIdentifier = ctx.request.body.device_identifier;
 
                 const userId = yield queries.users.checkByDeviceIdentifier(db, logger, [
@@ -96,7 +100,7 @@ module.exports = {
 
                 if (userId) {
                     ctx.body = {
-                        token: jwtService.encode({
+                        token: jwt.encode({
                             "user_id": userId,
                         }),
                     };

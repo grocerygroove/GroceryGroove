@@ -6,10 +6,10 @@ module.exports = {
     path: "/signup",
 
     middlewares: [
-        "jsonBodyParser",
+        "parseJsonBody",
     ],
 
-    deps: [
+    services: [
         "db",
         "logger",
     ],
@@ -39,7 +39,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
 
@@ -78,7 +80,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const deviceIdentifier = ctx.request.body.device_identifier;
 
                 try {

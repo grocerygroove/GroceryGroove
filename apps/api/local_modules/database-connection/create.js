@@ -1,4 +1,3 @@
-const a = require("../utils/asyncify");
 const Pool = require("pg").Pool;
 
 const queryLogged = (function () {

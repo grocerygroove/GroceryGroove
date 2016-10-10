@@ -1,3 +1,5 @@
+"use strict";
+
 const collapseGroup = require("./collapse-group");
 
 module.exports = function getRoute (rootGroup, method, path) {

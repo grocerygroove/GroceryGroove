@@ -5,9 +5,9 @@ module.exports = {
     path: "/users",
 
     middlewares: [
-        "jwtAuth",
-        "jsonBodyParser",
-        "userExtractor",
+        "authJwt",
+        "parseJsonBody",
+        "extractUserId",
     ],
 
     deps: [
@@ -28,7 +28,9 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 ctx.body = {
                     households: yield queries.users.getUserHouseholds(db, logger, [
                         ctx.state.userId,
@@ -60,7 +62,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
 

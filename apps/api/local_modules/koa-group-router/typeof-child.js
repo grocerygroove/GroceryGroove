@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = function typeofChild (child) {
     if (!child.routes && child.handler) {
         return "route";

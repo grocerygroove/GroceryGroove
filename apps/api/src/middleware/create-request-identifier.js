@@ -4,7 +4,7 @@ module.exports = function createRequestIdentifier () {
     let currentId;
     currentId = 0;
 
-    const retval = a(function* requestIdentifier (ctx, next) {
+    const retval = a(function* identifyRequest (ctx, next) {
         currentId += 1;
 
         // Give the id to the request as a string because I could see this

@@ -1,11 +1,14 @@
+"use strict";
+
 const cleanRoute = require("./clean-route");
 const typeofChild = require("./typeof-child");
 
 module.exports = function cleanGroup (group) {
-    return {
-        path:        group.path || "/",
+    return Object.assign(Object.create(group), {
+        path:        group.path        || "/",
         middlewares: group.middlewares || [],
-        deps:        group.deps || [],
+        deps:        group.deps        || [],
+
         routes:      group.routes.map(item => {
             if (typeofChild(item) === "group") {
                 return cleanGroup(item);
@@ -15,5 +18,5 @@ module.exports = function cleanGroup (group) {
                 throw new Error(`expected valid item, got "${ typeofChild(item) }"`);
             }
         }),
-    };
+    });
 };

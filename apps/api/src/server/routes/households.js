@@ -5,13 +5,13 @@ module.exports = {
     path: "/households",
 
     middlewares: [
-        "jwtAuth",
-        "jsonBodyParser",
-        "householdExtractor",
-        "userExtractor",
+        "authJwt",
+        "parseJsonBody",
+        "extractHouseholdId",
+        "extractUserId",
     ],
 
-    deps: [
+    services: [
         "db",
         "logger",
     ],
@@ -29,9 +29,10 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
-                const householdId = ctx.state.householdId;
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
 
+                const householdId = ctx.state.householdId;
                 ctx.body = {
                     "household_info": yield queries.households.getHouseholdInfo(db, logger, [
                         householdId,
@@ -62,9 +63,10 @@ module.exports = {
             },
 
 
-            handler: a(function* (db, logger, ctx, next) {
-                const householdName = ctx.request.body.name;
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
 
+                const householdName = ctx.request.body.name;
                 if (!householdName) {
                     ctx.throw(400, "Must include household name in request body");
                 } else {
@@ -89,9 +91,10 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
-                const householdId = ctx.state.householdId;
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
 
+                const householdId = ctx.state.householdId;
                 ctx.body = {
                     "household_users": yield queries.users.getUsersInHousehold(db, logger, [
                         householdId,
@@ -119,9 +122,10 @@ module.exports = {
                 401: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
-                const userToRemove = ctx.request.body.user_id;
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
 
+                const userToRemove = ctx.request.body.user_id;
                 if (!userToRemove) {
                     ctx.throw(400, "Must include userId in request body");
                 } else {
@@ -159,9 +163,10 @@ module.exports = {
                 401: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
-                const userToPromote = ctx.request.body.user_id;
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
 
+                const userToPromote = ctx.request.body.user_id;
                 if (!userToPromote) {
                     ctx.throw(400, "Must include userId in request body");
                 } else {

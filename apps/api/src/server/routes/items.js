@@ -6,13 +6,13 @@ module.exports = {
     path: "/items",
 
     middlewares: [
-        "jwtAuth",
-        "jsonBodyParser",
-        "householdExtractor",
-        "userExtractor",
+        "authJwt",
+        "parseJsonBody",
+        "extractHouseholdId",
+        "extractUserId",
     ],
 
-    deps: [
+    services: [
         "db",
         "logger",
     ],
@@ -54,7 +54,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const itemName = ctx.request.body.name;
                 const itemDescription = ctx.request.body.description;
                 const categoryId = ctx.request.body.category_id;

@@ -6,25 +6,27 @@ module.exports = {
     path: "/categories",
 
     middlewares: [
-        "jwtAuth",
-        "householdExtractor",
-        "userExtractor",
+        "authJwt",
+        "extractHouseholdId",
+        "extractUserId",
+    ],
+
+    services: [
+        "db",
+        "logger",
     ],
 
     routes: [
         {
             method: "get",
 
-            deps: [
-                "db",
-                "logger",
-            ],
-
             responses: {
                 200: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 ctx.body = {
                     "category_names": yield queries.categories.getAllNames(db, logger, [
                         ctx.state.householdId,
@@ -35,10 +37,6 @@ module.exports = {
 
         {
             method: "post",
-            deps: [
-                "db",
-                "logger",
-            ],
 
             parameters: [
                 {
@@ -55,7 +53,9 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 const categoryName = ctx.request.body.name;
 
                 if (!categoryName) {
@@ -82,16 +82,14 @@ module.exports = {
         {
             method: "get",
             path: "/info",
-            deps: [
-                "db",
-                "logger",
-            ],
 
             responses: {
                 200: {},
             },
 
-            handler: a(function* (db, logger, ctx, next) {
+            handler: a(function* (ctx, next) {
+                const { db, logger } = ctx.services;
+
                 ctx.body = {
                     categories: yield queries.categories.getAll(db, logger, [
                         ctx.state.householdId,

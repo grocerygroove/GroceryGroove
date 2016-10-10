@@ -1,13 +1,17 @@
+"use strict";
+
 module.exports = function cleanRoute (route) {
     if (!route.method) {
         throw new Error("missing method");
     }
+    if (!route.handler) {
+        throw new Error("missing handler");
+    }
 
-    return {
+    return Object.assign({}, route, {
         method:      route.method.toUpperCase(),
-        path:        route.path || "/",
+        path:        route.path        || "/",
         middlewares: route.middlewares || [],
-        deps:        route.deps || [],
         handler:     route.handler,
-    };
+    });
 };

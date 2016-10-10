@@ -1,3 +1,3 @@
-const makeQueryFunctionsFromDirectory = require("./make-query-functions-from-directory");
+const createQueriesFromDirectory = require("query-files");
 
-module.exports = makeQueryFunctionsFromDirectory(`${ __dirname }/queries`);
+module.exports = createQueriesFromDirectory(`${ __dirname }/queries`);
