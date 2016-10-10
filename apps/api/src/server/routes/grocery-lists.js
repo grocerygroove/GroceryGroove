@@ -85,7 +85,7 @@ module.exports = {
             path: "/",
 
             middlewares: [
-                "jsonBodyParser",
+                "parseJsonBody",
             ],
 
             produces: [
@@ -149,7 +149,7 @@ module.exports = {
             path: "/:id/item",
 
             middlewares: [
-                "jsonBodyParser",
+                "parseJsonBody",
             ],
 
             produces: [

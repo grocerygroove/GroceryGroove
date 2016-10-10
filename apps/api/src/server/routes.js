@@ -9,28 +9,36 @@ const swaggerObject = function () {
 };
 
 module.exports = {
-    middlewares: [
-        "timeResponse",
-        "injectServices",
-        "identifyRequest",
-    ],
     routes: [
-        require("./routes/grocery-lists"),
-        require("./routes/categories"),
-        require("./routes/quantity-types"),
-        require("./routes/login"),
-        require("./routes/signup"),
-        require("./routes/households"),
-        require("./routes/users"),
-        require("./routes/items"),
+        {
+            middlewares: [
+                "timeResponse",
+                "injectServices",
+                "identifyRequest",
+            ],
+            routes: [
+                require("./routes/grocery-lists"),
+                require("./routes/categories"),
+                require("./routes/quantity-types"),
+                require("./routes/login"),
+                require("./routes/signup"),
+                require("./routes/households"),
+                require("./routes/users"),
+                require("./routes/items"),
+            ],
+        },
 
         {
-            method: "get",
-            path: "/swagger.json",
-            handler: function (ctx, next) {
-                ctx.body = swaggerObject();
-                return Promise.resolve();
-            },
+            routes: [
+                {
+                    method: "get",
+                    path: "/swagger.json",
+                    handler: function (ctx, next) {
+                        ctx.body = swaggerObject();
+                        return Promise.resolve();
+                    },
+                },
+            ],
         },
     ],
 };

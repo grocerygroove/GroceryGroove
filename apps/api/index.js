@@ -57,8 +57,8 @@ a(function* () {
 
     try {
         yield openHttpPort(8080, serverCallback);
-        logger.info("Server started on http://localhost:8080");
+        services.logger.info("Server started on http://localhost:8080");
     } catch (e) {
-        logger.error(e, "startup error");
+        services.logger.error(e, "startup error");
     }
 })();

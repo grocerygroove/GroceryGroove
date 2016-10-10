@@ -14,18 +14,18 @@ const joinPaths = (...paths) => `/${
 const merge = function (parent, child) {
     const retval = {};
 
-    for (const key of Object.keys(parent)) {
+    for (const key of Object.keys(parent).filter(k => k !== "routes")) {
         retval[key] = parent[key];
     }
 
-    for (const key of Object.keys(child)) {
+    for (const key of Object.keys(child).filter(k => k !== "routes")) {
         if (0) {
         } else if (Array.isArray(retval[key]) && Array.isArray(child[key])) {
             retval[key] = [].concat(retval[key], child[key]);
 
         } else if (1
             && (child[key] != null)
-            && (retvall[key] != null)
+            && (retval[key] != null)
             && (typeof child[key] === "object")
             && (typeof retval[key] === "object")
         ) {

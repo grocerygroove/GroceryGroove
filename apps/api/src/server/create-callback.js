@@ -1,5 +1,4 @@
 const applyDefaults = require("../utils/apply-defaults");
-const collapseRoutingGroup = require("./route-tools/collapse-group");
 const createCors = require("../middleware/create-cors");
 const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
@@ -23,7 +22,7 @@ module.exports = function createCallback (mode, services, middlewares) {
         serveStatic:        createStatic(),
         extractUserId:      createUserExtractor(services.logger),
 
-        injectServices:     createServiceInjector(services, function (ctx, next) {
+        injectServices:     createServiceInjector(services, function (ctx) {
             ctx.services.logger = ctx.services.logger.child({
                 "request_id": ctx.request.id,
                 "route": {
@@ -31,13 +30,11 @@ module.exports = function createCallback (mode, services, middlewares) {
                     "path": ctx.route.path,
                 },
             });
-
-            return next();
         }),
     });
 
     const koaApp = new Koa();
-    koaApp.use(createKoaGroupRouter(rootGroup));
+    koaApp.use(createKoaGroupRouter(rootGroup, middlewares));
 
     if (mode !== "production") {
         koaApp.use(middlewares.serveStatic);

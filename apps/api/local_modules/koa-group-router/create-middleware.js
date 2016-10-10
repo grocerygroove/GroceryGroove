@@ -15,7 +15,7 @@ module.exports = function createMiddleware (group, middlewares) {
             throw new Error(`invalid method "${ route.method }"`);
         }
 
-        const middlewares = [].concat(
+        const middlewareFunctions = [].concat(
             [ createRouteInjector(route) ],
             route.middlewares.map(name => {
                 if (!middlewares[name]) {
@@ -26,7 +26,7 @@ module.exports = function createMiddleware (group, middlewares) {
             })
         );
 
-        router[method](path, ...middlewares, route.handler);
+        router[method](path, ...middlewareFunctions, route.handler);
     }
 
     return router.routes();

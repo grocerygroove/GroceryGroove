@@ -1,4 +1,4 @@
-const InvalidRowFilterType = require("../../errors/invalid-row-filter-error");
+const InvalidRowFilterType = require("./invalid-row-filter-error");
 
 const rowFilters = {
     column: function (rows) {

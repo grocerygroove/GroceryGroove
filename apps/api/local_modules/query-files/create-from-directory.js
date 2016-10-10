@@ -66,7 +66,7 @@ module.exports = function createFromDirectory (parentFilenames, path) {
         if (isDirectory(pathname)) {
             const filenames = concat(parentFilenames, filename);
             const name = camelize(filename);
-            const queries = makeQueryFunctionsFromDirectory(filenames, pathname);
+            const queries = createFromDirectory(filenames, pathname);
 
             assign(name, queries);
         } else {

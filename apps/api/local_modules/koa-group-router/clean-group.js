@@ -4,10 +4,9 @@ const cleanRoute = require("./clean-route");
 const typeofChild = require("./typeof-child");
 
 module.exports = function cleanGroup (group) {
-    return Object.assign(Object.create(group), {
+    return Object.assign({}, group, {
         path:        group.path        || "/",
         middlewares: group.middlewares || [],
-        deps:        group.deps        || [],
 
         routes:      group.routes.map(item => {
             if (typeofChild(item) === "group") {
