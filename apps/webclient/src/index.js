@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
+import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import LoginComponent from './components/login';
@@ -11,7 +11,7 @@ const styles = {
   container: {
     textAlign: 'center',
     paddingTop: 200,
-    backgroundColor: '#29B6F6',
+    backgroundColor: lightBlue700,
     height: '100%',
     width: '100%',
   },
