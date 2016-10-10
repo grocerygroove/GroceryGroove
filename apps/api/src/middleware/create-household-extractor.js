@@ -5,7 +5,7 @@ module.exports = function createHouseholdExtractor (logger) {
         "middleware": "household-extractor",
     });
 
-    return a(function* householdExtractor (ctx, next) {
+    const retval = a(function* householdExtractor (ctx, next) {
         if (ctx.query.household_id && ctx.query.household_id.match(/^\d+$/)) {
             ctx.state.householdId = parseInt(ctx.query.household_id, 10);
 
@@ -21,4 +21,18 @@ module.exports = function createHouseholdExtractor (logger) {
             ctx.body = "Invalid household_id";
         }
     });
+
+    retval.swagger = module.exports.swagger;
+    return retval;
+};
+
+module.exports.swagger = {
+    parameters: [
+        {
+            name: "household_id",
+            in: "path",
+            required: true,
+            type: "integer",
+        },
+    ],
 };

@@ -5,7 +5,7 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
         "middleware": "jwt_auth",
     });
 
-    return a(function* jwtAuth (ctx, next) {
+    const retval = a(function* jwtAuth (ctx, next) {
         try {
             ctx.state.token = jwtService.decode(getCurrentTime(), ctx.query.token);
         } catch (error) {
@@ -22,4 +22,18 @@ module.exports = function createJwtAuth (jwtService, logger, getCurrentTime) {
 
         yield next();
     });
+
+    retval.swagger = module.exports.swagger;
+    return retval;
 };
+
+module.exports.swagger = {
+    parameters: [
+        {
+            name: "token",
+            in: "path",
+            required: true,
+            type: "string",
+        },
+    ],
+}

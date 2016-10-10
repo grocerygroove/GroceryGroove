@@ -6,11 +6,17 @@ const a = require("../utils/asyncify");
 const hrtimeToMilliseconds = require("../utils/hrtime-to-milliseconds");
 
 module.exports = function createResponseTimer () {
-    return a(function* responseTimer (ctx, next) {
+    const retval = a(function* responseTimer (ctx, next) {
         const startHrtime = process.hrtime();
         yield next();
         const durationHrtime = process.hrtime(startHrtime);
 
         ctx.response.set("X-Response-Time", `${ hrtimeToMilliseconds(durationHrtime) }ms`);
     });
+
+    retval.swagger = module.exports.swagger;
+    return retval;
+};
+
+module.exports.swagger = {
 };

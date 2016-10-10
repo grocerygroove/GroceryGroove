@@ -4,7 +4,7 @@ module.exports = function createRequestIdentifier () {
     let currentId;
     currentId = 0;
 
-    return a(function* requestIdentifier (ctx, next) {
+    const retval = a(function* requestIdentifier (ctx, next) {
         currentId += 1;
 
         // Give the id to the request as a string because I could see this
@@ -15,4 +15,10 @@ module.exports = function createRequestIdentifier () {
 
         yield next();
     });
+
+    retval.swagger = module.exports.swagger;
+    return retval;
+};
+
+module.exports.swagger = {
 };
