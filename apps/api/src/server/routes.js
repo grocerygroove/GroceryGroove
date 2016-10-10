@@ -4,6 +4,7 @@ module.exports = {
     middlewares: [
         "responseTimer",
         "requestIdentifier",
+        "cors",
     ],
     routes: [
         require("./routes/grocery-lists"),

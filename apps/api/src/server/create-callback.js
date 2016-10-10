@@ -1,34 +1,26 @@
 const applyDefaults = require("../utils/apply-defaults");
 const collapseRoutingGroup = require("./route-tools/collapse-group");
-const createUserExtractor = require("../middleware/create-user-extractor");
+const createCors = require("../middleware/create-cors");
 const createHouseholdExtractor = require("../middleware/create-household-extractor");
 const createJsonBodyParser = require("koa-json-body");
-const createKoaCorsMw = require("koa-cors");
 const createKoaRouter = require("koa-router");
-const createKoaStatic = require("koa-static");
 const createRequestIdentifier = require("../middleware/create-request-identifier");
 const createResponseTimer = require("../middleware/create-response-timer");
+const createStatic = require("../middleware/create-static");
+const createUserExtractor = require("../middleware/create-user-extractor");
 const createSwagger = require("./create-swagger");
 const Koa = require('koa');
 const rootGroup = require("./routes");
 
 module.exports = function createCallback (services) {
     services = applyDefaults(services, {
+        corsMw:               createCors(),
         householdExtractorMw: createHouseholdExtractor(services.logger),
         jsonBodyParserMw:     createJsonBodyParser(),
         requestIdentifierMw:  createRequestIdentifier(),
         responseTimerMw:      createResponseTimer(),
+        staticMw:             createStatic(),
         userExtractorMw:      createUserExtractor(services.logger),
-        // corsMw:               createKoaCorsMw({
-        //                                         origin: "*",
-        //                                         methods: [
-        //                                             "PUT",
-        //                                             "POST",
-        //                                             "GET",
-        //                                             "DELETE",
-        //                                             "OPTIONS",
-        //                                         ],
-        //                                     }),
     });
 
     const router = createKoaRouter();
@@ -64,7 +56,7 @@ module.exports = function createCallback (services) {
         // and request information.
         router[method](path, ...middlewares, (ctx, next) => {
             const deps = [];
-            for (const name of route.deps) {
+            for (const name of route.services) {
                 switch (name) {
                     case "logger":
                         deps.push(services.logger.child({
@@ -87,25 +79,13 @@ module.exports = function createCallback (services) {
     }
 
     const swaggerObject = createSwagger(rootGroup);
-    router.get("/swagger.json", (ctx, next) => ctx.body = swaggerObject);
+    router.get("/swagger.json", a(function* (ctx, next) {
+        ctx.body = swaggerObject;
+    }));
 
     const koaApp = new Koa();
-
-    //WHY DOES THIS WORK BUT NOT THE ABOVE?
-    koaApp.use(createKoaCorsMw({
-            origin: "*",
-            methods: [
-                "PUT",
-                "POST",
-                "GET",
-                "DELETE",
-                "OPTIONS",
-            ],
-    }));
-    koaApp.use(createKoaStatic(`${ __dirname }/../public`, {
-        defer: true,
-    }));
     koaApp.use(router.routes());
+    koaApp.use(middlewares.staticMw);
 
     return koaApp.callback();
 };
