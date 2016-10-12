@@ -1,6 +1,6 @@
 const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
-const getRoute = require("../route-tools/get-route");
+const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const tap = require("tap");
 

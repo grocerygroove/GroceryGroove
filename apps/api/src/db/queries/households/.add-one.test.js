@@ -1,7 +1,7 @@
 require('dotenv').load();
 global.Promise = require("bluebird");
 const a = require("../../../utils/asyncify");
-const makeDatabaseReal = require("../../make-database");
+const makeDatabaseReal = require("database-connection");
 const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
 const queries = require("../../queries");

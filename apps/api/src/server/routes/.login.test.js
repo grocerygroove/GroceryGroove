@@ -1,12 +1,12 @@
 const a = require("../../utils/asyncify");
-const getRoute = require("../route-tools/get-route");
+const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const tap = require("tap");
 
 tap.test("server/routes/login", tap => {
     const logger = {
         info: () => {},
-        child: () => { return logger; },
+        child: () => logger,
     };
     const next = () => {};
     const jwtService = {
@@ -27,24 +27,27 @@ tap.test("server/routes/login", tap => {
                         password: "testpass",
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/check-by-email") {
+                                return [
+                                    {
+                                        "user_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                    jwt: jwtService,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/check-by-email") {
-                        return [
-                            {
-                                "user_id": 1,
-                            },
-                         ];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, jwtService, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.token.data;
             const expected = {
@@ -62,20 +65,24 @@ tap.test("server/routes/login", tap => {
                         password: "testpass",
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/check-by-email") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                    jwt: jwtService,
+                },
+
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/check-by-email") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, jwtService, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 403;
@@ -99,24 +106,28 @@ tap.test("server/routes/login", tap => {
                         "device_identifier": "testdeviceid",
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/check-by-device-identifier") {
+                                return [
+                                    {
+                                        "user_id": 1,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                    jwt: jwtService,
+                },
+
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/check-by-device-identifier") {
-                        return [
-                            {
-                                "user_id": 1,
-                            },
-                         ];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, jwtService, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.token.data;
             const expected = {
@@ -133,20 +144,23 @@ tap.test("server/routes/login", tap => {
                         "device_identifier": "testdeviceid",
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/check-by-device-identifier") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                    jwt: jwtService,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/check-by-device-identifier") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, jwtService, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 403;

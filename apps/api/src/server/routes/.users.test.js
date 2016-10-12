@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const getRoute = require("../route-tools/get-route");
+const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const tap = require("tap");
 
@@ -7,7 +7,7 @@ tap.test("server/routes/users", tap => {
 
     const logger = {
         info: () => {},
-        child: () => { return logger; },
+        child: () => logger,
     };
     const next = () => {};
 
@@ -20,30 +20,33 @@ tap.test("server/routes/users", tap => {
                 state: {
                     userId: 1,
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/get-user-households") {
+                                return [
+                                    {
+                                        "household_id": 1,
+                                    },
+                                    {
+                                        "household_id": 2,
+                                    },
+                                    {
+                                        "household_id": 3,
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/get-user-households") {
-                        return [
-                            {
-                                "household_id": 1,
-                            },
-                            {
-                                "household_id": 2,
-                            },
-                            {
-                                "household_id": 3,
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.body.households;
             const expected = [
@@ -76,20 +79,23 @@ tap.test("server/routes/users", tap => {
                         password: "testpassword",
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/convert-to-full-account") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/convert-to-full-account") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 200;
@@ -110,20 +116,23 @@ tap.test("server/routes/users", tap => {
                 throw: function (statusCode) {
                     this.status = statusCode;
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/convert-to-full-account") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/convert-to-full-account") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
@@ -144,20 +153,22 @@ tap.test("server/routes/users", tap => {
                 throw: function (statusCode) {
                     this.status = statusCode;
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/convert-to-full-account") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/convert-to-full-account") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;

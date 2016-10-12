@@ -1,7 +1,7 @@
 const a = require("./asyncify");
 const execp = require("./execp");
 const queries = require("../db/queries");
-const makeDatabaseReal = require("../db/make-database");
+const makeDatabaseReal = require("database-connection");
 const defaultTestUser = require("./default-test-user");
 
 const makeDatabase = makeDatabaseReal.bind(null, {

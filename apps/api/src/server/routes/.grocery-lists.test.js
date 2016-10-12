@@ -378,7 +378,7 @@ tap.test("server/routes/grocery-lists", tap => {
             };
 
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 401;
@@ -667,7 +667,7 @@ tap.test("server/routes/grocery-lists", tap => {
                         }),
                     },
                     logger,
-                }
+                },
 
                 state: {
                     userId: 1,

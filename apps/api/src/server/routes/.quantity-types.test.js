@@ -1,13 +1,13 @@
 const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
-const getRoute = require("../route-tools/get-route");
+const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const tap = require("tap");
 
 tap.test("server/routes/quantity-types", tap => {
     const logger = {
         info: () => {},
-        child: () => { return logger; },
+        child: () => logger,
     };
     const next = () => {};
 
@@ -19,45 +19,48 @@ tap.test("server/routes/quantity-types", tap => {
                 state: {
                     userId: 1,
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "quantity-types/get-all") {
+                                return [
+                                    {
+                                        "quantity_type_id": 1,
+                                        "singular_name": "piece",
+                                        "plural_name": "pieces",
+                                        "singular_abbreviation": "pc",
+                                        "plural_abbreviation": "pcs",
+                                        "household_id": void(0),
+                                    },
+                                    {
+                                        "quantity_type_id": 2,
+                                        "singular_name": "cup",
+                                        "plural_name": "cups",
+                                        "singular_abbreviation": void(0),
+                                        "plural_abbreviation": void(0),
+                                        "household_id": void(0),
+                                    },
+                                    {
+                                        "quantity_type_id": 3,
+                                        "singular_name": "gallon",
+                                        "plural_name": "gallons",
+                                        "singular_abbreviation": "gal",
+                                        "plural_abbreviation": void(0),
+                                        "household_id": void(0),
+                                    },
+                                ];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "quantity-types/get-all") {
-                        return [
-                            {
-                                "quantity_type_id": 1,
-                                "singular_name": "piece",
-                                "plural_name": "pieces",
-                                "singular_abbreviation": "pc",
-                                "plural_abbreviation": "pcs",
-                                "household_id": void(0),
-                            },
-                            {
-                                "quantity_type_id": 2,
-                                "singular_name": "cup",
-                                "plural_name": "cups",
-                                "singular_abbreviation": void(0),
-                                "plural_abbreviation": void(0),
-                                "household_id": void(0),
-                            },
-                            {
-                                "quantity_type_id": 3,
-                                "singular_name": "gallon",
-                                "plural_name": "gallons",
-                                "singular_abbreviation": "gal",
-                                "plural_abbreviation": void(0),
-                                "household_id": void(0),
-                            },
-                        ];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.body.quantity_types;
             const expected = [
                             {
@@ -106,20 +109,23 @@ tap.test("server/routes/quantity-types", tap => {
                         "plural_abbreviation": void(0),
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "quantity-types/add-one") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "quantity-types/add-one") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 200;
 
@@ -142,20 +148,22 @@ tap.test("server/routes/quantity-types", tap => {
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "quantity-types/add-one") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "quantity-types/add-one") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 
@@ -178,20 +186,22 @@ tap.test("server/routes/quantity-types", tap => {
                 throw: statusCode => {
                     ctx.status = statusCode;
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "quantity-types/add-one") {
+                                throw new DuplicateNameError();
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "quantity-types/add-one") {
-                        throw new DuplicateNameError();
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
             const actual = ctx.status;
             const expected = 400;
 

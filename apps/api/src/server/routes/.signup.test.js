@@ -1,5 +1,5 @@
 const a = require("../../utils/asyncify");
-const getRoute = require("../route-tools/get-route");
+const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const tap = require("tap");
@@ -7,7 +7,7 @@ const tap = require("tap");
 tap.test("server/routes/signup", tap =>{
     const logger = {
         info: () => {},
-        child: () => { return logger; },
+        child: () => logger,
     };
     tap.test("POST /signup/by-email", a(function* (tap) {
         const next = () => {};
@@ -22,20 +22,22 @@ tap.test("server/routes/signup", tap =>{
                         password: "testpass",
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/create-user-and-household-by-email") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/create-user-and-household-by-email") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 200;
@@ -55,20 +57,23 @@ tap.test("server/routes/signup", tap =>{
                 throw: function (statusCode) {
                     this.status = statusCode;
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/create-user-and-household-by-email") {
+                                throw new DuplicateNameError();
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/create-user-and-household-by-email") {
-                        throw new DuplicateNameError();
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
@@ -89,20 +94,22 @@ tap.test("server/routes/signup", tap =>{
                         "device_identifier": "testIdentifier12356",
                     },
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                            name,
+                        }) {
+                            if (name === "users/create-user-and-household-by-device-identifier") {
+                                return [];
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                    name,
-                }) {
-                    if (name === "users/create-user-and-household-by-device-identifier") {
-                        return [];
-                    }
-                    return void(0);
-                }),
-            };
-
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 200;
@@ -121,20 +128,23 @@ tap.test("server/routes/signup", tap =>{
                 throw: function (statusCode) {
                     this.status = statusCode;
                 },
+                services: {
+                    db: {
+                        query: a(function* (logger, {
+                        name,
+                        }) {
+                            if (name === "users/create-user-and-household-by-device-identifier") {
+                                throw new DuplicateNameError();
+                            }
+                            return void(0);
+                        }),
+                    },
+                    logger,
+                },
             };
 
-            const db = {
-                query: a(function* (logger, {
-                   name,
-                }) {
-                    if (name === "users/create-user-and-household-by-device-identifier") {
-                        throw new DuplicateNameError();
-                    }
-                    return void(0);
-                }),
-            };
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;

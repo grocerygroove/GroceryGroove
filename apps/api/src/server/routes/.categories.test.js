@@ -131,7 +131,7 @@ tap.test("server/routes/categories", tap => {
             };
 
 
-            yield handler(db, logger, ctx, next);
+            yield handler(ctx, next);
 
             const actual = ctx.status;
             const expected = 400;
