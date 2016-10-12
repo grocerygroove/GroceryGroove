@@ -8,7 +8,6 @@ const createResponseTimer = require("../middleware/create-response-timer");
 const createServiceInjector = require("koa-service-injector");
 const createStatic = require("../middleware/create-static");
 const createUserExtractor = require("../middleware/create-user-extractor");
-const createSwagger = require("./create-swagger");
 const Koa = require('koa');
 const rootGroup = require("./routes");
 

@@ -1,5 +1,5 @@
 /* eslint-disable  global-require */
-
+const createSwagger = require("./create-swagger");
 let _swaggerObject = null;
 const swaggerObject = function () {
     if (_swaggerObject == null) {
@@ -36,6 +36,12 @@ module.exports = {
                     handler: function (ctx, next) {
                         ctx.body = swaggerObject();
                         return Promise.resolve();
+                    },
+                    produces: [
+                        "application/json",
+                    ],
+                    responses: {
+                        200: {},
                     },
                 },
             ],
