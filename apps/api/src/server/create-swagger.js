@@ -15,7 +15,8 @@ module.exports = function createSwagger (rootGroup) {
     const swaggerObject = getDefaultSwaggerObject();
 
     collapseGroup(rootGroup).forEach((route) => {
-        const tagName = route.path.substring(route.path.indexOf("/")+1);
+        const firstSlashStripped = route.path.substring(route.path.indexOf("/")+1);
+        const tagName = firstSlashStripped.indexOf("/") > -1 ? firstSlashStripped.substring(0, firstSlashStripped.indexOf("/")) : firstSlashStripped;
         route.method = route.method.toLowerCase();//This actually matters :(
 
         const swagTag = {

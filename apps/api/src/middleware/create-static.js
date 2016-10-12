@@ -1,7 +1,7 @@
 const koaStatic = require("koa-static");
 
 module.exports = function createStatic () {
-    const retval = koaStatic(`${ __dirname }/../public`, {
+    const retval = koaStatic(`${ __dirname }/../../public`, {
         defer: true,
     });
 
