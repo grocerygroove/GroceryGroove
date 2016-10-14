@@ -9,7 +9,6 @@ injectTapEventPlugin();
 
 const styles = {
   container: {
-    textAlign: 'center',
     paddingTop: 200,
     backgroundColor: lightBlue700,
     height: '100%',
@@ -17,7 +16,6 @@ const styles = {
   },
   h1: {
       color: '#FAFAFA',
-      textAlign: 'center',
   },
 };
 
@@ -45,9 +43,15 @@ class App extends Component {
   render() {
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
-            <div style={styles.container}>
-                <h1 style={styles.h1}>Grocery Groove</h1>
-                <LoginComponent />
+            <div className="row" style={styles.container}>
+                <div className="col-xs-12">
+                    <div className="row center-xs">
+                        <div className="col-sm-12 col-md-10 col-lg-4">
+                            <h1 style={styles.h1}>Grocery Groove</h1>
+                            <LoginComponent />
+                        </div>
+                    </div>
+                </div>
             </div>
         </MuiThemeProvider>
     );
