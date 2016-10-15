@@ -5,8 +5,18 @@ module.exports = {
     },
     parserOptions: {
         sourceType: "module",
+        ecmaFeatures: {
+            jsx: true,
+        },
     },
-
+    plugins: [
+        "fp",
+        "react",
+    ],
+    extends: [
+        "plugin:react/recommended",
+        "plugin:fp/recommended"
+    ],
     // rules should be in order of http://eslint.org/docs/rules
     rules: {
         // Possible Errors
@@ -171,6 +181,11 @@ module.exports = {
             "after": true,
         }],
         "space-before-blocks": ["error", "always"],
+
+
+        //fp
+
+        //react
 
     },
 };
