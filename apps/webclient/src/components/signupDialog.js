@@ -54,6 +54,7 @@ export default class signupDialog extends React.Component {
           onRequestClose={this.handleClose}
           bodyStyle = {style.body}
           contentStyle = {style.content}
+          autoScrollBodyContent={true}
         >
         <TextField hintText="Username" floatingLabelText="Username"/>
         <br />
