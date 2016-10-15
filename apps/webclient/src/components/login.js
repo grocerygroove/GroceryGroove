@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -13,13 +13,8 @@ const style = {
   },
 };
 
-class LoginComponent extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-  }
-
-  render() {
+const LoginComponent = React.createClass({
+  render: function() {
     return (
         <div>
             <TextField
@@ -43,7 +38,7 @@ class LoginComponent extends Component {
             </span>
         </div>
     );
-  }
-}
+  },
+});
 
 export default LoginComponent;

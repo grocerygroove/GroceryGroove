@@ -9,8 +9,7 @@ injectTapEventPlugin();
 
 const styles = {
   container: {
-    paddingTop: 200,
-    backgroundColor: lightBlue700,
+    paddingTop: 15,
     height: '100%',
     width: '100%',
   },
@@ -33,29 +32,23 @@ const muiTheme = getMuiTheme({
   },
 });
 
-
-class App extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-  }
-
-  render() {
-    return (
-        <MuiThemeProvider muiTheme={muiTheme}>
-            <div className="row" style={styles.container}>
-                <div className="col-xs-12">
-                    <div className="row center-xs">
-                        <div className="col-sm-12 col-md-10 col-lg-4">
-                            <h1 style={styles.h1}>Grocery Groove</h1>
-                            <LoginComponent />
+const App = React.createClass({
+    render: function() {
+        return (
+            <MuiThemeProvider muiTheme={muiTheme}>
+                <div className="row" style={styles.container}>
+                    <div className="col-xs-12">
+                        <div className="row center-xs">
+                            <div className="col-sm-12 col-md-10 col-lg-4">
+                                <h1 style={styles.h1}>Grocery Groove</h1>
+                                <LoginComponent />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </MuiThemeProvider>
-    );
-  }
-}
+            </MuiThemeProvider>
+        );
+    },
+});
 
 ReactDOM.render(<App />, document.getElementById('container'));
