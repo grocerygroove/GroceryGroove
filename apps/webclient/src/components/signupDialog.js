@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { greenA200 } from 'material-ui/styles/colors';
 //Redux
-const { setCredentials, toggleSignupDialog } = require('../actions/login_actions');
+const { toggleSignupDialog, setUsername, setPassword, setConfirmPassword, cancelSignup, spitStore } = require('../actions/signup_actions');
 
 const style = {
     body: {
@@ -19,7 +19,16 @@ const style = {
 
 class SignupDialog extends Component {
     render() {
-        const { signupDialogVisible, onSignupClick, toggleSignup } = this.props;
+        const {
+            signupDialogVisible,
+            onSignupClick,
+            setUsername,
+            setPassword,
+            setConfirmPassword,
+            toggleSignup,
+            cancelSignup,
+        } = this.props;
+
         const actions = [
         <FlatButton
             label="Ok"
@@ -31,10 +40,9 @@ class SignupDialog extends Component {
             label="Cancel"
             secondary={true}
             keyboardFocused={true}
-            onTouchTap={toggleSignup}
+            onTouchTap={cancelSignup}
         />,
         ];
-
         return (
         <div>
             <RaisedButton label="Signup" secondary={true} onTouchTap={toggleSignup} />
@@ -48,11 +56,25 @@ class SignupDialog extends Component {
             contentStyle = {style.content}
             autoScrollBodyContent={true}
             >
-            <TextField hintText="Username" floatingLabelText="Username"/>
+            <TextField
+                id= "Username"
+                hintText="Username"
+                floatingLabelText="Username"
+                onChange={setUsername}/>
             <br />
-            <TextField hintText="Password" floatingLabelText="Password" type="password"/>
+            <TextField
+                id= "Password"
+                hintText="Password"
+                floatingLabelText="Password"
+                type="password"
+                onChange={setPassword}/>
             <br />
-            <TextField hintText="Confirm Password" floatingLabelText="Confirm Password" type="password"/>
+            <TextField
+                id= "ConfirmPassword"
+                hintText="Confirm Password"
+                floatingLabelText="Confirm Password"
+                type="password"
+                onChange={setConfirmPassword}/>
             </Dialog>
         </div>
         );
@@ -62,22 +84,38 @@ class SignupDialog extends Component {
 SignupDialog.propTypes = {
     signupDialogVisible: PropTypes.bool.isRequired,
     onSignupClick: PropTypes.func.isRequired,
+    setUsername: PropTypes.func.isRequired,
+    setPassword: PropTypes.func.isRequired,
+    setConfirmPassword: PropTypes.func.isRequired,
+    cancelSignup: PropTypes.func.isRequired,
     toggleSignup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
-        signupDialogVisible: state.login.signupDialogVisible,
+        signupDialogVisible: state.signup.signupDialogVisible,
     });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onSignupClick: () => {
-            dispatch(toggleSignupDialog());
+            dispatch(spitStore());
         },
         toggleSignup: () => {
             dispatch(toggleSignupDialog());
+        },
+        cancelSignup: () => {
+            dispatch(cancelSignup());
+        },
+	    setUsername: (event) => {
+            dispatch(setUsername(event.target.value));
+        },
+	    setPassword: (event) => {
+            dispatch(setPassword(event.target.value));
+        },
+	    setConfirmPassword: (event) => {
+            dispatch(setConfirmPassword(event.target.value));
         },
     };
 };

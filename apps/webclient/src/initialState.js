@@ -1,5 +1,5 @@
 module.exports = {
-    login: {
+    signup: {
         signupDialogVisible: false,
     },
 };

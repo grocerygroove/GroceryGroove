@@ -5,10 +5,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import LoginComponent from './components/login';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-const initalState = require('./initialState');
-const ReactDOM = require('react-dom');
-const ggApp = require('./reducers/gg_app');
-const injectTapEventPlugin = require('react-tap-event-plugin');
+import initalState from './initialState';
+import ReactDOM from 'react-dom';
+import ggApp from './reducers/gg_app';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 const styles = {
@@ -39,8 +39,7 @@ const muiTheme = getMuiTheme({
 let store = createStore(ggApp, initalState);
 
 
-const App = React.createClass({
-    render: function() {
+const App = () => {
         return (
             <Provider store={store}>
                 <MuiThemeProvider muiTheme={muiTheme}>
@@ -57,7 +56,6 @@ const App = React.createClass({
                 </MuiThemeProvider>
             </Provider>
         );
-    },
-});
+};
 
 ReactDOM.render(<App />, document.getElementById('container'));
