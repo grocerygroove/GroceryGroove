@@ -14,8 +14,7 @@ module.exports = {
         "react",
     ],
     extends: [
-        "plugin:react/recommended",
-        "plugin:fp/recommended"
+        "plugin:react/recommended"
     ],
     // rules should be in order of http://eslint.org/docs/rules
     rules: {
