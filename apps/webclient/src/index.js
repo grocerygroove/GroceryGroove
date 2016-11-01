@@ -3,7 +3,11 @@ import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/co
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import LoginComponent from './components/login';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+const initalState = require('./initialState');
 const ReactDOM = require('react-dom');
+const ggApp = require('./reducers/gg_app');
 const injectTapEventPlugin = require('react-tap-event-plugin');
 injectTapEventPlugin();
 
@@ -32,21 +36,26 @@ const muiTheme = getMuiTheme({
   },
 });
 
+let store = createStore(ggApp, initalState);
+
+
 const App = React.createClass({
     render: function() {
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
-                <div className="row" style={styles.container}>
-                    <div className="col-xs-12">
-                        <div className="row center-xs">
-                            <div className="col-sm-12 col-md-10 col-lg-4">
-                                <h1 style={styles.h1}>Grocery Groove</h1>
-                                <LoginComponent />
+            <Provider store={store}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                    <div className="row" style={styles.container}>
+                        <div className="col-xs-12">
+                            <div className="row center-xs">
+                                <div className="col-sm-12 col-md-10 col-lg-4">
+                                    <h1 style={styles.h1}>Grocery Groove</h1>
+                                    <LoginComponent />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </MuiThemeProvider>
+                </MuiThemeProvider>
+            </Provider>
         );
     },
 });

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -13,8 +14,7 @@ const style = {
   },
 };
 
-const LoginComponent = React.createClass({
-  render: function() {
+const LoginComponent = () => {
     return (
         <div>
             <TextField
@@ -38,7 +38,7 @@ const LoginComponent = React.createClass({
             </span>
         </div>
     );
-  },
-});
+};
 
-export default LoginComponent;
+
+export default connect()(LoginComponent);
