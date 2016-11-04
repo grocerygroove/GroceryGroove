@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
+import React from 'react';
+import { greenA200, yellow600 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import LoginComponent from './components/login';
+import PageRouter from './pages/pageRouter';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import initalState from './initialState';
@@ -16,9 +16,6 @@ const styles = {
     paddingTop: 15,
     height: '100%',
     width: '100%',
-  },
-  h1: {
-      color: '#FAFAFA',
   },
 };
 
@@ -39,19 +36,13 @@ const muiTheme = getMuiTheme({
 let store = createStore(ggApp, initalState);
 
 
+
 const App = () => {
         return (
             <Provider store={store}>
                 <MuiThemeProvider muiTheme={muiTheme}>
                     <div className="row" style={styles.container}>
-                        <div className="col-xs-12">
-                            <div className="row center-xs">
-                                <div className="col-sm-12 col-md-10 col-lg-4">
-                                    <h1 style={styles.h1}>Grocery Groove</h1>
-                                    <LoginComponent />
-                                </div>
-                            </div>
-                        </div>
+                        <PageRouter />
                     </div>
                 </MuiThemeProvider>
             </Provider>

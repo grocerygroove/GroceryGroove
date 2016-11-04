@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { greenA200 } from 'material-ui/styles/colors';
 //Redux
-const { toggleSignupDialog, setUsername, setPassword, setConfirmPassword, cancelSignup, spitStore } = require('../actions/signup_actions');
+const { toggleSignupDialog, setUsername, setPassword, setConfirmPassword, cancelSignup, spitStore } = require('../../actions/signup_actions');
 
 const style = {
     body: {
@@ -17,9 +17,7 @@ const style = {
     },
 };
 
-class SignupDialog extends Component {
-    render() {
-        const {
+const SignupDialog = ({
             signupDialogVisible,
             onSignupClick,
             setUsername,
@@ -27,9 +25,9 @@ class SignupDialog extends Component {
             setConfirmPassword,
             toggleSignup,
             cancelSignup,
-        } = this.props;
+            }) => {
 
-        const actions = [
+    const actions = [
         <FlatButton
             label="Ok"
             primary={true}
@@ -42,44 +40,43 @@ class SignupDialog extends Component {
             keyboardFocused={true}
             onTouchTap={cancelSignup}
         />,
-        ];
-        return (
-        <div>
-            <RaisedButton label="Signup" secondary={true} onTouchTap={toggleSignup} />
-            <Dialog
-            title="Create an Account"
-            actions={actions}
-            modal={false}
-            open={signupDialogVisible}
-            onRequestClose={toggleSignup}
-            bodyStyle = {style.body}
-            contentStyle = {style.content}
-            autoScrollBodyContent={true}
-            >
-            <TextField
-                id= "Username"
-                hintText="Username"
-                floatingLabelText="Username"
-                onChange={setUsername}/>
-            <br />
-            <TextField
-                id= "Password"
-                hintText="Password"
-                floatingLabelText="Password"
-                type="password"
-                onChange={setPassword}/>
-            <br />
-            <TextField
-                id= "ConfirmPassword"
-                hintText="Confirm Password"
-                floatingLabelText="Confirm Password"
-                type="password"
-                onChange={setConfirmPassword}/>
-            </Dialog>
-        </div>
-        );
-    }
-}
+    ];
+    return (
+    <div>
+        <RaisedButton label="Signup" secondary={true} onTouchTap={toggleSignup} />
+        <Dialog
+        title="Create an Account"
+        actions={actions}
+        modal={false}
+        open={signupDialogVisible}
+        onRequestClose={toggleSignup}
+        bodyStyle = {style.body}
+        contentStyle = {style.content}
+        autoScrollBodyContent={true}
+        >
+        <TextField
+            id= "Username"
+            hintText="Username"
+            floatingLabelText="Username"
+            onChange={setUsername}/>
+        <br />
+        <TextField
+            id= "Password"
+            hintText="Password"
+            floatingLabelText="Password"
+            type="password"
+            onChange={setPassword}/>
+        <br />
+        <TextField
+            id= "ConfirmPassword"
+            hintText="Confirm Password"
+            floatingLabelText="Confirm Password"
+            type="password"
+            onChange={setConfirmPassword}/>
+        </Dialog>
+    </div>
+    );
+};
 
 SignupDialog.propTypes = {
     signupDialogVisible: PropTypes.bool.isRequired,
