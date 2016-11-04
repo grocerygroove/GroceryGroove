@@ -33,6 +33,7 @@ module.exports = function createCallback (mode, services, middlewares) {
     });
 
     const koaApp = new Koa();
+    koaApp.use(middlewares.cors());
     koaApp.use(createKoaGroupRouter(rootGroup, middlewares));
 
     if (mode !== "production") {

@@ -2,7 +2,7 @@ const cors = require("koa-cors");
 const koaConvert = require("koa-convert");
 
 module.exports = function createCors () {
-    const retval = koaConvert(cors({
+    const retval = cors.bind(null, {
         origin: "*",
         methods: [
             "PUT",
@@ -11,9 +11,10 @@ module.exports = function createCors () {
             "DELETE",
             "OPTIONS",
         ],
-    }));
+    });
 
     retval.swagger = module.exports.swagger;
+    return retval;
 };
 
 module.exports.swagger = {
