@@ -30,8 +30,8 @@ const LoginComponent = ({
             <h1 style={style.h1}>Grocery Groove</h1>
             <div>
                 <TextField
-                    hintText="Username"
-                    floatingLabelText="Username"
+                    hintText="Email Address"
+                    floatingLabelText="Email Address"
                     inputStyle={style.textField}/>
                 <br />
                 <TextField

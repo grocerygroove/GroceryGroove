@@ -6,6 +6,7 @@ import PageRouter from './pages/pageRouter';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import createLogger from 'redux-logger';
+import promiseMiddleware from 'redux-promise-middleware';
 import initalState from './initialState';
 import ReactDOM from 'react-dom';
 import ggApp from './reducers/gg_app';
@@ -34,8 +35,11 @@ const muiTheme = getMuiTheme({
   },
 });
 
-const logger = createLogger();
-const store = createStore(ggApp, initalState, applyMiddleware(logger));
+const store = createStore(
+    ggApp,
+    initalState,
+    applyMiddleware(promiseMiddleware(), createLogger())
+);
 
 
 

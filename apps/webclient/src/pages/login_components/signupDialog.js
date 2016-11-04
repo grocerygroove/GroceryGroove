@@ -6,7 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { greenA200 } from 'material-ui/styles/colors';
 //Redux
-const { toggleSignupDialog, setUsername, setPassword, setConfirmPassword, cancelSignup } = require('../../actions/signup_actions');
+const { toggleSignupDialog, setEmail, setPassword, setConfirmPassword, cancelSignup, signupByEmail } = require('../../actions/signup_actions');
+const apiClient = require('../../api/apiClient');
 
 const style = {
     body: {
@@ -19,8 +20,11 @@ const style = {
 
 const SignupDialog = ({
             signupDialogVisible,
+            email,
+            password,
+            confirmPassword,
             onSignupClick,
-            setUsername,
+            setEmail,
             setPassword,
             setConfirmPassword,
             toggleSignup,
@@ -32,7 +36,7 @@ const SignupDialog = ({
             label="Ok"
             primary={true}
             keyboardFocused={true}
-            onTouchTap={onSignupClick}
+            onTouchTap={onSignupClick.bind(null, email, password, confirmPassword)}
         />,
         <FlatButton
             label="Cancel"
@@ -55,13 +59,11 @@ const SignupDialog = ({
         autoScrollBodyContent={true}
         >
         <TextField
-            id= "Username"
-            hintText="Username"
-            floatingLabelText="Username"
-            onChange={setUsername}/>
+            hintText="Email Address"
+            floatingLabelText="Email Address"
+            onChange={setEmail}/>
         <br />
         <TextField
-            id= "Password"
             hintText="Password"
             floatingLabelText="Password"
             type="password"
@@ -80,8 +82,11 @@ const SignupDialog = ({
 
 SignupDialog.propTypes = {
     signupDialogVisible: PropTypes.bool.isRequired,
+    email: PropTypes.string,
+    password: PropTypes.string,
+    confirmPassword: PropTypes.string,
     onSignupClick: PropTypes.func.isRequired,
-    setUsername: PropTypes.func.isRequired,
+    setEmail: PropTypes.func.isRequired,
     setPassword: PropTypes.func.isRequired,
     setConfirmPassword: PropTypes.func.isRequired,
     cancelSignup: PropTypes.func.isRequired,
@@ -91,13 +96,21 @@ SignupDialog.propTypes = {
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
         signupDialogVisible: state.signup.signupDialogVisible,
+        email: state.signup.email,
+        password: state.signup.password,
+        confirmPassword: state.signup.confirmPassword,
     });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSignupClick: () => {
+        onSignupClick: (email, password, confirmPassword) => {
+            //TODO: Do validation
 
+            //TODO: Validation error action
+
+            //Validation good
+            dispatch(signupByEmail(email, password));
         },
         toggleSignup: () => {
             dispatch(toggleSignupDialog());
@@ -105,8 +118,8 @@ const mapDispatchToProps = (dispatch) => {
         cancelSignup: () => {
             dispatch(cancelSignup());
         },
-	    setUsername: (event) => {
-            dispatch(setUsername(event.target.value));
+	    setEmail: (event) => {
+            dispatch(setEmail(event.target.value));
         },
 	    setPassword: (event) => {
             dispatch(setPassword(event.target.value));
