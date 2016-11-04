@@ -6,7 +6,6 @@ const SET_USERNAME = 'SET_USERNAME';
 const SET_PASSWORD = 'SET_PASSWORD';
 const SET_CONFIRM_PASSWORD = 'SET_CONFIRM_PASSWORD';
 const CANCEL_SIGNUP = 'CANCEL_SIGNUP';
-const SPIT_STORE = 'SPIT_STORE';
 
 module.exports = {
     TOGGLE_SIGNUP_DIALOG,
@@ -40,12 +39,6 @@ module.exports = {
     cancelSignup: function() {
         return {
             type: CANCEL_SIGNUP,
-        };
-    },
-    SPIT_STORE,
-    spitStore: function() {
-        return {
-            type: SPIT_STORE,
         };
     },
 };

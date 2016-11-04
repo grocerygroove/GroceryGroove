@@ -1,4 +1,4 @@
-const { TOGGLE_SIGNUP_DIALOG, SET_PASSWORD, SET_USERNAME, SET_CONFIRM_PASSWORD, CANCEL_SIGNUP, SPIT_STORE } = require('../actions/signup_actions');
+const { TOGGLE_SIGNUP_DIALOG, SET_PASSWORD, SET_USERNAME, SET_CONFIRM_PASSWORD, CANCEL_SIGNUP } = require('../actions/signup_actions');
 
 module.exports = function credentialsReducer(state = {}, action) {
     switch (action.type) {
@@ -26,9 +26,6 @@ module.exports = function credentialsReducer(state = {}, action) {
             delete tempState.password;
             delete tempState.confirmPassword;
             return tempState;
-        case SPIT_STORE:
-            console.log(state);
-            return state;
         default:
             return state;
     }

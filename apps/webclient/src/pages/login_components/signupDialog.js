@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { greenA200 } from 'material-ui/styles/colors';
 //Redux
-const { toggleSignupDialog, setUsername, setPassword, setConfirmPassword, cancelSignup, spitStore } = require('../../actions/signup_actions');
+const { toggleSignupDialog, setUsername, setPassword, setConfirmPassword, cancelSignup } = require('../../actions/signup_actions');
 
 const style = {
     body: {
@@ -97,7 +97,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onSignupClick: () => {
-            dispatch(spitStore());
+
         },
         toggleSignup: () => {
             dispatch(toggleSignupDialog());
