@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LoginComponent from './login';
+import AppComponent from './app';
 import NotFoundComponent from './notFound';
 
 const RouterComponent = ({
@@ -9,6 +10,8 @@ const RouterComponent = ({
     switch (page) {
         case "login":
             return <LoginComponent />;
+        case "app":
+            return <AppComponent />;
         default:
             return <NotFoundComponent />;
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { greenA200, yellow600 } from 'material-ui/styles/colors';
+import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import PageRouter from './pages/pageRouter';
@@ -15,9 +15,10 @@ injectTapEventPlugin();
 
 const styles = {
   container: {
-    paddingTop: 15,
     height: '100%',
     width: '100%',
+    display: 'flex',
+    margin: 0,
   },
 };
 
@@ -33,6 +34,10 @@ const muiTheme = getMuiTheme({
   textField: {
     focusColor: greenA200,
   },
+  appBar: {
+    color: lightBlue700,
+    textColor: white,
+  },
 });
 
 const store = createStore(
@@ -44,15 +49,14 @@ const store = createStore(
 
 
 const App = () => {
-        return (
-            <Provider store={store}>
-                <MuiThemeProvider muiTheme={muiTheme}>
-                    <div className="row" style={styles.container}>
-                        <PageRouter />
-                    </div>
-                </MuiThemeProvider>
-            </Provider>
-        );
+    return (
+<Provider store={store}>
+    <MuiThemeProvider muiTheme={muiTheme}>
+        <PageRouter style={styles.container}/>
+    </MuiThemeProvider>
+</Provider>
+    );
 };
 
+document.body.style.backgroundColor = lightBlue700;
 ReactDOM.render(<App />, document.getElementById('container'));

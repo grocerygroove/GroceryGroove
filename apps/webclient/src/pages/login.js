@@ -88,7 +88,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleSnackbar());
         },
         changePage: () => {
-            dispatch(changePage("non-existant page"));
+            dispatch(changePage("app"));
         },
     };
 };
