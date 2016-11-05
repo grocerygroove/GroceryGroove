@@ -34,6 +34,10 @@ module.exports = {
                 },
             ],
 
+            produces: [
+                "application/json",
+            ],
+
             responses: {
                 200: {},
                 400: {},
@@ -52,9 +56,16 @@ module.exports = {
                     ]);
 
                     ctx.status = 200;
+                    ctx.body = {
+                        message: "Account creation successful",
+                    };
                 } catch (e) {
                     if (e instanceof DuplicateNameError) {
-                        ctx.throw(400, "Email address must be unique");
+                        ctx.status = 400;
+                        ctx.body = {
+                            issueParameter: "email",
+                            message: "Email address already exists",
+                        };
                     } else {
                         throw e;
                     }
