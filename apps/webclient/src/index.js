@@ -7,11 +7,16 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import createLogger from 'redux-logger';
 import promiseMiddleware from 'redux-promise-middleware';
+import { save, load } from "redux-localstorage-simple";
 import initalState from './initialState';
 import ReactDOM from 'react-dom';
 import ggApp from './reducers/gg_app';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
+
+const isObjectEmpty = (obj) => {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+};
 
 const styles = {
   container: {
@@ -42,8 +47,8 @@ const muiTheme = getMuiTheme({
 
 const store = createStore(
     ggApp,
-    initalState,
-    applyMiddleware(promiseMiddleware(), createLogger())
+    (isObjectEmpty(load()) ? initalState : load()), //Try to load from local storage...if that doesn't exist use initialState
+    applyMiddleware(promiseMiddleware(), save(), createLogger())
 );
 
 
