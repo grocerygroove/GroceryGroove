@@ -3,44 +3,26 @@ import apiClient from '../api/apiClient';
  * action types
  */
 const TOGGLE_SIGNUP_DIALOG = 'TOGGLE_SIGNUP_DIALOG';
-const SET_EMAIL = 'SET_EMAIL';
-const SET_PASSWORD = 'SET_PASSWORD';
-const SET_CONFIRM_PASSWORD = 'SET_CONFIRM_PASSWORD';
-const CANCEL_SIGNUP = 'CANCEL_SIGNUP';
+
 const SIGNUP_BY_EMAIL = 'SIGNUP_BY_EMAIL';
+
+const SIGNUP_CREDENTIAL_TYPE_EMAIL = 'SIGNUP_CREDENTIAL_TYPE_EMAIL';
+const SIGNUP_CREDENTIAL_TYPE_PASSWORD = 'SIGNUP_CREDENTIAL_TYPE_PASSWORD';
+const SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD = 'SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD';
+const SIGNUP_CREDENTIAL_CHANGE = 'SIGNUP_CREDENTIAL_CHANGE';
+
+
+
+const INVALID_EMAIL_ERROR = 'INVALID_EMAIL_ERROR';
+const PASSWORDS_DONT_MATCH_ERROR = 'PASSWORDS_DONT_MATCH_ERROR';
+const SIGNUP_VALIDATION_ERROR = 'SIGNUP_VALIDATION_ERROR';
+const CLEAR_SIGNUP_ERROR_IF_EXISTS = 'CLEAR_SIGNUP_ERROR_IF_EXISTS';
 
 module.exports = {
     TOGGLE_SIGNUP_DIALOG,
     toggleSignupDialog: function() {
         return {
             type: TOGGLE_SIGNUP_DIALOG,
-        };
-    },
-    SET_EMAIL,
-    setEmail: function(email) {
-        return {
-            type: SET_EMAIL,
-            email,
-        };
-    },
-    SET_PASSWORD,
-    setPassword: function(password) {
-        return {
-            type: SET_PASSWORD,
-            password,
-        };
-    },
-    SET_CONFIRM_PASSWORD,
-    setConfirmPassword: function(confirmPassword) {
-        return {
-            type: SET_CONFIRM_PASSWORD,
-            confirmPassword,
-        };
-    },
-    CANCEL_SIGNUP,
-    cancelSignup: function() {
-        return {
-            type: CANCEL_SIGNUP,
         };
     },
     SIGNUP_BY_EMAIL,
@@ -57,5 +39,33 @@ module.exports = {
             }),
         };
     },
-
+    INVALID_EMAIL_ERROR,
+    PASSWORDS_DONT_MATCH_ERROR,
+    SIGNUP_VALIDATION_ERROR,
+    signupValidationError: function(errorName) {
+        return {
+            type: SIGNUP_VALIDATION_ERROR,
+            payload: errorName,
+        };
+    },
+    CLEAR_SIGNUP_ERROR_IF_EXISTS,
+    clearSignupErrorIfExists: function(errorName) {
+        return {
+            type: CLEAR_SIGNUP_ERROR_IF_EXISTS,
+            payload: errorName,
+        };
+    },
+    SIGNUP_CREDENTIAL_TYPE_EMAIL,
+    SIGNUP_CREDENTIAL_TYPE_PASSWORD,
+    SIGNUP_CREDENTIAL_CHANGE,
+    SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD,
+    signupCredentialChange: function(credentialType, newValue) {
+        return {
+            type: SIGNUP_CREDENTIAL_CHANGE,
+            payload: {
+                type: credentialType,
+                newValue,
+            },
+        };
+    },
 };

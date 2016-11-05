@@ -5,9 +5,24 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { greenA200 } from 'material-ui/styles/colors';
+const emailMatchRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 //Redux
-const { toggleSignupDialog, setEmail, setPassword, setConfirmPassword, cancelSignup, signupByEmail } = require('../../actions/signup_actions');
-const apiClient = require('../../api/apiClient');
+const {
+    toggleSignupDialog,
+
+    SIGNUP_CREDENTIAL_TYPE_EMAIL,
+    SIGNUP_CREDENTIAL_TYPE_PASSWORD,
+    SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD,
+    signupCredentialChange,
+
+    signupByEmail,
+
+    INVALID_EMAIL_ERROR,
+    PASSWORDS_DONT_MATCH_ERROR,
+    signupValidationError,
+    clearSignupErrorIfExists,
+
+} = require('../../actions/signup_actions');
 
 const style = {
     body: {
@@ -20,15 +35,14 @@ const style = {
 
 const SignupDialog = ({
             signupDialogVisible,
-            email,
-            password,
-            confirmPassword,
+            signupEmail,
+            signupPassword,
+            signupConfirmPassword,
+            invalidEmail,
+            passwordsDontMatch,
             onSignupClick,
-            setEmail,
-            setPassword,
-            setConfirmPassword,
             toggleSignup,
-            cancelSignup,
+            onSignupCredentialChange,
             }) => {
 
     const actions = [
@@ -36,13 +50,13 @@ const SignupDialog = ({
             label="Ok"
             primary={true}
             keyboardFocused={true}
-            onTouchTap={onSignupClick.bind(null, email, password, confirmPassword)}
+            onTouchTap={onSignupClick.bind(null, signupEmail, signupPassword, signupConfirmPassword)}
         />,
         <FlatButton
             label="Cancel"
             secondary={true}
             keyboardFocused={true}
-            onTouchTap={cancelSignup}
+            onTouchTap={toggleSignup}
         />,
     ];
     return (
@@ -61,20 +75,26 @@ const SignupDialog = ({
         <TextField
             hintText="Email Address"
             floatingLabelText="Email Address"
-            onChange={setEmail}/>
+            value={signupEmail}
+            errorText={invalidEmail ? "Invalid Email" : ""}
+            onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_EMAIL)}/>
         <br />
         <TextField
             hintText="Password"
             floatingLabelText="Password"
+            value={signupPassword}
             type="password"
-            onChange={setPassword}/>
+            errorText={passwordsDontMatch ? "Passwords Don't Match" : ""}
+            onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_PASSWORD)}/>
         <br />
         <TextField
             id= "ConfirmPassword"
             hintText="Confirm Password"
             floatingLabelText="Confirm Password"
+            value={signupConfirmPassword}
             type="password"
-            onChange={setConfirmPassword}/>
+            errorText={passwordsDontMatch ? "Passwords Don't Match" : ""}
+            onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD)}/>
         </Dialog>
     </div>
     );
@@ -82,50 +102,55 @@ const SignupDialog = ({
 
 SignupDialog.propTypes = {
     signupDialogVisible: PropTypes.bool.isRequired,
-    email: PropTypes.string,
-    password: PropTypes.string,
-    confirmPassword: PropTypes.string,
+    signupEmail: PropTypes.string.isRequired,
+    signupPassword: PropTypes.string.isRequired,
+    signupConfirmPassword: PropTypes.string.isRequired,
+    invalidEmail: PropTypes.bool,
+    passwordsDontMatch: PropTypes.bool,
     onSignupClick: PropTypes.func.isRequired,
-    setEmail: PropTypes.func.isRequired,
-    setPassword: PropTypes.func.isRequired,
-    setConfirmPassword: PropTypes.func.isRequired,
-    cancelSignup: PropTypes.func.isRequired,
     toggleSignup: PropTypes.func.isRequired,
+    onSignupCredentialChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
         signupDialogVisible: state.signup.signupDialogVisible,
-        email: state.signup.email,
-        password: state.signup.password,
-        confirmPassword: state.signup.confirmPassword,
+        signupEmail: (state.signup.signupCreds ? state.signup.signupCreds.email || '' : ''),
+        signupPassword: (state.signup.signupCreds ? state.signup.signupCreds.password || '' : ''),
+        signupConfirmPassword: (state.signup.signupCreds ? state.signup.signupCreds.confirmPassword || '' : ''),
+        invalidEmail: (state.signup.signupErrors && state.signup.signupErrors.invalidEmail),
+        passwordsDontMatch: (state.signup.signupErrors && state.signup.signupErrors.passwordsDontMatch),
     });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onSignupCredentialChange: (credentialType, event) => {
+            dispatch(signupCredentialChange(credentialType, event.target.value));
+        },
         onSignupClick: (email, password, confirmPassword) => {
-            //TODO: Do validation
+            let errors = false;
+            //Do syncrounous validation
+            if (!email.match(emailMatchRegex)) {
+                dispatch(signupValidationError(INVALID_EMAIL_ERROR));
+                errors = true;
+            } else {
+                dispatch(clearSignupErrorIfExists(INVALID_EMAIL_ERROR));
+            }
+            if (password !== confirmPassword) {
+                dispatch(signupValidationError(PASSWORDS_DONT_MATCH_ERROR));
+                errors = true;
+            } else {
+                dispatch(clearSignupErrorIfExists(PASSWORDS_DONT_MATCH_ERROR));
+            }
 
-            //TODO: Validation error action
-
+            if (!errors) {
             //Validation good
             dispatch(signupByEmail(email, password));
+            }
         },
         toggleSignup: () => {
             dispatch(toggleSignupDialog());
-        },
-        cancelSignup: () => {
-            dispatch(cancelSignup());
-        },
-	    setEmail: (event) => {
-            dispatch(setEmail(event.target.value));
-        },
-	    setPassword: (event) => {
-            dispatch(setPassword(event.target.value));
-        },
-	    setConfirmPassword: (event) => {
-            dispatch(setConfirmPassword(event.target.value));
         },
     };
 };
