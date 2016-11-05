@@ -4,6 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
 import { greenA200 } from 'material-ui/styles/colors';
 const emailMatchRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 //Redux
@@ -35,17 +36,22 @@ const style = {
 
 const SignupDialog = ({
             signupDialogVisible,
+            signupRequestPending,
             signupEmail,
             signupPassword,
             signupConfirmPassword,
-            invalidEmail,
-            passwordsDontMatch,
+            emailErrorText,
+            passwordsErrorText,
             onSignupClick,
             toggleSignup,
             onSignupCredentialChange,
             }) => {
 
-    const actions = [
+    const actions = signupRequestPending ?
+     [
+         <CircularProgress />,
+     ] :
+     [
         <FlatButton
             label="Ok"
             primary={true}
@@ -76,7 +82,7 @@ const SignupDialog = ({
             hintText="Email Address"
             floatingLabelText="Email Address"
             value={signupEmail}
-            errorText={invalidEmail ? "Invalid Email" : ""}
+            errorText={emailErrorText || ""}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_EMAIL)}/>
         <br />
         <TextField
@@ -84,7 +90,7 @@ const SignupDialog = ({
             floatingLabelText="Password"
             value={signupPassword}
             type="password"
-            errorText={passwordsDontMatch ? "Passwords Don't Match" : ""}
+            errorText={passwordsErrorText || ""}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_PASSWORD)}/>
         <br />
         <TextField
@@ -93,7 +99,7 @@ const SignupDialog = ({
             floatingLabelText="Confirm Password"
             value={signupConfirmPassword}
             type="password"
-            errorText={passwordsDontMatch ? "Passwords Don't Match" : ""}
+            errorText={passwordsErrorText || ""}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD)}/>
         </Dialog>
     </div>
@@ -102,11 +108,12 @@ const SignupDialog = ({
 
 SignupDialog.propTypes = {
     signupDialogVisible: PropTypes.bool.isRequired,
+    signupRequestPending: PropTypes.bool.isRequired,
     signupEmail: PropTypes.string.isRequired,
     signupPassword: PropTypes.string.isRequired,
     signupConfirmPassword: PropTypes.string.isRequired,
-    invalidEmail: PropTypes.bool,
-    passwordsDontMatch: PropTypes.bool,
+    emailErrorText: PropTypes.string,
+    passwordsErrorText: PropTypes.string,
     onSignupClick: PropTypes.func.isRequired,
     toggleSignup: PropTypes.func.isRequired,
     onSignupCredentialChange: PropTypes.func.isRequired,
@@ -115,11 +122,12 @@ SignupDialog.propTypes = {
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
         signupDialogVisible: state.signup.signupDialogVisible,
+        signupRequestPending: state.signup.requestPending || false,
         signupEmail: (state.signup.signupCreds ? state.signup.signupCreds.email || '' : ''),
         signupPassword: (state.signup.signupCreds ? state.signup.signupCreds.password || '' : ''),
         signupConfirmPassword: (state.signup.signupCreds ? state.signup.signupCreds.confirmPassword || '' : ''),
-        invalidEmail: (state.signup.signupErrors && state.signup.signupErrors.invalidEmail),
-        passwordsDontMatch: (state.signup.signupErrors && state.signup.signupErrors.passwordsDontMatch),
+        emailErrorText: (state.signup.signupErrors && state.signup.signupErrors.emailErrorText),
+        passwordsErrorText: (state.signup.signupErrors && state.signup.signupErrors.passwordsErrorText),
     });
 };
 

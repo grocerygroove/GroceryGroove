@@ -1,5 +1,7 @@
 const {
-    SIGNUP_BY_EMAIL,
+    SIGNUP_BY_EMAIL_PENDING,
+    SIGNUP_BY_EMAIL_REJECTED,
+    SIGNUP_BY_EMAIL_FULFILLED,
     TOGGLE_SIGNUP_DIALOG,
     SIGNUP_CREDENTIAL_TYPE_EMAIL,
     SIGNUP_CREDENTIAL_TYPE_PASSWORD,
@@ -11,8 +13,33 @@ const {
     CLEAR_SIGNUP_ERROR_IF_EXISTS,
  } = require('../actions/signup_actions');
 
-module.exports = function credentialsReducer(state = {}, action) {
+module.exports = function signupReducer(state = {}, action) {
     switch (action.type) {
+        case SIGNUP_BY_EMAIL_PENDING: {
+            return Object.assign({}, state, {
+                requestPending: true,
+            });
+        }
+        case SIGNUP_BY_EMAIL_REJECTED: {
+            const responseObject = JSON.parse(action.payload.statusText);
+            const temp = {
+                requestPending: false,
+                signupErrors: Object.assign({}, state.signupErrors),
+            };
+            if(responseObject.issueParameter === "email") {
+                temp.signupErrors.emailErrorText = responseObject.message;
+            }
+            return Object.assign({}, state, temp);
+        }
+        case SIGNUP_BY_EMAIL_FULFILLED: {
+            console.log(action.payload);
+            return Object.assign({}, state, {
+                requestPending: false,
+                signupDialogVisible: !state.signupDialogVisible,
+                signupErrors: void(0),
+                signupCreds: void(0),
+            });
+        }
         case TOGGLE_SIGNUP_DIALOG:
             return Object.assign({}, state, {
                 signupDialogVisible: !state.signupDialogVisible,
@@ -20,9 +47,9 @@ module.exports = function credentialsReducer(state = {}, action) {
         case SIGNUP_VALIDATION_ERROR: {
             const signupErrors = Object.assign({}, state.signupErrors);
             if (action.payload === INVALID_EMAIL_ERROR) {
-                signupErrors.invalidEmail = true;
+                signupErrors.emailErrorText = "Invalid Email";
             } else if (action.payload === PASSWORDS_DONT_MATCH_ERROR) {
-                signupErrors.passwordsDontMatch = true;
+                signupErrors.passwordsErrorText = "Passwords Don't Match";
             } else {
                 console.log("Unmatched error");
                 return state;
@@ -34,9 +61,9 @@ module.exports = function credentialsReducer(state = {}, action) {
         case CLEAR_SIGNUP_ERROR_IF_EXISTS: {
             const signupErrors = Object.assign({}, state.signupErrors);
             if (action.payload === INVALID_EMAIL_ERROR) {
-                delete signupErrors.invalidEmail;
+                delete signupErrors.emailErrorText;
             } else if (action.payload === PASSWORDS_DONT_MATCH_ERROR) {
-                delete signupErrors.passwordsDontMatch;
+                delete signupErrors.passwordsErrorText;
             } else {
                 console.log("Unmatched error");
                 return state;
