@@ -36,6 +36,7 @@
     "redux-localstorage-simple": "^1.2.0",
     "redux-logger": "^2.7.4",
     "redux-promise-middleware": "^4.1.0",
+    "render-if": "^0.1.1",
     "swagger-client": "^2.1.23"
   }
 }

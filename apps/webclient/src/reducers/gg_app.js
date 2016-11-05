@@ -2,11 +2,11 @@ const { combineReducers } = require('redux');
 const credentialsReducer = require('./credentialsReducer');
 const loginReducer = require('./loginReducer');
 const signupReducer = require('./signupReducer');
-const pageReducer = require('./pageReducer');
+const navigationReducer = require('./navigationReducer');
 
 module.exports = combineReducers({
   credentials: credentialsReducer,
   login: loginReducer,
   signup: signupReducer,
-  page: pageReducer,
+  navigation: navigationReducer,
 });

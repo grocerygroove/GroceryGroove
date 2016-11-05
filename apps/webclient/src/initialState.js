@@ -2,11 +2,14 @@ module.exports = {
     signup: {
         signupDialogVisible: false,
     },
-    page: "login",
+    navigation: {
+        page: "login",
+        drawerOpen: false,
+    },
     login: {
         snackbar: {
             open: false,
             message: "",
-        }
-    }
+        },
+    },
 };

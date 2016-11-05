@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import SignupDialog from './login_components/signupDialog';
 //Redux
-const { changePage } = require('../actions/page_actions');
+const { changePage } = require('../actions/navigation_actions');
 const { toggleSnackbar } = require('../actions/login_actions');
 
 const style = {
@@ -88,7 +88,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(toggleSnackbar());
         },
         changePage: () => {
-            dispatch(changePage("app"));
+            dispatch(changePage("grocery-list"));
         },
     };
 };

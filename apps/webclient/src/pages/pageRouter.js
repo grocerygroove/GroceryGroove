@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LoginComponent from './login';
-import AppComponent from './app';
+import GroceryListComponent from './groceryList';
 import NotFoundComponent from './notFound';
 
 const RouterComponent = ({
@@ -10,8 +10,8 @@ const RouterComponent = ({
     switch (page) {
         case "login":
             return <LoginComponent />;
-        case "app":
-            return <AppComponent />;
+        case "grocery-list":
+            return <GroceryListComponent />;
         default:
             return <NotFoundComponent />;
     }
@@ -24,7 +24,7 @@ RouterComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
-        page: state.page,
+        page: state.navigation.page,
     });
 };
 

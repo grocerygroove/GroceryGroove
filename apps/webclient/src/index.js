@@ -2,7 +2,7 @@ import React from 'react';
 import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import PageRouter from './pages/pageRouter';
+import AppComponent from './pages/app';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import createLogger from 'redux-logger';
@@ -57,7 +57,7 @@ const App = () => {
     return (
 <Provider store={store}>
     <MuiThemeProvider muiTheme={muiTheme}>
-        <PageRouter style={styles.container}/>
+        <AppComponent style={styles.container}/>
     </MuiThemeProvider>
 </Provider>
     );

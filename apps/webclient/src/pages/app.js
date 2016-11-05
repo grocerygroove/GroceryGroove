@@ -1,44 +1,64 @@
 import React, { PropTypes } from 'react';
+import renderIf from 'render-if';
 import { connect } from 'react-redux';
+import RouterComponent from './pageRouter';
 import AppBar from 'material-ui/AppBar';
-import Paper from 'material-ui/Paper';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 
-const AppComponent = () => {
+const { changePage, toggleDrawer } = require('../actions/navigation_actions');
 
-    const toggler = () => {};
-    const style = {
-        paper: {
-            height: '100%',
-            width: '100%',
-            textAlign: 'center',
-            display: 'inline-block',
-        },
-        appbar: {
-            width: '100%',
-            margin: 0,
-        },
-    };
+const AppComponent = ({
+        drawerOpen,
+        page,
+        changePage,
+        toggleDrawer,
+    }) => {
     return (
 <div>
+    {renderIf(page !== "login") (
     <AppBar
         title="Grocery List"
-        style={style.appbar}
-        onLeftIconButtonTouchTap={toggler}/>
-    <Paper
-        style={style.paper}
-        zDepth={1}>
-    </Paper>
-    <Drawer open={false}>
-        <MenuItem>Menu Item</MenuItem>
-        <MenuItem>Menu Item 2</MenuItem>
+        onLeftIconButtonTouchTap={toggleDrawer}/>
+    )}
+    <Drawer
+        open={drawerOpen}
+        docked={false}
+        onRequestChange={toggleDrawer}>
+        <MenuItem
+            onTouchTap={changePage.bind(null, "grocery-list")}>Grocery List</MenuItem>
+        <MenuItem
+            onTouchTap={changePage.bind(null, "login")}>Signout</MenuItem>
     </Drawer>
-
-
+    <RouterComponent />
 </div>
     );
 };
 
-export default AppComponent;
+AppComponent.propTypes = {
+    drawerOpen: PropTypes.bool.isRequired,
+    page: PropTypes.string.isRequired,
+    changePage: PropTypes.func.isRequired,
+    toggleDrawer: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state, ownProps) => {
+    return Object.assign({}, ownProps, {
+        drawerOpen: state.navigation.drawerOpen,
+        page: state.navigation.page,
+    });
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changePage: (pagename) => {
+            dispatch(changePage(pagename));
+            dispatch(toggleDrawer());
+        },
+        toggleDrawer: () => {
+            dispatch(toggleDrawer());
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppComponent);
