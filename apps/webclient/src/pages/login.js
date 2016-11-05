@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 import SignupDialog from './login_components/signupDialog';
 //Redux
 const { changePage } = require('../actions/page_actions');
+const { toggleSnackbar } = require('../actions/login_actions');
 
 const style = {
   button: {
@@ -21,6 +23,10 @@ const style = {
 
 
 const LoginComponent = ({
+            snackbarOpen,
+            snackbarMessage,
+            toggleSnackbar,
+
             changePage,
             }) => {
     return (
@@ -50,6 +56,12 @@ const LoginComponent = ({
                         style={style.button}/>
                 </span>
             </div>
+            <Snackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                autoHideDuration={4000}
+                onRequestClose={toggleSnackbar}
+                />
         </div>
     </div>
 </div>
@@ -57,15 +69,28 @@ const LoginComponent = ({
 };
 
 LoginComponent.propTypes = {
+    snackbarOpen: PropTypes.bool.isRequired,
+    snackbarMessage: PropTypes.string,
+    toggleSnackbar: PropTypes.func.isRequired,
     changePage: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state, ownProps) => {
+    return Object.assign({}, ownProps, {
+        snackbarOpen: state.login.snackbar.open,
+        snackbarMessage: state.login.snackbar.message,
+    });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        toggleSnackbar: () => {
+            dispatch(toggleSnackbar());
+        },
         changePage: () => {
             dispatch(changePage("non-existant page"));
         },
     };
 };
 
-export default connect(void(0), mapDispatchToProps)(LoginComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
