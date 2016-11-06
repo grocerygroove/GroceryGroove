@@ -63,6 +63,9 @@ module.exports = {
                     };
                 } else {
                     ctx.status = 403;
+                    ctx.body = {
+                        message: "Invalid username or password",
+                    };
                 }
             }),
         },

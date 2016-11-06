@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import renderIf from 'render-if';
 import { connect } from 'react-redux';
+import { clear } from "redux-localstorage-simple";
 import RouterComponent from './pageRouter';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -22,6 +23,7 @@ const AppComponent = ({
         page,
         changePage,
         toggleDrawer,
+        doSignout,
     }) => {
     return (
 <div>
@@ -39,7 +41,7 @@ const AppComponent = ({
             style={style.menuItem}
             leftIcon={<ListIcon />}>Grocery List</MenuItem>
         <MenuItem
-            onTouchTap={changePage.bind(null, "login")}
+            onTouchTap={doSignout}
             style={style.menuItem}
             leftIcon={<SignoutIcon />}>Signout</MenuItem>
     </Drawer>
@@ -53,6 +55,7 @@ AppComponent.propTypes = {
     page: PropTypes.string.isRequired,
     changePage: PropTypes.func.isRequired,
     toggleDrawer: PropTypes.func.isRequired,
+    doSignout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -70,6 +73,15 @@ const mapDispatchToProps = (dispatch) => {
         },
         toggleDrawer: () => {
             dispatch(toggleDrawer());
+        },
+        doSignout: () => {
+            //Clear local storage
+            clear();
+            //Reset store to intial state with redux-reset middleware
+            dispatch({
+                type: 'RESET',
+                state: require('../initialState'), // Will use this as new initial state
+            });
         },
     };
 };

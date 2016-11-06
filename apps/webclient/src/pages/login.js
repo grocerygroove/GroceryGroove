@@ -5,9 +5,24 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import SignupDialog from './login_components/signupDialog';
+import validateEmail from '../utils/validateEmail';
 //Redux
 const { changePage } = require('../actions/navigation_actions');
-const { toggleSnackbar } = require('../actions/login_actions');
+const {
+   toggleSnackbar,
+
+    LOGIN_CREDENTIAL_TYPE_EMAIL,
+    LOGIN_CREDENTIAL_TYPE_PASSWORD,
+    loginCredentialChange,
+
+    loginByEmail,
+
+    loginValidationError,
+    clearLoginErrorIfExists,
+ } = require('../actions/login_actions');
+ const {
+    INVALID_EMAIL_ERROR,
+} = require('../actions/generic_errors');
 
 const style = {
   button: {
@@ -25,9 +40,12 @@ const style = {
 const LoginComponent = ({
             snackbarOpen,
             snackbarMessage,
+            loginEmail,
+            loginPassword,
+            emailErrorText,
             toggleSnackbar,
-
-            changePage,
+            onLoginClick,
+            onLoginCredentialChange,
             }) => {
     return (
 <div className="col-xs-12">
@@ -38,20 +56,25 @@ const LoginComponent = ({
                 <TextField
                     hintText="Email Address"
                     floatingLabelText="Email Address"
-                    inputStyle={style.textField}/>
+                    inputStyle={style.textField}
+                    value={loginEmail}
+                    errorText={emailErrorText || ""}
+                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
                 <br />
                 <TextField
                     hintText="Password"
                     floatingLabelText="Password"
                     type="password"
-                    inputStyle={style.textField}/>
+                    inputStyle={style.textField}
+                    value={loginPassword}
+                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
                 <br />
                 <span>
                     <RaisedButton
                         label="Login"
                         primary={true}
                         style={style.button}
-                        onTouchTap={changePage}/>
+                        onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
                     <SignupDialog
                         style={style.button}/>
                 </span>
@@ -71,14 +94,21 @@ const LoginComponent = ({
 LoginComponent.propTypes = {
     snackbarOpen: PropTypes.bool.isRequired,
     snackbarMessage: PropTypes.string,
+    loginEmail: PropTypes.string.isRequired,
+    loginPassword: PropTypes.string.isRequired,
+    emailErrorText: PropTypes.string,
     toggleSnackbar: PropTypes.func.isRequired,
-    changePage: PropTypes.func.isRequired,
+    onLoginClick: PropTypes.func.isRequired,
+    onLoginCredentialChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
         snackbarOpen: state.login.snackbar.open,
         snackbarMessage: state.login.snackbar.message,
+        loginEmail: (state.login.loginCreds ? state.login.loginCreds.email : ''),
+        loginPassword: (state.login.loginCreds ? state.login.loginCreds.password : ''),
+        emailErrorText: state.login.loginErrors ? state.login.loginErrors.emailErrorText : '',
     });
 };
 
@@ -87,8 +117,24 @@ const mapDispatchToProps = (dispatch) => {
         toggleSnackbar: () => {
             dispatch(toggleSnackbar());
         },
-        changePage: () => {
-            dispatch(changePage("grocery-list"));
+        onLoginClick: (email, password) => {
+            let errors = false;
+            //Do some validation
+            if (!validateEmail(email)) {
+                dispatch(loginValidationError(INVALID_EMAIL_ERROR));
+                errors = true;
+            } else {
+                dispatch(clearLoginErrorIfExists(INVALID_EMAIL_ERROR));
+            }
+
+
+            if (!errors) {
+                //Do login
+                dispatch(loginByEmail(email, password));
+            }
+        },
+        onLoginCredentialChange: (credentialType, event) => {
+            dispatch(loginCredentialChange(credentialType, event.target.value));
         },
     };
 };

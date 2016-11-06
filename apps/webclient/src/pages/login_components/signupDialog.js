@@ -6,7 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import { greenA200 } from 'material-ui/styles/colors';
-const emailMatchRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+import validateEmail from '../../utils/validateEmail';
+
 //Redux
 const {
     toggleSignupDialog,
@@ -18,12 +19,15 @@ const {
 
     signupByEmail,
 
-    INVALID_EMAIL_ERROR,
-    PASSWORDS_DONT_MATCH_ERROR,
     signupValidationError,
     clearSignupErrorIfExists,
 
 } = require('../../actions/signup_actions');
+
+const {
+    INVALID_EMAIL_ERROR,
+    PASSWORDS_DONT_MATCH_ERROR,
+} = require('../../actions/generic_errors');
 
 const style = {
     body: {
@@ -139,7 +143,7 @@ const mapDispatchToProps = (dispatch) => {
         onSignupClick: (email, password, confirmPassword) => {
             let errors = false;
             //Do syncrounous validation
-            if (!email.match(emailMatchRegex)) {
+            if (!validateEmail(email)) {
                 dispatch(signupValidationError(INVALID_EMAIL_ERROR));
                 errors = true;
             } else {
@@ -153,8 +157,8 @@ const mapDispatchToProps = (dispatch) => {
             }
 
             if (!errors) {
-            //Validation good
-            dispatch(signupByEmail(email, password));
+                //Validation good
+                dispatch(signupByEmail(email, password));
             }
         },
         toggleSignup: () => {

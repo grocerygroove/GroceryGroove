@@ -11,5 +11,9 @@ module.exports = {
             open: false,
             message: "",
         },
+        loginCreds: {
+            email: "",
+            password: "",
+        },
     },
 };
