@@ -5,8 +5,17 @@ import RouterComponent from './pageRouter';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import ListIcon from 'material-ui/svg-icons/action/list';
+import SignoutIcon from 'material-ui/svg-icons/action/input';
+import { white } from 'material-ui/styles/colors';
 
 const { changePage, toggleDrawer } = require('../actions/navigation_actions');
+
+const style = {
+    menuItem: {
+        backgroundColor: white,
+    },
+};
 
 const AppComponent = ({
         drawerOpen,
@@ -26,9 +35,13 @@ const AppComponent = ({
         docked={false}
         onRequestChange={toggleDrawer}>
         <MenuItem
-            onTouchTap={changePage.bind(null, "grocery-list")}>Grocery List</MenuItem>
+            onTouchTap={changePage.bind(null, "grocery-list")}
+            style={style.menuItem}
+            leftIcon={<ListIcon />}>Grocery List</MenuItem>
         <MenuItem
-            onTouchTap={changePage.bind(null, "login")}>Signout</MenuItem>
+            onTouchTap={changePage.bind(null, "login")}
+            style={style.menuItem}
+            leftIcon={<SignoutIcon />}>Signout</MenuItem>
     </Drawer>
     <RouterComponent />
 </div>
