@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LoginComponent from './login';
 import GroceryListComponent from './groceryList';
-import NotFoundComponent from './notFound';
 
 const RouterComponent = ({
                 page,
@@ -13,7 +12,7 @@ const RouterComponent = ({
         case "grocery-list":
             return <GroceryListComponent />;
         default:
-            return <NotFoundComponent />;
+            throw new Error("Page Not Found");
     }
 };
 
@@ -28,4 +27,6 @@ const mapStateToProps = (state, ownProps) => {
     });
 };
 
-export default connect(mapStateToProps)(RouterComponent);
+export default connect(
+    mapStateToProps
+)(RouterComponent);

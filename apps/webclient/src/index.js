@@ -1,17 +1,18 @@
 import React from 'react';
-import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppComponent from './pages/app';
+import ReactDOM from 'react-dom';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import createLogger from 'redux-logger';
 import promiseMiddleware from 'redux-promise-middleware';
 import { save, load } from "redux-localstorage-simple";
+import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import initalState from './initialState';
-import ReactDOM from 'react-dom';
+import AppComponent from './pages/app';
 import ggApp from './reducers/gg_app';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+
 injectTapEventPlugin();
 
 const isObjectEmpty = (obj) => {
@@ -23,7 +24,6 @@ const styles = {
     height: '100%',
     width: '100%',
     display: 'flex',
-    margin: 0,
   },
 };
 
