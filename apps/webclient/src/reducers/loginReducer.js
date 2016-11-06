@@ -1,22 +1,20 @@
+const Immutable = require("seamless-immutable");
 const { TOGGLE_SNACKBAR } = require('../actions/login_actions');
 const { SIGNUP_BY_EMAIL_FULFILLED } = require('../actions/signup_actions');
 
 module.exports = function loginReducer(state = { }, action) {
     switch (action.type) {
         case SIGNUP_BY_EMAIL_FULFILLED: {
-            const snackbar = state.snackbar || { open: false, message: ""};
-            snackbar.open = !snackbar.open;
-            snackbar.message = "Account creation successful"
-            return Object.assign({}, state, {
-                snackbar,
+            return Immutable(state).merge({
+                snackbar: {
+                    open: !state.snackbar.open,
+                    message: "Account creation successful",
+                },
             });
         }
         case TOGGLE_SNACKBAR: {
-            const snackbar = state.snackbar || { open: false, message: ""};
-            snackbar.open = !snackbar.open;
-            return Object.assign({}, state, {
-                snackbar,
-            });
+            return Immutable(state)
+                .updateIn([ 'snackbar', 'open' ], (prevState) => { return !prevState; });
         }
         default:
             return state;

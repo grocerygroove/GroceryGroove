@@ -1,3 +1,4 @@
+const Immutable = require("seamless-immutable");
 const {
     SIGNUP_BY_EMAIL_PENDING,
     SIGNUP_BY_EMAIL_REJECTED,
@@ -16,9 +17,7 @@ const {
 module.exports = function signupReducer(state = {}, action) {
     switch (action.type) {
         case SIGNUP_BY_EMAIL_PENDING: {
-            return Object.assign({}, state, {
-                requestPending: true,
-            });
+            return Immutable(state).set('requestPending', true);
         }
         case SIGNUP_BY_EMAIL_REJECTED: {
             const responseObject = JSON.parse(action.payload.statusText);
@@ -26,24 +25,20 @@ module.exports = function signupReducer(state = {}, action) {
                 requestPending: false,
                 signupErrors: Object.assign({}, state.signupErrors),
             };
-            if(responseObject.issueParameter === "email") {
+            if (responseObject.issueParameter === "email") {
                 temp.signupErrors.emailErrorText = responseObject.message;
             }
-            return Object.assign({}, state, temp);
+            return Immutable(state).merge(temp);
         }
         case SIGNUP_BY_EMAIL_FULFILLED: {
-            console.log(action.payload);
-            return Object.assign({}, state, {
-                requestPending: false,
-                signupDialogVisible: !state.signupDialogVisible,
-                signupErrors: void(0),
-                signupCreds: void(0),
-            });
+            let immutState = Immutable(state);
+            immutState = immutState.set('requestPending', false);
+            immutState = immutState.update('signupDialogVisible', (prevState) => { return !prevState; });
+            return immutState.without([ 'signupErrors', 'signupCreds' ]);
         }
-        case TOGGLE_SIGNUP_DIALOG:
-            return Object.assign({}, state, {
-                signupDialogVisible: !state.signupDialogVisible,
-            });
+        case TOGGLE_SIGNUP_DIALOG: {
+            return Immutable(state).update('signupDialogVisible', (prevState) => { return !prevState; });
+        }
         case SIGNUP_VALIDATION_ERROR: {
             const signupErrors = Object.assign({}, state.signupErrors);
             if (action.payload === INVALID_EMAIL_ERROR) {
@@ -52,44 +47,46 @@ module.exports = function signupReducer(state = {}, action) {
                 signupErrors.passwordsErrorText = "Passwords Don't Match";
             } else {
                 console.log("Unmatched error");
-                return state;
+                return Immutable(state);
             }
-            return Object.assign({}, state, {
-                signupErrors,
-            });
+            return Immutable(state).set('signupErrors', signupErrors);
         }
         case CLEAR_SIGNUP_ERROR_IF_EXISTS: {
-            const signupErrors = Object.assign({}, state.signupErrors);
+            let immutState = Immutable(state);
             if (action.payload === INVALID_EMAIL_ERROR) {
-                delete signupErrors.emailErrorText;
+                //withoutIn is stuck behind a pull request atm...have
+                //to do some trickery to delete nested keys
+                immutState = immutState.asMutable({deep: true});
+                if ( immutState.signupErrors && immutState.signupErrors.emailErrorText ) {
+                    delete immutState.signupErrors.emailErrorText;
+                }
+                immutState = Immutable(immutState);
             } else if (action.payload === PASSWORDS_DONT_MATCH_ERROR) {
-                delete signupErrors.passwordsErrorText;
+                immutState = immutState.asMutable({deep: true});
+                if ( immutState.signupErrors && immutState.signupErrors.passwordsErrorText ) {
+                    delete immutState.signupErrors.passwordsErrorText;
+                }
+                immutState = Immutable(immutState);
             } else {
                 console.log("Unmatched error");
-                return state;
+                return Immutable(state);
             }
-            return Object.assign({}, state, {
-                signupErrors,
-            });
+            return immutState;
         }
         case SIGNUP_CREDENTIAL_CHANGE: {
-            const signupCreds = state.signupCreds ? Object.assign({}, state.signupCreds) : {};
             const credType = action.payload.type;
             if (credType === SIGNUP_CREDENTIAL_TYPE_EMAIL) {
-                signupCreds.email = action.payload.newValue;
+                return Immutable(state).setIn([ 'signupCreds', 'email' ], action.payload.newValue);
             } else if (credType === SIGNUP_CREDENTIAL_TYPE_PASSWORD) {
-                signupCreds.password = action.payload.newValue;
+                return Immutable(state).setIn([ 'signupCreds', 'password' ], action.payload.newValue);
             } else if (credType === SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD) {
-                signupCreds.confirmPassword = action.payload.newValue;
+                return Immutable(state).setIn([ 'signupCreds', 'confirmPassword' ], action.payload.newValue);
             } else {
                 console.log("Unmatched type");
-                return state;
+                return Immutable(state);
             }
-            return Object.assign({}, state, {
-                signupCreds,
-            });
         }
         default:
-            return state;
+            return Immutable(state);
     }
 };
