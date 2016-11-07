@@ -104,11 +104,11 @@ LoginComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
-        snackbarOpen: state.login.snackbar.open,
-        snackbarMessage: state.login.snackbar.message,
-        loginEmail: (state.login.loginCreds ? state.login.loginCreds.email : ''),
-        loginPassword: (state.login.loginCreds ? state.login.loginCreds.password : ''),
-        emailErrorText: state.login.loginErrors ? state.login.loginErrors.emailErrorText : '',
+        snackbarOpen: state.getIn([ 'login', 'snackbar', 'open' ]),
+        snackbarMessage: state.getIn([ 'login', 'snackbar', 'message' ]),
+        loginEmail: state.getIn([ 'login', 'loginCreds', 'email' ], ''),
+        loginPassword: state.getIn([ 'login', 'loginCreds', 'password' ], ''),
+        emailErrorText: state.getIn([ 'login', 'loginErrors', 'emailErrorText' ], ''),
     });
 };
 

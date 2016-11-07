@@ -60,8 +60,8 @@ AppComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
-        drawerOpen: state.navigation.drawerOpen,
-        page: state.navigation.page,
+        drawerOpen: state.getIn([ 'navigation', 'drawerOpen' ]),
+        page: state.getIn([ 'navigation', 'page' ]),
     });
 };
 

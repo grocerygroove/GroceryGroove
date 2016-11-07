@@ -1,4 +1,4 @@
-const Immutable = require("seamless-immutable");
+import Immutable from 'immutable';
 const {
     SIGNUP_BY_EMAIL_PENDING,
     SIGNUP_BY_EMAIL_REJECTED,
@@ -16,74 +16,76 @@ const {
     PASSWORDS_DONT_MATCH_ERROR,
 } = require('../actions/generic_errors');
 
-module.exports = function signupReducer(state = {}, action) {
+module.exports = function signupReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {
         case SIGNUP_BY_EMAIL_PENDING: {
-            return Immutable(state).set('requestPending', true);
+            return state.set('requestPending', true);
         }
         case SIGNUP_BY_EMAIL_REJECTED: {
             const responseObject = JSON.parse(action.payload.statusText);
-            let immutState = Immutable(state).set('requestPending', false);
             if (responseObject.issueParameter === "email") {
-                return immutState.setIn([ 'signupErrors', 'emailErrorText' ], responseObject.message);
+                return state
+                        .set('requestPending', false)
+                        .setIn([ 'signupErrors', 'emailErrorText' ], responseObject.message);
 
             } else {
-                return immutState;
+                return state
+                        .set('requestPending', false);
             }
         }
         case SIGNUP_BY_EMAIL_FULFILLED: {
-            let immutState = Immutable(state).set('requestPending', false);
-            immutState = immutState.update('signupDialogVisible', (prevState) => { return !prevState; });
-            return immutState.without([ 'signupErrors', 'signupCreds' ]);
+            return state
+                    .set('requestPending', false)
+                    .update('signupDialogVisible', prevState => !prevState)
+                    .delete('signupErrors')
+                    .delete('signupCreds');
         }
         case TOGGLE_SIGNUP_DIALOG: {
-            return Immutable(state).update('signupDialogVisible', (prevState) => { return !prevState; });
+            return state
+                    .update('signupDialogVisible', prevState => !prevState);
         }
         case SIGNUP_VALIDATION_ERROR: {
             if (action.payload === INVALID_EMAIL_ERROR) {
-                return Immutable(state).setIn([ 'signupErrors', 'emailErrorText' ], "Invalid Email Format");
+                return state
+                        .setIn([ 'signupErrors', 'emailErrorText' ], "Invalid Email Format");
             } else if (action.payload === PASSWORDS_DONT_MATCH_ERROR) {
-                return Immutable(state).setIn([ 'signupErrors', 'passwordsErrorText' ], "Passwords Don't Match");
+                return state
+                        .setIn([ 'signupErrors', 'passwordsErrorText' ], "Passwords Don't Match");
             } else {
                 console.log("Unmatched error");
-                return Immutable(state);
+                return state;
             }
         }
         case CLEAR_SIGNUP_ERROR_IF_EXISTS: {
-            let immutState = Immutable(state);
             if (action.payload === INVALID_EMAIL_ERROR) {
-                //withoutIn is stuck behind a pull request atm...have
-                //to do some trickery to delete nested keys
-                immutState = immutState.asMutable({deep: true});
-                if ( immutState.signupErrors && immutState.signupErrors.emailErrorText ) {
-                    delete immutState.signupErrors.emailErrorText;
-                }
-                return Immutable(immutState);
+                return state
+                        .deleteIn([ 'signupErrors', 'emailErrorText' ]);
+
             } else if (action.payload === PASSWORDS_DONT_MATCH_ERROR) {
-                immutState = immutState.asMutable({deep: true});
-                if ( immutState.signupErrors && immutState.signupErrors.passwordsErrorText ) {
-                    delete immutState.signupErrors.passwordsErrorText;
-                }
-                return Immutable(immutState);
+                return state
+                        .deleteIn([ 'signupErrors', 'passwordsErrorText' ]);
             } else {
                 console.log("Unmatched error");
-                return Immutable(state);
+                return state;
             }
         }
         case SIGNUP_CREDENTIAL_CHANGE: {
             const credType = action.payload.type;
             if (credType === SIGNUP_CREDENTIAL_TYPE_EMAIL) {
-                return Immutable(state).setIn([ 'signupCreds', 'email' ], action.payload.newValue);
+                return state
+                        .setIn([ 'signupCreds', 'email' ], action.payload.newValue);
             } else if (credType === SIGNUP_CREDENTIAL_TYPE_PASSWORD) {
-                return Immutable(state).setIn([ 'signupCreds', 'password' ], action.payload.newValue);
+                return state
+                        .setIn([ 'signupCreds', 'password' ], action.payload.newValue);
             } else if (credType === SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD) {
-                return Immutable(state).setIn([ 'signupCreds', 'confirmPassword' ], action.payload.newValue);
+                return state
+                        .setIn([ 'signupCreds', 'confirmPassword' ], action.payload.newValue);
             } else {
                 console.log("Unmatched type");
-                return Immutable(state);
+                return state;
             }
         }
         default:
-            return Immutable(state);
+            return state;
     }
 };

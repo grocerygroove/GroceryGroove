@@ -125,13 +125,13 @@ SignupDialog.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
-        signupDialogVisible: state.signup.signupDialogVisible,
-        signupRequestPending: state.signup.requestPending || false,
-        signupEmail: (state.signup.signupCreds ? state.signup.signupCreds.email || '' : ''),
-        signupPassword: (state.signup.signupCreds ? state.signup.signupCreds.password || '' : ''),
-        signupConfirmPassword: (state.signup.signupCreds ? state.signup.signupCreds.confirmPassword || '' : ''),
-        emailErrorText: (state.signup.signupErrors && state.signup.signupErrors.emailErrorText),
-        passwordsErrorText: (state.signup.signupErrors && state.signup.signupErrors.passwordsErrorText),
+        signupDialogVisible: state.getIn([ 'signup', 'signupDialogVisible' ]),
+        signupRequestPending: state.getIn([ 'signup', 'requestPending' ], false),
+        signupEmail: state.getIn([ 'signup', 'signupCreds', 'email' ], ''),
+        signupPassword: state.getIn([ 'signup', 'signupCreds', 'password' ], ''),
+        signupConfirmPassword: state.getIn([ 'signup', 'signupCreds', 'confirmPassword' ], ''),
+        emailErrorText: state.getIn([ 'signup', 'signupErrors', 'emailErrorText' ]),
+        passwordsErrorText: state.getIn([ 'signup', 'signupErrors', 'passwordsErrorText' ]),
     });
 };
 

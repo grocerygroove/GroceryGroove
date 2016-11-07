@@ -1,12 +1,12 @@
-const Immutable = require("seamless-immutable");
+import Immutable from 'immutable';
 const { LOGIN_BY_EMAIL_FULFILLED } = require('../actions/login_actions');
 
-module.exports = function credentialsReducer(state = {}, action) {
+module.exports = function credentialsReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {
         case LOGIN_BY_EMAIL_FULFILLED: {
-            return Immutable(state).set('token', JSON.parse(action.payload.data).token);
+            return state.set('token', JSON.parse(action.payload.data).token);
         }
         default:
-            return Immutable(state);
+            return state;
     }
 };

@@ -1,4 +1,4 @@
-const { combineReducers } = require('redux');
+const { combineReducers } = require('redux-immutable');
 const credentialsReducer = require('./credentialsReducer');
 const loginReducer = require('./loginReducer');
 const signupReducer = require('./signupReducer');

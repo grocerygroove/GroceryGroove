@@ -1,4 +1,5 @@
-module.exports = {
+import Immutable from 'immutable';
+module.exports = Immutable.fromJS({
     signup: {
         signupDialogVisible: false,
     },
@@ -16,4 +17,4 @@ module.exports = {
             password: "",
         },
     },
-};
+});
