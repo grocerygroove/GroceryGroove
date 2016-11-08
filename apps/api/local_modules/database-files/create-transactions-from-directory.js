@@ -39,7 +39,7 @@ module.exports = function createTransactionsFromDirectory (parentFilenames, path
                     : contents
                 );
 
-                assign(name, rf(functionName, function (db, logger, ...args) {
+                assign(name, rf(functionName, function (db, logger, items) {
                     return db.transaction(client => {
                         const resources = {
                             client,
@@ -49,7 +49,7 @@ module.exports = function createTransactionsFromDirectory (parentFilenames, path
                         };
 
                         return Promise.resolve()
-                        .then(() => contentObject.transaction(resources, ...args))
+                        .then(() => contentObject.transaction(resources, items))
                         .then(
                             rows => applyRowFilter(contentObject.returns, rows),
                             error => Promise.reject(convertSqlError(pathname, contentObject.errorHandling, error) || error)
