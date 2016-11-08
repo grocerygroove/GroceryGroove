@@ -52,7 +52,7 @@ const enhancedCreateStore = compose(
 
 const store = enhancedCreateStore(
     ggApp,
-    (isObjectEmpty(load()) ? initalState : load()) //Try to load from local storage...if that doesn't exist use initialState
+    (isObjectEmpty(load({ immutablejs: true })) ? initalState : load({ immutablejs: true })) //Try to load from local storage...if that doesn't exist use initialState
 );
 
 
