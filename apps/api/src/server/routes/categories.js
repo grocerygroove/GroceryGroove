@@ -62,11 +62,11 @@ module.exports = {
                     ctx.throw(400, "Must include a category name");
                 } else {
                     try {
-                        yield queries.categories.addOne(db, logger, [
-                            ctx.state.householdId,
-                            ctx.state.userId,
-                            categoryName,
-                        ]);
+                        yield queries.categories.addOne(db, logger, {
+                            householdId: ctx.state.householdId,
+                            createdById: ctx.state.userId,
+                            name:        categoryName,
+                        });
                         ctx.status = 200;
                     } catch (e) {
                         if (e instanceof DuplicateNameError) {

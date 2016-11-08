@@ -4,6 +4,8 @@
             23505: require("../../../errors/duplicate-name-error"),
         },
     },
+
+    namedParameters: true,
 }
 INSERT INTO categories (household_id, name, created_by_id)
-VALUES ($1, $3, $2)
+VALUES (:householdId:, :name:, :createdById:)
