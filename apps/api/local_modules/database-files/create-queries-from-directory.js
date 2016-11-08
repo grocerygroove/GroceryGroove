@@ -3,6 +3,7 @@ const camelize = require("change-case").camelCase;
 const collapse = require("./collapse");
 const concat = require("./concat");
 const convertSqlError = require("./convert-sql-error");
+const extractNamedParameters = require("./extract-named-parameters");
 const isDirectory = require("./is-directory-sync");
 const makeParameterManager = require("./make-parameter-manager");
 const readDirSync = require("fs").readdirSync;
@@ -35,30 +36,46 @@ module.exports = function createQueriesFromDirectory (parentFilenames, path) {
             const functionName = queryName.split("/").join("_");
 
             if (!filename.startsWith(".") && filename.endsWith(".sql")) {
-                const { js, sql } = separateJsSql(readFileSync(pathname, {
+                const jsSql = separateJsSql(readFileSync(pathname, {
                     encoding: "utf8",
                 }));
 
                 const attributes = requireStringAsFile(pathname, `
-                    module.exports = ${ js };
+                    module.exports = ${ jsSql.js };
                 `);
 
-                assign(name, rf(functionName, function (db, logger, values) {
-                    return db.query(
-                        logger.createChild({
-                            "query_name": queryName,
-                        }),
+                const { sql, parameterNames } = (
+                    attributes.namedParameters
+                    ? extractNamedParameters(jsSql.sql)
+                    : ({
+                        sql: jsSql.sql,
+                        parameterNames: [],
+                    })
+                );
 
-                        {
-                            name: queryName,
-                            text: sql,
-                            values,
+                assign(name, rf(functionName, function (db, logger, values) {
+                    return Promise.resolve()
+                    .then(() => {
+                        if (attributes.namedParameters) {
+                            values = parameterNames.map(parameterName => values[parameterName]);
                         }
-                    )
-                    .then(
-                        rows => applyRowFilter(attributes.returns, rows),
-                        error => Promise.reject(convertSqlError(pathname, attributes.errorHandling, error))
-                    );
+
+                        return db.query(
+                            logger.createChild({
+                                "query_name": queryName,
+                            }),
+
+                            {
+                                name: queryName,
+                                text: sql,
+                                values,
+                            }
+                        )
+                        .then(
+                            rows => applyRowFilter(attributes.returns, rows),
+                            error => Promise.reject(convertSqlError(pathname, attributes.errorHandling, error))
+                        );
+                    });
                 }));
 
             } else if (!filename.startsWith(".") && filename.endsWith(".js")) {
