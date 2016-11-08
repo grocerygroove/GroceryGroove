@@ -1,5 +1,6 @@
 const a = require("../../utils/asyncify");
 const queries = require("../../db/queries");
+const transactions = require("../../db/transactions");
 
 module.exports = {
     path: "/households",
@@ -71,10 +72,10 @@ module.exports = {
                     ctx.throw(400, "Must include household name in request body");
                 } else {
                     ctx.body = {
-                        "household_id": yield queries.households.addOne(db, logger, [
-                            ctx.state.userId,
+                        "household_id": (yield transactions.households.createForUser(db, logger, [
                             householdName,
-                        ]),
+                            ctx.state.userId,
+                        ])),
                     };
                 }
             }),
