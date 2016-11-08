@@ -31,7 +31,7 @@ module.exports = function createTransactionsFromDirectory (parentFilenames, path
 
             if (!filename.startsWith(".") && filename.endsWith(".js")) {
                 const contents = require(pathname);
-                const contentObject = (
+                const attributes = (
                     (typeof contents === "function")
                     ? ({
                         transaction: contents,
@@ -49,10 +49,10 @@ module.exports = function createTransactionsFromDirectory (parentFilenames, path
                         };
 
                         return Promise.resolve()
-                        .then(() => contentObject.transaction(resources, items))
+                        .then(() => attributes.transaction(resources, items))
                         .then(
-                            rows => applyRowFilter(contentObject.returns, rows),
-                            error => Promise.reject(convertSqlError(pathname, contentObject.errorHandling, error) || error)
+                            rows => applyRowFilter(attributes.returns, rows),
+                            error => Promise.reject(convertSqlError(pathname, attributes.errorHandling, error) || error)
                         );
                     });
                 }));

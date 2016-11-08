@@ -53,7 +53,7 @@ module.exports = function createQueriesFromDirectory (parentFilenames, path) {
                     })
                 );
 
-                assign(name, rf(functionName, function (db, logger, values) {
+                const queryFn = rf(functionName, function (db, logger, values) {
                     return Promise.resolve()
                     .then(() => {
                         if (attributes.namedParameters) {
@@ -62,25 +62,35 @@ module.exports = function createQueriesFromDirectory (parentFilenames, path) {
 
                         return db.query(
                             logger.createChild({
-                                "query_name": queryName,
+                                "query_name": queryFn.queryName,
                             }),
 
                             {
-                                name: queryName,
-                                text: sql,
+                                name: queryFn.queryName,
+                                text: queryFn.sql,
                                 values,
                             }
                         )
                         .then(
-                            rows => applyRowFilter(attributes.returns, rows),
-                            error => Promise.reject(convertSqlError(pathname, attributes.errorHandling, error))
+                            rows => applyRowFilter(queryFn.attributes.returns, rows),
+                            error => Promise.reject(convertSqlError(pathname, queryFn.attributes.errorHandling, error))
                         );
                     });
-                }));
+                });
+
+                Object.assign(queryFn, {
+                    attributes,
+                    parameterNames,
+                    pathname,
+                    queryName,
+                    sql,
+                });
+
+                assign(name, queryFn);
 
             } else if (!filename.startsWith(".") && filename.endsWith(".js")) {
                 const contents = require(pathname);
-                const contentObject = (
+                const attributes = (
                     (typeof contents === "function")
                     ? ({
                         buildQuery: contents,
@@ -88,26 +98,35 @@ module.exports = function createQueriesFromDirectory (parentFilenames, path) {
                     : contents
                 );
 
-                assign(name, rf(functionName, function (db, logger, items) {
+                const queryFn = rf(functionName, function (db, logger, items) {
                     return Promise.resolve()
                     .then(() => {
                         const resources = {
                             logger: logger.child({
-                                "query_name": queryName,
+                                "query_name": queryFn.queryName,
                             }),
-                            name: queryName,
+                            name: queryFn.queryName,
                             pm: makeParameterManager(),
                         };
 
-                        const query = contentObject.buildQuery(resources, items);
+                        const query = queryFn.attributes.buildQuery(resources, items);
 
                         return db.query(queryLogger, query)
                         .then(
-                            rows => applyRowFilter(contentObject.returns, rows),
-                            error => Promise.reject(convertSqlError(pathname, contentObject.errorHandling, error))
+                            rows => applyRowFilter(queryFn.attributes.returns, rows),
+                            error => Promise.reject(convertSqlError(pathname, queryFn.attributes.errorHandling, error))
                         );
                     });
-                }));
+                });
+
+                Object.assign(queryFn, {
+                    attributes,
+                    parameterNames: [],
+                    pathname,
+                    queryName,
+                    sql: null,
+                });
+                assign(name, queryFn);
             }
         }
     }
