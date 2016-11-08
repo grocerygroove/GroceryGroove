@@ -1,8 +1,8 @@
 {
-  "name": "query-files",
+  "name": "database-files",
   "version": "0.0.1",
   "description": "",
-  "main": "create-from-directory.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
