@@ -1,12 +1,15 @@
 /* eslint-disable  global-require */
 const createSwagger = require("./create-swagger");
-let _swaggerObject = null;
-const swaggerObject = function () {
-    if (_swaggerObject == null) {
-        _swaggerObject = createSwagger(module.exports);
-    }
-    return _swaggerObject;
-};
+
+const swaggerObject = (function () {
+    let cache = null;
+    return function () {
+        if (cache == null) {
+            cache = createSwagger(module.exports);
+        }
+        return cache;
+    };
+})();
 
 module.exports = {
     routes: [
