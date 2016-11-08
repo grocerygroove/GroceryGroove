@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-module.exports = Immutable.fromJS({
+export default Immutable.fromJS({
     signup: {
         signupDialogVisible: false,
     },

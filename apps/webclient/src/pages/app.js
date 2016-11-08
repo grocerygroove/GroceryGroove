@@ -9,8 +9,8 @@ import MenuItem from 'material-ui/MenuItem';
 import ListIcon from 'material-ui/svg-icons/action/list';
 import SignoutIcon from 'material-ui/svg-icons/action/input';
 import { white } from 'material-ui/styles/colors';
-
-const { changePage, toggleDrawer } = require('../actions/navigation_actions');
+import { changePage, toggleDrawer } from '../actions/navigation_actions';
+import initalState from '../initialState';
 
 const style = {
     menuItem: {
@@ -80,7 +80,7 @@ const mapDispatchToProps = (dispatch) => {
             //Reset store to intial state with redux-reset middleware
             dispatch({
                 type: 'RESET',
-                state: require('../initialState'), // Will use this as new initial state
+                state: initalState, // Will use this as new initial state
             });
         },
     };

@@ -7,8 +7,8 @@ import Snackbar from 'material-ui/Snackbar';
 import SignupDialog from './login_components/signupDialog';
 import validateEmail from '../utils/validateEmail';
 //Redux
-const { changePage } = require('../actions/navigation_actions');
-const {
+import { changePage } from '../actions/navigation_actions';
+import {
    toggleSnackbar,
 
     LOGIN_CREDENTIAL_TYPE_EMAIL,
@@ -19,10 +19,10 @@ const {
 
     loginValidationError,
     clearLoginErrorIfExists,
- } = require('../actions/login_actions');
- const {
+ } from '../actions/login_actions';
+import {
     INVALID_EMAIL_ERROR,
-} = require('../actions/generic_errors');
+} from '../actions/generic_errors';
 
 const style = {
   button: {

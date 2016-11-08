@@ -1,6 +1,6 @@
-var Swagger = require('swagger-client');
+import Swagger from 'swagger-client';
 
-module.exports = () => {
+export default () => {
     return new Swagger({
         url: 'http://localhost:18080/swagger.json',
         usePromise: true,

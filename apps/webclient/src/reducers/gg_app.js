@@ -1,10 +1,10 @@
-const { combineReducers } = require('redux-immutable');
-const credentialsReducer = require('./credentialsReducer');
-const loginReducer = require('./loginReducer');
-const signupReducer = require('./signupReducer');
-const navigationReducer = require('./navigationReducer');
+import { combineReducers } from 'redux-immutable';
+import credentialsReducer from './credentialsReducer';
+import loginReducer from './loginReducer';
+import signupReducer from './signupReducer';
+import navigationReducer from './navigationReducer';
 
-module.exports = combineReducers({
+export default combineReducers({
   credentials: credentialsReducer,
   login: loginReducer,
   signup: signupReducer,

@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-const {
+import {
     SIGNUP_BY_EMAIL_PENDING,
     SIGNUP_BY_EMAIL_REJECTED,
     SIGNUP_BY_EMAIL_FULFILLED,
@@ -10,13 +10,13 @@ const {
     SIGNUP_CREDENTIAL_CHANGE,
     SIGNUP_VALIDATION_ERROR,
     CLEAR_SIGNUP_ERROR_IF_EXISTS,
- } = require('../actions/signup_actions');
- const {
+ } from '../actions/signup_actions';
+import {
     INVALID_EMAIL_ERROR,
     PASSWORDS_DONT_MATCH_ERROR,
-} = require('../actions/generic_errors');
+} from '../actions/generic_errors';
 
-module.exports = function signupReducer(state = Immutable.fromJS({}), action) {
+export default function signupReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {
         case SIGNUP_BY_EMAIL_PENDING: {
             return state.set('requestPending', true);
@@ -88,4 +88,4 @@ module.exports = function signupReducer(state = Immutable.fromJS({}), action) {
         default:
             return state;
     }
-};
+}

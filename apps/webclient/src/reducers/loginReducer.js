@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-const {
+import {
     TOGGLE_SNACKBAR,
     LOGIN_CREDENTIAL_CHANGE,
     LOGIN_CREDENTIAL_TYPE_EMAIL,
@@ -9,14 +9,14 @@ const {
     LOGIN_BY_EMAIL_PENDING,
     LOGIN_BY_EMAIL_REJECTED,
     LOGIN_BY_EMAIL_FULFILLED,
- } = require('../actions/login_actions');
-const {
+ } from '../actions/login_actions';
+import {
     INVALID_EMAIL_ERROR,
     PASSWORDS_DONT_MATCH_ERROR,
-} = require('../actions/generic_errors');
-const { SIGNUP_BY_EMAIL_FULFILLED } = require('../actions/signup_actions');
+} from '../actions/generic_errors';
+import { SIGNUP_BY_EMAIL_FULFILLED } from '../actions/signup_actions';
 
-module.exports = function loginReducer(state = Immutable.fromJS({}), action) {
+export default function loginReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {
         case LOGIN_BY_EMAIL_PENDING: {
             return state.set('requestPending', true);
@@ -80,4 +80,4 @@ module.exports = function loginReducer(state = Immutable.fromJS({}), action) {
         default:
             return state;
     }
-};
+}

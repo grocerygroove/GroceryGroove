@@ -9,7 +9,7 @@ import { greenA200 } from 'material-ui/styles/colors';
 import validateEmail from '../../utils/validateEmail';
 
 //Redux
-const {
+import {
     toggleSignupDialog,
 
     SIGNUP_CREDENTIAL_TYPE_EMAIL,
@@ -22,12 +22,12 @@ const {
     signupValidationError,
     clearSignupErrorIfExists,
 
-} = require('../../actions/signup_actions');
+} from '../../actions/signup_actions';
 
-const {
+import {
     INVALID_EMAIL_ERROR,
     PASSWORDS_DONT_MATCH_ERROR,
-} = require('../../actions/generic_errors');
+} from '../../actions/generic_errors';
 
 const style = {
     body: {
