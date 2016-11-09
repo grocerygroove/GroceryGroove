@@ -61,7 +61,7 @@ module.exports = function createQueriesFromDirectory (parentFilenames, path) {
                         }
 
                         return db.query(
-                            logger.createChild({
+                            logger.child({
                                 "query_name": queryFn.queryName,
                             }),
 
