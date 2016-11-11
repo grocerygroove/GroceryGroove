@@ -5,6 +5,7 @@ const makeDatabaseReal = require("database-connection");
 const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
 const queries = require("../../queries");
+const transactions = require("../../transactions");
 const DuplicateNameError = require("../../../errors/duplicate-name-error");
 
 const makeDatabase = makeDatabaseReal.bind(null, {
@@ -30,7 +31,8 @@ tap.test("db/queries/households/add-one", tap => {
             const db = makeDatabase();
             const householdName = "Test House";
 
-            const householdId = yield queries.households.addOne(db, logger, [
+
+            const householdId = yield transactions.households.createForUser({db, logger}, [
                 defaultTestUser.user_id,
                 householdName,
             ]);

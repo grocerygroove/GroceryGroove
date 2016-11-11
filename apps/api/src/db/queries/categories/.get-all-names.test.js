@@ -86,11 +86,11 @@ tap.test("db/queries/categories/get-all-names", tap => {
 
         const db = makeDatabase();
         const testCategoryName = "test category";
-        yield queries.categories.addOne(db, logger, [
-            defaultTestUser.primary_household_id,
-            defaultTestUser.user_id,
-            testCategoryName,
-        ]);
+        yield queries.categories.addOne(db, logger, {
+            householdId: defaultTestUser.primary_household_id,
+            createdById: defaultTestUser.user_id,
+            name: testCategoryName,
+        });
 
         let expected;
         expected = defaultCategories.slice();

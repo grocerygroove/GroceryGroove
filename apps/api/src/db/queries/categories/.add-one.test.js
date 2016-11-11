@@ -38,11 +38,11 @@ tap.test("db/queries/categories/add-one", tap => {
             };
 
             //Add a category
-            yield queries.categories.addOne(db, logger, [
-                testCategory.household_id,
-                testCategory.created_by_id,
-                testCategory.name,
-            ]);
+            yield queries.categories.addOne(db, logger, {
+                householdId: testCategory.household_id,
+                createdById: testCategory.created_by_id,
+                name: testCategory.name,
+            });
 
             const rows = (yield db.query(logger, `
                 SELECT *
@@ -73,19 +73,19 @@ tap.test("db/queries/categories/add-one", tap => {
             };
 
             //Add a category, first insert should be good
-            yield queries.categories.addOne(db, logger, [
-                testCategory.household_id,
-                testCategory.created_by_id,
-                testCategory.name,
-            ]);
+            yield queries.categories.addOne(db, logger, {
+                householdId: testCategory.household_id,
+                createdById: testCategory.created_by_id,
+                name: testCategory.name,
+            });
 
             //Second should throw a DuplicateNameError
             try {
-                const result = yield queries.categories.addOne(db, logger, [
-                            testCategory.household_id,
-                            testCategory.created_by_id,
-                            testCategory.name,
-                    ]);
+                const result = yield queries.categories.addOne(db, logger, {
+                    householdId: testCategory.household_id,
+                    createdById: testCategory.created_by_id,
+                    name: testCategory.name,
+                });
             } catch (e) {
                 tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
             }
