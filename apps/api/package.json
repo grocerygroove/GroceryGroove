@@ -8,7 +8,7 @@
     "start": "node index.js | bunyan",
     "test": "npm run test:test && npm run lint",
     "test:lint": "eslint src/**/*.js",
-    "test:test": "tap --reporter spec 'src/**/.*.test.js'",
+    "test:test": "node_modules/tap/bin/run.js --reporter spec 'src/**/.*.test.js'",
     "attach": "node --debug-brk --no-lazy index.js"
   },
   "keywords": [],

@@ -15,3 +15,6 @@
   with_items:
     - nodejs
     - build-essential
+
+- name: set npm options
+  command: npm config set bin-links false

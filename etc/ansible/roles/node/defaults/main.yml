@@ -1,2 +1,2 @@
-node_setup_url: "http://deb.nodesource.com/setup_6.x"
-node_setup_pathname: "/home/{{ deploy_user }}/setup_6.x"
+node_setup_url: "http://deb.nodesource.com/setup_7.x"
+node_setup_pathname: "/home/{{ deploy_user }}/setup_7.x"
