@@ -17,4 +17,4 @@
     - build-essential
 
 - name: set npm options
-  command: npm config set bin-links false
+  command: npm config --global set bin-links false
