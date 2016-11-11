@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "npm run test:lint",
-    "start": "node index.js | bunyan",
+    "start": "node index.js | node_modules/bunyan/bin/bunyan",
     "test": "npm run test:test && npm run lint",
     "test:lint": "eslint src/**/*.js",
     "test:test": "node_modules/tap/bin/run.js --reporter spec 'src/**/.*.test.js'",
