@@ -4,6 +4,7 @@ const a = require("../../../utils/asyncify");
 const makeDatabaseReal = require("database-connection");
 const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
+const secondaryTestUser = require("../../../utils/secondary-test-user");
 const queries = require("../../queries");
 
 const makeDatabase = makeDatabaseReal.bind(null, {
@@ -72,9 +73,9 @@ tap.test("db/queries/categories/get-all-names", tap => {
 
         const db = makeDatabase();
 
-        const queriedRows = (yield queries.categories.getAllNames(db, logger, [
-            1,
-        ])).asPlainObjects();
+        const queriedRows = (yield queries.categories.getAllNames(db, logger, {
+            householdId: 1,
+        })).asPlainObjects();
 
         tap.strictSame(queriedRows, defaultCategories);
 
@@ -92,6 +93,14 @@ tap.test("db/queries/categories/get-all-names", tap => {
             name: testCategoryName,
         });
 
+        //Add a second category from a different householdId
+        yield queries.categories.addOne(db, logger, {
+            householdId: secondaryTestUser.primary_household_id,
+            createdById: secondaryTestUser.user_id,
+            name: "Test Category #2",
+        });
+
+        //Second added category shouldn't be in here
         let expected;
         expected = defaultCategories.slice();
         expected.push({
@@ -99,9 +108,9 @@ tap.test("db/queries/categories/get-all-names", tap => {
         });
         expected = expected.sort(sortByName);
 
-        const queriedRows = (yield queries.categories.getAllNames(db, logger, [
-            defaultTestUser.user_id,
-        ])).asPlainObjects();
+        const queriedRows = (yield queries.categories.getAllNames(db, logger, {
+            householdId: defaultTestUser.primary_household_id,
+        })).asPlainObjects();
 
         tap.strictSame(queriedRows, expected);
 

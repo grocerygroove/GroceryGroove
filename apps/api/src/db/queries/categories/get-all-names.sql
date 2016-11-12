@@ -1,4 +1,7 @@
+{
+    namedParameters: true,
+}
 SELECT DISTINCT name
 FROM categories
-WHERE COALESCE(household_id, $1) = $1
+WHERE COALESCE(household_id, :householdId:) = :householdId:
 ORDER BY name
