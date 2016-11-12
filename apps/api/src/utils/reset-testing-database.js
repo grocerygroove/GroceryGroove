@@ -3,6 +3,7 @@ const execp = require("./execp");
 const queries = require("../db/queries");
 const makeDatabaseReal = require("database-connection");
 const defaultTestUser = require("./default-test-user");
+const secondaryTestUser = require("./secondary-test-user");
 
 const makeDatabase = makeDatabaseReal.bind(null, {
     user: process.env.DB_USER,
@@ -31,6 +32,12 @@ module.exports = a(function* resetTestingDatabase () {
     yield queries.users.createUserAndHouseholdByEmail(db, logger, [
         defaultTestUser.email,
         defaultTestUser.password,
+    ]);
+
+    //Create test user
+    yield queries.users.createUserAndHouseholdByEmail(db, logger, [
+        secondaryTestUser.email,
+        secondaryTestUser.password,
     ]);
 
     yield db.end();

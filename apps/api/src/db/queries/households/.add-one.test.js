@@ -50,7 +50,7 @@ tap.test("db/queries/households/add-one", tap => {
                 WHERE household_id = '${householdId}'
             `)).asPlainObjects();
 
-            console.log(actual);
+
 
             tap.strictDeepEquals(actual, expected);
 
