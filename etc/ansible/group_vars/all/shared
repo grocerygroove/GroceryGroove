@@ -22,3 +22,4 @@ webclient_path: /opt/webclient/dist
 webcode_path: /opt/webclient
 db_port: 5432
 jwtsecret: tQg1c6xLkBQ9GtZqjLON
+redis_port: 6379

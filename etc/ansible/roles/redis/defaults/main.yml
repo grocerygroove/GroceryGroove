@@ -1,0 +1,9 @@
+# Default variables for the redis role
+redis_stable_url: "http://download.redis.io/redis-stable.tar.gz"
+redis_unpacked_path: "/home/{{ deploy_user }}/redis-stable"
+redis_etc_dir: "/etc/redis"
+redis_var_dir: "/var/redis"
+redis_working_dir: "{{ redis_var_dir }}/{{ redis_port }}"
+redis_init_script_shortname: "redis_{{ redis_port }}"
+redis_permanent_init_script: "/etc/init.d/{{ redis_init_script_shortname }}"
+redis_permanent_config_file: "{{ redis_etc_dir }}/{{ redis_port }}.conf"

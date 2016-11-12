@@ -1,0 +1,36 @@
+- name: download and extract redis
+  unarchive: src={{ redis_stable_url }} dest=/home/{{ deploy_user }} remote_src=yes
+
+- name: make and install redis
+  make: chdir={{ redis_unpacked_path }} target=install
+  become: yes
+
+- name: make redis etc path
+  file: path={{ redis_etc_dir }} state=directory
+
+- name: make redis var path
+  file: path={{ redis_var_dir }} state=directory
+
+- name: create init script to init.d
+  template:
+    src=../templates/redis.init.j2
+    dest={{ redis_permanent_init_script }}
+    mode=0744
+  become: yes
+
+- name: create config file
+  template:
+    src=../templates/redis.conf.j2
+    dest={{ redis_permanent_config_file }}
+  become: yes
+
+- name: make redis working dir
+  file: path={{ redis_working_dir }} state=directory
+
+- name: add the redis init script to default run levels
+  command: update-rc.d {{ redis_init_script_shortname }} defaults
+  become: yes
+
+- name: start the redis server
+  command: "{{ redis_permanent_init_script }} start"
+  become: yes
