@@ -54,7 +54,7 @@ module.exports = function createSwagger (rootGroup) {
             parameters: [],
         };
 
-        if (route.middlewares && route.middlewares.indexOf("jwtAuth") > -1) {
+        if (route.middlewares && route.middlewares.indexOf("authJwt") > -1) {
             //Add token parameter
             swaggerObject.paths[currentPath][route.method].parameters.push({
                 name: "token",
@@ -64,7 +64,7 @@ module.exports = function createSwagger (rootGroup) {
                 type: "string",
             });
         }
-        if (route.middlewares && route.middlewares.indexOf("householdExtractor") > -1) {
+        if (route.middlewares && route.middlewares.indexOf("extractHouseholdId") > -1) {
             //Add householdId parameter
             swaggerObject.paths[currentPath][route.method].parameters.push({
                 name: "household_id",

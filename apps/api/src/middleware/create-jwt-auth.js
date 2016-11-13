@@ -36,4 +36,4 @@ module.exports.swagger = {
             type: "string",
         },
     ],
-}
+};

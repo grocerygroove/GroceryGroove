@@ -10,7 +10,7 @@ module.exports = {
         "extractUserId",
     ],
 
-    deps: [
+    services: [
         "db",
         "logger",
     ],

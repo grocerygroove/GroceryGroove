@@ -6,7 +6,7 @@ module.exports = function createServiceInjector (services, onInjection) {
     }
 
     return function injectServices (ctx, next) {
-        ctx.services = {}
+        ctx.services = {};
         for (const name of ctx.route.services) {
             ctx.services[name] = services[name];
         }
