@@ -32,12 +32,10 @@ module.exports = {
             handler: a(function* (ctx, next) {
                 const { db, logger } = ctx.services;
 
-                const userId = ctx.state.userId;
-
                 ctx.body = {
-                    "quantity_types": yield queries.quantityTypes.getAll(db, logger, [
-                        userId,
-                    ]),
+                    "quantity_types": yield queries.quantityTypes.getAll(db, logger, {
+                        householdId: ctx.state.householdId,
+                    }),
                 };
             }),
         },
