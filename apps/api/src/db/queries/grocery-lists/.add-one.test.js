@@ -31,11 +31,11 @@ tap.test("db/queries/grocery-lists/add-one", tap => {
 
             const testGroceryListName = "Test List";
 
-            yield queries.groceryLists.addOne(db, logger, [
-                defaultTestUser.user_id,
-                testGroceryListName,
-                defaultTestUser.primary_household_id,
-            ]);
+            yield queries.groceryLists.addOne(db, logger, {
+                userId: defaultTestUser.user_id,
+                groceryListName: testGroceryListName,
+                householdId: defaultTestUser.primary_household_id,
+            });
 
             const rows = (yield db.query(logger, `
                 SELECT COUNT(*) AS count
@@ -64,19 +64,19 @@ tap.test("db/queries/grocery-lists/add-one", tap => {
             const testGroceryListName = "Test List";
 
             //Add grocery list, first insert should be good
-            yield queries.groceryLists.addOne(db, logger, [
-                defaultTestUser.user_id,
-                testGroceryListName,
-                defaultTestUser.primary_household_id,
-            ]);
+            yield queries.groceryLists.addOne(db, logger, {
+                userId: defaultTestUser.user_id,
+                groceryListName: testGroceryListName,
+                householdId: defaultTestUser.primary_household_id,
+            });
 
             //Second should throw a DuplicateNameError
             try {
-                yield queries.groceryLists.addOne(db, logger, [
-                    defaultTestUser.user_id,
-                    testGroceryListName,
-                    defaultTestUser.primary_household_id,
-                ]);
+                yield queries.groceryLists.addOne(db, logger, {
+                    userId: defaultTestUser.user_id,
+                    groceryListName: testGroceryListName,
+                    householdId: defaultTestUser.primary_household_id,
+                });
             } catch (e) {
                 tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
             }

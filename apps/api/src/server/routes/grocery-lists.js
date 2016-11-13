@@ -33,10 +33,10 @@ module.exports = {
                 const { db, logger } = ctx.services;
 
                 ctx.body = {
-                    "grocery_lists": yield queries.groceryLists.getAll(db, logger, [
-                        ctx.state.householdId,
-                        ctx.state.userId,
-                    ]),
+                    "grocery_lists": yield queries.groceryLists.getAll(db, logger, {
+                        householdId: ctx.state.householdId,
+                        userId: ctx.state.userId,
+                    }),
                 };
             }),
         },
@@ -70,11 +70,11 @@ module.exports = {
                     ctx.throw(400, "Invalid or missing Grocery List id");
                 } else {
                     ctx.body = {
-                        "grocery_list": yield queries.groceryLists.getOne(db, logger, [
-                            ctx.state.householdId,
-                            ctx.state.userId,
-                            ctx.id,
-                        ]),
+                        "grocery_list": yield queries.groceryLists.getOne(db, logger, {
+                            householdId: ctx.state.householdId,
+                            userId: ctx.state.userId,
+                            groceryListId: ctx.id,
+                        }),
                     };
                 }
             }),
@@ -115,11 +115,11 @@ module.exports = {
                 const name = ctx.request.body.name;
 
                 try {
-                    const groceryListId = yield queries.groceryLists.addOne(db, logger, [
+                    const groceryListId = yield queries.groceryLists.addOne(db, logger, {
                         userId,
-                        name,
+                        groceryListName: name,
                         householdId,
-                    ]);
+                    });
 
                     if (!groceryListId) {
                         ctx.throw(401, "User doesn't have access to this household");
@@ -130,9 +130,9 @@ module.exports = {
                         "grocery_list_id": groceryListId,
                     };
 
-                    void(queries.groceryLists.touchAccessLog(db, logger, [
+                    void(queries.groceryLists.touchAccessLog(db, logger, {
                         groceryListId,
-                    ]));
+                    }));
 
                 } catch (e) {
                     if (e instanceof DuplicateNameError) {
@@ -207,14 +207,18 @@ module.exports = {
                     ctx.throw(400, "Invalid or missing 'quantity'");
                 } else {
                     ctx.body = {
-                        "grocery_list_item_id": yield queries.groceryLists.items.addOne(db, logger, [
-                            ctx.id,
-                            ctx.state.userId,
+                        "grocery_list_item_id": yield queries.groceryLists.items.addOne(db, logger, {
+                            groceryListId: ctx.id,
+                            userId: ctx.state.userId,
                             itemId,
                             quantityTypeId,
                             quantity,
-                        ]),
+                        }),
                     };
+
+                    void(queries.groceryLists.touchAccessLog(db, logger, {
+                        groceryListId: ctx.id,
+                    }));
                 }
 
             }),

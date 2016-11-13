@@ -31,21 +31,21 @@ tap.test("db/queries/grocery-lists/get-one", tap => {
             const db = makeDatabase();
             const testGroceryListName = "Test List";
 
-            const groceryListId = yield queries.groceryLists.addOne(db, logger, [
-                defaultTestUser.user_id,
-                testGroceryListName,
-                defaultTestUser.primary_household_id,
-            ]);
+            const groceryListId = yield queries.groceryLists.addOne(db, logger, {
+                userId: defaultTestUser.user_id,
+                groceryListName: testGroceryListName,
+                householdId: defaultTestUser.primary_household_id,
+            });
             //Gotta touch the access log after creation or other queries won't work.
-            yield queries.groceryLists.touchAccessLog(db, logger, [
+            yield queries.groceryLists.touchAccessLog(db, logger, {
                 groceryListId,
-            ]);
+            });
 
-            const actual = yield queries.groceryLists.getOne(db, logger, [
-                defaultTestUser.primary_household_id,
-                defaultTestUser.user_id,
+            const actual = yield queries.groceryLists.getOne(db, logger, {
+                householdId: defaultTestUser.primary_household_id,
+                userId: defaultTestUser.user_id,
                 groceryListId,
-            ]);
+            });
 
             tap.ok(objectLike(actual, [
                 {
