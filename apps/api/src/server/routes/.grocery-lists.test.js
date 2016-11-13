@@ -11,6 +11,15 @@ tap.test("server/routes/grocery-lists", tap => {
     };
     const next = () => {};
 
+    const messenger = {
+        addMessage: (message) => Promise.resolve("OK"),
+    };
+    const cacher = {
+        get: (key) => Promise.resolve(void(0)),
+        set: (key, value) => Promise.resolve(void(0)),
+        del: (key) => Promise.resolve(void(0)),
+    };
+
     tap.test("GET /grocery-lists", a(function* (tap) {
         const handler = getRoute(rootGroup, "GET", "/grocery-lists").handler;
 
@@ -21,6 +30,7 @@ tap.test("server/routes/grocery-lists", tap => {
                 },
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,
@@ -98,6 +108,7 @@ tap.test("server/routes/grocery-lists", tap => {
                 id: "1",
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,
@@ -150,6 +161,7 @@ tap.test("server/routes/grocery-lists", tap => {
                 },
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,
@@ -201,6 +213,7 @@ tap.test("server/routes/grocery-lists", tap => {
                 id: "notadigit",
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,
@@ -262,6 +275,7 @@ tap.test("server/routes/grocery-lists", tap => {
                 },
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,
@@ -277,6 +291,7 @@ tap.test("server/routes/grocery-lists", tap => {
                         }),
                     },
                     logger,
+                    messenger,
                 },
 
                 state: {
@@ -308,6 +323,7 @@ tap.test("server/routes/grocery-lists", tap => {
                 },
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,
@@ -319,6 +335,7 @@ tap.test("server/routes/grocery-lists", tap => {
                         }),
                     },
                     logger,
+                    messenger,
                 },
 
                 state: {
@@ -354,6 +371,7 @@ tap.test("server/routes/grocery-lists", tap => {
                 },
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,
@@ -365,6 +383,7 @@ tap.test("server/routes/grocery-lists", tap => {
                         }),
                     },
                     logger,
+                    messenger,
                 },
 
                 state: {

@@ -1,6 +1,14 @@
 const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const queries = require("../../db/queries");
+const cacheKeys = {
+    getGroceryListsKey: (householdId) => {
+        return `getGroceryListsHoushold${householdId}`;
+    },
+    getSingleGroceryListKey: (householdId, groceryListId) => {
+        return `getSingleGroceryList${groceryListId}Houshold${householdId}`;
+    },
+};
 
 module.exports = {
     path: "/grocery-lists",
@@ -12,8 +20,10 @@ module.exports = {
     ],
 
     services: [
+        "cacher",
         "db",
         "logger",
+        "messenger",
     ],
 
     routes: [
@@ -30,14 +40,24 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger } = ctx.services;
+                const { cacher, db, logger } = ctx.services;
+                let response;
+                const cacheKey = cacheKeys.getGroceryListsKey(ctx.state.householdId);
+                const cachedResult = yield cacher.get(cacheKey);
+                if (cachedResult) {
+                    response = cachedResult;
+                } else {
+                    //Go get fetch the grocery lists and cache them
+                    response = {
+                        "grocery_lists": yield queries.groceryLists.getAll(db, logger, {
+                            householdId: ctx.state.householdId,
+                            userId: ctx.state.userId,
+                        }),
+                    };
+                    yield cacher.set(cacheKey, response);
+                }
 
-                ctx.body = {
-                    "grocery_lists": yield queries.groceryLists.getAll(db, logger, {
-                        householdId: ctx.state.householdId,
-                        userId: ctx.state.userId,
-                    }),
-                };
+                ctx.body = response;
             }),
         },
 
@@ -64,18 +84,27 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger } = ctx.services;
+                const { cacher, db, logger } = ctx.services;
 
                 if (!ctx.id || !ctx.id.match(/^\d+$/)) {
                     ctx.throw(400, "Invalid or missing Grocery List id");
                 } else {
-                    ctx.body = {
-                        "grocery_list": yield queries.groceryLists.getOne(db, logger, {
-                            householdId: ctx.state.householdId,
-                            userId: ctx.state.userId,
-                            groceryListId: ctx.id,
-                        }),
-                    };
+                    let response;
+                    const cacheKey = cacheKeys.getSingleGroceryListKey(ctx.state.householdId, ctx.id);
+                    const cachedResult = yield cacher.get(cacheKey);
+                    if (cachedResult) {
+                        response = cachedResult;
+                    } else {
+                        response = {
+                            "grocery_list": yield queries.groceryLists.getOne(db, logger, {
+                                householdId: ctx.state.householdId,
+                                userId: ctx.state.userId,
+                                groceryListId: ctx.id,
+                            }),
+                        };
+                        yield cacher.set(cacheKey, response);
+                    }
+                    ctx.body = response;
                 }
             }),
         },
@@ -108,7 +137,7 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger } = ctx.services;
+                const { cacher, db, logger, messenger } = ctx.services;
 
                 const userId = ctx.state.userId;
                 const householdId = ctx.state.householdId;
@@ -125,6 +154,11 @@ module.exports = {
                         ctx.throw(401, "User doesn't have access to this household");
                         return;
                     }
+
+                    //Invalidate cache
+                    yield cacher.del(cacheKeys.getGroceryListsKey(householdId));
+                    //Send message
+                    messenger.addMessage(`household:'${householdId}' new grocery list`);
 
                     ctx.body = {
                         "grocery_list_id": groceryListId,
