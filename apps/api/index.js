@@ -7,6 +7,7 @@ const createDatabaseConnection = require("database-connection");
 const createJwtAuthMw = require("./src/middleware/create-jwt-auth");
 const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");
+const createRedisService = require("./src/redis/create-client");
 
 const openHttpPort = (function () {
     const http = require("http");
@@ -47,6 +48,11 @@ a(function* () {
             name: "api",
             src: true,
         }),
+
+        redis: createRedisService(
+            process.env.REDIS_IP,
+            process.env.REDIS_PORT
+        ),
     };
 
     const middlewares = {

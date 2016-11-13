@@ -7,6 +7,7 @@ module.exports = {
 
     middlewares: [
         "authJwt",
+        "parseJsonBody",
         "extractHouseholdId",
         "extractUserId",
     ],
@@ -14,6 +15,7 @@ module.exports = {
     services: [
         "db",
         "logger",
+        "redis",
     ],
 
     routes: [
@@ -28,9 +30,9 @@ module.exports = {
                 const { db, logger } = ctx.services;
 
                 ctx.body = {
-                    "category_names": yield queries.categories.getAllNames(db, logger, [
-                        ctx.state.householdId,
-                    ]),
+                    "category_names": yield queries.categories.getAllNames(db, logger, {
+                        householdId: ctx.state.householdId,
+                    }),
                 };
             }),
         },
@@ -54,7 +56,7 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger } = ctx.services;
+                const { db, logger, redis } = ctx.services;
 
                 const categoryName = ctx.request.body.name;
 
@@ -67,6 +69,7 @@ module.exports = {
                             createdById: ctx.state.userId,
                             name:        categoryName,
                         });
+                        yield redis.addMessage(`household:'${ctx.state.householdId}' new category`);
                         ctx.status = 200;
                     } catch (e) {
                         if (e instanceof DuplicateNameError) {
@@ -91,9 +94,9 @@ module.exports = {
                 const { db, logger } = ctx.services;
 
                 ctx.body = {
-                    categories: yield queries.categories.getAll(db, logger, [
-                        ctx.state.householdId,
-                    ]),
+                    categories: yield queries.categories.getAll(db, logger, {
+                        householdId: ctx.state.householdId,
+                    }),
                 };
             }),
         },

@@ -9,6 +9,9 @@ tap.test("server/routes/categories", tap => {
         info: () => {},
         child: () => logger,
     };
+    const redis = {
+        addMessage: (message) => Promise.resolve("OK"),
+    };
 
     tap.test("GET /categories", a(function* (tap) {
 
@@ -81,6 +84,7 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
+                    redis,
                 },
 
                 state: {
