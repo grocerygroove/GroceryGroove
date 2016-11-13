@@ -33,24 +33,24 @@ tap.test("db/queries/grocery-lists/get-all", tap => {
             const glName2 = "Test 2 List";
 
             const addGroceryList = a(function* (name) {
-                const groceryListId = yield queries.groceryLists.addOne(db, logger, [
-                    defaultTestUser.user_id,
-                    name,
-                    defaultTestUser.primary_household_id,
-                ]);
+                const groceryListId = yield queries.groceryLists.addOne(db, logger, {
+                    userId: defaultTestUser.user_id,
+                    groceryListName: name,
+                    householdId: defaultTestUser.primary_household_id,
+                });
                 //Gotta touch the access log after creation or other queries won't work.
-                yield queries.groceryLists.touchAccessLog(db, logger, [
+                yield queries.groceryLists.touchAccessLog(db, logger, {
                     groceryListId,
-                ]);
+                });
             });
 
             yield addGroceryList(glName1);
             yield addGroceryList(glName2);
 
-            const rows = yield queries.groceryLists.getAll(db, logger, [
-                defaultTestUser.primary_household_id,
-                defaultTestUser.user_id,
-            ]);
+            const rows = yield queries.groceryLists.getAll(db, logger, {
+                householdId: defaultTestUser.primary_household_id,
+                userId: defaultTestUser.user_id,
+            });
 
             tap.ok(
                 objectLike(rows[0], [
