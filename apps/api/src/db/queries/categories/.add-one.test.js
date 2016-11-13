@@ -24,74 +24,69 @@ tap.test("db/queries/categories/add-one", tap => {
     };
 
     tap.test("clean insert", a(function* (tap) {
+        yield resetTestingDb();
 
-        yield a(function* () {
-            yield resetTestingDb();
+        const db = makeDatabase();
 
-            const db = makeDatabase();
+        const testCategory = {
+            "category_id": 12,
+            "household_id": defaultTestUser.primary_household_id,
+            "name": "testcategory",
+            "created_by_id": defaultTestUser.user_id,
+        };
 
-            const testCategory = {
-                "category_id": 12,
-                "household_id": defaultTestUser.primary_household_id,
-                "name": "testcategory",
-                "created_by_id": defaultTestUser.user_id,
-            };
+        //Add a category
+        yield queries.categories.addOne(db, logger, {
+            householdId: testCategory.household_id,
+            createdById: testCategory.created_by_id,
+            name: testCategory.name,
+        });
 
-            //Add a category
-            yield queries.categories.addOne(db, logger, {
-                householdId: testCategory.household_id,
-                createdById: testCategory.created_by_id,
-                name: testCategory.name,
-            });
+        const rows = (yield db.query(logger, `
+            SELECT *
+            FROM categories
+            WHERE name = '${testCategory.name}'
+        `)).asPlainObjects();
 
-            const rows = (yield db.query(logger, `
-                SELECT *
-                FROM categories
-                WHERE name = '${testCategory.name}'
-            `)).asPlainObjects();
+        const actual = rows[0];
+        const expected = testCategory;
+        tap.strictSame(actual, expected, "Add a category");
 
-            const actual = rows[0];
-            const expected = testCategory;
-            tap.strictSame(actual, expected, "Add a category");
+        yield db.end();
 
-            yield db.end();
-        })();
     }));
 
     tap.test("duplicate insert", a(function* (tap) {
+        yield resetTestingDb();
 
-        yield a(function* () {
-            yield resetTestingDb();
+        const db = makeDatabase();
 
-            const db = makeDatabase();
+        const testCategory = {
+            "category_id": 12,
+            "household_id": null,
+            "name": "testcategory",
+            "created_by_id": null,
+        };
 
-            const testCategory = {
-                "category_id": 12,
-                "household_id": null,
-                "name": "testcategory",
-                "created_by_id": null,
-            };
+        //Add a category, first insert should be good
+        yield queries.categories.addOne(db, logger, {
+            householdId: testCategory.household_id,
+            createdById: testCategory.created_by_id,
+            name: testCategory.name,
+        });
 
-            //Add a category, first insert should be good
+        //Second should throw a DuplicateNameError
+        try {
             yield queries.categories.addOne(db, logger, {
                 householdId: testCategory.household_id,
                 createdById: testCategory.created_by_id,
                 name: testCategory.name,
             });
+        } catch (e) {
+            tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
+        }
 
-            //Second should throw a DuplicateNameError
-            try {
-                const result = yield queries.categories.addOne(db, logger, {
-                    householdId: testCategory.household_id,
-                    createdById: testCategory.created_by_id,
-                    name: testCategory.name,
-                });
-            } catch (e) {
-                tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
-            }
-
-            yield db.end();
-        })();
+        yield db.end();
     }));
 
     tap.end();
