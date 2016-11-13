@@ -7,7 +7,11 @@ const createDatabaseConnection = require("database-connection");
 const createJwtAuthMw = require("./src/middleware/create-jwt-auth");
 const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");
-const createRedisService = require("./src/redis/create-client");
+const createMessageService = require("./src/server/services/create-message-service");
+const createCacherService = require("./src/server/services/create-cacher-service");
+const redis = require("redis");
+Promise.promisifyAll(redis.RedisClient.prototype);
+Promise.promisifyAll(redis.Multi.prototype);
 
 const openHttpPort = (function () {
     const http = require("http");
@@ -33,7 +37,14 @@ a(function* () {
         : "production"
     );
 
+    const redisClient = redis.createClient({
+        host: process.env.REDIS_IP,
+        port: process.env.REDIS_PORT,
+    });
+
     const services = {
+        cacher: createCacherService(redisClient),
+
         db: createDatabaseConnection({
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
@@ -49,10 +60,7 @@ a(function* () {
             src: true,
         }),
 
-        redis: createRedisService(
-            process.env.REDIS_IP,
-            process.env.REDIS_PORT
-        ),
+        messager: createMessageService(redisClient),
     };
 
     const middlewares = {

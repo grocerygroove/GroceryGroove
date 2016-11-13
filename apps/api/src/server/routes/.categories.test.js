@@ -9,8 +9,14 @@ tap.test("server/routes/categories", tap => {
         info: () => {},
         child: () => logger,
     };
-    const redis = {
+    const messager = {
         addMessage: (message) => Promise.resolve("OK"),
+    };
+    const cacher = {
+        get: (key) => Promise.resolve(void(0)),
+        set: (key, value) => Promise.resolve(void(0)),
+        del: (key) => Promise.resolve(void(0)),
+        delMulti: (keys) => Promise.resolve(void(0)),
     };
 
     tap.test("GET /categories", a(function* (tap) {
@@ -38,6 +44,7 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
+                    cacher,
                 },
 
                 state: {
@@ -84,7 +91,8 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
-                    redis,
+                    messager,
+                    cacher,
                 },
 
                 state: {
@@ -122,6 +130,8 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
+                    messager,
+                    cacher,
                 },
 
                 state: {
@@ -164,6 +174,8 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
+                    messager,
+                    cacher,
                 },
 
                 state: {
@@ -220,6 +232,7 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
+                    cacher,
                 },
 
                 state: {

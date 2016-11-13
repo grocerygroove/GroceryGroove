@@ -1,6 +1,14 @@
 const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const queries = require("../../db/queries");
+const cacheKeys = {
+    getCategoriesKey: (householdId) => {
+        return `getCategoriesHoushold${householdId}`;
+    },
+    getCategoriesInfoKey: (householdId) => {
+        return `getCategoriesInfoHoushold${householdId}`;
+    },
+};
 
 module.exports = {
     path: "/categories",
@@ -15,7 +23,8 @@ module.exports = {
     services: [
         "db",
         "logger",
-        "redis",
+        "messager",
+        "cacher",
     ],
 
     routes: [
@@ -27,13 +36,22 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger } = ctx.services;
-
-                ctx.body = {
-                    "category_names": yield queries.categories.getAllNames(db, logger, {
-                        householdId: ctx.state.householdId,
-                    }),
-                };
+                const { db, logger, cacher } = ctx.services;
+                let response;
+                const cacheKey = cacheKeys.getCategoriesKey(ctx.state.householdId);
+                const cachedResult = yield cacher.get(cacheKey);
+                if (cachedResult) {
+                    response = cachedResult;
+                } else {
+                    //Go fetch the categories and cache them
+                    response = {
+                        "category_names": yield queries.categories.getAllNames(db, logger, {
+                            householdId: ctx.state.householdId,
+                        }),
+                    };
+                    yield cacher.set(cacheKey, response);
+                }
+                ctx.body = response;
             }),
         },
 
@@ -56,7 +74,7 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger, redis } = ctx.services;
+                const { db, logger, messager, cacher } = ctx.services;
 
                 const categoryName = ctx.request.body.name;
 
@@ -69,7 +87,14 @@ module.exports = {
                             createdById: ctx.state.userId,
                             name:        categoryName,
                         });
-                        yield redis.addMessage(`household:'${ctx.state.householdId}' new category`);
+
+                        //Invalidate cache
+                        yield cacher.delMulti([
+                            cacheKeys.getCategoriesKey(ctx.state.householdId),
+                            cacheKeys.getCategoriesInfoKey(ctx.state.householdId),
+                        ]);
+                        //Send message out alerting new data
+                        yield messager.addMessage(`household:'${ctx.state.householdId}' new category`);
                         ctx.status = 200;
                     } catch (e) {
                         if (e instanceof DuplicateNameError) {
@@ -91,13 +116,22 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger } = ctx.services;
+                const { db, logger, cacher } = ctx.services;
 
-                ctx.body = {
-                    categories: yield queries.categories.getAll(db, logger, {
-                        householdId: ctx.state.householdId,
-                    }),
-                };
+                const cacheKey = cacheKeys.getCategoriesInfoKey(ctx.state.householdId);
+                const cachedResult = yield cacher.get(cacheKey);
+                if (cachedResult) {
+                    response = cachedResult;
+                } else {
+                    //Go fetch the categories and cache them
+                    response = {
+                        categories: yield queries.categories.getAll(db, logger, {
+                            householdId: ctx.state.householdId,
+                        }),
+                    };
+                    yield cacher.set(cacheKey, response);
+                }
+                ctx.body = response;
             }),
         },
     ],
