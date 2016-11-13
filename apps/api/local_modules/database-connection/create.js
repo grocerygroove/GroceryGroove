@@ -49,7 +49,7 @@ module.exports = function makeDatabase ({ user, password, name, host, port }) {
     const connect = function connect () {
         return pool.connect()
         .then(client => {
-            if (!client._originalQueryBound) {
+            if (!client._query) {
                 client._query = client.query;
                 client.query = queryLogged.bind(null, client._query.bind(client));
             }

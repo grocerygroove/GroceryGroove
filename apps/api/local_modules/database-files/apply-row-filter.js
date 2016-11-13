@@ -18,15 +18,18 @@ const rowFilters = {
     row: function (rows) {
         return rows[0];
     },
+
+    none: function (rows) {
+        return;
+    },
 };
 
 module.exports = function applyRowFilter (type, rows) {
-    if (type) {
-        if (rowFilters[type]) {
-            return rowFilters[type](rows);
-        } else {
-            throw new InvalidRowFilterError(type);
-        }
+    if (0) {
+    } else if (type && rowFilters[type]) {
+        return rowFilters[type](rows);
+    } else if (type && (!rowFilters[type])) {
+        throw new InvalidRowFilterError(type);
     } else {
         return rows;
     }

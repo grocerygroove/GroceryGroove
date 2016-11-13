@@ -1,13 +1,14 @@
 {
     returns: "none",
+    namedParameters: true,
 }
 
 WITH insert_household_user AS (
     INSERT INTO households_users(household_id, user_id)
-    VALUES($1, $2)
+    VALUES(:householdId:, :userId:)
 )
 
 UPDATE households SET
-    created_by_id = $2,
-    household_admin = $2
-WHERE household_id = $1
+    created_by_id = :userId:,
+    household_admin = :userId:
+WHERE household_id = :householdId:

@@ -20,8 +20,8 @@ const tap = require("tap");
 
 tap.test("db/queries/households/add-one", tap => {
     const logger = {
-        info: () => {},
-        child: () => { return logger; },
+        info:  () => {},
+        child: () => logger,
     };
 
     tap.test("add one", a(function* (tap) {
@@ -32,10 +32,10 @@ tap.test("db/queries/households/add-one", tap => {
             const householdName = "Test House";
 
 
-            const householdId = yield transactions.households.createForUser(db, logger, [
-                defaultTestUser.user_id,
+            const householdId = yield transactions.households.createForUser(db, logger, {
                 householdName,
-            ]);
+                userId: defaultTestUser.user_id,
+            });
 
             const expected = {
                 "household_id": 2,

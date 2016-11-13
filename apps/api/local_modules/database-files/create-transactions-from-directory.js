@@ -30,31 +30,20 @@ module.exports = function createTransactionsFromDirectory (parentFilenames, path
             const functionName = transactionName.split("/").join("_");
 
             if (!filename.startsWith(".") && filename.endsWith(".js")) {
-                const contents = require(pathname);
-                const attributes = (
-                    (typeof contents === "function")
-                    ? ({
-                        transaction: contents,
-                    })
-                    : contents
-                );
+                const transaction = require(pathname);
 
                 assign(name, rf(functionName, function (db, logger, items) {
-                    return db.transaction(client => {
-                        const resources = {
-                            client,
-                            logger: logger.child({
-                                "transaction_name": transactionName,
-                            }),
-                        };
-
-                        return Promise.resolve()
-                        .then(() => attributes.transaction(resources, items))
-                        .then(
-                            rows => applyRowFilter(attributes.returns, rows),
-                            error => Promise.reject(convertSqlError(pathname, attributes.errorHandling, error) || error)
-                        );
+                    const transactionLogger = logger.child({
+                        "transaction_name": transactionName,
                     });
+
+                    return db.transaction(transactionLogger, client => transaction(
+                        {
+                            client,
+                            logger: transactionLogger,
+                        },
+                        items
+                    ));
                 }));
             }
         }
