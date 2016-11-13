@@ -23,7 +23,7 @@ module.exports = {
     services: [
         "db",
         "logger",
-        "messager",
+        "messenger",
         "cacher",
     ],
 
@@ -74,7 +74,7 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger, messager, cacher } = ctx.services;
+                const { db, logger, messenger, cacher } = ctx.services;
 
                 const categoryName = ctx.request.body.name;
 
@@ -94,7 +94,7 @@ module.exports = {
                             cacheKeys.getCategoriesInfoKey(ctx.state.householdId),
                         ]);
                         //Send message out alerting new data
-                        yield messager.addMessage(`household:'${ctx.state.householdId}' new category`);
+                        yield messenger.addMessage(`household:'${ctx.state.householdId}' new category`);
                         ctx.status = 200;
                     } catch (e) {
                         if (e instanceof DuplicateNameError) {

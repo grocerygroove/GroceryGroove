@@ -9,7 +9,7 @@ tap.test("server/routes/categories", tap => {
         info: () => {},
         child: () => logger,
     };
-    const messager = {
+    const messenger = {
         addMessage: (message) => Promise.resolve("OK"),
     };
     const cacher = {
@@ -91,7 +91,7 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
-                    messager,
+                    messenger,
                     cacher,
                 },
 
@@ -130,7 +130,7 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
-                    messager,
+                    messenger,
                     cacher,
                 },
 
@@ -174,7 +174,7 @@ tap.test("server/routes/categories", tap => {
                         }),
                     },
                     logger,
-                    messager,
+                    messenger,
                     cacher,
                 },
 

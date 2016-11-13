@@ -60,7 +60,7 @@ a(function* () {
             src: true,
         }),
 
-        messager: createMessageService(redisClient),
+        messenger: createMessageService(redisClient),
     };
 
     const middlewares = {
