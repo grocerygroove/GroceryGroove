@@ -8,6 +8,12 @@ tap.test("server/routes/households", tap => {
         info: () => {},
         child: () => { return logger; },
     };
+    const cacher = {
+        get: (key) => Promise.resolve(void(0)),
+        set: (key, value) => Promise.resolve(void(0)),
+        del: (key) => Promise.resolve(void(0)),
+        delMulti: (keys) => Promise.resolve(void(0)),
+    };
     const next = () => {};
 
     tap.test("GET /households", a(function* (tap) {
@@ -19,6 +25,7 @@ tap.test("server/routes/households", tap => {
                 },
 
                 services: {
+                    cacher,
                     db: {
                         query: a(function* (logger, {
                             name,

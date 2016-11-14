@@ -1,6 +1,11 @@
 const a = require("../../utils/asyncify");
 const queries = require("../../db/queries");
 const transactions = require("../../db/transactions");
+const cacheKeys = {
+    getHouseholdKey: (householdId) => {
+        return `getHousehold${householdId}`;
+    },
+};
 
 module.exports = {
     path: "/households",
@@ -13,8 +18,10 @@ module.exports = {
     ],
 
     services: [
+        "cacher",
         "db",
         "logger",
+        "messenger",
     ],
 
     routes: [
@@ -31,14 +38,23 @@ module.exports = {
             },
 
             handler: a(function* (ctx, next) {
-                const { db, logger } = ctx.services;
-
+                const { db, logger, cacher } = ctx.services;
                 const householdId = ctx.state.householdId;
-                ctx.body = {
-                    "household_info": yield queries.households.getHouseholdInfo(db, logger, [
-                        householdId,
-                    ]),
-                };
+
+                let response;
+                const cacheKey = cacheKeys.getHouseholdKey(householdId);
+                const cachedResult = yield cacher.get(cacheKey);
+                if (cachedResult) {
+                    response = cachedResult;
+                } else {
+                    response = {
+                        "household_info": yield queries.households.getHouseholdInfo(db, logger, [
+                            householdId,
+                        ]),
+                    };
+                    yield cacher.set(cacheKey, response);
+                }
+                ctx.body = response;
             }),
         },
         {
