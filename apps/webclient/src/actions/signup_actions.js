@@ -1,5 +1,3 @@
-import apiClient from '../api/apiClient';
-
 export const TOGGLE_SIGNUP_DIALOG = 'TOGGLE_SIGNUP_DIALOG';
 
 export const SIGNUP_BY_EMAIL = 'SIGNUP_BY_EMAIL';
@@ -23,18 +21,43 @@ export function toggleSignupDialog() {
 }
 
 export function signupByEmail(email, password) {
-    return {
-        type: SIGNUP_BY_EMAIL,
-        payload: apiClient().then(client => {
+    return (dispatch, getState, { api }) => {
+        dispatch(signupByEmailPending());
+        return api().then(client => {
             return client.signup.post_signup_by_email({
                 "bodyparam-signup-by-emailpost": {
                     email,
                     password,
                 },
             });
-        }),
+        }).then(
+            response => dispatch(signupByEmailFulfilled(response)),
+            error => dispatch(signupByEmailRejected(error))
+        );
     };
 }
+
+export function signupByEmailPending() {
+    return {
+        type: SIGNUP_BY_EMAIL_PENDING,
+    };
+}
+
+export function signupByEmailRejected(responseObject) {
+    return {
+        type: SIGNUP_BY_EMAIL_REJECTED,
+        payload: responseObject,
+    };
+}
+
+export function signupByEmailFulfilled(response) {
+    return {
+        type: SIGNUP_BY_EMAIL_FULFILLED,
+        payload: response,
+    };
+}
+
+
 
 export function signupValidationError(errorName) {
     return {

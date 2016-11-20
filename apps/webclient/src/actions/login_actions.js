@@ -1,5 +1,3 @@
-import apiClient from '../api/apiClient';
-
 export const TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
 
 export const LOGIN_BY_EMAIL = 'LOGIN_BY_EMAIL';
@@ -22,16 +20,46 @@ export function toggleSnackbar() {
 }
 
 export function loginByEmail(email, password) {
-    return {
-        type: LOGIN_BY_EMAIL,
-        payload: apiClient().then(client => {
+    return (dispatch, getState, { api }) => {
+        dispatch(loginByEmailPending());
+        return api().then(client => {
             return client.login.post_login_by_email({
                 "bodyparam-login-by-emailpost": {
                     email,
                     password,
                 },
             });
-        }),
+        }).then(
+            response => {
+                const token = (JSON.parse(response.data)).token;
+                dispatch(loginByEmailFulfilled(token));
+            },
+            error => {
+                const statusText = JSON.parse(error.statusText);
+                const returnValue = (statusText && statusText.message) ? statusText.message : void(0);
+                dispatch(loginByEmailRejected(returnValue));
+            }
+        );
+    };
+}
+
+export function loginByEmailPending() {
+    return {
+        type: LOGIN_BY_EMAIL_PENDING,
+    };
+}
+
+export function loginByEmailRejected(message) {
+    return {
+        type: LOGIN_BY_EMAIL_REJECTED,
+        payload: message,
+    };
+}
+
+export function loginByEmailFulfilled(token) {
+    return {
+        type: LOGIN_BY_EMAIL_FULFILLED,
+        payload: token,
     };
 }
 

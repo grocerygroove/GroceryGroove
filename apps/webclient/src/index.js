@@ -4,7 +4,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import createLogger from 'redux-logger';
-import promiseMiddleware from 'redux-promise-middleware';
+import thunk from 'redux-thunk';
 import { save, load } from 'redux-localstorage-simple';
 import reduxReset from 'redux-reset';
 import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
@@ -13,6 +13,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import initalState from './initialState';
 import AppComponent from './pages/app';
 import ggApp from './reducers/gg_app';
+import api from './api/apiClient';
 
 injectTapEventPlugin();
 
@@ -46,8 +47,11 @@ const muiTheme = getMuiTheme({
   },
 });
 const enhancedCreateStore = compose(
-    applyMiddleware(promiseMiddleware(), save(), createLogger()),
-    reduxReset()  // Will use 'RESET' as default action.type to trigger reset
+    applyMiddleware(
+        thunk.withExtraArgument({ api }),
+        save(),
+        createLogger()),
+        reduxReset()  // Will use 'RESET' as default action.type to trigger reset
 )(createStore);
 
 const store = enhancedCreateStore(

@@ -22,11 +22,9 @@ export default function loginReducer(state = Immutable.fromJS({}), action) {
             return state.set('requestPending', true);
         }
         case LOGIN_BY_EMAIL_REJECTED: {
-            const responseObject = JSON.parse(action.payload.statusText);
-            let immutState = state.set('requestPending', false);
-            if (responseObject && responseObject.message) {
+            if (action.payload) {
                 return immutState
-                        .setIn([ 'loginErrors', 'emailErrorText' ], responseObject.message);
+                        .setIn([ 'loginErrors', 'emailErrorText' ], action.payload);
             } else {
                 return immutState;
             }
