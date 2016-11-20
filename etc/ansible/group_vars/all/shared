@@ -26,3 +26,5 @@ jwtsecret: tQg1c6xLkBQ9GtZqjLON
 redis_ip: 127.0.0.1
 redis_port: 6379
 redis_message_queue_name: INTERPROCESS_MESSAGE_QUEUE
+web_socket_server_path: /opt/wsserver
+web_socket_server_port: 7000

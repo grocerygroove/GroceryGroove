@@ -1,0 +1,20 @@
+description "Web Socket Server"
+author      "Grocery Groove"
+
+# used to be: start on startup
+# until we found some mounts weren't ready yet while booting
+
+start on started mountall
+stop on shutdown
+
+# automatically respawn
+
+respawn
+respawn limit 99 5
+
+script
+
+    export HOME="/root"
+    cd {{ web_socket_server_path }} && exec node index.js >> /var/log/wsserver.log 2>&1
+
+end script

@@ -17,8 +17,9 @@ Vagrant.configure(2) do |config|
     ports = [
         [   80,   'webclient' ],
         [ 5432,   'postgres'  ],
-        [ 8080,   'api'       ],
         [ 5858,   'nodejs-debug'],
+        [ 7000,   'web-socket-server'],
+        [ 8080,   'api'       ],
     ]
     port_offset = (ENV['port_offset'] || 10000).to_i
     ports.each do |port, service|
@@ -29,6 +30,7 @@ Vagrant.configure(2) do |config|
     config.vm.synced_folder "./apps/api",           "/opt/api",         :create => true
     config.vm.synced_folder "./apps/queueworker",   "/opt/queueworker", :create => true
     config.vm.synced_folder "./apps/webclient",     "/opt/webclient",   :create => true
+    config.vm.synced_folder "./apps/wsserver",      "/opt/wsserver",    :create => true
     config.vm.synced_folder "./etc/migrations",     "/etc/migrations",  :create => true
     config.vm.synced_folder "./etc/rambler",        "/etc/rambler",     :create => true
 

@@ -1,0 +1,22 @@
+- name: rebuild deps
+  command: npm install
+  args:
+    chdir: "{{ web_socket_server_path }}"
+
+- name: create the dotenv file
+  template:
+    src=../templates/wsserver.env.j2
+    dest=/tmp/ansible-wsserverdotenv
+
+- name: install the dotenv file
+  command: mv /tmp/ansible-wsserverdotenv {{ web_socket_server_path }}/.env
+
+- name: create the service file
+  template:
+    src=../templates/wsserver.conf.j2
+    dest=/etc/init/wsserver.conf
+  become: yes
+
+- name: start the wsserver service
+  command: "start wsserver"
+  become: yes

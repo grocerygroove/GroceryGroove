@@ -8,8 +8,10 @@ npm-debug.log
 /apps/api/node_modules
 /apps/webclient/node_modules
 /apps/queueworker/node_modules
+/apps/wsserver/node_modules
 /apps/api/.env
 /apps/queueworker/.env
+/apps/wsserver/.env
 /bin/ssh
 /bin/migrate
 /bin/psql

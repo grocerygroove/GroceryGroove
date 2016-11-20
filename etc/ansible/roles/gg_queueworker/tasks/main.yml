@@ -13,7 +13,7 @@
 
 - name: create the service file
   template:
-    src=../templates/queueworker.conf
+    src=../templates/queueworker.conf.j2
     dest=/etc/init/queueworker.conf
   become: yes
 
