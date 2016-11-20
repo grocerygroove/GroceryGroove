@@ -32,7 +32,10 @@ export function signupByEmail(email, password) {
             });
         }).then(
             response => dispatch(signupByEmailFulfilled(response)),
-            error => dispatch(signupByEmailRejected(error))
+            error => {
+                const rejectionExplaination = JSON.parse(error.statusText);
+                dispatch(signupByEmailRejected(rejectionExplaination));
+            }
         );
     };
 }
@@ -43,10 +46,10 @@ export function signupByEmailPending() {
     };
 }
 
-export function signupByEmailRejected(responseObject) {
+export function signupByEmailRejected(rejectionExplaination) {
     return {
         type: SIGNUP_BY_EMAIL_REJECTED,
-        payload: responseObject,
+        payload: rejectionExplaination,
     };
 }
 

@@ -22,11 +22,10 @@ export default function signupReducer(state = Immutable.fromJS({}), action) {
             return state.set('requestPending', true);
         }
         case SIGNUP_BY_EMAIL_REJECTED: {
-            const responseObject = JSON.parse(action.payload.statusText);
-            if (responseObject.issueParameter === "email") {
+            if (action.payload.issueParameter === "email") {
                 return state
                         .set('requestPending', false)
-                        .setIn([ 'signupErrors', 'emailErrorText' ], responseObject.message);
+                        .setIn([ 'signupErrors', 'emailErrorText' ], action.payload.message);
 
             } else {
                 return state
