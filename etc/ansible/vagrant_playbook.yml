@@ -13,4 +13,5 @@
     - rambler
     - gg_db
     - gg_api
+    - gg_queueworker
     - redis

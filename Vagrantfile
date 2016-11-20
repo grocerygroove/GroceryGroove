@@ -26,10 +26,11 @@ Vagrant.configure(2) do |config|
         config.vm.network "forwarded_port", guest: port, host: new_port, id: service
     end
 
-    config.vm.synced_folder "./apps/api",       "/opt/api",        :create => true
-    config.vm.synced_folder "./apps/webclient", "/opt/webclient",  :create => true
-    config.vm.synced_folder "./etc/migrations", "/etc/migrations", :create => true
-    config.vm.synced_folder "./etc/rambler",    "/etc/rambler",    :create => true
+    config.vm.synced_folder "./apps/api",           "/opt/api",         :create => true
+    config.vm.synced_folder "./apps/queueworker",   "/opt/queueworker", :create => true
+    config.vm.synced_folder "./apps/webclient",     "/opt/webclient",   :create => true
+    config.vm.synced_folder "./etc/migrations",     "/etc/migrations",  :create => true
+    config.vm.synced_folder "./etc/rambler",        "/etc/rambler",     :create => true
 
     config.ssh.forward_agent = true
 

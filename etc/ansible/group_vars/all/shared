@@ -16,6 +16,7 @@ log_path: /var/log
 node_environment: production
 postgres_version: 9.6
 purpose: deploy
+queueworker_path: /opt/queueworker
 rambler_conf_path: /etc/rambler
 rambler_testing_environment: testing
 webclient_path: /opt/webclient/dist
@@ -24,3 +25,4 @@ db_port: 5432
 jwtsecret: tQg1c6xLkBQ9GtZqjLON
 redis_ip: 127.0.0.1
 redis_port: 6379
+redis_message_queue_name: INTERPROCESS_MESSAGE_QUEUE

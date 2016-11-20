@@ -60,7 +60,7 @@ a(function* () {
             src: true,
         }),
 
-        messenger: createMessageService(redisClient),
+        messenger: createMessageService(redisClient, process.env.REDIS_MESSAGE_QUEUE_NAME),
     };
 
     const middlewares = {
