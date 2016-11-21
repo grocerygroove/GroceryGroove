@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import LoginComponent from './login';
 import GroceryListComponent from './groceryList';
+import CategoriesComponent from './categories';
 
 const RouterComponent = ({
                 page,
@@ -11,6 +12,8 @@ const RouterComponent = ({
             return <LoginComponent />;
         case "grocery-list":
             return <GroceryListComponent />;
+        case "categories":
+            return <CategoriesComponent />;
         default:
             throw new Error("Page Not Found");
     }

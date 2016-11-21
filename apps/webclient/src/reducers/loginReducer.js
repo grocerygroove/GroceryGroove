@@ -23,10 +23,10 @@ export default function loginReducer(state = Immutable.fromJS({}), action) {
         }
         case LOGIN_BY_EMAIL_REJECTED: {
             if (action.payload) {
-                return immutState
+                return state
                         .setIn([ 'loginErrors', 'emailErrorText' ], action.payload);
             } else {
-                return immutState;
+                return state;
             }
         }
         case LOGIN_BY_EMAIL_FULFILLED: {

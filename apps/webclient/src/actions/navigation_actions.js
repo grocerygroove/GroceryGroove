@@ -2,10 +2,13 @@ export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
 
 
-export function changePage(pageName) {
+export function changePage(pageName, pageTitle) {
     return {
         type: CHANGE_PAGE,
-        payload: pageName,
+        payload: {
+            pageName,
+            pageTitle,
+        },
     };
 }
 

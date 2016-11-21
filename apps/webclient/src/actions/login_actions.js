@@ -1,3 +1,5 @@
+import { getHouseholds } from './user_actions';
+
 export const TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
 
 export const LOGIN_BY_EMAIL = 'LOGIN_BY_EMAIL';
@@ -33,11 +35,13 @@ export function loginByEmail(email, password) {
             response => {
                 const token = (JSON.parse(response.data)).token;
                 dispatch(loginByEmailFulfilled(token));
+                dispatch(getHouseholds(token));
             },
             error => {
                 const statusText = JSON.parse(error.statusText);
                 const returnValue = (statusText && statusText.message) ? statusText.message : void(0);
                 dispatch(loginByEmailRejected(returnValue));
+                throw error;
             }
         );
     };

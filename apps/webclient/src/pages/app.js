@@ -21,6 +21,7 @@ const style = {
 const AppComponent = ({
         drawerOpen,
         page,
+        pageTitle,
         changePage,
         toggleDrawer,
         doSignout,
@@ -29,7 +30,7 @@ const AppComponent = ({
 <div>
     {renderIf(page !== "login") (
     <AppBar
-        title="Grocery List"
+        title={pageTitle}
         onLeftIconButtonTouchTap={toggleDrawer}/>
     )}
     <Drawer
@@ -37,9 +38,13 @@ const AppComponent = ({
         docked={false}
         onRequestChange={toggleDrawer}>
         <MenuItem
-            onTouchTap={changePage.bind(null, "grocery-list")}
+            onTouchTap={changePage.bind(null, "grocery-list", "Grocery List")}
             style={style.menuItem}
             leftIcon={<ListIcon />}>Grocery List</MenuItem>
+        <MenuItem
+            onTouchTap={changePage.bind(null, "categories", "Categories")}
+            style={style.menuItem}
+            leftIcon={<ListIcon />}>Categories</MenuItem>
         <MenuItem
             onTouchTap={doSignout}
             style={style.menuItem}
@@ -53,6 +58,7 @@ const AppComponent = ({
 AppComponent.propTypes = {
     drawerOpen: PropTypes.bool.isRequired,
     page: PropTypes.string.isRequired,
+    pageTitle: PropTypes.string.isRequired,
     changePage: PropTypes.func.isRequired,
     toggleDrawer: PropTypes.func.isRequired,
     doSignout: PropTypes.func.isRequired,
@@ -62,13 +68,14 @@ const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
         drawerOpen: state.getIn([ 'navigation', 'drawerOpen' ]),
         page: state.getIn([ 'navigation', 'page' ]),
+        pageTitle: state.getIn([ 'navigation', 'pageTitle' ]),
     });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changePage: (pagename) => {
-            dispatch(changePage(pagename));
+        changePage: (pagename, pageTitle) => {
+            dispatch(changePage(pagename, pageTitle));
             dispatch(toggleDrawer());
         },
         toggleDrawer: () => {

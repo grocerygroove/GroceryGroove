@@ -5,6 +5,7 @@ export default Immutable.fromJS({
     },
     navigation: {
         page: "login",
+        pageTitle: "Login",
         drawerOpen: false,
     },
     login: {

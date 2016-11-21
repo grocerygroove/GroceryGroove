@@ -14,6 +14,7 @@ import initalState from './initialState';
 import AppComponent from './pages/app';
 import ggApp from './reducers/gg_app';
 import api from './api/apiClient';
+import WebSocket from 'ws';
 
 injectTapEventPlugin();
 
@@ -48,7 +49,7 @@ const muiTheme = getMuiTheme({
 });
 const enhancedCreateStore = compose(
     applyMiddleware(
-        thunk.withExtraArgument({ api }),
+        thunk.withExtraArgument({ api, socket: new WebSocket('ws://localhost:17000', { origin: "*"}) }),
         save(),
         createLogger()),
         reduxReset()  // Will use 'RESET' as default action.type to trigger reset

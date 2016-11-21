@@ -28,8 +28,6 @@ redisSub.on("message", (channel, message) => {
     });
 });
 
-
-
 const wss = new WebSocketServer({
     port: process.env.WEB_SOCKET_SERVER_PORT,
 });
@@ -66,3 +64,4 @@ wss.on('connection', (ws) => {
         }
     });
 });
+
