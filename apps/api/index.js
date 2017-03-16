@@ -1,7 +1,6 @@
 require('dotenv').load();
 global.Promise = require("bluebird");
 
-const a = require("./src/utils/asyncify");
 const bunyan = require("bunyan");
 const createDatabaseConnection = require("database-connection");
 const createJwtAuthMw = require("./src/middleware/create-jwt-auth");
@@ -30,7 +29,7 @@ const openHttpPort = (function () {
     };
 })();
 
-a(function* () {
+(async () => {
     const mode = (
         (process.env.NODE_ENV === "development")
         ? "development"
@@ -70,7 +69,7 @@ a(function* () {
     const serverCallback = createServerCallback(mode, services, middlewares);
 
     try {
-        yield openHttpPort(8080, serverCallback);
+        await openHttpPort(8080, serverCallback);
         services.logger.info("Server started on http://localhost:8080");
     } catch (e) {
         services.logger.error(e, "startup error");
