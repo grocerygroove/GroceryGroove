@@ -30,6 +30,9 @@ const CategoriesComponent = ({
             textAlign: 'center',
             display: 'inline-block',
         },
+        listItem: {
+            backgroundColor: white,
+        },
     };
     return (
 <div>
@@ -39,7 +42,7 @@ const CategoriesComponent = ({
         <List style={style.list}>
         {categories.map(x => {
                 return (
-                    <ListItem primaryText={x.name} />
+                    <ListItem primaryText={x.name} style={style.listItem} />
                 );
 
             })
