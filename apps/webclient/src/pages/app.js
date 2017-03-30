@@ -16,6 +16,10 @@ const style = {
     menuItem: {
         backgroundColor: white,
     },
+    routerComponent: {
+        paddingTop: '64px',
+        height: 'calc(100vh - 64px)',
+    },
 };
 
 const AppComponent = ({
@@ -31,7 +35,8 @@ const AppComponent = ({
     {renderIf(page !== "login") (
     <AppBar
         title={pageTitle}
-        onLeftIconButtonTouchTap={toggleDrawer}/>
+        onLeftIconButtonTouchTap={toggleDrawer}
+        style={style.appBar}/>
     )}
     <Drawer
         open={drawerOpen}
@@ -50,7 +55,7 @@ const AppComponent = ({
             style={style.menuItem}
             leftIcon={<SignoutIcon />}>Signout</MenuItem>
     </Drawer>
-    <RouterComponent />
+    <RouterComponent style={style.routerComponent} />
 </div>
     );
 };

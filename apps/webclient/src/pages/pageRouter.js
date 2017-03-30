@@ -4,6 +4,14 @@ import LoginComponent from './login';
 import GroceryListComponent from './groceryList';
 import CategoriesComponent from './categories';
 
+const style = {
+    contentDiv: {
+        height: "calc(100vh - 64px)", //The app bar is 64px tall
+        width: '100%', //want all content divs to fill width
+    },
+};
+
+
 const RouterComponent = ({
                 page,
                 }) => {
@@ -11,16 +19,16 @@ const RouterComponent = ({
         case "login":
             return <LoginComponent />;
         case "grocery-list":
-            return <GroceryListComponent />;
+            return <GroceryListComponent style={style.contentDiv}/>;
         case "categories":
-            return <CategoriesComponent />;
+            return <CategoriesComponent style={style.contentDiv}/>;
         default:
             throw new Error("Page Not Found");
     }
 };
 
 RouterComponent.propTypes = {
-    page: PropTypes.string,
+    page: PropTypes.string,    
 };
 
 

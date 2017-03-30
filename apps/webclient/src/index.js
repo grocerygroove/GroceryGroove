@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import { save, load } from 'redux-localstorage-simple';
 import reduxReset from 'redux-reset';
 import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import groceryGrooveTheme from './theme/groceryGrooveTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import initalState from './initialState';
 import AppComponent from './pages/app';
@@ -22,31 +22,7 @@ const isObjectEmpty = (obj) => {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
 };
 
-const styles = {
-  container: {
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-  },
-};
 
-const muiTheme = getMuiTheme({
-  raisedButton: {
-    primaryColor: greenA200,
-    secondaryColor: yellow600,
-  },
-  flatButton: {
-    primaryTextColor: greenA200,
-    secondaryTextColor: yellow600,
-  },
-  textField: {
-    focusColor: greenA200,
-  },
-  appBar: {
-    color: lightBlue700,
-    textColor: white,
-  },
-});
 const enhancedCreateStore = compose(
     applyMiddleware(
         thunk.withExtraArgument({ api, socket: new WebSocket('ws://localhost:17000', { origin: "*"}) }),
@@ -65,8 +41,8 @@ const store = enhancedCreateStore(
 const App = () => {
     return (
 <Provider store={store}>
-    <MuiThemeProvider muiTheme={muiTheme}>
-        <AppComponent style={styles.container}/>
+    <MuiThemeProvider muiTheme={groceryGrooveTheme}>
+        <AppComponent /> 
     </MuiThemeProvider>
 </Provider>
     );

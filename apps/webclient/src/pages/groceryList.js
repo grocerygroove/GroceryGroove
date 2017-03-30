@@ -4,23 +4,24 @@ import Paper from 'material-ui/Paper';
 
 import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 
-const GroceryListComponent = () => {
-    const style = {
-        paper: {
-            height: '100%',
-            width: '100%',
-            textAlign: 'center',
-            display: 'inline-block',
-        },
+const GroceryListComponent = ({style}) => {
+    const computedStyle = {
+        paper: Object.assign({}, style, {   
+            //Fill in specific style here         
+        }),
     };
     return (
 <div>
     <Paper
-        style={style.paper}
+        style={computedStyle.paper}
         zDepth={1}>
     </Paper>
 </div>
     );
 };
+
+GroceryListComponent.propTypes = {
+    style: PropTypes.object,
+}
 
 export default GroceryListComponent;

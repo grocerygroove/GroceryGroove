@@ -6,13 +6,8 @@ import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 
 import { getCategories } from '../actions/categories_actions';
 
-const style = {
-    list: {
-        backgroundColor: white,
-    },
-};
-
 const CategoriesComponent = ({
+                style,
                 categories,
                 token,
                 selectedHousholdId,
@@ -21,15 +16,12 @@ const CategoriesComponent = ({
     if (categories.length === 0) {
         getCategories(token, selectedHousholdId);
     }
-
-
-    const style = {
-        paper: {
-            height: '100%',
-            width: '100%',
-            textAlign: 'center',
-            display: 'inline-block',
-        },
+    
+    const computedStyle = {
+        paper: Object.assign({}, style, {            
+                        
+            //display: 'inline-block',
+        }),
         listItem: {
             backgroundColor: white,
         },
@@ -37,12 +29,12 @@ const CategoriesComponent = ({
     return (
 <div>
     <Paper
-        style={style.paper}
+        style={computedStyle.paper}
         zDepth={1}>
-        <List style={style.list}>
+        <List style={computedStyle.list}>
         {categories.map(x => {
                 return (
-                    <ListItem primaryText={x.name} style={style.listItem} />
+                    <ListItem primaryText={x.name} style={computedStyle.listItem} />
                 );
 
             })
@@ -54,6 +46,7 @@ const CategoriesComponent = ({
 };
 
 CategoriesComponent.propTypes = {
+    style: PropTypes.object,
     categories: PropTypes.array.isRequired,
     token: PropTypes.string.isRequired,
     selectedHousholdId: PropTypes.number.isRequired,
