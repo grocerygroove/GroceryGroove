@@ -9,12 +9,12 @@ import {
     LOGIN_BY_EMAIL_PENDING,
     LOGIN_BY_EMAIL_REJECTED,
     LOGIN_BY_EMAIL_FULFILLED,
- } from '../actions/login_actions';
+ } from './login_actions';
 import {
     INVALID_EMAIL_ERROR,
     PASSWORDS_DONT_MATCH_ERROR,
-} from '../actions/generic_errors';
-import { SIGNUP_BY_EMAIL_FULFILLED } from '../actions/signup_actions';
+} from '../../actions/generic_errors';
+import { SIGNUP_BY_EMAIL_FULFILLED } from '../../actions/signup_actions';
 
 export default function loginReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {

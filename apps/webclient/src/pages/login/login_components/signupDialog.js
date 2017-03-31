@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import { greenA200 } from 'material-ui/styles/colors';
-import validateEmail from '../../utils/validateEmail';
+import validateEmail from '../../../utils/validateEmail';
 
 //Redux
 import {
@@ -22,12 +22,12 @@ import {
     signupValidationError,
     clearSignupErrorIfExists,
 
-} from '../../actions/signup_actions';
+} from '../../../actions/signup_actions';
 
 import {
     INVALID_EMAIL_ERROR,
     PASSWORDS_DONT_MATCH_ERROR,
-} from '../../actions/generic_errors';
+} from '../../../actions/generic_errors';
 
 const style = {
     body: {

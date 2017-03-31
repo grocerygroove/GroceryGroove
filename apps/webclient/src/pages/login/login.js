@@ -5,9 +5,9 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import SignupDialog from './login_components/signupDialog';
-import validateEmail from '../utils/validateEmail';
+import validateEmail from '../../utils/validateEmail';
 //Redux
-import { changePage } from '../actions/navigation_actions';
+import { changePage } from '../../actions/navigation_actions';
 import {
    toggleSnackbar,
 
@@ -19,10 +19,10 @@ import {
 
     loginValidationError,
     clearLoginErrorIfExists,
- } from '../actions/login_actions';
+ } from './login_actions';
 import {
     INVALID_EMAIL_ERROR,
-} from '../actions/generic_errors';
+} from '../../actions/generic_errors';
 
 const style = {
   button: {

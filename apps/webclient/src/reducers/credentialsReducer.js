@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { LOGIN_BY_EMAIL_FULFILLED } from '../actions/login_actions';
+import { LOGIN_BY_EMAIL_FULFILLED } from '../pages/login/login_actions';
 
 export default function credentialsReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import LoginComponent from './login';
+import LoginComponent from './login/login';
 import GroceryListComponent from './groceryList';
-import CategoriesComponent from './categories';
+import CategoriesComponent from './categories/categories';
 
 const style = {
     contentDiv: {
