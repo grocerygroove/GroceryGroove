@@ -7,23 +7,22 @@
 - name : download rambler release
   get_url: url={{ rambler_executable_url }} dest={{ rambler_executable_path }} mode=0755
 
-- name: create the migration skeleton
-  template:
-    src=../templates/migration_skeleton.sql.j2
-    dest=/tmp/ansible-migration_skeleton.sql
-    mode=0664
+- name: ensure ramber conf dir exists
+  file:
+    path={{ rambler_conf_path }}
+    state=directory
 
 - name: install the migration skeleton
-  command: mv /tmp/ansible-migration_skeleton.sql "{{ rambler_conf_path }}/migration_skeleton.sql"
-
-- name: add the rambler config
   template:
-    src=../templates/conf.json.j2
-    dest=/tmp/ansible-conf.json
+    src=../templates/migration_skeleton.sql.j2
+    dest={{ rambler_conf_path }}/migration_skeleton.sql
     mode=0664
 
 - name: install the rambler config
-  command: mv /tmp/ansible-conf.json "{{ rambler_conf_path }}/conf.json"
+  template:
+    src=../templates/conf.json.j2
+    dest={{ rambler_conf_path }}/conf.json
+    mode=0664
 
 - name: add the migrate command
   template:

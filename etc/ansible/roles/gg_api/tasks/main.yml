@@ -3,10 +3,7 @@
   args:
     chdir: "{{ api_path }}"
 
-- name: create the dotenv file
+- name: install the dotenv file
   template:
     src=../templates/api.env.j2
-    dest=/tmp/ansible-dotenv
-
-- name: install the dotenv file
-  command: mv /tmp/ansible-dotenv {{ api_path }}/.env
+    dest={{ api_path }}/.env

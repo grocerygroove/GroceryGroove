@@ -7,29 +7,20 @@
 - name: add the deploy user to the dev group
   user: name={{ deploy_user }} groups={{ dev_group }} append=yes
 
-- name: create bin/ssh util
+- name: install bin/ssh util
   template:
     src=../templates/ssh.sh.j2
-    dest=/tmp/ansible-ssh
+    dest=/opt/gg/bin/ssh
     mode=0775
 
-- name: install bin/ssh
-  command: mv /tmp/ansible-ssh /vagrant/bin/ssh
-
-- name: create bin/migrate util
+- name: install bin/migrate util
   template:
     src=../templates/migrate.sh.j2
-    dest=/tmp/ansible-migrate
+    dest=/opt/gg/bin/migrate
     mode=0775
-
-- name: install bin/migrate
-  command: mv /tmp/ansible-migrate /vagrant/bin/migrate
 
 - name: create bin/psql util
   template:
     src=../templates/psql.sh.j2
-    dest=/tmp/ansible-psql
+    dest=/opt/gg/bin/psql
     mode=0775
-
-- name: install bin/psql
-  command: mv /tmp/ansible-psql /vagrant/bin/psql

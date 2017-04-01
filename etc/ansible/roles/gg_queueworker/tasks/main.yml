@@ -3,15 +3,12 @@
   args:
     chdir: "{{ queueworker_path }}"
 
-- name: create the dotenv file
+- name: install the dotenv file
   template:
     src=../templates/worker.env.j2
-    dest=/tmp/ansible-workerdotenv
+    dest={{ queueworker_path }}/.env
 
-- name: install the dotenv file
-  command: mv /tmp/ansible-workerdotenv {{ queueworker_path }}/.env
-
-- name: create the service file
+- name: install the service file
   template:
     src=../templates/queueworker.conf.j2
     dest=/etc/init/queueworker.conf

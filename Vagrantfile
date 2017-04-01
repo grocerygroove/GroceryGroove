@@ -27,41 +27,22 @@ Vagrant.configure(2) do |config|
         config.vm.network "forwarded_port", guest: port, host: new_port, id: service
     end
 
-    config.vm.synced_folder "./apps/api",           "/opt/api",         :create => true
-    config.vm.synced_folder "./apps/queueworker",   "/opt/queueworker", :create => true
-    config.vm.synced_folder "./apps/webclient",     "/opt/webclient",   :create => true
-    config.vm.synced_folder "./apps/wsserver",      "/opt/wsserver",    :create => true
-    config.vm.synced_folder "./etc/migrations",     "/etc/migrations",  :create => true
-    config.vm.synced_folder "./etc/rambler",        "/etc/rambler",     :create => true
+    config.vm.synced_folder ".", "/opt/gg", create: true
 
     config.ssh.forward_agent = true
 
-    if FFI::Platform::IS_WINDOWS
-        config.vm.provision :shell, :inline => %Q{
-            if [ ! -f /usr/bin/ansible-playbook ]; then
-                apt-get install software-properties-common
-                apt-add-repository ppa:ansible/ansible
-                apt-get update
-                apt-get install -y ansible
-            fi
-            ansible-playbook \
-                --inventory="localhost," \
-                -c local \
-                /vagrant/etc/ansible/vagrant_playbook.yml
+    config.vm.provision "ansible" do |ansible|
+        ansible.playbook = "etc/ansible/vagrant_playbook.yml"
+        ansible.sudo = true
+        ansible.groups = {
+        'vagrant' => ['default']
         }
-    else
-      config.vm.provision "ansible" do |ansible|
-          ansible.playbook = "etc/ansible/vagrant_playbook.yml"
-          ansible.sudo = true
-          ansible.groups = {
-            'vagrant' => ['default']
-          }
-          ansible.extra_vars = {
-              ansible_ssh_user: 'vagrant',
-              ansible_connection: 'ssh',
-              ansible_ssh_args: '-o ForwardAgent=yes',
-              is_vagrant: 'yes'
-          }
-      end
+        ansible.extra_vars = {
+            ansible_ssh_user: 'vagrant',
+            ansible_connection: 'ssh',
+            ansible_ssh_args: '-o ForwardAgent=yes',
+            is_vagrant: 'yes'
+        }
+
     end
 end

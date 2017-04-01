@@ -1,9 +1,9 @@
-api_path: /opt/api
+api_path: /opt/gg/apps/api
 db_extensions:
   - citext
   - pgcrypto
   #- plv8
-db_migrations_path: /etc/migrations
+db_migrations_path: /opt/gg/etc/migrations
 db_name: grocerygroove
 test_db_name: grocerygroove_test
 db_owner_username: "{{ db_name }}_owner"
@@ -16,15 +16,15 @@ log_path: /var/log
 node_environment: production
 postgres_version: 9.6
 purpose: deploy
-queueworker_path: /opt/queueworker
+queueworker_path: /opt/gg/apps/queueworker
 rambler_conf_path: /etc/rambler
 rambler_testing_environment: testing
-webclient_path: /opt/webclient/dist
-webcode_path: /opt/webclient
+webclient_path: /opt/gg/apps/webclient/dist
+webcode_path: /opt/gg/apps/webclient
 db_port: 5432
 jwtsecret: tQg1c6xLkBQ9GtZqjLON
 redis_ip: 127.0.0.1
 redis_port: 6379
 redis_message_queue_name: INTERPROCESS_MESSAGE_QUEUE
-web_socket_server_path: /opt/wsserver
+web_socket_server_path: /opt/gg/apps/wsserver
 web_socket_server_port: 7000

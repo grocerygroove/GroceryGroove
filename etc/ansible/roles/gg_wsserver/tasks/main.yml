@@ -3,15 +3,12 @@
   args:
     chdir: "{{ web_socket_server_path }}"
 
-- name: create the dotenv file
+- name: install the dotenv file
   template:
     src=../templates/wsserver.env.j2
-    dest=/tmp/ansible-wsserverdotenv
+    dest={{ web_socket_server_path }}/.env
 
-- name: install the dotenv file
-  command: mv /tmp/ansible-wsserverdotenv {{ web_socket_server_path }}/.env
-
-- name: create the service file
+- name: install the service file
   template:
     src=../templates/wsserver.conf.j2
     dest=/etc/init/wsserver.conf

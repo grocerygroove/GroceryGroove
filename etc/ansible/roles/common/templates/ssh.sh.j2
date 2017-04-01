@@ -6,5 +6,5 @@ else
     COMMAND="$@"
 fi
 
-run_string=$( echo "cd /vagrant && $COMMAND" )
+run_string=$( echo "cd /opt/gg && $COMMAND" )
 vagrant ssh -c "$run_string"
