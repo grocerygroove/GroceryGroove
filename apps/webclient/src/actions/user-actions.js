@@ -1,7 +1,8 @@
 export const GET_HOUSEHOLDS = 'GET_HOUSEHOLDS';
+export const GET_HOUSEHOLDS_FULFILLED = 'GET_HOUSEHOLDS_FULFILLED';
 export const GET_HOUSEHOLDS_PENDING = 'GET_HOUSEHOLDS_PENDING';
 export const GET_HOUSEHOLDS_REJECTED = 'GET_HOUSEHOLDS_REJECTED';
-export const GET_HOUSEHOLDS_FULFILLED = 'GET_HOUSEHOLDS_FULFILLED';
+
 
 export function getHouseholds(token) {
     return (dispatch, getState, { api }) => {

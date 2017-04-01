@@ -1,20 +1,16 @@
+import { CLEAR_SIGNUP_ERROR_IF_EXISTS } from './signup-actions';
 import Immutable from 'immutable';
-import {
-    SIGNUP_BY_EMAIL_PENDING,
-    SIGNUP_BY_EMAIL_REJECTED,
-    SIGNUP_BY_EMAIL_FULFILLED,
-    TOGGLE_SIGNUP_DIALOG,
-    SIGNUP_CREDENTIAL_TYPE_EMAIL,
-    SIGNUP_CREDENTIAL_TYPE_PASSWORD,
-    SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD,
-    SIGNUP_CREDENTIAL_CHANGE,
-    SIGNUP_VALIDATION_ERROR,
-    CLEAR_SIGNUP_ERROR_IF_EXISTS,
- } from './signup-actions';
-import {
-    INVALID_EMAIL_ERROR,
-    PASSWORDS_DONT_MATCH_ERROR,
-} from '../../components/generic-errors';
+import { INVALID_EMAIL_ERROR } from '../../components/generic-errors';
+import { PASSWORDS_DONT_MATCH_ERROR } from '../../components/generic-errors';
+import { SIGNUP_BY_EMAIL_FULFILLED } from './signup-actions';
+import { SIGNUP_BY_EMAIL_PENDING } from './signup-actions';
+import { SIGNUP_BY_EMAIL_REJECTED } from './signup-actions';
+import { SIGNUP_CREDENTIAL_CHANGE } from './signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD } from './signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_EMAIL } from './signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_PASSWORD } from './signup-actions';
+import { SIGNUP_VALIDATION_ERROR } from './signup-actions';
+import { TOGGLE_SIGNUP_DIALOG } from './signup-actions';
 
 export default function signupReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {

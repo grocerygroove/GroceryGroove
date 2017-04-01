@@ -1,6 +1,8 @@
-import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
+import { greenA200 } from 'material-ui/styles/colors';
+import { lightBlue700 } from 'material-ui/styles/colors';
+import { white } from 'material-ui/styles/colors';
+import { yellow600 } from 'material-ui/styles/colors';
 
 const muiTheme = getMuiTheme({
   raisedButton: {

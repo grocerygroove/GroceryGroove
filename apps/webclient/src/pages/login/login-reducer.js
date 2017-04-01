@@ -1,20 +1,16 @@
+import { CLEAR_LOGIN_ERROR_IF_EXISTS } from './login-actions';
 import Immutable from 'immutable';
-import {
-    TOGGLE_SNACKBAR,
-    LOGIN_CREDENTIAL_CHANGE,
-    LOGIN_CREDENTIAL_TYPE_EMAIL,
-    LOGIN_CREDENTIAL_TYPE_PASSWORD,
-    LOGIN_VALIDATION_ERROR,
-    CLEAR_LOGIN_ERROR_IF_EXISTS,
-    LOGIN_BY_EMAIL_PENDING,
-    LOGIN_BY_EMAIL_REJECTED,
-    LOGIN_BY_EMAIL_FULFILLED,
- } from './login-actions';
-import {
-    INVALID_EMAIL_ERROR,
-    PASSWORDS_DONT_MATCH_ERROR,
-} from '../../components/generic-errors';
+import { INVALID_EMAIL_ERROR } from '../../components/generic-errors';
+import { LOGIN_BY_EMAIL_FULFILLED } from './login-actions';
+import { LOGIN_BY_EMAIL_PENDING } from './login-actions';
+import { LOGIN_BY_EMAIL_REJECTED } from './login-actions';
+import { LOGIN_CREDENTIAL_CHANGE } from './login-actions';
+import { LOGIN_CREDENTIAL_TYPE_EMAIL } from './login-actions';
+import { LOGIN_CREDENTIAL_TYPE_PASSWORD } from './login-actions';
+import { LOGIN_VALIDATION_ERROR } from './login-actions';
+import { PASSWORDS_DONT_MATCH_ERROR } from '../../components/generic-errors';
 import { SIGNUP_BY_EMAIL_FULFILLED } from './signup-actions';
+import { TOGGLE_SNACKBAR } from './login-actions';
 
 export default function loginReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {

@@ -1,28 +1,25 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Snackbar from 'material-ui/Snackbar';
-import SignupDialog from './login-components/signup-dialog';
-import validateEmail from '../../utils/validate-email';
-//Redux
 import { changePage } from '../../components/navigation-actions';
-import {
-   toggleSnackbar,
+import { clearLoginErrorIfExists } from './login-actions';
+import { connect } from 'react-redux';
+import { greenA200 } from 'material-ui/styles/colors';
+import { INVALID_EMAIL_ERROR } from '../../components/generic-errors';
+import { lightBlue700 } from 'material-ui/styles/colors';
+import { loginByEmail } from './login-actions';
+import { loginCredentialChange } from './login-actions';
+import { LOGIN_CREDENTIAL_TYPE_EMAIL } from './login-actions';
+import { LOGIN_CREDENTIAL_TYPE_PASSWORD } from './login-actions';
+import { loginValidationError } from './login-actions';
+import PageComponent from '../../components/page-component';
+import { PropTypes } from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
+import React from 'react';
+import SignupDialog from './login-components/signup-dialog';
+import Snackbar from 'material-ui/Snackbar';
+import TextField from 'material-ui/TextField';
+import { toggleSnackbar } from './login-actions';
+import validateEmail from '../../utils/validate-email';
+import { white } from 'material-ui/styles/colors';
 
-    LOGIN_CREDENTIAL_TYPE_EMAIL,
-    LOGIN_CREDENTIAL_TYPE_PASSWORD,
-    loginCredentialChange,
-
-    loginByEmail,
-
-    loginValidationError,
-    clearLoginErrorIfExists,
- } from './login-actions';
-import {
-    INVALID_EMAIL_ERROR,
-} from '../../components/generic-errors';
 
 const style = {
   button: {
@@ -33,6 +30,10 @@ const style = {
   },
   h1: {
     color: '#FAFAFA',
+  },
+  paper: {
+      height: '100%',
+      backgroundColor: 'transparent',
   },
 };
 
@@ -48,46 +49,48 @@ const LoginComponent = ({
             onLoginCredentialChange,
             }) => {
     return (
-<div className="col-xs-12">
-    <div className="row center-xs">
-        <div className="col-sm-12 col-md-10 col-lg-4">
-            <h1 style={style.h1}>Grocery Groove</h1>
-            <div>
-                <TextField
-                    hintText="Email Address"
-                    floatingLabelText="Email Address"
-                    inputStyle={style.textField}
-                    value={loginEmail}
-                    errorText={emailErrorText || ""}
-                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
-                <br />
-                <TextField
-                    hintText="Password"
-                    floatingLabelText="Password"
-                    type="password"
-                    inputStyle={style.textField}
-                    value={loginPassword}
-                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
-                <br />
-                <span>
-                    <RaisedButton
-                        label="Login"
-                        primary={true}
-                        style={style.button}
-                        onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
-                    <SignupDialog
-                        style={style.button}/>
-                </span>
+<PageComponent styleOverride={style}>    
+    <div className="col-xs-12">
+        <div className="row center-xs">
+            <div className="col-sm-12 col-md-10 col-lg-4">
+                <h1 style={style.h1}>Grocery Groove</h1>
+                <div>
+                    <TextField
+                        hintText="Email Address"
+                        floatingLabelText="Email Address"
+                        inputStyle={style.textField}
+                        value={loginEmail}
+                        errorText={emailErrorText || ""}
+                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
+                    <br />
+                    <TextField
+                        hintText="Password"
+                        floatingLabelText="Password"
+                        type="password"
+                        inputStyle={style.textField}
+                        value={loginPassword}
+                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
+                    <br />
+                    <span>
+                        <RaisedButton
+                            label="Login"
+                            primary={true}
+                            style={style.button}
+                            onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
+                        <SignupDialog
+                            style={style.button}/>
+                    </span>
+                </div>
+                <Snackbar
+                    open={snackbarOpen}
+                    message={snackbarMessage}
+                    autoHideDuration={4000}
+                    onRequestClose={toggleSnackbar}
+                    />
             </div>
-            <Snackbar
-                open={snackbarOpen}
-                message={snackbarMessage}
-                autoHideDuration={4000}
-                onRequestClose={toggleSnackbar}
-                />
-        </div>
-    </div>
-</div>
+        </div>    
+    </div>        
+</PageComponent>
     );
 };
 

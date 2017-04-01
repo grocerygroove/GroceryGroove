@@ -1,13 +1,13 @@
-import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
-import {List, ListItem} from 'material-ui/List';
-import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
-
 import { getCategories } from './categories-actions';
+import { List } from 'material-ui/List';
+import { ListItem } from 'material-ui/List';
+import PageComponent from '../../components/page-component';
+import { PropTypes } from 'react';
+import React from 'react';
+import { white } from 'material-ui/styles/colors';
 
 const CategoriesComponent = ({
-                style,
                 categories,
                 token,
                 selectedHousholdId,
@@ -17,36 +17,27 @@ const CategoriesComponent = ({
         getCategories(token, selectedHousholdId);
     }
     
-    const computedStyle = {
-        paper: Object.assign({}, style, {            
-                        
-            //display: 'inline-block',
-        }),
+    const style = {
         listItem: {
             backgroundColor: white,
         },
     };
     return (
-<div>
-    <Paper
-        style={computedStyle.paper}
-        zDepth={1}>
-        <List style={computedStyle.list}>
-        {categories.map(x => {
-                return (
-                    <ListItem primaryText={x.name} style={computedStyle.listItem} />
-                );
+<PageComponent>
+    <List>
+    {categories.map(x => {
+            return (
+                <ListItem primaryText={x.name} style={style.listItem} />
+            );
 
-            })
-        }
-        </List>
-    </Paper>
-</div>
+        })
+    }
+    </List>
+</PageComponent>
     );
 };
 
 CategoriesComponent.propTypes = {
-    style: PropTypes.object,
     categories: PropTypes.array.isRequired,
     token: PropTypes.string.isRequired,
     selectedHousholdId: PropTypes.number.isRequired,

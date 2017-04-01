@@ -1,16 +1,9 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import LoginComponent from '../pages/login/login';
-import GroceryListComponent from '../pages/grocery-list';
 import CategoriesComponent from '../pages/categories/categories';
-
-const style = {
-    contentDiv: {
-        height: "calc(100vh - 64px)", //The app bar is 64px tall
-        width: '100%', //want all content divs to fill width
-    },
-};
-
+import { connect } from 'react-redux';
+import GroceryListComponent from '../pages/grocery-list/grocery-list';
+import LoginComponent from '../pages/login/login';
+import { PropTypes } from 'react';
+import React from 'react';
 
 const RouterComponent = ({
                 page,
@@ -19,9 +12,9 @@ const RouterComponent = ({
         case "login":
             return <LoginComponent />;
         case "grocery-list":
-            return <GroceryListComponent style={style.contentDiv}/>;
+            return <GroceryListComponent />;
         case "categories":
-            return <CategoriesComponent style={style.contentDiv}/>;
+            return <CategoriesComponent />;
         default:
             throw new Error("Page Not Found");
     }

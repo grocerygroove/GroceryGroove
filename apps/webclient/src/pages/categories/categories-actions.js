@@ -1,7 +1,7 @@
 export const GET_CATEGORIES = 'GET_CATEGORIES';
+export const GET_CATEGORIES_FULFILLED = 'GET_CATEGORIES_FULFILLED';
 export const GET_CATEGORIES_PENDING = 'GET_CATEGORIES_PENDING';
 export const GET_CATEGORIES_REJECTED = 'GET_CATEGORIES_REJECTED';
-export const GET_CATEGORIES_FULFILLED = 'GET_CATEGORIES_FULFILLED';
 
 export function getCategories(token, householdId) {
     return (dispatch, getState, { api }) => {

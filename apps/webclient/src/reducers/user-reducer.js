@@ -1,5 +1,5 @@
-import Immutable from 'immutable';
 import { GET_HOUSEHOLDS_FULFILLED } from '../actions/user-actions';
+import Immutable from 'immutable';
 
 export default function userReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {

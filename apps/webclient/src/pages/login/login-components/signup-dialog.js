@@ -1,33 +1,23 @@
-import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { clearSignupErrorIfExists } from '../signup-actions';
+import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import { INVALID_EMAIL_ERROR } from '../../../components/generic-errors';
+import { PASSWORDS_DONT_MATCH_ERROR } from '../../../components/generic-errors';
+import { PropTypes } from 'react';
+import { signupByEmail } from '../signup-actions';
+import { signupCredentialChange } from '../signup-actions';
+import { signupValidationError } from '../signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD } from '../signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_EMAIL } from '../signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_PASSWORD } from '../signup-actions';
 import RaisedButton from 'material-ui/RaisedButton';
+import React from 'react';
 import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
-import { greenA200 } from 'material-ui/styles/colors';
+import { toggleSignupDialog } from '../signup-actions';
 import validateEmail from '../../../utils/validate-email';
 
-//Redux
-import {
-    toggleSignupDialog,
-
-    SIGNUP_CREDENTIAL_TYPE_EMAIL,
-    SIGNUP_CREDENTIAL_TYPE_PASSWORD,
-    SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD,
-    signupCredentialChange,
-
-    signupByEmail,
-
-    signupValidationError,
-    clearSignupErrorIfExists,
-
-} from '../signup-actions';
-
-import {
-    INVALID_EMAIL_ERROR,
-    PASSWORDS_DONT_MATCH_ERROR,
-} from '../../../components/generic-errors';
 
 const style = {
     body: {
