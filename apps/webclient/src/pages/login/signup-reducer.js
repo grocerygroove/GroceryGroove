@@ -10,11 +10,11 @@ import {
     SIGNUP_CREDENTIAL_CHANGE,
     SIGNUP_VALIDATION_ERROR,
     CLEAR_SIGNUP_ERROR_IF_EXISTS,
- } from '../actions/signup_actions';
+ } from './signup-actions';
 import {
     INVALID_EMAIL_ERROR,
     PASSWORDS_DONT_MATCH_ERROR,
-} from '../actions/generic_errors';
+} from '../../components/generic-errors';
 
 export default function signupReducer(state = Immutable.fromJS({}), action) {
     switch (action.type) {

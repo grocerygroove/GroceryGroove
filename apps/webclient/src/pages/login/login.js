@@ -4,10 +4,10 @@ import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
-import SignupDialog from './login_components/signupDialog';
-import validateEmail from '../../utils/validateEmail';
+import SignupDialog from './login-components/signup-dialog';
+import validateEmail from '../../utils/validate-email';
 //Redux
-import { changePage } from '../../actions/navigation_actions';
+import { changePage } from '../../components/navigation-actions';
 import {
    toggleSnackbar,
 
@@ -19,10 +19,10 @@ import {
 
     loginValidationError,
     clearLoginErrorIfExists,
- } from './login_actions';
+ } from './login-actions';
 import {
     INVALID_EMAIL_ERROR,
-} from '../../actions/generic_errors';
+} from '../../components/generic-errors';
 
 const style = {
   button: {

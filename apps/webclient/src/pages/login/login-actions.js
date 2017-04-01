@@ -1,4 +1,4 @@
-import { getHouseholds } from '../../actions/user_actions';
+import { getHouseholds } from '../../actions/user-actions';
 
 export const TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
 

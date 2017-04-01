@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
-import { CHANGE_PAGE, TOGGLE_DRAWER } from '../actions/navigation_actions';
-import { LOGIN_BY_EMAIL_FULFILLED } from '../pages/login/login_actions';
+import { CHANGE_PAGE, TOGGLE_DRAWER } from './navigation-actions';
+import { LOGIN_BY_EMAIL_FULFILLED } from '../pages/login/login-actions';
 
 export default function nagivationReducer(state = Immutable.fromJS({ drawerOpen: false }), action) {
     switch (action.type) {

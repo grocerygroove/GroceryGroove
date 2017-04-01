@@ -8,12 +8,12 @@ import thunk from 'redux-thunk';
 import { save, load } from 'redux-localstorage-simple';
 import reduxReset from 'redux-reset';
 import { white, greenA200, yellow600, lightBlue700 } from 'material-ui/styles/colors';
-import groceryGrooveTheme from './theme/groceryGrooveTheme';
+import groceryGrooveTheme from './theme/grocery-groove-theme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import initalState from './initialState';
-import AppComponent from './pages/app';
-import ggApp from './reducers/gg_app';
-import api from './api/apiClient';
+import initalState from './initial-state';
+import AppComponent from './components/app';
+import ggApp from './reducers/gg-app';
+import api from './api/api-client';
 import WebSocket from 'ws';
 
 injectTapEventPlugin();

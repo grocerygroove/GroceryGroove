@@ -2,15 +2,15 @@ import React, { PropTypes } from 'react';
 import renderIf from 'render-if';
 import { connect } from 'react-redux';
 import { clear } from "redux-localstorage-simple";
-import RouterComponent from './pageRouter';
+import RouterComponent from './page-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import ListIcon from 'material-ui/svg-icons/action/list';
 import SignoutIcon from 'material-ui/svg-icons/action/input';
 import { white } from 'material-ui/styles/colors';
-import { changePage, toggleDrawer } from '../actions/navigation_actions';
-import initalState from '../initialState';
+import { changePage, toggleDrawer } from './navigation-actions';
+import initalState from '../initial-state';
 
 const style = {
     menuItem: {

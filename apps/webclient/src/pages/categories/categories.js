@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import {List, ListItem} from 'material-ui/List';
 import { white, greenA200, yellow600 } from 'material-ui/styles/colors';
 
-import { getCategories } from './categories_actions';
+import { getCategories } from './categories-actions';
 
 const CategoriesComponent = ({
                 style,
