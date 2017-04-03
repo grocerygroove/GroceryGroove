@@ -3,11 +3,11 @@ import { changePage } from './navigation-actions';
 import { clear } from "redux-localstorage-simple";
 import { connect } from 'react-redux';
 import Drawer from 'material-ui/Drawer';
-const { fromJS } = require('immutable');
+import { fromJS } from 'immutable';
 import ListIcon from 'material-ui/svg-icons/action/list';
 import initalState from '../initial-state';
 import MenuItem from 'material-ui/MenuItem';
-const { mergeDeep } = require('immutable')
+import mergeDeep from 'immutable';
 import Paper from 'material-ui/Paper';
 import { PropTypes } from 'react';
 import React from 'react'; 
