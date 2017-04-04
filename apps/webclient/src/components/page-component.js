@@ -1,5 +1,5 @@
 import AppBar from 'material-ui/AppBar';
-import { changePage } from './navigation-actions';
+import { changePageAndToggleDrawer } from './navigation-actions';
 import { clear } from "redux-localstorage-simple";
 import { connect } from 'react-redux';
 import Drawer from 'material-ui/Drawer';
@@ -33,7 +33,7 @@ const PageComponent = ({
     drawerOpen,
     page,
     pageTitle,
-    changePage,
+    changePageAndToggleDrawer,
     toggleDrawer,
     doSignout,
 }) => {
@@ -51,11 +51,11 @@ const PageComponent = ({
         docked={false}
         onRequestChange={toggleDrawer}>
         <MenuItem
-            onTouchTap={changePage.bind(null, "grocery-list", "Grocery List")}
+            onTouchTap={changePageAndToggleDrawer.bind(null, "grocery-list", "Grocery List")}
             style={computedStyle.menuItem}
             leftIcon={<ListIcon />}>Grocery List</MenuItem>
         <MenuItem
-            onTouchTap={changePage.bind(null, "categories", "Categories")}
+            onTouchTap={changePageAndToggleDrawer.bind(null, "categories", "Categories")}
             style={computedStyle.menuItem}
             leftIcon={<ListIcon />}>Categories</MenuItem>
         <MenuItem
@@ -63,11 +63,11 @@ const PageComponent = ({
             style={computedStyle.menuItem}
             leftIcon={<SignoutIcon />}>Signout</MenuItem>
     </Drawer>        
-        <Paper
-            style={computedStyle.paper}
-            zDepth={1}>
-            {children}
-        </Paper>
+    <Paper
+        style={computedStyle.paper}
+        zDepth={1}>
+        {children}
+    </Paper>
 </div>
     );
 };
@@ -78,7 +78,7 @@ PageComponent.propTypes = {
     drawerOpen: PropTypes.bool.isRequired,
     page: PropTypes.string.isRequired,
     pageTitle: PropTypes.string.isRequired,
-    changePage: PropTypes.func.isRequired,
+    changePageAndToggleDrawer: PropTypes.func.isRequired,
     toggleDrawer: PropTypes.func.isRequired,
     doSignout: PropTypes.func.isRequired,
 };
@@ -93,9 +93,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changePage: (pagename, pageTitle) => {
-            dispatch(changePage(pagename, pageTitle));
-            dispatch(toggleDrawer());
+        changePageAndToggleDrawer: (pagename, pageTitle) => {
+            dispatch(changePageAndToggleDrawer(pagename, pageTitle));
         },
         toggleDrawer: () => {
             dispatch(toggleDrawer());
