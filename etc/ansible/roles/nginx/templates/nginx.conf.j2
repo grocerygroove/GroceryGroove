@@ -1,6 +1,7 @@
 server {
   listen 80;
   root {{ webclient_path }};
+  sendfile off;
 
   location / {
     index index.html;
