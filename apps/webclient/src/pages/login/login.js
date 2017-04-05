@@ -49,47 +49,45 @@ const LoginComponent = ({
             onLoginCredentialChange,
             }) => {
     return (
-<PageComponent styleOverride={style}>    
-    <div className="col-xs-12">
-        <div className="row center-xs">
-            <div className="col-sm-12 col-md-10 col-lg-4">
-                <h1 style={style.h1}>Grocery Groove</h1>
-                <div>
-                    <TextField
-                        hintText="Email Address"
-                        floatingLabelText="Email Address"
-                        inputStyle={style.textField}
-                        value={loginEmail}
-                        errorText={emailErrorText || ""}
-                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
-                    <br />
-                    <TextField
-                        hintText="Password"
-                        floatingLabelText="Password"
-                        type="password"
-                        inputStyle={style.textField}
-                        value={loginPassword}
-                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
-                    <br />
-                    <span>
-                        <RaisedButton
-                            label="Login"
-                            primary={true}
-                            style={style.button}
-                            onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
-                        <SignupDialog
-                            style={style.button}/>
-                    </span>
-                </div>
-                <Snackbar
-                    open={snackbarOpen}
-                    message={snackbarMessage}
-                    autoHideDuration={4000}
-                    onRequestClose={toggleSnackbar}
-                    />
+<PageComponent styleOverride={style}>
+    <div className="login-page">
+        <div className="login">
+            <h1 style={style.h1}>Grocery Groove</h1>
+            <div>
+                <TextField
+                    hintText="Email Address"
+                    floatingLabelText="Email Address"
+                    inputStyle={style.textField}
+                    value={loginEmail}
+                    errorText={emailErrorText || ""}
+                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
+                <br />
+                <TextField
+                    hintText="Password"
+                    floatingLabelText="Password"
+                    type="password"
+                    inputStyle={style.textField}
+                    value={loginPassword}
+                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
+                <br />
+                <span>
+                    <RaisedButton
+                        label="Login"
+                        primary={true}
+                        style={style.button}
+                        onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
+                    <SignupDialog
+                        style={style.button}/>
+                </span>
             </div>
-        </div>    
-    </div>        
+            <Snackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                autoHideDuration={4000}
+                onRequestClose={toggleSnackbar}
+                />
+        </div>
+    </div>
 </PageComponent>
     );
 };
