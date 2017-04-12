@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "browserpack": "rm -f dist/bundle.js && node_modules/browserify/bin/cmd.js -t [babelify] src/index.js -o dist/bundle.js"
+    "browserpack": "rm -f dist/bundle.js && rm -f dist/css/bundle.css && node_modules/browserify/bin/cmd.js -t [babelify] src/index.js -o dist/bundle.js && npm-css src/css/index.css > dist/css/bundle.css"
   },
   "contributors": [
     {
@@ -29,6 +29,8 @@
     "eslint-plugin-react": "^6.4.1",
     "immutable": "^3.8.1",
     "material-ui": "^0.15.4",
+    "normalize.css": "^6.0.0",
+    "npm-css": "^0.2.3",
     "react": "^15.3.2",
     "react-dom": "^15.4.0",
     "react-redux": "^4.4.5",
