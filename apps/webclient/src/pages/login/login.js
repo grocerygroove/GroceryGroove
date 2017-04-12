@@ -34,6 +34,7 @@ const style = {
   paper: {
       height: '100%',
       backgroundColor: 'transparent',
+      boxShadow: 'transparent',
   },
 };
 
