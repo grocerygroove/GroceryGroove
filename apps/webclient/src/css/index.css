@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-@import "normalize.css";
+@import 'roboto-fontface/css/roboto/roboto-fontface.css';
+@import 'normalize.css';
 @import './app.css';
 @import './login.css';
