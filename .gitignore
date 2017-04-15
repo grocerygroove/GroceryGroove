@@ -16,7 +16,7 @@ npm-debug.log
 /bin/migrate
 /bin/psql
 /etc/ansible/vagrant_playbook.retry
-/apps/webclient/dist/bundle.js
+/apps/webclient/dist/js/bundle.js
 /apps/webclient/dist/css/bundle.css
 
 /etc/rambler/*
