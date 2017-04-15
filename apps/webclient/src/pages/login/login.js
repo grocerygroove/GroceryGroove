@@ -1,6 +1,7 @@
 import { changePage } from '../../components/navigation-actions';
 import { clearLoginErrorIfExists } from './login-actions';
 import { connect } from 'react-redux';
+import FaceIcon from 'material-ui/svg-icons/action/face';
 import { greenA200 } from 'material-ui/styles/colors';
 import { INVALID_EMAIL_ERROR } from '../../components/generic-errors';
 import { lightBlue700 } from 'material-ui/styles/colors';
@@ -15,9 +16,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import SignupDialog from './login-components/signup-dialog';
 import Snackbar from 'material-ui/Snackbar';
+import TagFace from 'material-ui/svg-icons/image/tag-faces';
 import TextField from 'material-ui/TextField';
 import { toggleSnackbar } from './login-actions';
 import validateEmail from '../../utils/validate-email';
+import VpnKeyIcon from 'material-ui/svg-icons/communication/vpn-key';
 import { white } from 'material-ui/styles/colors';
 
 
@@ -36,6 +39,11 @@ const style = {
       backgroundColor: 'transparent',
       boxShadow: 'transparent',
   },
+  icon: {
+      color: white,
+      height: '100%',
+      paddingRight: '10px',
+  },
 };
 
 
@@ -48,30 +56,42 @@ const LoginComponent = ({
             toggleSnackbar,
             onLoginClick,
             onLoginCredentialChange,
-            }) => {
+        }) => {
+            const emailGood = (email) => {
+                return (loginEmail && loginEmail !== "" && validateEmail(loginEmail));
+            };
     return (
 <PageComponent styleOverride={style}>
     <div className="login-page">
         <div className="login">
             <h1 style={style.h1}>Grocery Groove</h1>
-            <div>
-                <TextField
-                    hintText="Email Address"
-                    floatingLabelText="Email Address"
-                    inputStyle={style.textField}
-                    value={loginEmail}
-                    errorText={emailErrorText || ""}
-                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
-                <br />
-                <TextField
-                    hintText="Password"
-                    floatingLabelText="Password"
-                    type="password"
-                    inputStyle={style.textField}
-                    value={loginPassword}
-                    onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
-                <br />
-                <span>
+            
+                <span className="login-cred-span">
+                    <div className="icon-div">
+                        <FaceIcon style={style.icon} className={emailGood(loginEmail) ? "hide" : "show"} />
+                        <TagFace style={style.icon} className={!emailGood(loginEmail) ? "hide" : "show"} />
+                    </div>
+                    <TextField
+                        hintText="Email Address"
+                        floatingLabelText="Email Address"
+                        inputStyle={style.textField}
+                        value={loginEmail}
+                        errorText={emailErrorText || ""}
+                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
+                </span>
+                <span className="login-cred-span">
+                    <div className="icon-div">
+                        <VpnKeyIcon style={style.icon} className="show"/>
+                    </div>
+                    <TextField
+                        hintText="Password"
+                        floatingLabelText="Password"
+                        type="password"
+                        inputStyle={style.textField}
+                        value={loginPassword}
+                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
+                </span>
+                <span className="button-span">
                     <RaisedButton
                         label="Login"
                         primary={true}
@@ -80,7 +100,7 @@ const LoginComponent = ({
                     <SignupDialog
                         style={style.button}/>
                 </span>
-            </div>
+            
             <Snackbar
                 open={snackbarOpen}
                 message={snackbarMessage}
