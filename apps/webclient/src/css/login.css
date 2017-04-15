@@ -39,22 +39,32 @@
     height: 34px;
     width: 34px;
     display: inline-block;
+    -webkit-transition: 0.6s;
+    transition: 0.6s;
+    -webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+    -webkit-transform-origin: 100% 17px; /* half of height */
+    transform-origin: 100% 17px;
 }
 
-.icon-div svg {
+.icon-div .front, .back {
     height: 100%;
     width: 100%;
-    position: absolute;
-    -webkit-transition: opacity !important;
-    transition: opacity !important;
-    -webkit-transition-duration: 0.5s !important;
-    transition-duration: 0.5s !important;
+    backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
-.icon-div .hide {    
-    opacity: 0;
+/* front pane, placed above back */
+.icon-div .front {
+	z-index: 2;
+    -webkit-transform: rotateX(0deg);
+	transform: rotateX(0deg);
 }
 
-.icon-div .show {
-    opacity: 1;
+/* back, initially hidden pane */
+.icon-div .back {	
+    -webkit-transform: rotateX(180deg);
+    transform: rotateX(180deg);
 }

@@ -68,8 +68,8 @@ const LoginComponent = ({
             
                 <span className="login-cred-span">
                     <div className="icon-div">
-                        <FaceIcon style={style.icon} className={emailGood(loginEmail) ? "hide" : "show"} />
-                        <TagFace style={style.icon} className={!emailGood(loginEmail) ? "hide" : "show"} />
+                        <FaceIcon style={style.icon} className={emailGood(loginEmail) ? "back" : "front"} />
+                        <TagFace style={style.icon} className={!emailGood(loginEmail) ? "back" : "front"} />
                     </div>
                     <TextField
                         hintText="Email Address"
