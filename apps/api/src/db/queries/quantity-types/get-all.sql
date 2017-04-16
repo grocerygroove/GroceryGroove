@@ -1,6 +1,9 @@
 {
-    namedParameters: true,
+    namedParameters: {
+        enable: true,
+    },
 }
+
 WITH my_quantity_types AS (
     SELECT
         quantity_type_id,
@@ -10,7 +13,7 @@ WITH my_quantity_types AS (
         plural_abbreviation,
         household_id
     FROM quantity_types
-    WHERE COALESCE(household_id, :householdId:) = :householdId:
+    WHERE COALESCE(household_id, :householdId) = :householdId
     ORDER BY singular_name
 )
 
