@@ -1,4 +1,5 @@
 import { getHouseholds } from '../../actions/user-actions';
+import { changeHash } from '../../utils/hash-router';
 
 export const TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
 
@@ -34,8 +35,9 @@ export function loginByEmail(email, password) {
         }).then(
             response => {
                 const token = (JSON.parse(response.data)).token;
-                dispatch(loginByEmailFulfilled(token));
+                dispatch(loginByEmailFulfilled(token));                
                 dispatch(getHouseholds(token));
+                changeHash('grocery-list');
             },
             error => {
                 const statusText = JSON.parse(error.statusText);

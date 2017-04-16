@@ -23,7 +23,7 @@ const CategoriesComponent = ({
         },
     };
     return (
-<PageComponent>
+<PageComponent pageTitle="Categories">
     <List>
     {categories.map(x => {
             return (

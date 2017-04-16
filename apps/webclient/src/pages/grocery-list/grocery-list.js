@@ -7,7 +7,7 @@ import React from 'react';
 
 const GroceryListComponent = () => {    
     return (
-<PageComponent>
+<PageComponent pageTitle="Grocery List">
 
 </PageComponent>
 

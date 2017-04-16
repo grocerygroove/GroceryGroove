@@ -1,5 +1,6 @@
 import AppBar from 'material-ui/AppBar';
 import { changePageAndToggleDrawer } from './navigation-actions';
+import { changeHash } from '../utils/hash-router';
 import { clear } from "redux-localstorage-simple";
 import { connect } from 'react-redux';
 import Drawer from 'material-ui/Drawer';
@@ -28,11 +29,11 @@ const style = {
 };
 
 const PageComponent = ({
+    pageTitle,
     styleOverride,
     children,
     drawerOpen,
     page,
-    pageTitle,
     changePageAndToggleDrawer,
     toggleDrawer,
     doSignout,
@@ -51,11 +52,11 @@ const PageComponent = ({
         docked={false}
         onRequestChange={toggleDrawer}>
         <MenuItem
-            onTouchTap={changePageAndToggleDrawer.bind(null, "grocery-list", "Grocery List")}
+            onTouchTap={changePageAndToggleDrawer.bind(null, "grocery-list")}
             style={computedStyle.menuItem}
             leftIcon={<ListIcon />}>Grocery List</MenuItem>
         <MenuItem
-            onTouchTap={changePageAndToggleDrawer.bind(null, "categories", "Categories")}
+            onTouchTap={changePageAndToggleDrawer.bind(null, "categories")}
             style={computedStyle.menuItem}
             leftIcon={<ListIcon />}>Categories</MenuItem>
         <MenuItem
@@ -73,11 +74,11 @@ const PageComponent = ({
 };
 
 PageComponent.propTypes = {
+    pageTitle: PropTypes.string,
     styleOverride: PropTypes.object,
     children: PropTypes.element,
     drawerOpen: PropTypes.bool.isRequired,
-    page: PropTypes.string.isRequired,
-    pageTitle: PropTypes.string.isRequired,
+    page: PropTypes.string.isRequired,    
     changePageAndToggleDrawer: PropTypes.func.isRequired,
     toggleDrawer: PropTypes.func.isRequired,
     doSignout: PropTypes.func.isRequired,
@@ -87,14 +88,13 @@ const mapStateToProps = (state, ownProps) => {
     return Object.assign({}, ownProps, {
         drawerOpen: state.getIn([ 'navigation', 'drawerOpen' ]),
         page: state.getIn([ 'navigation', 'page' ]),
-        pageTitle: state.getIn([ 'navigation', 'pageTitle' ]),
     });
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changePageAndToggleDrawer: (pagename, pageTitle) => {
-            dispatch(changePageAndToggleDrawer(pagename, pageTitle));
+        changePageAndToggleDrawer: (pagename) => {
+            dispatch(changePageAndToggleDrawer(pagename));
         },
         toggleDrawer: () => {
             dispatch(toggleDrawer());
@@ -107,6 +107,7 @@ const mapDispatchToProps = (dispatch) => {
                 type: 'RESET',
                 state: initalState, // Will use this as new initial state
             });
+            changeHash('login');
         },
     };
 };
