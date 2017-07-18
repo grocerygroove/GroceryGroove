@@ -1,3 +1,5 @@
-const createTransactionsFromDirectory = require("database-files").createTransactionsFromDirectory;
-
-module.exports = createTransactionsFromDirectory(`${ __dirname }/transactions`);
+module.exports = {
+    households: {
+        createForUser: require("./transactions/households/create-for-user"),
+    },
+};
