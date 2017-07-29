@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { customTheme } from '../../theme/grocery-groove-theme';
 import { getCategories } from './categories-actions';
 import { List } from 'material-ui/List';
 import { ListItem } from 'material-ui/List';
@@ -16,18 +17,15 @@ const CategoriesComponent = ({
     if (categories.length === 0) {
         getCategories(token, selectedHousholdId);
     }
-    
-    const style = {
-        listItem: {
-            backgroundColor: white,
-        },
-    };
+
     return (
 <PageComponent pageTitle="Categories">
     <List>
     {categories.map(x => {
             return (
-                <ListItem primaryText={x.name} style={style.listItem} />
+                //Material UI global theme doesn't respect listItem themeing
+                //so we apply it inline as a workaround...
+                <ListItem primaryText={x.name} style={customTheme.listItem}/>
             );
 
         })

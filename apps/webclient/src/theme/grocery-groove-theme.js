@@ -4,7 +4,7 @@ import { lightBlue700 } from 'material-ui/styles/colors';
 import { white } from 'material-ui/styles/colors';
 import { yellow600 } from 'material-ui/styles/colors';
 
-const muiTheme = getMuiTheme({
+export const customTheme = {
   raisedButton: {
     primaryColor: greenA200,
     secondaryColor: yellow600,
@@ -20,6 +20,10 @@ const muiTheme = getMuiTheme({
     color: lightBlue700,
     textColor: white,
   },
-});
+  listItem: {
+      backgroundColor: white,
+      borderBottom: "1px solid #d3d3d3",
+  },
+};
 
-export default muiTheme;
+export default getMuiTheme(customTheme);
