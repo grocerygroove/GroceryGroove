@@ -17,7 +17,7 @@ import React from 'react';
 import SignupDialog from './login-components/signup-dialog';
 import Snackbar from 'material-ui/Snackbar';
 import TagFace from 'material-ui/svg-icons/image/tag-faces';
-import TextField from 'material-ui/TextField';
+import TextBox from '../../components/generic/textbox/TextBox';
 import { toggleSnackbar } from './login-actions';
 import validateEmail from '../../utils/validate-email';
 import VpnKeyIcon from 'material-ui/svg-icons/communication/vpn-key';
@@ -65,31 +65,34 @@ const LoginComponent = ({
     <div className="login-page">
         <div className="login">
             <h1 style={style.h1}>Grocery Groove</h1>
-            
+
                 <span className="login-cred-span">
                     <div className="icon-div">
                         <FaceIcon style={style.icon} className={emailGood(loginEmail) ? "back" : "front"} />
                         <TagFace style={style.icon} className={!emailGood(loginEmail) ? "back" : "front"} />
                     </div>
-                    <TextField
+                    <TextBox
+                        label="Email Address"
+                        value={loginEmail}
+                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
+
+                    {/* <TextField
                         hintText="Email Address"
                         floatingLabelText="Email Address"
                         inputStyle={style.textField}
                         value={loginEmail}
                         errorText={emailErrorText || ""}
-                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
+                        onChange={onLogin CredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/> */}
                 </span>
                 <span className="login-cred-span">
                     <div className="icon-div">
                         <VpnKeyIcon style={style.icon} className="show"/>
                     </div>
-                    <TextField
-                        hintText="Password"
-                        floatingLabelText="Password"
-                        type="password"
-                        inputStyle={style.textField}
+                    <TextBox
+                        label="Password"
                         value={loginPassword}
-                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}/>
+                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}
+                        isPasswordField/>
                 </span>
                 <span className="button-span">
                     <RaisedButton
@@ -100,7 +103,7 @@ const LoginComponent = ({
                     <SignupDialog
                         style={style.button}/>
                 </span>
-            
+
             <Snackbar
                 open={snackbarOpen}
                 message={snackbarMessage}

@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "browserpack": "rm -f dist/js/bundle.js && rm -f dist/css/bundle.css && node_modules/browserify/bin/cmd.js -t [babelify] src/index.js -o dist/js/bundle.js && node_modules/npm-css/bin/npm-css src/css/index.css > dist/css/bundle.css"
+    "browserpack": "rm -f dist/js/bundle.js && rm -f dist/css/*.css && node_modules/browserify/bin/cmd.js -t [babelify] -p [ css-modulesify -o dist/css/modules.css ] src/index.js -o dist/js/bundle.js && node_modules/npm-css/bin/npm-css src/css/index.css > dist/css/bundle.css"
   },
   "contributors": [
     {
@@ -24,15 +24,16 @@
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
     "bufferutil": "^1.2.1",
+    "css-modulesify": "^0.28.0",
     "eslint": "3.0.1",
     "eslint-plugin-fp": "^2.2.0",
-    "eslint-plugin-react": "^6.4.1",    
+    "eslint-plugin-react": "^6.4.1",
     "immutable": "^3.8.1",
     "material-ui": "^0.15.4",
     "normalize.css": "^6.0.0",
     "npm-css": "^0.2.3",
     "react": "^15.3.2",
-    "react-dom": "^15.4.0",    
+    "react-dom": "^15.4.0",
     "react-redux": "^4.4.5",
     "react-tap-event-plugin": "2.0.1",
     "redux": "^3.6.0",

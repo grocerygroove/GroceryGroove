@@ -17,7 +17,7 @@ npm-debug.log
 /bin/psql
 /etc/ansible/vagrant_playbook.retry
 /apps/webclient/dist/js/bundle.js
-/apps/webclient/dist/css/bundle.css
+/apps/webclient/dist/css/*.css
 
 /etc/rambler/*
 !/etc/rambler/.gitkeep
