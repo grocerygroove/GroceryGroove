@@ -4,6 +4,7 @@
   padding-top: 10px;
   height: 45px;
   display: inline-flex;
+  margin-bottom: 3vh;
 }
 .textBox .text {
   font-weight: 500;
@@ -44,6 +45,14 @@
   transition-duration: 0.45s;
   -webkit-transition-timing-function: cubic-bezier(.68,-0.55,.27,1.55);
   transition-timing-function: cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+.textBox .error {
+  position: absolute;
+  margin-top: 48px;
+  width: 20vw;
+  color: #e74c3c;
+  text-align: center;
 }
 
 .textBox > input.text:focus ~ .label, .textBox > input.text:not([value=""]) ~ .label {

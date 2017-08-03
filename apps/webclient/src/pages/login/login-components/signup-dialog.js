@@ -4,6 +4,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { INVALID_EMAIL_ERROR } from '../../../components/generic-errors';
+import { lightBlue700 } from 'material-ui/styles/colors';
 import { PASSWORDS_DONT_MATCH_ERROR } from '../../../components/generic-errors';
 import { PropTypes } from 'react';
 import { signupByEmail } from '../signup-actions';
@@ -14,7 +15,7 @@ import { SIGNUP_CREDENTIAL_TYPE_EMAIL } from '../signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_PASSWORD } from '../signup-actions';
 import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
-import TextField from 'material-ui/TextField';
+import TextBox from '../../../components/generic/textbox/TextBox';
 import { toggleSignupDialog } from '../signup-actions';
 import validateEmail from '../../../utils/validate-email';
 
@@ -26,6 +27,11 @@ const style = {
     content: {
         maxWidth: '400px',
     },
+};
+
+const textBoxStyle = {
+    text: {color: "#000000", borderColor: lightBlue700},
+    label: {color: lightBlue700},
 };
 
 const SignupDialog = ({
@@ -72,28 +78,26 @@ const SignupDialog = ({
         contentStyle = {style.content}
         autoScrollBodyContent={true}
         >
-        <TextField
-            hintText="Email Address"
-            floatingLabelText="Email Address"
+        <TextBox
+            label="Email Address"
             value={signupEmail}
             errorText={emailErrorText || ""}
+            style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_EMAIL)}/>
         <br />
-        <TextField
-            hintText="Password"
-            floatingLabelText="Password"
+        <TextBox
+            label="Password"
             value={signupPassword}
-            type="password"
             errorText={passwordsErrorText || ""}
+            isPasswordField
+            style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_PASSWORD)}/>
-        <br />
-        <TextField
-            id= "ConfirmPassword"
-            hintText="Confirm Password"
-            floatingLabelText="Confirm Password"
+        <TextBox
+            label="Confirm Password"
             value={signupConfirmPassword}
-            type="password"
             errorText={passwordsErrorText || ""}
+            isPasswordField
+            style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD)}/>
         </Dialog>
     </div>

@@ -7,17 +7,24 @@ const TextBox = ({
     isPasswordField = false,
     value = "",
     onChange,
+    style,
+    errorText = "",
 }) => {
-
+var styleOveride = Object.assign({
+    text: {},
+    label: {},
+}, style);
     return (
 <div className={styles.textBox}>
   <input
          className={styles.text}
          placeholder={label}
+         style={styleOveride.text}
          type={isPasswordField ? "password" : "textbox"}
          onChange={onChange}
          value={value}/>
-  <label className={styles.label}>{label}</label>
+  <label className={styles.label} style={styleOveride.label}>{label}</label>
+  <label className={styles.error}>{errorText}</label>
 </div>
     );
 };
@@ -27,6 +34,8 @@ TextBox.propTypes = {
     isPasswordField: PropTypes.bool,
     value: PropTypes.string,
     onChange: PropTypes.func,
+    style: PropTypes.object,
+    errorText: PropTypes.string,
 };
 
 export default TextBox;

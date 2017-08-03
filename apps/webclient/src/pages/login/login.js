@@ -75,14 +75,6 @@ const LoginComponent = ({
                         label="Email Address"
                         value={loginEmail}
                         onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
-
-                    {/* <TextField
-                        hintText="Email Address"
-                        floatingLabelText="Email Address"
-                        inputStyle={style.textField}
-                        value={loginEmail}
-                        errorText={emailErrorText || ""}
-                        onChange={onLogin CredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/> */}
                 </span>
                 <span className="login-cred-span">
                     <div className="icon-div">

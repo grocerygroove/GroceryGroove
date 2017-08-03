@@ -17,11 +17,11 @@
     }
 }
 
-.login, .login .button-span {    
+.login, .login .button-span {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     justify-content: flex-start;
-    align-items: center; 
+    align-items: center;
     grid-column-start: 2;
     grid-column-end: 3;
 }
@@ -45,9 +45,10 @@
 	transform-style: preserve-3d;
     -webkit-transform-origin: 100% 17px; /* half of height */
     transform-origin: 100% 17px;
+    margin-bottom: 3vh;
 }
 
-.icon-div .front, .back {
+.icon-div .front, .back, .icon-div svg {
     height: 100%;
     width: 100%;
     backface-visibility: hidden;
@@ -64,7 +65,7 @@
 }
 
 /* back, initially hidden pane */
-.icon-div .back {	
+.icon-div .back {
     -webkit-transform: rotateX(180deg);
     transform: rotateX(180deg);
 }
