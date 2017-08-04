@@ -1,6 +1,6 @@
 .textBox {
   position: relative;
-  width: 20vw;
+  width: 100%;
   padding-top: 10px;
   height: 45px;
   display: inline-flex;
@@ -8,7 +8,8 @@
 }
 .textBox .text {
   font-weight: 500;
-  width: 20vw;
+  width: calc(100% - 2vw);
+  height: 27px;
   padding-left: 0.5vw;
   background-color: transparent;
   color: white;
@@ -18,8 +19,7 @@
   border-style: solid;
   border-color: #E3E7EA;
   border-width: 0px 0px 2px 0px;
-  font-size: 16px;
-  font-size: 1.2vw;
+  font-size: 20px;
   -webkit-transition: border-color 0.45s linear;
   transition: border-color 0.45s linear;
 }
@@ -36,8 +36,7 @@
   position: absolute;
   padding-left: 0.5vw;
   bottom: 3px;
-  font-size: 16px;
-  font-size: 1.2vw;
+  font-size: 20px;
   font-weight: 300;
   -webkit-transition-property: opacity bottom font-size;
   transition-property: opacity bottom font-size;
@@ -50,7 +49,7 @@
 .textBox .error {
   position: absolute;
   margin-top: 48px;
-  width: 20vw;
+  width: 100%;
   color: #e74c3c;
   text-align: center;
 }
@@ -59,8 +58,7 @@
   opacity: 1;
   z-index: 1;
   bottom: 55%;
-  font-size: 10px;
-  font-size: 1vw;
+  font-size: 12px;
 }
 
 .textBox > input.text:focus ~ .label {
@@ -69,29 +67,25 @@
 
 .textBox ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #2B2B2B;
-  font-size: 16px;
-  font-size: 1.2vw;
+  font-size: 20px;
   font-weight: 200;
   font-family: 'Roboto', sans-serif;
 }
 .textBox ::-moz-placeholder { /* Firefox 19+ */
   color: #2B2B2B;
-  font-size: 16px;
-  font-size: 1.2vw;
+  font-size: 20px;
   font-weight: 200;
   font-family: 'Roboto', sans-serif;
 }
 .textBox :-ms-input-placeholder { /* IE 10+ */
   color: #2B2B2B;
-  font-size: 16px;
-  font-size: 1.2vw;
+  font-size: 20px;
   font-weight: 200;
   font-family: 'Roboto', sans-serif;
 }
 .textBox :-moz-placeholder { /* Firefox 18- */
   color: #2B2B2B;
-  font-size: 16px;
-  font-size: 1.2vw;
+  font-size: 20px;
   font-weight: 200;
   font-family: 'Roboto', sans-serif;
 }

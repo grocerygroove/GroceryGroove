@@ -14,6 +14,7 @@ import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
+import styles from './login.css';
 import SignupDialog from './login-components/signup-dialog';
 import Snackbar from 'material-ui/Snackbar';
 import TagFace from 'material-ui/svg-icons/image/tag-faces';
@@ -25,24 +26,10 @@ import { white } from 'material-ui/styles/colors';
 
 
 const style = {
-  button: {
-    margin: 12,
-  },
-  textField: {
-    color: white,
-  },
-  h1: {
-    color: '#FAFAFA',
-  },
   paper: {
       height: '100%',
       backgroundColor: 'transparent',
       boxShadow: 'transparent',
-  },
-  icon: {
-      color: white,
-      height: '100%',
-      paddingRight: '10px',
   },
 };
 
@@ -62,23 +49,23 @@ const LoginComponent = ({
             };
     return (
 <PageComponent styleOverride={style}>
-    <div className="login-page">
-        <div className="login">
-            <h1 style={style.h1}>Grocery Groove</h1>
+    <div className={styles.loginPage}>
+        <div className={styles.login}>
+            <h1 className={styles.header}>Grocery Groove</h1>
 
-                <span className="login-cred-span">
-                    <div className="icon-div">
-                        <FaceIcon style={style.icon} className={emailGood(loginEmail) ? "back" : "front"} />
-                        <TagFace style={style.icon} className={!emailGood(loginEmail) ? "back" : "front"} />
+                <span className={styles.loginCredSpan}>
+                    <div className={styles.iconDiv}>
+                        <FaceIcon className={emailGood(loginEmail) ? styles.back : styles.front} />
+                        <TagFace className={!emailGood(loginEmail) ? styles.back : styles.front} />
                     </div>
                     <TextBox
                         label="Email Address"
                         value={loginEmail}
                         onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
                 </span>
-                <span className="login-cred-span">
-                    <div className="icon-div">
-                        <VpnKeyIcon style={style.icon} className="show"/>
+                <span className={styles.loginCredSpan}>
+                    <div className={styles.iconDiv}>
+                        <VpnKeyIcon />
                     </div>
                     <TextBox
                         label="Password"
@@ -86,14 +73,14 @@ const LoginComponent = ({
                         onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}
                         isPasswordField/>
                 </span>
-                <span className="button-span">
+                <span className={styles.buttonSpan}>
                     <RaisedButton
+                        className={styles.button}
                         label="Login"
                         primary={true}
-                        style={style.button}
                         onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
                     <SignupDialog
-                        style={style.button}/>
+                        className={styles.button}/>
                 </span>
 
             <Snackbar
