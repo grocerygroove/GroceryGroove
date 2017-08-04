@@ -2,9 +2,7 @@ import { changePage } from '../../components/navigation-actions';
 import { clearLoginErrorIfExists } from './login-actions';
 import { connect } from 'react-redux';
 import FaceIcon from 'material-ui/svg-icons/action/face';
-import { greenA200 } from 'material-ui/styles/colors';
 import { INVALID_EMAIL_ERROR } from '../../components/generic-errors';
-import { lightBlue700 } from 'material-ui/styles/colors';
 import { loginByEmail } from './login-actions';
 import { loginCredentialChange } from './login-actions';
 import { LOGIN_CREDENTIAL_TYPE_EMAIL } from './login-actions';
@@ -22,7 +20,6 @@ import TextBox from '../../components/generic/textbox/TextBox';
 import { toggleSnackbar } from './login-actions';
 import validateEmail from '../../utils/validate-email';
 import VpnKeyIcon from 'material-ui/svg-icons/communication/vpn-key';
-import { white } from 'material-ui/styles/colors';
 
 
 const style = {
