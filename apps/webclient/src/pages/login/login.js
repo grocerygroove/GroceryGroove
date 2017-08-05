@@ -18,6 +18,7 @@ import Snackbar from 'material-ui/Snackbar';
 import TagFace from 'material-ui/svg-icons/image/tag-faces';
 import TextBox from '../../components/generic/textbox/TextBox';
 import { toggleSnackbar } from './login-actions';
+import { toggleSignupDialog } from './signup-actions';
 import validateEmail from '../../utils/validate-email';
 import VpnKeyIcon from 'material-ui/svg-icons/communication/vpn-key';
 
@@ -40,6 +41,7 @@ const LoginComponent = ({
             toggleSnackbar,
             onLoginClick,
             onLoginCredentialChange,
+            toggleSignup,
         }) => {
             const emailGood = (email) => {
                 return (loginEmail && loginEmail !== "" && validateEmail(loginEmail));
@@ -75,9 +77,12 @@ const LoginComponent = ({
                         className={styles.button}
                         label="Login"
                         primary={true}
-                        onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
-                    <SignupDialog
-                        className={styles.button}/>
+                       onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
+                    <RaisedButton
+                        className={styles.button}
+                        label="Signup"
+                        secondary={true}
+                        onTouchTap={toggleSignup} />
                 </span>
 
             <Snackbar
@@ -87,6 +92,7 @@ const LoginComponent = ({
                 onRequestClose={toggleSnackbar}
                 />
         </div>
+    <SignupDialog />
     </div>
 </PageComponent>
     );
@@ -101,6 +107,7 @@ LoginComponent.propTypes = {
     toggleSnackbar: PropTypes.func.isRequired,
     onLoginClick: PropTypes.func.isRequired,
     onLoginCredentialChange: PropTypes.func.isRequired,
+    toggleSignup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -136,6 +143,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onLoginCredentialChange: (credentialType, event) => {
             dispatch(loginCredentialChange(credentialType, event.target.value));
+        },
+        toggleSignup: () => {
+            dispatch(toggleSignupDialog());
         },
     };
 };

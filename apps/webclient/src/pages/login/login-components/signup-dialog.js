@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { clearSignupErrorIfExists } from '../signup-actions';
 import CircularProgress from 'material-ui/CircularProgress';
-import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { INVALID_EMAIL_ERROR } from '../../../components/generic-errors';
 import { lightBlue700 } from 'material-ui/styles/colors';
+import Modal from '../../../components/generic/modal/Modal';
 import { PASSWORDS_DONT_MATCH_ERROR } from '../../../components/generic-errors';
 import { PropTypes } from 'react';
 import { signupByEmail } from '../signup-actions';
@@ -13,21 +13,10 @@ import { signupValidationError } from '../signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD } from '../signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_EMAIL } from '../signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_PASSWORD } from '../signup-actions';
-import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import TextBox from '../../../components/generic/textbox/TextBox';
 import { toggleSignupDialog } from '../signup-actions';
 import validateEmail from '../../../utils/validate-email';
-
-
-const style = {
-    body: {
-        textAlign: 'center',
-    },
-    content: {
-        maxWidth: '400px',
-    },
-};
 
 const textBoxStyle = {
     text: {color: "#000000", borderColor: lightBlue700},
@@ -47,44 +36,19 @@ const SignupDialog = ({
             onSignupCredentialChange,
             }) => {
 
-    const actions = signupRequestPending ?
-     [
-         <CircularProgress />,
-     ] :
-     [
-        <FlatButton
-            label="Ok"
-            primary={true}
-            keyboardFocused={true}
-            onTouchTap={onSignupClick.bind(null, signupEmail, signupPassword, signupConfirmPassword)}
-        />,
-        <FlatButton
-            label="Cancel"
-            secondary={true}
-            keyboardFocused={true}
-            onTouchTap={toggleSignup}
-        />,
-    ];
     return (
-    <div>
-        <RaisedButton label="Signup" secondary={true} onTouchTap={toggleSignup} />
-        <Dialog
-        title="Create an Account"
-        actions={actions}
-        modal={false}
-        open={signupDialogVisible}
-        onRequestClose={toggleSignup}
-        bodyStyle = {style.body}
-        contentStyle = {style.content}
-        autoScrollBodyContent={true}
-        >
+<Modal
+    showModal={signupDialogVisible}
+    headerText="Create an Account"
+    onCancelClick={toggleSignup}
+    onConfirmClick={onSignupClick.bind(null, signupEmail, signupPassword, signupConfirmPassword)}
+    >
         <TextBox
             label="Email Address"
             value={signupEmail}
             errorText={emailErrorText || ""}
             style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_EMAIL)}/>
-        <br />
         <TextBox
             label="Password"
             value={signupPassword}
@@ -99,8 +63,7 @@ const SignupDialog = ({
             isPasswordField
             style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD)}/>
-        </Dialog>
-    </div>
+</Modal>
     );
 };
 
