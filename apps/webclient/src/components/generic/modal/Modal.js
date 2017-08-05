@@ -13,14 +13,13 @@ const Modal = ({
     children,
 }) => {
 const onClickout = (event) => {
-    if (event.target.classList.contains(styles.modal)) {
+    if (event.target.classList.contains(styles.fill)) {
         onCancelClick();
     }
 };
     return (
 <div
-    className={`${styles.modal}${showModal?` ${styles.on}`:''}`}
-    onClick={onClickout}>
+    className={`${styles.modal}${showModal?` ${styles.on}`:''}`}>
     <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
             <div className={styles.headerText}>{headerText}</div>
@@ -37,6 +36,9 @@ const onClickout = (event) => {
                 onClick={onConfirmClick}>{confirmButtonText}</button>
         </div>
     </div>
+    <div
+        className={styles.fill}
+        onClick={onClickout}></div>
 </div>
     );
 };
