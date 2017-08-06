@@ -7,7 +7,7 @@ GroceryGroove is still heavily under development and many parts of the site are 
 ## Contributing
 Our dev environment is packaged as a vagrant vm, provisioned by anisible. So those two are needed. To build/launch the vm, in the root dir of the project run:
 
-    vagrant up
+    vagrant up && vagrant ssh
 
 ### API
 Within the VM, the api is located within:
