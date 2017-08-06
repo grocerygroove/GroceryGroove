@@ -12,7 +12,7 @@
 
 @media (max-width : 700px) {
     .loginPage {
-        display: block;
+        grid-template-columns: 2.5% 95% 2.5%;
     }
 }
 

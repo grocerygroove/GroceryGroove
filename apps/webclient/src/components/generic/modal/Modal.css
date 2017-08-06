@@ -4,10 +4,9 @@
 
 .modal.on {
   position: fixed;
+  display: block;
   top: 0px;
   left: 0px;
-  display: grid;
-  grid-template-columns: 33% 34% 33%;
   width: 100%;
 }
 
@@ -21,18 +20,19 @@
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.54);
   z-index: 1;
+  margin: 0 auto;
 }
 
 
 @media (max-width : 960px) {
-    .modal.on {
-        grid-template-columns: 20% 60% 20%;
+    .modal.on .modalContent{
+        width: 60%;
     }
 }
 
 @media (max-width : 700px) {
-    .modal.on {
-        grid-template-columns: 2.5% 95% 2.5%;
+    .modal.on .modalContent{
+        width: 95%;
     }
 }
 
@@ -44,11 +44,11 @@
   grid-column-start: 2;
   grid-column-end: 3;
   background-color: white;
-  width: calc(100% - 2vw);
-  height: 40vh;
-  margin-top: 10vh;
+  width: 50%;
+  max-height: 70vh;
   border-radius: 2px;
   z-index: 2;
+  margin: 10vh auto;
 }
 
 .modal .modalContent .modalHeader {
@@ -79,8 +79,8 @@
   overflow-y: auto;
   margin-left: 4px;
   margin-right: 4px;
-  max-height: calc(100% - 37px - 37px - 4vh);
   margin-top: 2vh;
+  padding-bottom: 39px;
 }
 
 .modal .modalContent .modalFooter {
