@@ -1,6 +1,5 @@
 import { PropTypes } from 'react';
 import React from 'react';
-import styles from './TextBox.css';
 
 const TextBox = ({
     label,
@@ -15,16 +14,16 @@ var styleOveride = Object.assign({
     label: {},
 }, style);
     return (
-<div className={styles.textBox}>
+<div className='textBox'>
   <input
-         className={styles.text}
+         className='text'
          placeholder={label}
          style={styleOveride.text}
          type={isPasswordField ? "password" : "textbox"}
          onChange={onChange}
          value={value}/>
-  <label className={styles.label} style={styleOveride.label}>{label}</label>
-  <label className={styles.error}>{errorText}</label>
+  <label className='label' style={styleOveride.label}>{label}</label>
+  <label className='error'>{errorText}</label>
 </div>
     );
 };

@@ -41,8 +41,7 @@ const SignupDialog = ({
     showModal={signupDialogVisible}
     headerText="Create an Account"
     onCancelClick={toggleSignup}
-    onConfirmClick={onSignupClick.bind(null, signupEmail, signupPassword, signupConfirmPassword)}
-    >
+    onConfirmClick={onSignupClick.bind(null, signupEmail, signupPassword, signupConfirmPassword)} >
         <TextBox
             label="Email Address"
             value={signupEmail}

@@ -1,5 +1,4 @@
 import { PropTypes } from 'react';
-import styles from './Modal.css';
 import React from 'react';
 
 
@@ -19,25 +18,25 @@ const onClickout = (event) => {
 };
     return (
 <div
-    className={`${styles.modal}${showModal?` ${styles.on}`:''}`}>
-    <div className={styles.modalContent}>
-        <div className={styles.modalHeader}>
-            <div className={styles.headerText}>{headerText}</div>
+    className={`modal${showModal?` on`:''}`}>
+    <div className='modalContent'>
+        <div className='modalHeader'>
+            <div className='headerText'>{headerText}</div>
             <button
-                className={styles.closeButton}
+                className='closeButton'
                 onClick={onCancelClick}>Close</button>
         </div>
-        <div className={styles.modalBody}>
+        <div className='modalBody'>
             {children}
         </div>
-        <div className={styles.modalFooter}>
+        <div className='modalFooter'>
             <button
-                className={styles.confirmButton}
+                className='confirmButton'
                 onClick={onConfirmClick}>{confirmButtonText}</button>
         </div>
     </div>
     <div
-        className={styles.fill}
+        className='fill'
         onClick={onClickout}></div>
 </div>
     );

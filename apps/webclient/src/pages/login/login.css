@@ -16,7 +16,8 @@
     }
 }
 
-.login {
+.loginPage > .login {
+    margin-top: 15%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -25,11 +26,11 @@
     grid-column-end: 3;
 }
 
-.login {
-    margin-top: 15%;
+.loginPage > .login > h1.header {
+    color: #FAFAFA;
 }
 
-.loginCredSpan {
+.loginPage > .login > span.loginCredSpan {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -37,19 +38,8 @@
     margin-right: 2vw;
 }
 
-.buttonSpan {
-    display: flex;
-    flex-direction: column;
-}
 
-.buttonSpan .button {
-    margin: 12px;
-}
-.header {
-    color: #FAFAFA;
-}
-
-.iconDiv {
+.loginPage > .login > span.loginCredSpan > div.iconDiv {
     position: relative;
     height: 34px;
     width: 34px;
@@ -63,9 +53,9 @@
     transform-origin: 100% 17px;
 }
 
-.iconDiv .front,
-.iconDiv .back,
-.iconDiv svg {
+.loginPage > .login > span.loginCredSpan > div.iconDiv > .front,
+.loginPage > .login > span.loginCredSpan > div.iconDiv > .back,
+.loginPage > .login > span.loginCredSpan > div.iconDiv > svg {
     padding-right: 10px;
     color: white !important; /* Ugh mat-ui's inline styling is forcing me to do this */
     backface-visibility: hidden;
@@ -75,14 +65,23 @@
 }
 
 /* front pane, placed above back */
-.iconDiv .front {
+.loginPage > .login > span.loginCredSpan > div.iconDiv > .front {
 	z-index: 2;
     -webkit-transform: rotateX(0deg);
 	transform: rotateX(0deg);
 }
 
 /* back, initially hidden pane */
-.iconDiv .back {
+.loginPage > .login > span.loginCredSpan > div.iconDiv > .back {
     -webkit-transform: rotateX(180deg);
     transform: rotateX(180deg);
+}
+
+.loginPage > .login > span.buttonSpan {
+    display: flex;
+    flex-direction: column;
+}
+
+.loginPage > .login > span.buttonSpan > .button {
+    margin: 12px;
 }

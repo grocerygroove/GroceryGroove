@@ -1,4 +1,4 @@
-.modal, .modal .fill {
+.modal, .modal > .fill {
   display: none;
 }
 
@@ -8,9 +8,10 @@
   top: 0px;
   left: 0px;
   width: 100%;
+  z-index: 2;
 }
 
-.modal.on .fill {
+.modal.on > .fill {
   display: block;
   position: fixed;
   height: 100%;
@@ -25,18 +26,18 @@
 
 
 @media (max-width : 960px) {
-    .modal.on .modalContent{
+    .modal.on > .modalContent{
         width: 60%;
     }
 }
 
 @media (max-width : 700px) {
-    .modal.on .modalContent{
+    .modal.on > .modalContent{
         width: 95%;
     }
 }
 
-.modal .modalContent {
+.modal > .modalContent {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -51,7 +52,7 @@
   margin: 10vh auto;
 }
 
-.modal .modalContent .modalHeader {
+.modal > .modalContent > .modalHeader {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -61,13 +62,13 @@
   margin-right: 4px;
   box-shadow: 1px 2px 2px black;
 }
-.modal .modalContent .modalHeader .headerText {
+.modal > .modalContent > .modalHeader > .headerText {
   font-size: 26px;
   color: white;
   padding-left: 4%;
 }
 
-.modal .modalContent .modalHeader .closeButton {
+.modal > .modalContent > .modalHeader > .closeButton {
   background-color: transparent;
   color: white;
   position: absolute;
@@ -75,7 +76,7 @@
   height: 37px;
   border: none;
 }
-.modal .modalContent .modalBody {
+.modal > .modalContent > .modalBody {
   overflow-y: auto;
   margin-left: 4px;
   margin-right: 4px;
@@ -83,7 +84,7 @@
   padding-bottom: 39px;
 }
 
-.modal .modalContent .modalFooter {
+.modal > .modalContent > .modalFooter {
   position: absolute;
   height: 39px;
   bottom: 0px;
@@ -97,7 +98,7 @@
   justify-content: right;
 }
 
-.modal .modalContent .modalFooter .confirmButton {
+.modal > .modalContent > .modalFooter > .confirmButton {
   margin-top: 2px;
   margin-right: 2px;
 }

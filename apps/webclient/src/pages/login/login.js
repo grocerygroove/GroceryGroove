@@ -12,7 +12,6 @@ import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
-import styles from './login.css';
 import SignupDialog from './login-components/signup-dialog';
 import Snackbar from 'material-ui/Snackbar';
 import TagFace from 'material-ui/svg-icons/image/tag-faces';
@@ -48,49 +47,48 @@ const LoginComponent = ({
             };
     return (
 <PageComponent styleOverride={style}>
-    <div className={styles.loginPage}>
-        <div className={styles.login}>
-            <h1 className={styles.header}>Grocery Groove</h1>
+    <div className='loginPage'>
+        <div className='login'>
+            <h1 className='header'>Grocery Groove</h1>
+              <span className='loginCredSpan'>
+                  <div className='iconDiv'>
+                      <FaceIcon className={emailGood(loginEmail) ? 'back' : 'front'} />
+                      <TagFace className={!emailGood(loginEmail) ? 'back' : 'front'} />
+                  </div>
+                  <TextBox
+                      label="Email Address"
+                      value={loginEmail}
+                      onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
+              </span>
+              <span className='loginCredSpan'>
+                  <div className='iconDiv'>
+                      <VpnKeyIcon />
+                  </div>
+                  <TextBox
+                      label="Password"
+                      value={loginPassword}
+                      onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}
+                      isPasswordField/>
+              </span>
+              <span className='buttonSpan'>
+                  <RaisedButton
+                      className='button'
+                      label="Login"
+                      primary={true}
+                      onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
+                  <RaisedButton
+                      className='button'
+                      label="Signup"
+                      secondary={true}
+                      onTouchTap={toggleSignup} />
+              </span>
 
-                <span className={styles.loginCredSpan}>
-                    <div className={styles.iconDiv}>
-                        <FaceIcon className={emailGood(loginEmail) ? styles.back : styles.front} />
-                        <TagFace className={!emailGood(loginEmail) ? styles.back : styles.front} />
-                    </div>
-                    <TextBox
-                        label="Email Address"
-                        value={loginEmail}
-                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
-                </span>
-                <span className={styles.loginCredSpan}>
-                    <div className={styles.iconDiv}>
-                        <VpnKeyIcon />
-                    </div>
-                    <TextBox
-                        label="Password"
-                        value={loginPassword}
-                        onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}
-                        isPasswordField/>
-                </span>
-                <span className={styles.buttonSpan}>
-                    <RaisedButton
-                        className={styles.button}
-                        label="Login"
-                        primary={true}
-                       onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
-                    <RaisedButton
-                        className={styles.button}
-                        label="Signup"
-                        secondary={true}
-                        onTouchTap={toggleSignup} />
-                </span>
-
-            <Snackbar
-                open={snackbarOpen}
-                message={snackbarMessage}
-                autoHideDuration={4000}
-                onRequestClose={toggleSnackbar}
-                />
+          <Snackbar
+              open={snackbarOpen}
+              message={snackbarMessage}
+              autoHideDuration={4000}
+              onRequestClose={toggleSnackbar}
+              />
         </div>
     <SignupDialog />
     </div>

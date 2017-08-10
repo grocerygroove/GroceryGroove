@@ -6,7 +6,7 @@
   display: inline-flex;
   margin-bottom: 3vh;
 }
-.textBox .text {
+.textBox > input.text {
   font-weight: 500;
   width: 100%;
   height: 27px;
@@ -28,7 +28,7 @@
   border-color: #B2FF59;
 }
 
-.textBox .label {
+.textBox > label.label {
   opacity: 0.1;
   pointer-events: none;
   z-index: 1;
@@ -46,7 +46,7 @@
   transition-timing-function: cubic-bezier(.68,-0.55,.27,1.55);
 }
 
-.textBox .error {
+.textBox > label.error {
   position: absolute;
   margin-top: 48px;
   width: 100%;
@@ -54,36 +54,36 @@
   text-align: center;
 }
 
-.textBox > input.text:focus ~ .label, .textBox > input.text:not([value=""]) ~ .label {
+.textBox > input.text:focus ~ label.label, .textBox > input.text:not([value=""]) ~ label.label {
   opacity: 1;
   z-index: 1;
   bottom: 55%;
   font-size: 12px;
 }
 
-.textBox > input.text:focus ~ .label {
+.textBox > input.text:focus ~ label.label {
   color: #B2FF59;
 }
 
-.textBox ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+.textBox > input.text::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #2B2B2B;
   font-size: 20px;
   font-weight: 200;
   font-family: 'Roboto', sans-serif;
 }
-.textBox ::-moz-placeholder { /* Firefox 19+ */
+.textBox > input.text::-moz-placeholder { /* Firefox 19+ */
   color: #2B2B2B;
   font-size: 20px;
   font-weight: 200;
   font-family: 'Roboto', sans-serif;
 }
-.textBox :-ms-input-placeholder { /* IE 10+ */
+.textBox > input.text:-ms-input-placeholder { /* IE 10+ */
   color: #2B2B2B;
   font-size: 20px;
   font-weight: 200;
   font-family: 'Roboto', sans-serif;
 }
-.textBox :-moz-placeholder { /* Firefox 18- */
+.textBox > input.text:-moz-placeholder { /* Firefox 18- */
   color: #2B2B2B;
   font-size: 20px;
   font-weight: 200;
