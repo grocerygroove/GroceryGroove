@@ -6,5 +6,6 @@
 @import '../pages/login/login.css';
 
 /* Component Stylesheets */
-@import '../components/generic/textbox/TextBox.css';
+@import '../components/generic/button/Button.css';
 @import '../components/generic/modal/Modal.css'; 
+@import '../components/generic/textbox/TextBox.css';

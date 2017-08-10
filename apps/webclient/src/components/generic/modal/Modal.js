@@ -1,3 +1,4 @@
+import Button from '../button/Button';
 import { PropTypes } from 'react';
 import React from 'react';
 
@@ -30,9 +31,10 @@ const onClickout = (event) => {
             {children}
         </div>
         <div className='modalFooter'>
-            <button
-                className='confirmButton'
-                onClick={onConfirmClick}>{confirmButtonText}</button>
+          <Button
+            className='confirmButton'
+            text={confirmButtonText}
+            onClick={onConfirmClick} />
         </div>
     </div>
     <div

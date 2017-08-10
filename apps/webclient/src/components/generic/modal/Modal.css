@@ -81,12 +81,12 @@
   margin-left: 4px;
   margin-right: 4px;
   margin-top: 2vh;
-  padding-bottom: 39px;
+  padding-bottom: 50px;
 }
 
 .modal > .modalContent > .modalFooter {
   position: absolute;
-  height: 39px;
+  height: 40px;
   bottom: 0px;
   left: 2px;
   width: 99%;
@@ -99,6 +99,5 @@
 }
 
 .modal > .modalContent > .modalFooter > .confirmButton {
-  margin-top: 2px;
-  margin-right: 2px;
+  margin: 2px;
 }

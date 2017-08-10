@@ -10,7 +10,7 @@ import { LOGIN_CREDENTIAL_TYPE_PASSWORD } from './login-actions';
 import { loginValidationError } from './login-actions';
 import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '../../components/generic/button/Button';
 import React from 'react';
 import SignupDialog from './login-components/signup-dialog';
 import Snackbar from 'material-ui/Snackbar';
@@ -57,6 +57,7 @@ const LoginComponent = ({
                   </div>
                   <TextBox
                       label="Email Address"
+                      errorText={emailErrorText || ""}
                       value={loginEmail}
                       onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
               </span>
@@ -71,16 +72,16 @@ const LoginComponent = ({
                       isPasswordField/>
               </span>
               <span className='buttonSpan'>
-                  <RaisedButton
-                      className='button'
-                      label="Login"
+                  <Button
+                      className='loginButton'
+                      text="Login"
                       primary={true}
-                      onTouchTap={onLoginClick.bind(null, loginEmail, loginPassword)}/>
-                  <RaisedButton
-                      className='button'
-                      label="Signup"
-                      secondary={true}
-                      onTouchTap={toggleSignup} />
+                      onClick={onLoginClick.bind(null, loginEmail, loginPassword)}/>
+                  <Button
+                      className='loginButton'
+                      text="Signup"
+                      secondary
+                      onClick={toggleSignup} />
               </span>
 
           <Snackbar
