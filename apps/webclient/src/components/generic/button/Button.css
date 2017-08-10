@@ -6,9 +6,9 @@ div.button {
   border-radius: 3px;
   font-size: 18px;
   box-shadow: 1px 2px 2px #090F0F; 
-  
+
   /* TRANSITION */
-   /* Firefox */
+  /* Firefox */
   -moz-transition-property: box-shadow;
   -moz-transition-duration: 0.1s;
   -moz-transition-delay: 0s;
@@ -24,7 +24,7 @@ div.button {
   transition-property: box-shadow;
   transition-duration: 0.1s;
   transition-delay: 0s;  
-  
+
   /* NO SELECT */
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -63,8 +63,8 @@ div.button > .overlay {
   opacity: 0;
   width: 100%;
   height: 100%;
-  
-   /* Firefox */
+
+  /* Firefox */
   -moz-transition-property: opacity;
   -moz-transition-duration: 0.2s;
   -moz-transition-delay: 0s;
@@ -83,5 +83,5 @@ div.button > .overlay {
 }
 
 div.button > div.overlay:hover {
- opacity: 0.5;
+  opacity: 0.5;
 }

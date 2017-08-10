@@ -7,43 +7,43 @@ import { PropTypes } from 'react';
 import React from 'react';
 
 const RouterComponent = ({
-                page,
-                boundListenForHashChange,
-            }) => {
+  page,
+  boundListenForHashChange,
+}) => {
 
-    boundListenForHashChange();
+  boundListenForHashChange();
 
-    switch (page) {
-        case "login":
-            return <LoginComponent />;
-        case "grocery-list":
-            return <GroceryListComponent />;
-        case "categories":
-            return <CategoriesComponent />;
-        default:
-            throw new Error("Page Not Found");
-    }
+  switch (page) {
+    case "login":
+      return <LoginComponent />;
+    case "grocery-list":
+      return <GroceryListComponent />;
+    case "categories":
+      return <CategoriesComponent />;
+    default:
+      throw new Error("Page Not Found");
+  }
 };
 
 RouterComponent.propTypes = {
-    page: PropTypes.string,    
-    boundListenForHashChange: PropTypes.func.isRequired,
+  page: PropTypes.string,    
+  boundListenForHashChange: PropTypes.func.isRequired,
 };
 
 
 const mapStateToProps = (state, ownProps) => {
-    return Object.assign({}, ownProps, {
-        page: state.getIn([ 'navigation', 'page' ]),
-    });
+  return Object.assign({}, ownProps, {
+    page: state.getIn([ 'navigation', 'page' ]),
+  });
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        boundListenForHashChange: listenForHashChange.bind(null, dispatch),
-    };
+  return {
+    boundListenForHashChange: listenForHashChange.bind(null, dispatch),
+  };
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(RouterComponent);

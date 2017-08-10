@@ -4,31 +4,31 @@ import React from 'react';
 
 
 const Modal = ({
-    showModal,
-    allowClickout = true,
-    headerText,
-    confirmButtonText = "Confirm",
-    onCancelClick,
-    onConfirmClick = ()=>{}, //Default to an empty function
-    children,
+  showModal,
+  allowClickout = true,
+  headerText,
+  confirmButtonText = "Confirm",
+  onCancelClick,
+  onConfirmClick = ()=>{}, //Default to an empty function
+  children,
 }) => {
-const onClickout = (event) => {
+  const onClickout = (event) => {
     if (event.target.classList.contains(styles.fill)) {
-        onCancelClick();
+      onCancelClick();
     }
-};
-    return (
-<div
-    className={`modal${showModal?` on`:''}`}>
-    <div className='modalContent'>
+  };
+  return (
+    <div
+      className={`modal${showModal?` on`:''}`}>
+      <div className='modalContent'>
         <div className='modalHeader'>
-            <div className='headerText'>{headerText}</div>
-            <button
-                className='closeButton'
-                onClick={onCancelClick}>Close</button>
+          <div className='headerText'>{headerText}</div>
+          <button
+            className='closeButton'
+            onClick={onCancelClick}>Close</button>
         </div>
         <div className='modalBody'>
-            {children}
+          {children}
         </div>
         <div className='modalFooter'>
           <Button
@@ -36,22 +36,22 @@ const onClickout = (event) => {
             text={confirmButtonText}
             onClick={onConfirmClick} />
         </div>
-    </div>
-    <div
+      </div>
+      <div
         className='fill'
         onClick={onClickout}></div>
-</div>
-    );
+    </div>
+  );
 };
 
 Modal.propTypes = {
-    showModal: PropTypes.bool.isRequired,
-    allowClickout: PropTypes.bool,
-    headerText: PropTypes.string.isRequired,
-    confirmButtonText: PropTypes.string,
-    onCancelClick: PropTypes.func.isRequired,
-    onConfirmClick: PropTypes.func,
-    children: PropTypes.arrayOf(PropTypes.element),
+  showModal: PropTypes.bool.isRequired,
+  allowClickout: PropTypes.bool,
+  headerText: PropTypes.string.isRequired,
+  confirmButtonText: PropTypes.string,
+  onCancelClick: PropTypes.func.isRequired,
+  onConfirmClick: PropTypes.func,
+  children: PropTypes.arrayOf(PropTypes.element),
 };
 
 export default Modal;

@@ -15,12 +15,12 @@ const Button = ({
     classList.push(className);
   }
   return (
-<div className={classList.join(' ')}>
-  <span>{text}</span>
-  <div 
-    className="overlay"
-    onClick={onClick}></div>
-</div>
+    <div className={classList.join(' ')}>
+      <span>{text}</span>
+      <div 
+        className="overlay"
+        onClick={onClick}></div>
+    </div>
   );
 };
 

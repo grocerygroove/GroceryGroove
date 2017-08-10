@@ -21,8 +21,8 @@ export const customTheme = {
     textColor: white,
   },
   listItem: {
-      backgroundColor: white,
-      borderBottom: "1px solid #d3d3d3",
+    backgroundColor: white,
+    borderBottom: "1px solid #d3d3d3",
   },
 };
 

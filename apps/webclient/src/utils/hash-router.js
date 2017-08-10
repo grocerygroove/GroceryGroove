@@ -7,9 +7,9 @@ const getCurrent = function () {
 };
 
 export const changeHash = function(hash) {    
-    const current = window.location.href;
-    window.location.href = hash ? current.replace(/#(.*)$/, '') + '#' + hash : current.indexOf("#")[0];
-    return;
+  const current = window.location.href;
+  window.location.href = hash ? current.replace(/#(.*)$/, '') + '#' + hash : current.indexOf("#")[0];
+  return;
 };
 
 export const listenForHashChange = function (dispatch) {

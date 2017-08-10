@@ -4,9 +4,9 @@ import RouterComponent from './page-router';
 
 
 const AppComponent = () => {
-    return (
-<RouterComponent />
-    );
+  return (
+    <RouterComponent />
+  );
 };
 
 export default AppComponent;

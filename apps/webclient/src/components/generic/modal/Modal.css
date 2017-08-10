@@ -26,15 +26,15 @@
 
 
 @media (max-width : 960px) {
-    .modal.on > .modalContent{
-        width: 60%;
-    }
+  .modal.on > .modalContent{
+    width: 60%;
+  }
 }
 
 @media (max-width : 700px) {
-    .modal.on > .modalContent{
-        width: 95%;
-    }
+  .modal.on > .modalContent{
+    width: 95%;
+  }
 }
 
 .modal > .modalContent {
