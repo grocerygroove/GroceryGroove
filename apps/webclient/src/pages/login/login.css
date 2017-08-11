@@ -27,7 +27,7 @@
 }
 
 .loginPage > .login > h1.header {
-  color: #FAFAFA;
+  color: #3E4545;
 }
 
 .loginPage > .login > span.loginCredSpan {
@@ -56,7 +56,7 @@
 .loginPage > .login > span.loginCredSpan > div.iconDiv > .back,
 .loginPage > .login > span.loginCredSpan > div.iconDiv > svg {
   padding-right: 10px;
-  color: white !important; /* Ugh mat-ui's inline styling is forcing me to do this */
+  color: #3E4545 !important; /* Ugh mat-ui's inline styling is forcing me to do this */
   backface-visibility: hidden;
 	position: absolute;
 	top: 0;

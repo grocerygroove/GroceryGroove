@@ -36,13 +36,13 @@ div.button {
 }
 
 div.button.primary {
-  color: #052e1a;
-  background-color: rgb(105, 240, 174);
+  color: white;
+  background-color: #F7B733;
 }
 
 div.button.secondary {
-  color: #2e0519;
-  background-color: #f069ab;
+  color: white;
+  background-color: #FC4A1A;
 }
 
 div.button:active {

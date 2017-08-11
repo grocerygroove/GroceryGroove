@@ -51,5 +51,5 @@ const App = () => {
   );
 };
 
-document.body.style.backgroundColor = lightBlue700;
+document.body.style.backgroundColor = '#4ABDAC';
 ReactDOM.render(<App />, document.getElementById('container'));

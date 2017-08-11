@@ -12,12 +12,12 @@
   height: 27px;
   padding-left: 0.5vw;
   background-color: transparent;
-  color: white;
+  color: #3E4545;
   position: absolute;
   bottom: 0px;
   outline: none;
   border-style: solid;
-  border-color: #E3E7EA;
+  border-color: #3E4545;
   border-width: 0px 0px 2px 0px;
   font-size: 20px;
   -webkit-transition: border-color 0.45s linear;
@@ -25,14 +25,14 @@
 }
 
 .textBox > input.text:focus {
-  border-color: #B2FF59;
+  border-color:	#7f52be;
 }
 
 .textBox > label.label {
   opacity: 0.1;
   pointer-events: none;
   z-index: 1;
-  color: #C0C0C0;
+  color: #2c3e50;
   position: absolute;
   padding-left: 0.5vw;
   bottom: 3px;
@@ -62,7 +62,7 @@
 }
 
 .textBox > input.text:focus ~ label.label {
-  color: #B2FF59;
+  color: #7f52be;
 }
 
 .textBox > input.text::-webkit-input-placeholder { /* Chrome/Opera/Safari */
