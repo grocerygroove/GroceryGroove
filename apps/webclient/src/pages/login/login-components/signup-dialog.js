@@ -18,11 +18,6 @@ import TextBox from '../../../components/generic/textbox/TextBox';
 import { toggleSignupDialog } from '../signup-actions';
 import validateEmail from '../../../utils/validate-email';
 
-const textBoxStyle = {
-    text: {color: "#000000", borderColor: lightBlue700},
-    label: {color: lightBlue700},
-};
-
 const SignupDialog = ({
             signupDialogVisible,
             signupRequestPending,
@@ -46,21 +41,18 @@ const SignupDialog = ({
             label="Email Address"
             value={signupEmail}
             errorText={emailErrorText || ""}
-            style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_EMAIL)}/>
         <TextBox
             label="Password"
             value={signupPassword}
             errorText={passwordsErrorText || ""}
             isPasswordField
-            style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_PASSWORD)}/>
         <TextBox
             label="Confirm Password"
             value={signupConfirmPassword}
             errorText={passwordsErrorText || ""}
             isPasswordField
-            style={textBoxStyle}
             onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD)}/>
 </Modal>
     );
