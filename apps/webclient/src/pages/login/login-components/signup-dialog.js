@@ -35,6 +35,7 @@ const SignupDialog = ({
 <Modal
     showModal={signupDialogVisible}
     headerText="Create an Account"
+    confirmButtonText="Submit"
     onCancelClick={toggleSignup}
     onConfirmClick={onSignupClick.bind(null, signupEmail, signupPassword, signupConfirmPassword)} >
         <TextBox
