@@ -37,12 +37,12 @@ div.button {
 
 div.button.primary {
   color: white;
-  background-color: #F7B733;
+  background-color: #7f52be;
 }
 
 div.button.secondary {
   color: white;
-  background-color: #FC4A1A;
+  background-color: #F7B733;
 }
 
 div.button:active {
