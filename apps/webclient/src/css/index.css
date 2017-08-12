@@ -8,4 +8,5 @@
 /* Component Stylesheets */
 @import '../components/generic/button/Button.css';
 @import '../components/generic/modal/Modal.css'; 
+@import '../components/generic/snackbar/SnackBar.css';
 @import '../components/generic/textbox/TextBox.css';

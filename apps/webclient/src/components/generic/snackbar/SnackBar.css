@@ -1,0 +1,53 @@
+.snackbar {
+  position: fixed;
+  top: 100vh;
+  left: 35vw;
+  width: 30vw;
+  height: 10vh;
+  border-radius: 2px;
+  background-color: black;
+  opacity: 0.9;
+
+  /* TRANSITION */       
+  /* Firefox */          
+  -moz-transition-property: top;
+  -moz-transition-duration: 0.75s; 
+  -moz-transition-delay: 0s;
+  /* WebKit */           
+  -webkit-transition-property: top;
+  -webkit-transition-duration: 0.75s;
+  -webkit-transition-delay: 0s;
+  /* Opera */            
+  -o-transition-property: top;
+  -o-transition-duration: 0.75s;
+  -o-transition-delay: 0s;
+  /* Standard */         
+  transition-property: top;
+  transition-duration: 0.75s;
+  transition-delay: 0s;  
+}
+
+@media (max-width : 960px) {
+  .snackbar{
+    left: 20vw;
+    width: 60vw;
+  }
+}
+@media (max-width : 700px) {
+  .snackbar{
+    left: 10vw;
+    width: 80vw;
+  }
+}
+
+.snackbar.show {
+  top: 90vh;
+}
+
+.snackbar > .text {
+  display: flex;
+  justify-content: center;
+  margin-top: 3vh;
+  font-size: 22px;
+  color: white;
+}

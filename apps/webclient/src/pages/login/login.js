@@ -13,7 +13,7 @@ import { PropTypes } from 'react';
 import Button from '../../components/generic/button/Button';
 import React from 'react';
 import SignupDialog from './login-components/signup-dialog';
-import Snackbar from 'material-ui/Snackbar';
+import SnackBar from '../../components/generic/snackbar/SnackBar';
 import TagFace from 'material-ui/svg-icons/image/tag-faces';
 import TextBox from '../../components/generic/textbox/TextBox';
 import { toggleSnackbar } from './login-actions';
@@ -84,9 +84,9 @@ const LoginComponent = ({
                       onClick={toggleSignup} />
               </span>
 
-          <Snackbar
-              open={snackbarOpen}
-              message={snackbarMessage}
+          <SnackBar
+              show={snackbarOpen}
+              text={snackbarMessage}
               autoHideDuration={4000}
               onRequestClose={toggleSnackbar}
               />
