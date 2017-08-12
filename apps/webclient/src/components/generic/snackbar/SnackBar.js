@@ -1,31 +1,48 @@
 import { PropTypes } from 'react';
 import React from 'react';
 
-const SnackBar = ({
-  text,
-  show = false,
-  autoHideDuration = 4000, //4000ms = 4seconds
-  onRequestClose,
-}) => {
-  let classList = [
-    'snackbar',
-  ];
-  if (show) {
-    classList.push('show');
-    //Following the autoHideDuration, call the requestClose func
-    setTimeout(onRequestClose, autoHideDuration);
+class SnackBar extends React.PureComponent {
+  getDefaultProps() {
+    return {
+      show: false,
+      autoHideDuration: 4000,
+    };
   }
-  return (
-    <div className={classList.join(' ')}>
-      <span className='text'>{text}</span>
-    </div>
-  );
+
+  componentDidMount() {
+    if (this.props.show) {
+      //Following the autoHideDuration, call the requestClose func
+      setTimeout(this.props.onRequestClose, this.props.autoHideDuration);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.show) {
+      //Following the autoHideDuration, call the requestClose func
+      setTimeout(this.props.onRequestClose, this.props.autoHideDuration);
+    }
+  }
+
+  render() {
+    let classList = [
+      'snackbar',
+    ];
+    if (this.props.show) {
+      classList.push('show');
+    }
+
+    return (
+      <div className={classList.join(' ')}>
+        <span className='text'>{this.props.text}</span>
+      </div>
+    );
+  } 
 };
 
 SnackBar.propTypes = {
   text: PropTypes.string.isRequired,
   show: PropTypes.bool,
-  autoHideDuration: PropTypes.int,
+  autoHideDuration: PropTypes.number,
   onRequestClose: PropTypes.func.isRequired,
 };
 

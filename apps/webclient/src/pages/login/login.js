@@ -87,7 +87,6 @@ const LoginComponent = ({
           <SnackBar
               show={snackbarOpen}
               text={snackbarMessage}
-              autoHideDuration={4000}
               onRequestClose={toggleSnackbar}
               />
         </div>
