@@ -2,12 +2,6 @@ import { PropTypes } from 'react';
 import React from 'react';
 
 class SnackBar extends React.PureComponent {
-  getDefaultProps() {
-    return {
-      show: false,
-      autoHideDuration: 4000,
-    };
-  }
 
   componentDidMount() {
     if (this.props.show) {
@@ -21,6 +15,10 @@ class SnackBar extends React.PureComponent {
       //Following the autoHideDuration, call the requestClose func
       setTimeout(this.props.onRequestClose, this.props.autoHideDuration);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.onRequestClose();
   }
 
   render() {
@@ -37,6 +35,11 @@ class SnackBar extends React.PureComponent {
       </div>
     );
   } 
+};
+
+SnackBar.defaultProps = {
+  show: false,
+  autoHideDuration: 4000,
 };
 
 SnackBar.propTypes = {
