@@ -6,24 +6,19 @@ class SnackBar extends React.PureComponent {
   componentDidMount() {
     if (this.props.show) {
       //Following the autoHideDuration, call the requestClose func
-      this.setState({
-        timeoutHandle: setTimeout(this.props.onRequestClose, this.props.autoHideDuration),
-      });
+      this.timeoutHandle = setTimeout(this.props.onRequestClose, this.props.autoHideDuration);
     }
   }
 
   componentDidUpdate() {
     if (this.props.show) {
       //Following the autoHideDuration, call the requestClose func
-      this.setState({
-        timeoutHandle: setTimeout(this.props.onRequestClose, this.props.autoHideDuration),
-      });
+      this.timeoutHandle = setTimeout(this.props.onRequestClose, this.props.autoHideDuration);
     }
   }
 
   componentWillUnmount() {
-    const handle = this.state ? this.state.timeoutHandle : void(0);
-    clearTimeout(handle);  
+    clearTimeout(this.timeoutHandle);  
     this.props.onRequestClose();
   }
 
