@@ -1,4 +1,5 @@
 .snackbar {
+  display: none;
   position: fixed;
   top: 100vh;
   left: 35vw;
@@ -41,6 +42,7 @@
 }
 
 .snackbar.show {
+  display: inline;
   top: 95vh;
 }
 
