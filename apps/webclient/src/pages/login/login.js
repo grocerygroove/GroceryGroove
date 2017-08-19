@@ -1,7 +1,7 @@
 import { changePage } from '../../components/navigation-actions';
 import { clearLoginErrorIfExists } from './login-actions';
 import { connect } from 'react-redux';
-import FaceIcon from 'material-ui/svg-icons/action/face';
+import FaceIcon from 'react-icons/lib/md/face';
 import { INVALID_EMAIL_ERROR } from '../../components/generic-errors';
 import { loginByEmail } from './login-actions';
 import { loginCredentialChange } from './login-actions';
@@ -14,12 +14,12 @@ import Button from '../../components/generic/button/Button';
 import React from 'react';
 import SignupDialog from './login-components/signup-dialog';
 import SnackBar from '../../components/generic/snackbar/SnackBar';
-import TagFace from 'material-ui/svg-icons/image/tag-faces';
+import TagFace from 'react-icons/lib/md/tag-faces';
 import TextBox from '../../components/generic/textbox/TextBox';
 import { toggleSnackbar } from './login-actions';
 import { toggleSignupDialog } from './signup-actions';
 import validateEmail from '../../utils/validate-email';
-import VpnKeyIcon from 'material-ui/svg-icons/communication/vpn-key';
+import VpnKeyIcon from 'react-icons/lib/md/vpn-key';
 
 
 const style = {
