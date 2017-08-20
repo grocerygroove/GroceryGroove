@@ -1,4 +1,4 @@
-import AppBar from 'material-ui/AppBar';
+import AppBar from './generic/appbar/AppBar';
 import { changePageAndToggleDrawer } from './navigation-actions';
 import { changeHash } from '../utils/hash-router';
 import { clear } from "redux-localstorage-simple";
@@ -43,9 +43,8 @@ const PageComponent = ({
     <div>        
       {renderIf(page !== "login") (
         <AppBar
-          title={pageTitle}
-          onLeftIconButtonTouchTap={toggleDrawer}
-          style={computedStyle.appBar}/>
+          text={pageTitle}
+          onButtonClick={toggleDrawer}/>
       )}
       <Drawer
         open={drawerOpen}

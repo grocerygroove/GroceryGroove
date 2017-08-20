@@ -1,13 +1,11 @@
 .snackbar {
-  display: none;
   position: fixed;
   top: 100vh;
   left: 35vw;
   width: 30vw;
   height: 10vh;
   border-radius: 5px;
-  background-color: black;
-  opacity: 0.9;
+  background-color: #3E4545;
 
   /* TRANSITION */       
   /* Firefox */          
@@ -42,7 +40,6 @@
 }
 
 .snackbar.show {
-  display: inline;
   top: 95vh;
 }
 
