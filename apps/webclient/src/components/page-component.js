@@ -55,9 +55,9 @@ const PageComponent = ({
           style={computedStyle.menuItem}
           leftIcon={<ListIcon />}>Grocery List</MenuItem>
         <MenuItem
-          onTouchTap={changePageAndToggleDrawer.bind(null, "categories")}
+          onTouchTap={changePageAndToggleDrawer.bind(null, "settings")}
           style={computedStyle.menuItem}
-          leftIcon={<ListIcon />}>Categories</MenuItem>
+          leftIcon={<ListIcon />}>Settings</MenuItem>
         <MenuItem
           onTouchTap={doSignout}
           style={computedStyle.menuItem}

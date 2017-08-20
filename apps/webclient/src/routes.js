@@ -1,4 +1,4 @@
 export default [
-  'categories',
   'grocery-list',
+  'settings',
 ];

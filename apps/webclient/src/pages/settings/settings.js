@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { customTheme } from '../../theme/grocery-groove-theme';
-import { getCategories } from './categories-actions';
+import { getCategories } from './settings-actions';
 import { List } from 'material-ui/List';
 import { ListItem } from 'material-ui/List';
 import PageComponent from '../../components/page-component';
@@ -8,7 +8,7 @@ import { PropTypes } from 'react';
 import React from 'react';
 import { white } from 'material-ui/styles/colors';
 
-const CategoriesComponent = ({
+const SettingsComponent = ({
   categories,
   token,
   selectedHousholdId,
@@ -19,7 +19,7 @@ const CategoriesComponent = ({
   }
 
   return (
-    <PageComponent pageTitle="Categories">
+    <PageComponent pageTitle="Settings">
       <List>
         {categories.map(x => {
           return (
@@ -35,7 +35,7 @@ const CategoriesComponent = ({
   );
 };
 
-CategoriesComponent.propTypes = {
+SettingsComponent.propTypes = {
   categories: PropTypes.array.isRequired,
   token: PropTypes.string.isRequired,
   selectedHousholdId: PropTypes.number.isRequired,
@@ -44,7 +44,7 @@ CategoriesComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return Object.assign({}, ownProps, {
-    categories: state.get('categories').toJS(),
+    categories: state.getIn([ 'settings', 'categories' ]).toJS(),
     token: state.getIn([ 'credentials', 'token' ]),
     selectedHousholdId: state.getIn([ 'user', 'selectedHouseholdId' ]),
   });
@@ -60,4 +60,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CategoriesComponent);
+)(SettingsComponent);

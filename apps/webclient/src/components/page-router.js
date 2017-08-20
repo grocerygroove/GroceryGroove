@@ -1,9 +1,9 @@
-import CategoriesComponent from '../pages/categories/categories';
 import { connect } from 'react-redux';
 import GroceryListComponent from '../pages/grocery-list/grocery-list';
 import { listenForHashChange } from '../utils/hash-router';
 import LoginComponent from '../pages/login/login';
 import { PropTypes } from 'react';
+import SettingsComponent from '../pages/settings/settings';
 import React from 'react';
 
 const RouterComponent = ({
@@ -18,8 +18,9 @@ const RouterComponent = ({
       return <LoginComponent />;
     case "grocery-list":
       return <GroceryListComponent />;
-    case "categories":
-      return <CategoriesComponent />;
+    case "settings":
+      console.log("settings change page");
+      return <SettingsComponent />;
     default:
       throw new Error("Page Not Found");
   }
