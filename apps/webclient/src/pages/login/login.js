@@ -23,7 +23,7 @@ import VpnKeyIcon from 'react-icons/lib/md/vpn-key';
 
 
 const style = {
-  paper: {
+  pageview: {
       height: '100%',
       backgroundColor: 'transparent',
       boxShadow: 'transparent',

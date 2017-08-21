@@ -9,22 +9,16 @@ import ListIcon from 'material-ui/svg-icons/action/list';
 import initalState from '../initial-state';
 import MenuItem from 'material-ui/MenuItem';
 import mergeDeep from 'immutable';
-import Paper from 'material-ui/Paper';
 import { PropTypes } from 'react';
 import React from 'react'; 
 import renderIf from 'render-if';
 import SignoutIcon from 'material-ui/svg-icons/action/input';
 import { toggleDrawer } from './navigation-actions';
-import { white } from 'material-ui/styles/colors';
 
 
 const style = {
-  paper: {
-    height: 'calc(100vh - 64px)', //The app bar is 64px tall
-    width: '100%', //want all content divs to fill width
-  },
   menuItem: {
-    backgroundColor: white,
+    backgroundColor: 'white',
   },
 };
 
@@ -32,13 +26,12 @@ const PageComponent = ({
   pageTitle,
   styleOverride,
   children,
-  drawerOpen,
+  drawerOpen, 
   page,
   changePageAndToggleDrawer,
   toggleDrawer,
   doSignout,
 }) => {
-  const computedStyle = fromJS(style).mergeDeep(styleOverride).toJS();
   return (
     <div>        
       {renderIf(page !== "login") (
@@ -52,22 +45,22 @@ const PageComponent = ({
         onRequestChange={toggleDrawer}>
         <MenuItem
           onTouchTap={changePageAndToggleDrawer.bind(null, "grocery-list")}
-          style={computedStyle.menuItem}
+          style={style.menuItem}
           leftIcon={<ListIcon />}>Grocery List</MenuItem>
         <MenuItem
           onTouchTap={changePageAndToggleDrawer.bind(null, "settings")}
-          style={computedStyle.menuItem}
+          style={style.menuItem}
           leftIcon={<ListIcon />}>Settings</MenuItem>
         <MenuItem
           onTouchTap={doSignout}
-          style={computedStyle.menuItem}
+          style={style.menuItem}
           leftIcon={<SignoutIcon />}>Signout</MenuItem>
       </Drawer>        
-      <Paper
-        style={computedStyle.paper}
-        zDepth={1}>
+      <div
+        id="page-content-view"
+        style={styleOverride ? styleOverride.pageview : {}}>
         {children}
-      </Paper>
+      </div>
     </div>
   );
 };

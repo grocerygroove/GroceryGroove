@@ -19,7 +19,6 @@ const RouterComponent = ({
     case "grocery-list":
       return <GroceryListComponent />;
     case "settings":
-      console.log("settings change page");
       return <SettingsComponent />;
     default:
       throw new Error("Page Not Found");

@@ -13,13 +13,13 @@ const AppBar = ({
         onClick={onButtonClick}>
         <MenuIcon />
       </button>
-      <span className='text'>{text}</span>
+      <span className='text'>{text || ''}</span>
     </div>
   );
 };
 
 AppBar.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   onButtonClick: PropTypes.func,
 };
 
