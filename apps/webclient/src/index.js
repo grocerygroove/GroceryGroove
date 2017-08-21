@@ -2,7 +2,6 @@ import api from './api/api-client';
 import AppComponent from './components/app';
 import { applyMiddleware } from 'redux';
 import { compose } from 'redux';
-import createLogger from 'redux-logger';
 import { createStore } from 'redux';
 import ggApp from './reducers/gg-app';
 import groceryGrooveTheme from './theme/grocery-groove-theme';
@@ -29,8 +28,7 @@ const isObjectEmpty = (obj) => {
 const enhancedCreateStore = compose(
   applyMiddleware(
     thunk.withExtraArgument({ api, socket: new WebSocket('ws://localhost:17000', { origin: "*"}) }),
-    save(),
-    createLogger()),
+    save()),
   reduxReset()  // Will use 'RESET' as default action.type to trigger reset
 )(createStore);
 
