@@ -1,6 +1,9 @@
 #page-content-view {
-  height: calc(100vh - 64px);
-  width: 100%;
+  height: calc(100vh - 79px);
+  width: calc(100vw - 20px);
   overflow-y: auto;
   background-color: white;
+  padding-top: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 }

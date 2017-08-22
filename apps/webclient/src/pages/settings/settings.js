@@ -1,3 +1,4 @@
+import Chip from '../../components/generic/chip/Chip';
 import { connect } from 'react-redux';
 import { customTheme } from '../../theme/grocery-groove-theme';
 import { getCategories } from './settings-actions';
@@ -20,17 +21,14 @@ const SettingsComponent = ({
 
   return (
     <PageComponent pageTitle="Settings">
-      <List>
-        {categories.map(x => {
-          return (
-            //Material UI global theme doesn't respect listItem themeing
-            //so we apply it inline as a workaround...
-            <ListItem primaryText={x.name} style={customTheme.listItem}/>
-          );
-
-        })
-        }
-      </List>
+      {categories.map(x => {
+        return (
+          //Material UI global theme doesn't respect listItem themeing
+          //so we apply it inline as a workaround...
+          <Chip text={x.name}/>
+        );
+      })
+      }
     </PageComponent>
   );
 };

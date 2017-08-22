@@ -8,6 +8,7 @@
 /* Component Stylesheets */
 @import '../components/generic/appbar/AppBar.css';
 @import '../components/generic/button/Button.css';
+@import '../components/generic/chip/Chip.css';
 @import '../components/generic/modal/Modal.css'; 
 @import '../components/PageComponent.css';
 @import '../components/generic/snackbar/SnackBar.css';
