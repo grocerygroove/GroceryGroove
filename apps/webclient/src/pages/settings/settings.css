@@ -1,4 +1,6 @@
 .panel {
+  width: 45vw;
+  margin-right: 2.5vw;
   padding: 10px;
   border: 1px solid #3E4545;
   border-top: 4px solid #7F52BE;
@@ -8,4 +10,23 @@
   margin-top: 2px;
   margin-bottom: 15px;
   color: #3E4545;
+}
+.panel > .panel-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.panel > .panel-footer > .category-button {
+  display: inline-block;
+}
+
+.panel > .panel-footer > .category-button > span {
+  display: inline;
+  vertical-align: middle;
+}
+
+.panel > .panel-footer > .category-button > svg {
+  display: inline;
+  font-size: 1.5em;
 }

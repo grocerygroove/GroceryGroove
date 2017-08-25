@@ -6,6 +6,7 @@ const Button = ({
   className,
   secondary = false,
   onClick,
+  children,
 }) => {
   let classList = [
     'button',
@@ -16,6 +17,7 @@ const Button = ({
   }
   return (
     <div className={classList.join(' ')}>
+      {children}
       <span>{text}</span>
       <div 
         className="overlay"
