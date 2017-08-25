@@ -21,14 +21,17 @@ const SettingsComponent = ({
 
   return (
     <PageComponent pageTitle="Settings">
-      {categories.map(x => {
-        return (
-          //Material UI global theme doesn't respect listItem themeing
-          //so we apply it inline as a workaround...
-          <Chip text={x.name}/>
-        );
-      })
-      }
+      <div className="panel">
+        <h2 className="panel-heading">Categories</h2>
+        {categories.map(x => {
+          return (
+            //Material UI global theme doesn't respect listItem themeing
+            //so we apply it inline as a workaround...
+            <Chip text={x.name}/>
+          );
+        })
+        }
+      </div>
     </PageComponent>
   );
 };

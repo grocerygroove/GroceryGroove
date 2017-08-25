@@ -4,6 +4,7 @@
 
 /* Page Stylesheets */
 @import '../pages/login/login.css';
+@import '../pages/settings/settings.css';
 
 /* Component Stylesheets */
 @import '../components/generic/appbar/AppBar.css';
