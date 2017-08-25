@@ -7,3 +7,13 @@
   template:
     src=../templates/api.env.j2
     dest={{ api_path }}/.env
+
+- name: install the service file
+  template:
+    src=../templates/api.conf.j2
+    dest=/etc/init/gg_api.conf
+  become: yes
+
+- name: start the api service
+  command: "start gg_api"
+  become: yes
