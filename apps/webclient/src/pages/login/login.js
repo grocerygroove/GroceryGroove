@@ -25,6 +25,7 @@ import VpnKeyIcon from 'react-icons/lib/md/vpn-key';
 const style = {
   pageview: {
     height: '100%',
+    padding: '0px',
     backgroundColor: 'transparent',
     boxShadow: 'transparent',
   },
@@ -73,12 +74,12 @@ const LoginComponent = ({
           </span>
           <span className='buttonSpan'>
             <Button
-              className='loginButton'
+              classNames={['loginButton']}
               text="Login"
               primary={true}
               onClick={onLoginClick.bind(null, loginEmail, loginPassword)}/>
             <Button
-              className='loginButton'
+              classNames={['loginButton']}
               text="Signup"
               secondary
               onClick={toggleSignup} />

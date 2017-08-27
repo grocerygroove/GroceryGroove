@@ -1,4 +1,4 @@
-import Button from '../../components/generic/button/Button';
+import IconButton from '../../components/generic/button/IconButton';
 import Chip from '../../components/generic/chip/Chip';
 import { connect } from 'react-redux';
 import { getCategories } from './settings-actions';
@@ -30,11 +30,11 @@ const SettingsComponent = ({
         })
         }
         <div className="panel-footer">
-          <Button
+          <IconButton
             text="Add Category"
-            className="category-button">
+            classNames={["category-button"]}>
             <MdAdd />
-          </Button>
+          </IconButton>
         </div>
       </div>
     </PageComponent>

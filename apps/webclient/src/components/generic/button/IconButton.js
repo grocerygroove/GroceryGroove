@@ -1,8 +1,8 @@
+import Button from './Button';
 import { PropTypes } from 'react';
 import React from 'react';
-import renderIf from 'render-if';
 
-const Button = ({
+const IconButton = ({
   text,
   classNames,
   secondary = false,
@@ -10,26 +10,22 @@ const Button = ({
   children,
 }) => {
   let classList = [
-    'button',
-    secondary ? 'secondary' : 'primary'
+    'icon-button',
   ];
   if (classNames) {
     classList = [].concat(classList, classNames);
   }
   return (
-    <div className={classList.join(' ')}>
-      {children}
-      {renderIf(text)(
-        <span>{text}</span>
-      )}
-      <div 
-        className="overlay"
-        onClick={onClick}></div>
-    </div>
+    <Button
+      text={text}
+      classNames={classList}
+      secondary={secondary}
+      onClick={onClick}
+      children={children} />
   );
-};
+}
 
-Button.propTypes = {
+IconButton.propTypes = {
   text: PropTypes.string,
   classNames: PropTypes.arrayOf(PropTypes.string),
   secondary: PropTypes.bool,
@@ -37,4 +33,4 @@ Button.propTypes = {
   children: PropTypes.arrayOf(PropTypes.element),
 };
 
-export default Button;
+export default IconButton;

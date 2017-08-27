@@ -14,9 +14,9 @@
 .nav-drawer > .drawer {
   position: fixed;                                                                                                                                                                      
   height: 100%;
-  width: 200px;                                                                                                                                                                          
+  width: 250px;                                                                                                                                                                          
   top: 0px;                                                                                                                                                                             
-  left: -200px;
+  left: -250px;
   background: white;
   z-index: 2;
 
@@ -81,4 +81,15 @@
   -webkit-transition-delay: 0s;
   -o-transition-delay: 0s;
   transition-delay: 0s;
+}
+
+.icon-button.primary.drawer-button {
+  display: block;
+  background: white;
+  border-bottom: 1px solid #3E4545;
+  border-radius: 0px;
+  box-shadow: unset;
+  color: #3E4545;
+  font-size: 1.5em;
+  padding: 14px;
 }

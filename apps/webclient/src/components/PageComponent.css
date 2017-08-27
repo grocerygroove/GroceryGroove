@@ -7,22 +7,3 @@
   padding-top: 15px;
   width: calc(100vw - 20px);
 }
-
-.button.primary.drawer-button {
-  background: white;
-  border-bottom: 1px solid #3E4545;
-  border-radius: 0px;
-  box-shadow: unset;
-  color: #3E4545;
-  font-size: 1.5em;
-  padding: 14px;
-}
-
-.button.primary.drawer-button > span {
-  display: inline;
-  vertical-align: middle;
-}
-
-.button.primary.drawer-button > svg {
-  display: inline;
-}

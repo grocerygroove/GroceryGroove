@@ -1,5 +1,5 @@
 import AppBar from './generic/appbar/AppBar';
-import Button from './generic/button/Button';
+import IconButton from './generic/button/IconButton';
 import { changePageAndToggleDrawer } from './navigation-actions';
 import { changeHash } from '../utils/hash-router';
 import { clear } from "redux-localstorage-simple";
@@ -42,24 +42,24 @@ const PageComponent = ({
       <NavDrawer
         open={drawerOpen}
         onOutClick={toggleDrawer}>
-        <Button
+        <IconButton
           text="Grocery List"
-          className="drawer-button"
+          classNames={["drawer-button"]}
           onClick={changePageAndToggleDrawer.bind(null, "grocery-list")}>
           <MdList />
-        </Button>
-        <Button
+        </IconButton>
+        <IconButton
           text="Settings"
-          className="drawer-button"
+          classNames={["drawer-button"]}
           onClick={changePageAndToggleDrawer.bind(null, "settings")}>
           <MdList />
-        </Button>
-        <Button
+        </IconButton>
+        <IconButton
           text="Signout"
-          className="drawer-button"
+          classNames={["drawer-button"]}
           onClick={doSignout}>
           <SignoutIcon />
-        </Button>
+        </IconButton>
       </NavDrawer>
       <div
         id="page-content-view"

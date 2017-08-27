@@ -35,6 +35,20 @@ div.button {
   supported by Chrome and Opera */  
 }
 
+div.button.icon-button {
+  display: inline-block;
+}
+
+div.button.icon-button > span {
+  display: inline;
+  vertical-align: middle;
+}
+
+div.button.icon-button > svg {
+  display: inline;
+  font-size: 1.5em;
+}
+
 div.button.primary {
   color: white;
   background-color: #7f52be;

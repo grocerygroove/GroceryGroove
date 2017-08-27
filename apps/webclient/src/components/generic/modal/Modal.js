@@ -32,7 +32,7 @@ const Modal = ({
         </div>
         <div className='modalFooter'>
           <Button
-            className='confirmButton'
+            classNames={['confirmButton']}
             text={confirmButtonText}
             onClick={onConfirmClick} />
         </div>
