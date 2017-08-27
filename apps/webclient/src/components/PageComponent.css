@@ -1,9 +1,28 @@
 #page-content-view {
-  height: calc(100vh - 79px);
-  width: calc(100vw - 20px);
-  overflow-y: auto;
   background-color: white;
-  padding-top: 15px;
+  height: calc(100vh - 79px);
+  overflow-y: auto;
   padding-left: 10px;
   padding-right: 10px;
+  padding-top: 15px;
+  width: calc(100vw - 20px);
+}
+
+.button.primary.drawer-button {
+  background: white;
+  border-bottom: 1px solid #3E4545;
+  border-radius: 0px;
+  box-shadow: unset;
+  color: #3E4545;
+  font-size: 1.5em;
+  padding: 14px;
+}
+
+.button.primary.drawer-button > span {
+  display: inline;
+  vertical-align: middle;
+}
+
+.button.primary.drawer-button > svg {
+  display: inline;
 }

@@ -1,0 +1,84 @@
+.nav-drawer {
+  position: fixed;                                                                                                                                                                      
+  display: block;
+  top: 0px;                                                                                                                                                                             
+  left: 0px;                                                                                                                                                                            
+  width: 100%;                                                                                                                                                                          
+  z-index: 2; 
+}
+
+.nav-drawer.open {
+  visibility: visible;
+}
+
+.nav-drawer > .drawer {
+  position: fixed;                                                                                                                                                                      
+  height: 100%;
+  width: 200px;                                                                                                                                                                          
+  top: 0px;                                                                                                                                                                             
+  left: -200px;
+  background: white;
+  z-index: 2;
+
+  /* TRANSITION */                                                                                                                                                                      
+  /* Firefox */                                                                                                                                                                         
+  -moz-transition-property: left;                                                                                                                                                        
+  -moz-transition-duration: 0.50s;                                                                                                                                                      
+  -moz-transition-delay: 0.1s;                                                                                                                                                            
+  /* WebKit */                                                                                                                                                                          
+  -webkit-transition-property: left;                                                                                                                                                     
+  -webkit-transition-duration: 0.50s;                                                                                                                                                   
+  -webkit-transition-delay: 0.1s;                                                                                                                                                         
+  /* Opera */                                                                                                                                                                           
+  -o-transition-property: left;                                                                                                                                                          
+  -o-transition-duration: 0.50s;                                                                                                                                                        
+  -o-transition-delay: 0.1s;                                                                                                                                                              
+  /* Standard */                                                                                                                                                                        
+  transition-property: left;                                                                                                                                                             
+  transition-duration: 0.50s;                                                                                                                                                           
+  transition-delay: 0.1s;   
+}
+
+.nav-drawer.open > .drawer {
+  left: 0px;
+}
+
+.nav-drawer > .fill {
+  display: block; 
+  visibility: hidden;
+  position: fixed;                                                                                                                                                                      
+  height: 100%;                                                                                                                                                                         
+  width: 100%;                                                                                                                                                                          
+  top: 0px;                                                                                                                                                                             
+  left: 0px;                                                                                                                                                                            
+  opacity: 1;                                                                                                                                                                           
+  background-color: rgba(0, 0, 0, 0.54);                                                                                                                                                
+  z-index: 1;                                                                                                                                                                           
+  margin: 0 auto; 
+
+  /* TRANSITION */                                                                                                                                                                      
+  /* Firefox */                                                                                                                                                                         
+  -moz-transition-property: visibility;                                                                                                                                                        
+  -moz-transition-duration: 0s;        
+  -moz-transition-delay: 0.5s;
+  /* WebKit */                                                                                                                                                                          
+  -webkit-transition-property: visibility;                                                                                                                                                     
+  -webkit-transition-duration: 0s;                                                                                                                                                         
+  -webkit-transition-delay: 0.5s;
+  /* Opera */                                                                                                                                                                           
+  -o-transition-property: visibility;                                                                                                                                                          
+  -o-transition-duration: 0s;                                                                                                                                                              
+  -o-transition-delay: 0.5s;
+  /* Standard */                                                                                                                                                                        
+  transition-property: visibility;                                                                                                                                                             
+  transition-duration: 0s;
+  transition-delay: 0.5s;
+}
+
+.nav-drawer.open > .fill {
+  visibility: visible;
+  -moz-transition-delay: 0s;
+  -webkit-transition-delay: 0s;
+  -o-transition-delay: 0s;
+  transition-delay: 0s;
+}

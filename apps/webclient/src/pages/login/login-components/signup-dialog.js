@@ -1,9 +1,6 @@
 import { connect } from 'react-redux';
 import { clearSignupErrorIfExists } from '../signup-actions';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
 import { INVALID_EMAIL_ERROR } from '../../../components/generic-errors';
-import { lightBlue700 } from 'material-ui/styles/colors';
 import Modal from '../../../components/generic/modal/Modal';
 import { PASSWORDS_DONT_MATCH_ERROR } from '../../../components/generic-errors';
 import { PropTypes } from 'react';

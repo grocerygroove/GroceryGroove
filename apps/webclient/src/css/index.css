@@ -2,15 +2,16 @@
 @import 'normalize.css';
 @import './app.css';
 
-/* Page Stylesheets */
-@import '../pages/login/login.css';
-@import '../pages/settings/settings.css';
-
 /* Component Stylesheets */
 @import '../components/generic/appbar/AppBar.css';
 @import '../components/generic/button/Button.css';
 @import '../components/generic/chip/Chip.css';
+@import '../components/generic/navdrawer/NavDrawer.css'; 
 @import '../components/generic/modal/Modal.css'; 
 @import '../components/PageComponent.css';
 @import '../components/generic/snackbar/SnackBar.css';
 @import '../components/generic/textbox/TextBox.css';
+
+/* Page Stylesheets */
+@import '../pages/login/login.css';
+@import '../pages/settings/settings.css';

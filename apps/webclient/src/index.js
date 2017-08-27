@@ -4,12 +4,8 @@ import { applyMiddleware } from 'redux';
 import { compose } from 'redux';
 import { createStore } from 'redux';
 import ggApp from './reducers/gg-app';
-import groceryGrooveTheme from './theme/grocery-groove-theme';
-import { lightBlue700 } from 'material-ui/styles/colors';
 import { load } from 'redux-localstorage-simple';
 import initalState from './initial-state';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Provider } from 'react-redux';
 import { save } from 'redux-localstorage-simple';
 import React from 'react';
@@ -17,8 +13,6 @@ import ReactDOM from 'react-dom';
 import reduxReset from 'redux-reset';
 import thunk from 'redux-thunk';
 import WebSocket from 'ws';
-
-injectTapEventPlugin();
 
 const isObjectEmpty = (obj) => {
   return Object.keys(obj).length === 0 && obj.constructor === Object;
@@ -42,9 +36,7 @@ const store = enhancedCreateStore(
 const App = () => {
   return (
     <Provider store={store}>
-      <MuiThemeProvider muiTheme={groceryGrooveTheme}>
-        <AppComponent /> 
-      </MuiThemeProvider>
+      <AppComponent /> 
     </Provider>
   );
 };

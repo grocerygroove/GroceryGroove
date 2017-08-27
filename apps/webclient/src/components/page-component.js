@@ -1,18 +1,18 @@
 import AppBar from './generic/appbar/AppBar';
+import Button from './generic/button/Button';
 import { changePageAndToggleDrawer } from './navigation-actions';
 import { changeHash } from '../utils/hash-router';
 import { clear } from "redux-localstorage-simple";
 import { connect } from 'react-redux';
-import Drawer from 'material-ui/Drawer';
 import { fromJS } from 'immutable';
-import ListIcon from 'material-ui/svg-icons/action/list';
 import initalState from '../initial-state';
-import MenuItem from 'material-ui/MenuItem';
+import NavDrawer from './generic/navdrawer/NavDrawer';
+import MdList from 'react-icons/lib/md/list';
 import mergeDeep from 'immutable';
 import { PropTypes } from 'react';
 import React from 'react'; 
 import renderIf from 'render-if';
-import SignoutIcon from 'material-ui/svg-icons/action/input';
+import SignoutIcon from 'react-icons/lib/md/input';
 import { toggleDrawer } from './navigation-actions';
 
 
@@ -39,23 +39,28 @@ const PageComponent = ({
           text={pageTitle}
           onButtonClick={toggleDrawer}/>
       )}
-      <Drawer
+      <NavDrawer
         open={drawerOpen}
-        docked={false}
-        onRequestChange={toggleDrawer}>
-        <MenuItem
-          onTouchTap={changePageAndToggleDrawer.bind(null, "grocery-list")}
-          style={style.menuItem}
-          leftIcon={<ListIcon />}>Grocery List</MenuItem>
-        <MenuItem
-          onTouchTap={changePageAndToggleDrawer.bind(null, "settings")}
-          style={style.menuItem}
-          leftIcon={<ListIcon />}>Settings</MenuItem>
-        <MenuItem
-          onTouchTap={doSignout}
-          style={style.menuItem}
-          leftIcon={<SignoutIcon />}>Signout</MenuItem>
-      </Drawer>        
+        onOutClick={toggleDrawer}>
+        <Button
+          text="Grocery List"
+          className="drawer-button"
+          onClick={changePageAndToggleDrawer.bind(null, "grocery-list")}>
+          <MdList />
+        </Button>
+        <Button
+          text="Settings"
+          className="drawer-button"
+          onClick={changePageAndToggleDrawer.bind(null, "settings")}>
+          <MdList />
+        </Button>
+        <Button
+          text="Signout"
+          className="drawer-button"
+          onClick={doSignout}>
+          <SignoutIcon />
+        </Button>
+      </NavDrawer>
       <div
         id="page-content-view"
         style={styleOverride ? styleOverride.pageview : {}}>

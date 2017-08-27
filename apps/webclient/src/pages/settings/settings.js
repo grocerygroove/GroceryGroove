@@ -1,15 +1,11 @@
 import Button from '../../components/generic/button/Button';
 import Chip from '../../components/generic/chip/Chip';
 import { connect } from 'react-redux';
-import { customTheme } from '../../theme/grocery-groove-theme';
 import { getCategories } from './settings-actions';
-import { List } from 'material-ui/List';
-import { ListItem } from 'material-ui/List';
 import MdAdd from 'react-icons/lib/md/add';
 import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';
 import React from 'react';
-import { white } from 'material-ui/styles/colors';
 
 const SettingsComponent = ({
   categories,
