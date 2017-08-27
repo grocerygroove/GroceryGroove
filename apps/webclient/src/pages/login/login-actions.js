@@ -17,78 +17,78 @@ export const CLEAR_LOGIN_ERROR_IF_EXISTS = 'CLEAR_LOGIN_ERROR_IF_EXISTS';
 
 
 export function toggleSnackbar() {
-    return {
-        type: TOGGLE_SNACKBAR,
-    };
+  return {
+    type: TOGGLE_SNACKBAR,
+  };
 }
 
 export function loginByEmail(email, password) {
-    return (dispatch, getState, { api }) => {
-        dispatch(loginByEmailPending());
-        return api().then(client => {
-            return client.login.post_login_by_email({
-                "bodyparam-login-by-emailpost": {
-                    email,
-                    password,
-                },
-            });
-        }).then(
-            response => {
-                const token = (JSON.parse(response.data)).token;
-                dispatch(loginByEmailFulfilled(token));                
-                dispatch(getHouseholds(token));
-                changeHash('grocery-list');
-            },
-            error => {
-                const statusText = JSON.parse(error.statusText);
-                const returnValue = (statusText && statusText.message) ? statusText.message : void(0);
-                dispatch(loginByEmailRejected(returnValue));
-                throw error;
-            }
-        );
-    };
+  return (dispatch, getState, { api }) => {
+    dispatch(loginByEmailPending());
+    return api().then(client => {
+      return client.login.post_login_by_email({
+        "bodyparam-login-by-emailpost": {
+          email,
+          password,
+        },
+      });
+    }).then(
+      response => {
+        const token = (JSON.parse(response.data)).token;
+        dispatch(loginByEmailFulfilled(token));                
+        dispatch(getHouseholds(token));
+        changeHash('grocery-list');
+      },
+      error => {
+        const statusText = JSON.parse(error.statusText);
+        const returnValue = (statusText && statusText.message) ? statusText.message : void(0);
+        dispatch(loginByEmailRejected(returnValue));
+        throw error;
+      }
+    );
+  };
 }
 
 export function loginByEmailPending() {
-    return {
-        type: LOGIN_BY_EMAIL_PENDING,
-    };
+  return {
+    type: LOGIN_BY_EMAIL_PENDING,
+  };
 }
 
 export function loginByEmailRejected(message) {
-    return {
-        type: LOGIN_BY_EMAIL_REJECTED,
-        payload: message,
-    };
+  return {
+    type: LOGIN_BY_EMAIL_REJECTED,
+    payload: message,
+  };
 }
 
 export function loginByEmailFulfilled(token) {
-    return {
-        type: LOGIN_BY_EMAIL_FULFILLED,
-        payload: token,
-    };
+  return {
+    type: LOGIN_BY_EMAIL_FULFILLED,
+    payload: token,
+  };
 }
 
 export function loginCredentialChange(credentialType, newValue) {
-    return {
-        type: LOGIN_CREDENTIAL_CHANGE,
-        payload: {
-            type: credentialType,
-            newValue,
-        },
-    };
+  return {
+    type: LOGIN_CREDENTIAL_CHANGE,
+    payload: {
+      type: credentialType,
+      newValue,
+    },
+  };
 }
 
 export function loginValidationError(errorName) {
-    return {
-        type: LOGIN_VALIDATION_ERROR,
-        payload: errorName,
-    };
+  return {
+    type: LOGIN_VALIDATION_ERROR,
+    payload: errorName,
+  };
 }
 
 export function clearLoginErrorIfExists(errorName) {
-    return {
-        type: CLEAR_LOGIN_ERROR_IF_EXISTS,
-        payload: errorName,
-    };
+  return {
+    type: CLEAR_LOGIN_ERROR_IF_EXISTS,
+    payload: errorName,
+  };
 }

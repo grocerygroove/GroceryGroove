@@ -5,12 +5,10 @@ import React from 'react';
 
 
 const GroceryListComponent = () => {    
-    return (
-<PageComponent pageTitle="Grocery List">
-  
-</PageComponent>
-
-    );
+  return (
+    <PageComponent pageTitle="Grocery List">
+    </PageComponent>
+  );
 };
 
 export default GroceryListComponent;
