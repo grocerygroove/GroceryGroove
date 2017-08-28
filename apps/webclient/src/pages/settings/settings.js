@@ -1,7 +1,7 @@
-import IconButton from '../../components/generic/button/IconButton';
 import Chip from '../../components/generic/chip/Chip';
 import { connect } from 'react-redux';
 import { getCategories } from './settings-actions';
+import IconButton from '../../components/generic/button/IconButton';
 import MdAdd from 'react-icons/lib/md/add';
 import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';

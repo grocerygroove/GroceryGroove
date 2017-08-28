@@ -3,8 +3,8 @@ import GroceryListComponent from '../pages/grocery-list/grocery-list';
 import { listenForHashChange } from '../utils/hash-router';
 import LoginComponent from '../pages/login/login';
 import { PropTypes } from 'react';
-import SettingsComponent from '../pages/settings/settings';
 import React from 'react';
+import SettingsComponent from '../pages/settings/settings';
 
 const RouterComponent = ({
   page,

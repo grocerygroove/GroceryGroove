@@ -1,4 +1,5 @@
 import { hashChange } from '../components/navigation-actions';
+
 let currentHash = null;
 
 const getCurrent = function () {

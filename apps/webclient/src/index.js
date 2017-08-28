@@ -4,13 +4,13 @@ import { applyMiddleware } from 'redux';
 import { compose } from 'redux';
 import { createStore } from 'redux';
 import ggApp from './reducers/gg-app';
-import { load } from 'redux-localstorage-simple';
 import initalState from './initial-state';
+import { load } from 'redux-localstorage-simple';
 import { Provider } from 'react-redux';
-import { save } from 'redux-localstorage-simple';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reduxReset from 'redux-reset';
+import { save } from 'redux-localstorage-simple';
 import thunk from 'redux-thunk';
 import WebSocket from 'ws';
 

@@ -1,5 +1,5 @@
-import routes from '../routes';
 import { changeHash } from '../utils/hash-router';
+import routes from '../routes';
 
 export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
