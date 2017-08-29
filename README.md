@@ -14,9 +14,7 @@ Within the VM, the api is located within:
 
     /opt/gg/apps/api
 
-The api can be started by:
-
-    cd /opt/gg/apps/api && npm start
+The api is automatically started on vm spinup.
 
 Once the VM is spun up, the API can be reached at http://localhost:18080 on your local machine (vagrant forwards the internal API port 8080 to your local port offset by 10000)
 
