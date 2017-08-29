@@ -43,6 +43,35 @@
   top: 95vh;
 }
 
+.snackbar-wrapper {
+  visibility: hidden;
+  /* TRANSITION */                                                                                                                                                                      
+  /* Firefox */                                                                                                                                                                         
+  -moz-transition-property: visibility;                                                                                                                                                        
+  -moz-transition-duration: 0s;        
+  -moz-transition-delay: 0.75s;
+  /* WebKit */                                                                                                                                                                          
+  -webkit-transition-property: visibility;                                                                                                                                                     
+  -webkit-transition-duration: 0s;                                                                                                                                                         
+  -webkit-transition-delay: 0.75s;
+  /* Opera */                                                                                                                                                                           
+  -o-transition-property: visibility;                                                                                                                                                          
+  -o-transition-duration: 0s;                                                                                                                                                              
+  -o-transition-delay: 0.75s;
+  /* Standard */                                                                                                                                                                        
+  transition-property: visibility;                                                                                                                                                             
+  transition-duration: 0s;
+  transition-delay: 0.75s;
+}
+
+.snackbar-wrapper.show {
+  visibility: visible;
+  -moz-transition-delay: 0s;
+  -webkit-transition-delay: 0s;
+  -o-transition-delay: 0s;
+  transition-delay: 0s;
+}
+
 .snackbar > .text {
   display: flex;
   justify-content: center;

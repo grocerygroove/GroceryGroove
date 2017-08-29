@@ -17,11 +17,7 @@ class SnackBar extends React.PureComponent {
     }
   }
 
-  componentWillUnmount() {
-    clearTimeout(this.timeoutHandle);  
-    this.props.onRequestClose();
-  }
-
+  componentWillUnmount() { clearTimeout(this.timeoutHandle);  this.props.onRequestClose(); } 
   render() {
     let classList = [
       'snackbar',
@@ -31,8 +27,10 @@ class SnackBar extends React.PureComponent {
     }
 
     return (
-      <div className={classList.join(' ')}>
-        <span className='text'>{this.props.text}</span>
+      <div className={`snackbar-wrapper ${this.props.show ? "show":""}`}>
+        <div className={classList.join(' ')}>
+          <span className='text'>{this.props.text}</span>
+        </div>
       </div>
     );
   } 
