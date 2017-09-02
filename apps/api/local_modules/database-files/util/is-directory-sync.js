@@ -2,6 +2,6 @@
 
 const statSync = require("fs").statSync;
 
-module.exports = function isDirectory (path) {
+module.exports = function isDirectorySync (path) {
     return statSync(path).isDirectory();
 };

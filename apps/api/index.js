@@ -2,7 +2,7 @@ require('dotenv').load();
 global.Promise = require("bluebird");
 
 const bunyan = require("bunyan");
-const createDatabaseConnection = require("database-connection");
+const createDatabaseConnection = require("./src/db/create-connection");
 const createJwtAuthMw = require("./src/middleware/create-jwt-auth");
 const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");

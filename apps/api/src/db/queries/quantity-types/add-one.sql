@@ -4,7 +4,10 @@
             23505: require("../../../errors/duplicate-name-error"),
         },
     },
-    namedParameters: true,
+
+    namedParameters: {
+        enable: true,
+    },
 }
 INSERT INTO quantity_types (household_id, singular_name, plural_name, singular_abbreviation, plural_abbreviation)
-VALUES (:householdId:, :singularName:, :pluralName:, :singularAbbreviation:, :pluralAbbreviation:)
+VALUES (:householdId, :singularName, :pluralName, :singularAbbreviation, :pluralAbbreviation)
