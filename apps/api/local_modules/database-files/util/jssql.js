@@ -53,13 +53,13 @@ module.exports = {
                 throw new Error("Error parsing jssql file");
             }
             return {
-                js: types[type].jsRequire(pathname, strings.js),
+                attributes: types[type].jsRequire(pathname, strings.js),
                 sql: strings.sql,
             };
 
         } else {
             return {
-                js: {},
+                attributes: {},
                 sql: contents,
             };
         }

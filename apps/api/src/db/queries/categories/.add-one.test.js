@@ -1,93 +1,95 @@
 require('dotenv').load();
 global.Promise = require("bluebird");
-const a = require("../../../utils/asyncify");
-const makeDatabaseReal = require("database-connection");
 const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
 const queries = require("../../queries");
 const DuplicateNameError = require("../../../errors/duplicate-name-error");
-
-const makeDatabase = makeDatabaseReal.bind(null, {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    name: process.env.TEST_DB_NAME,
-    port: process.env.DB_PORT,
-    host: process.env.DB_HOST,
-});
-
+const Pool = require('pg').Pool;
 const tap = require("tap");
 
 tap.test("db/queries/categories/add-one", tap => {
-    const logger = {
-        info: () => {},
-        child: () => { return logger; },
+  const logger = {
+    info: () => {},
+    child: () => { return logger; },
+  };
+
+  tap.test("clean insert", (async function (tap) {
+    await resetTestingDb();
+
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+
+    const testCategory = {
+      "category_id": 12,
+      "household_id": defaultTestUser.primary_household_id,
+      "name": "testcategory",
+      "created_by_id": defaultTestUser.user_id,
     };
 
-    tap.test("clean insert", a(function* (tap) {
-        yield resetTestingDb();
+    //Add a category
+    await queries.categories.addOne(db, logger, {
+      householdId: testCategory.household_id,
+      createdById: testCategory.created_by_id,
+      name: testCategory.name,
+    });
 
-        const db = makeDatabase();
-
-        const testCategory = {
-            "category_id": 12,
-            "household_id": defaultTestUser.primary_household_id,
-            "name": "testcategory",
-            "created_by_id": defaultTestUser.user_id,
-        };
-
-        //Add a category
-        yield queries.categories.addOne(db, logger, {
-            householdId: testCategory.household_id,
-            createdById: testCategory.created_by_id,
-            name: testCategory.name,
-        });
-
-        const rows = (yield db.query(logger, `
+    const rows = await db.query(logger, `
             SELECT *
             FROM categories
-            WHERE name = '${testCategory.name}'
-        `)).asPlainObjects();
+            WHERE name = '${testCategory.name}'`);
 
-        const actual = rows[0];
-        const expected = testCategory;
-        tap.strictSame(actual, expected, "Add a category");
+    const actual = rows[0];
+    const expected = testCategory;
+    tap.strictSame(actual, expected, "Add a category");
 
-        yield db.end();
+    await db.end();
 
-    }));
+  }));
 
-    tap.test("duplicate insert", a(function* (tap) {
-        yield resetTestingDb();
+  tap.test("duplicate insert", (async function (tap) {
+    await resetTestingDb();
 
-        const db = makeDatabase();
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
 
-        const testCategory = {
-            "category_id": 12,
-            "household_id": null,
-            "name": "testcategory",
-            "created_by_id": null,
-        };
+    const testCategory = {
+      "category_id": 12,
+      "household_id": null,
+      "name": "testcategory",
+      "created_by_id": null,
+    };
 
-        //Add a category, first insert should be good
-        yield queries.categories.addOne(db, logger, {
-            householdId: testCategory.household_id,
-            createdById: testCategory.created_by_id,
-            name: testCategory.name,
-        });
+    //Add a category, first insert should be good
+    await queries.categories.addOne(db, logger, {
+      householdId: testCategory.household_id,
+      createdById: testCategory.created_by_id,
+      name: testCategory.name,
+    });
 
-        //Second should throw a DuplicateNameError
-        try {
-            yield queries.categories.addOne(db, logger, {
-                householdId: testCategory.household_id,
-                createdById: testCategory.created_by_id,
-                name: testCategory.name,
-            });
-        } catch (e) {
-            tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
-        }
+    //Second should throw a DuplicateNameError
+    try {
+      await queries.categories.addOne(db, logger, {
+        householdId: testCategory.household_id,
+        createdById: testCategory.created_by_id,
+        name: testCategory.name,
+      });
+    } catch (e) {
+      console.log(JSON.stringify(e,null,2))
+      tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
+    }
 
-        yield db.end();
-    }));
+    await db.end();
+  }));
 
-    tap.end();
+  tap.end();
 });

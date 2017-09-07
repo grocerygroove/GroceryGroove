@@ -8,6 +8,7 @@ const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");
 const createMessageService = require("./src/server/services/create-message-service");
 const createCacherService = require("./src/server/services/create-cacher-service");
+const Pool = require('pg').Pool;
 const redis = require("redis");
 Promise.promisifyAll(redis.RedisClient.prototype);
 Promise.promisifyAll(redis.Multi.prototype);
@@ -44,7 +45,7 @@ const openHttpPort = (function () {
     const services = {
         cacher: createCacherService(redisClient),
 
-        db: createDatabaseConnection({
+        db: new Pool({
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             name: process.env.DB_NAME,

@@ -1,4 +1,4 @@
-const createRegex = () => /:(.+)\b/g;
+const createRegex = () => /:(\w+)\b/g;
 
 const extractParameterNames = (sql => {
   const regex = createRegex();
@@ -19,7 +19,7 @@ const extractParameterNames = (sql => {
   return retval;
 });
 
-const convertSql = ((names, sql) => mappings.reduce(
+const convertSql = ((names, sql) => names.reduce(
   (sql, name, index) => sql.replace(new RegExp(`:${ name }\\b`, 'g'), `$${ index + 1 }`),
   sql
 ));
@@ -40,7 +40,6 @@ module.exports = ((opts) => {
   const cache = {};
 
   return function namedParameters (queryArgs) {
-    console.log(JSON.stringify(queryArgs.attributes));
     if (!cache[queryArgs.pathname]) {
       if (queryArgs.attributes
         && queryArgs.attributes.namedParameters 

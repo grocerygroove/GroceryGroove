@@ -1,9 +1,10 @@
 {
-    errorHandling: {
-        states: {
-            23505: require("../../../errors/duplicate-name-error"),
-        },
-    },
+  errorStateToExceptionMap: {
+    23505: require("../../../errors/duplicate-name-error"),
+  },
+  namedParameters: {
+    enable: true,
+  },
 }
 WITH
     my_household AS (

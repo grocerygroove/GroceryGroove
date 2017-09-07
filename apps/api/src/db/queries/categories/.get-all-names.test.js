@@ -1,122 +1,126 @@
 require('dotenv').load();
 global.Promise = require("bluebird");
-const a = require("../../../utils/asyncify");
-const makeDatabaseReal = require("database-connection");
 const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
+const Pool = require('pg').Pool;
 const secondaryTestUser = require("../../../utils/secondary-test-user");
 const queries = require("../../queries");
-
-const makeDatabase = makeDatabaseReal.bind(null, {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    name: process.env.TEST_DB_NAME,
-    port: process.env.DB_PORT,
-    host: process.env.DB_HOST,
-});
 
 const tap = require("tap");
 
 tap.test("db/queries/categories/get-all-names", tap => {
-    const logger = {
-        info: () => {},
-        child: () => { return logger; },
-    };
+  const logger = {
+    info: () => {},
+    child: () => { return logger; },
+  };
 
-    const sortByName = (a, b) => {
-        if (a.name > b.name) {
-            return 1;
-        } else if (a.name < b.name) {
-            return -1;
-        }
-        return 0;
-    };
-    const defaultCategories = [
-        {
-            "name": "Beverages",
-        },
-        {
-            "name": "Bread/Bakery",
-        },
-        {
-            "name": "Canned Goods",
-        },
-        {
-            "name": "Dairy",
-        },
-        {
-            "name": "Baking Goods",
-        },
-        {
-            "name": "Frozen Foods",
-        },
-        {
-            "name": "Meat",
-        },
-        {
-            "name": "Produce",
-        },
-        {
-            "name": "Home Goods",
-        },
-        {
-            "name": "Personal Care",
-        },
-        {
-            "name": "Other",
-        },
-    ].sort(sortByName);
+  const sortByName = (a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    } else if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
+  };
+  const defaultCategories = [
+    {
+      "name": "Beverages",
+    },
+    {
+      "name": "Bread/Bakery",
+    },
+    {
+      "name": "Canned Goods",
+    },
+    {
+      "name": "Dairy",
+    },
+    {
+      "name": "Baking Goods",
+    },
+    {
+      "name": "Frozen Foods",
+    },
+    {
+      "name": "Meat",
+    },
+    {
+      "name": "Produce",
+    },
+    {
+      "name": "Home Goods",
+    },
+    {
+      "name": "Personal Care",
+    },
+    {
+      "name": "Other",
+    },
+  ].sort(sortByName);
 
 
-    tap.test("get-all-names default", a(function* (tap) {
-        yield resetTestingDb();
+  tap.test("get-all-names default", (async function (tap) {
+    await resetTestingDb();
 
-        const db = makeDatabase();
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
 
-        const queriedRows = (yield queries.categories.getAllNames(db, logger, {
-            householdId: 1,
-        })).asPlainObjects();
-
-        tap.strictSame(queriedRows, defaultCategories);
-
-        yield db.end();
+    const actual = (await queries.categories.getAllNames(db, logger, {
+      householdId: 1,
     }));
 
-    tap.test("add one then get-all-names", a(function* (tap) {
-        yield resetTestingDb();
+    const expected = defaultCategories;
+    tap.same(actual, expected);
 
-        const db = makeDatabase();
-        const testCategoryName = "test category";
-        yield queries.categories.addOne(db, logger, {
-            householdId: defaultTestUser.primary_household_id,
-            createdById: defaultTestUser.user_id,
-            name: testCategoryName,
-        });
+    await db.end();
+  }));
 
-        //Add a second category from a different householdId
-        yield queries.categories.addOne(db, logger, {
-            householdId: secondaryTestUser.primary_household_id,
-            createdById: secondaryTestUser.user_id,
-            name: "Test Category #2",
-        });
+  tap.test("add one then get-all-names", (async function (tap) {
+    await resetTestingDb();
 
-        //Second added category shouldn't be in here
-        let expected;
-        expected = defaultCategories.slice();
-        expected.push({
-            "name": testCategoryName,
-        });
-        expected = expected.sort(sortByName);
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+    const testCategoryName = "test category";
+    await queries.categories.addOne(db, logger, {
+      householdId: defaultTestUser.primary_household_id,
+      createdById: defaultTestUser.user_id,
+      name: testCategoryName,
+    });
 
-        const queriedRows = (yield queries.categories.getAllNames(db, logger, {
-            householdId: defaultTestUser.primary_household_id,
-        })).asPlainObjects();
+    //Add a second category from a different householdId
+    await queries.categories.addOne(db, logger, {
+      householdId: secondaryTestUser.primary_household_id,
+      createdById: secondaryTestUser.user_id,
+      name: "Test Category #2",
+    });
 
-        tap.strictSame(queriedRows, expected);
+    //Second added category shouldn't be in here
+    let expected;
+    expected = defaultCategories.slice();
+    expected.push({
+      "name": testCategoryName,
+    });
+    expected = expected.sort(sortByName);
 
-        yield db.end();
+    const actual = (await queries.categories.getAllNames(db, logger, {
+      householdId: defaultTestUser.primary_household_id,
     }));
 
+    tap.same(actual, expected);
 
-    tap.end();
+    await db.end();
+  }));
+
+
+  tap.end();
 });
