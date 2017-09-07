@@ -2,7 +2,6 @@ require('dotenv').load();
 global.Promise = require("bluebird");
 
 const bunyan = require("bunyan");
-const createDatabaseConnection = require("./src/db/create-connection");
 const createJwtAuthMw = require("./src/middleware/create-jwt-auth");
 const createJwtService = require("./src/http/jwt/create-service");
 const createServerCallback = require("./src/server/create-callback");
@@ -48,7 +47,7 @@ const openHttpPort = (function () {
         db: new Pool({
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
-            name: process.env.DB_NAME,
+            database: process.env.DB_NAME,
             port: process.env.DB_PORT,
             host: process.env.DB_HOST,
         }),
