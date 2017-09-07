@@ -20,7 +20,7 @@ const types = {
 
 const determineType = function determineType (contents) {
     for (const type of Object.keys(types)) {
-        const startingDelimeter = types[type];
+        const startingDelimeter = types[type].jsStart;
 
         if (contents.startsWith(startingDelimeter)) {
             return type;
@@ -42,7 +42,7 @@ module.exports = {
             for (let i = 0, l = lines.length; i < l; i++) {
                 const line = lines[i];
 
-                if (line === types[type].sqlStart) {
+                if (line.trim() === types[type].sqlStart) {
                     strings.js  = lines.slice(0, (i + 1)).join("\n");
                     strings.sql = lines.slice((i + 1)).join("\n");
                     break;
@@ -52,7 +52,6 @@ module.exports = {
             if (strings.js === null || strings.sql === null) {
                 throw new Error("Error parsing jssql file");
             }
-
             return {
                 js: types[type].jsRequire(pathname, strings.js),
                 sql: strings.sql,
