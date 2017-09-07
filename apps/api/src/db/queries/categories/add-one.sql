@@ -1,6 +1,6 @@
 {
     errorStateToExceptionMap: {
-        23505: require("../../../errors/duplicate-name-error"),
+        "23505": require("../../../errors/duplicate-name-error"),
     },
 
     namedParameters: {

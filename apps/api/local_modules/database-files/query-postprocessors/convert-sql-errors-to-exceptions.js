@@ -1,5 +1,5 @@
 module.exports = () => function convertSqlErrorsToExceptions (queryArgs) {
-    if (!queryArgs.attributes.errorExceptionMapping) {
+    if (!queryArgs.attributes.errorStateToExceptionMap) {
         return queryArgs;
     }
 

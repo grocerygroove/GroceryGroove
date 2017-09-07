@@ -38,14 +38,17 @@ tap.test("db/queries/categories/add-one", tap => {
       name: testCategory.name,
     });
 
-    const rows = await db.query(logger, `
+    const rows = (await db.query({
+      name: "adhoc-query",
+      text: `
             SELECT *
             FROM categories
-            WHERE name = '${testCategory.name}'`);
+            WHERE name = '${testCategory.name}'`
+    })).rows;
 
     const actual = rows[0];
     const expected = testCategory;
-    tap.strictSame(actual, expected, "Add a category");
+    tap.same(actual, expected, "Add a category");
 
     await db.end();
 
@@ -84,7 +87,6 @@ tap.test("db/queries/categories/add-one", tap => {
         name: testCategory.name,
       });
     } catch (e) {
-      console.log(JSON.stringify(e,null,2))
       tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
     }
 
