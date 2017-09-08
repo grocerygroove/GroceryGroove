@@ -1,7 +1,7 @@
 {
     returns: "row",
     namedParameters: {
-        enable: true,
+        enabled: true,
     },
 }
 

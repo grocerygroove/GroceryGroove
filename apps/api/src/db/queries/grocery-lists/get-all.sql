@@ -1,7 +1,9 @@
 {
     namedParameters: {
-        enable: true,
+        enabled: true,
     },
+
+    returns: "rows",
 }
 
 WITH

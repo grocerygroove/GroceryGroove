@@ -1,92 +1,86 @@
 require('dotenv').load();
 global.Promise = require("bluebird");
-const a = require("../../../utils/asyncify");
-const makeDatabaseReal = require("database-connection");
-const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
-const queries = require("../../queries");
 const DuplicateNameError = require("../../../errors/duplicate-name-error");
-
-const makeDatabase = makeDatabaseReal.bind(null, {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    name: process.env.TEST_DB_NAME,
-    port: process.env.DB_PORT,
-    host: process.env.DB_HOST,
-});
-
+const Pool = require('pg').Pool;
+const queries = require("../../queries");
+const resetTestingDb = require("../../../utils/reset-testing-database");
 const tap = require("tap");
 
 tap.test("db/queries/grocery-lists/add-one", tap => {
-    const logger = {
-        info: () => {},
-        child: () => { return logger; },
-    };
+  const logger = {
+    info: () => {},
+    child: () => { return logger; },
+  };
 
-    tap.test("clean insert", a(function* (tap) {
-        yield a(function* () {
-            yield resetTestingDb();
+  tap.test("clean insert", (async function (tap) {
+    await resetTestingDb();
 
-            const db = makeDatabase();
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
 
-            const testGroceryListName = "Test List";
+    const testGroceryListName = "Test List";
 
-            yield queries.groceryLists.addOne(db, logger, {
-                userId: defaultTestUser.user_id,
-                groceryListName: testGroceryListName,
-                householdId: defaultTestUser.primary_household_id,
-            });
+    await queries.groceryLists.addOne(db, logger, {
+      userId: defaultTestUser.user_id,
+      groceryListName: testGroceryListName,
+      householdId: defaultTestUser.primary_household_id,
+    });
 
-            const rows = (yield db.query(logger, `
-                SELECT COUNT(*) AS count
-                FROM grocery_lists
-                WHERE name = '${testGroceryListName}'
-                    AND household_id = '${defaultTestUser.primary_household_id}'
-                    AND created_by_id = '${defaultTestUser.user_id}'
-            `)).asPlainObjects();
+    const rows = (await db.query({
+      text:` select count(*) as count
+             from grocery_lists
+             where name = '${testGroceryListName}'
+              and household_id = '${defaultTestUser.primary_household_id}'
+              and created_by_id = '${defaultTestUser.user_id}'`,
+    })).rows;
 
-            const actual = parseInt(rows[0].count, 10);
-            const expected = 1;
+    const actual = parseInt(rows[0].count, 10);
+    const expected = 1;
 
-            tap.strictEquals(actual, expected);
+    tap.strictEquals(actual, expected);
 
-            yield db.end();
-        })();
+    await db.end();
+  }));
 
-    }));
+  tap.test("duplicate insert throws DuplicateNameError", (async function (tap) {
+    await resetTestingDb();
 
-    tap.test("duplicate insert throws DuplicateNameError", a(function* (tap) {
-        yield a(function* () {
-            yield resetTestingDb();
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
 
-            const db = makeDatabase();
+    const testGroceryListName = "Test List";
 
-            const testGroceryListName = "Test List";
+    //Add grocery list, first insert should be good
+    await queries.groceryLists.addOne(db, logger, {
+      userId: defaultTestUser.user_id,
+      groceryListName: testGroceryListName,
+      householdId: defaultTestUser.primary_household_id,
+    });
 
-            //Add grocery list, first insert should be good
-            yield queries.groceryLists.addOne(db, logger, {
-                userId: defaultTestUser.user_id,
-                groceryListName: testGroceryListName,
-                householdId: defaultTestUser.primary_household_id,
-            });
+    //Second should throw a DuplicateNameError
+    try {
+      await queries.groceryLists.addOne(db, logger, {
+        userId: defaultTestUser.user_id,
+        groceryListName: testGroceryListName,
+        householdId: defaultTestUser.primary_household_id,
+      });
+    } catch (e) {
+      tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
+    }
 
-            //Second should throw a DuplicateNameError
-            try {
-                yield queries.groceryLists.addOne(db, logger, {
-                    userId: defaultTestUser.user_id,
-                    groceryListName: testGroceryListName,
-                    householdId: defaultTestUser.primary_household_id,
-                });
-            } catch (e) {
-                tap.type(e, 'DuplicateNameError', "Duplicate category insert throws DuplicateNameError");
-            }
+    await db.end();
+  }));
 
-            yield db.end();
-        })();
-
-    }));
-
-
-
-    tap.end();
+  tap.end();
 });

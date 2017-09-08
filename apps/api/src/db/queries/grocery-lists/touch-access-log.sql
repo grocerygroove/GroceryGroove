@@ -1,6 +1,6 @@
 {
     namedParameters: {
-        enable: true,
+        enabled: true,
     },
 }
 
