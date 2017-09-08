@@ -1,27 +1,27 @@
 const databaseFiles = require("database-files");
+const pgTransaction = require("pg-transaction");
 
-module.exports = databaseFiles.transactionsSync(`${ __dirname }/queries`, {
-    generateInterface: (runTransaction, transactionArgs) => function (conn, logger, args) {
-        return runTransaction(Object.assign({}, transactionArgs, {
-            args,
-            conn,
-            logger,
-        }));
-    },
+module.exports = databaseFiles.transactionsSync(`${ __dirname }/transactions`, {
+  generateInterface: (runTransaction, transactionArgs) => function (conn, logger, args) {
+    return runTransaction(Object.assign({}, transactionArgs, {
+      args,
+      conn,
+      logger,
+    }));
+  },
 
-    preprocessors: [
-        databaseFiles.transactionPreprocessors.customizeLogger(),
-    ],
+  preprocessors: [
+    databaseFiles.transactionPreprocessors.customizeLogger(),
+  ],
 
-    postprocessors: [
-    ],
+  postprocessors: [
+  ],
 
-    executor: ({
-        args,
-        conn,
-        logger,
-        transactionFn,
-    }) =>
-        conn.transaction(client => transactionFn(client, logger, args))
-    ,
+  executor: ({
+    args,
+    conn,
+    logger,
+    transactionFn,
+  }) => 
+    pgTransaction(conn, transactionFn.bind(this, logger, args)),
 });

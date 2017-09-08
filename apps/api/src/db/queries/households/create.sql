@@ -1,8 +1,12 @@
 {
     returns: "one",
+
+    namedParameters: {
+        enabled: true,
+    },
 }
 
 INSERT INTO households (name)
-VALUES ($1)
+VALUES (:name)
 
 RETURNING household_id

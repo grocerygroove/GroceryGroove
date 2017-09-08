@@ -26,6 +26,7 @@ const createTransactionRunFunction = function ({
     executor,
     generateInterface,
     name,
+    pathname,
     preprocessors,
     postprocessors,
     transactionFn,

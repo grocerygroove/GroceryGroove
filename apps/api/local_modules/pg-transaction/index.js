@@ -15,8 +15,10 @@ module.exports = async function pgTransaction (pool, callback) {
 
         client.release();
 
+        console.log("got here");
         return retval;
     } catch (e) {
+        console.log("rollback");
         client.query("ROLLBACK");
         client.release();
 

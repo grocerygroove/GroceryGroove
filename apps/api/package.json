@@ -40,6 +40,7 @@
     "koa-static": "^2.0.0",
     "moment": "^2.13.0",
     "pg": "^7.2.0",
+    "pg-transaction": "file:local_modules/pg-transaction",
     "redis": "^2.6.3",
     "tap": "^7.1.2",
     "tap-spec": "^4.1.1"

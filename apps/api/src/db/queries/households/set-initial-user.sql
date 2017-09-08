@@ -2,7 +2,7 @@
     returns: "none",
 
     namedParameters: {
-        enable: true,
+        enabled: true,
     },
 }
 
