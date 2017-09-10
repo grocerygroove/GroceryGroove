@@ -37,8 +37,7 @@ tap.test("db/transactions/households/create-for-user", tap => {
       text: `SELECT *
              FROM households
              WHERE household_id = ${householdId}`,
-    }));
-    console.log(JSON.stringify(rows, null, 2));
+    })).rows;
 
     const actual = {
       "household_id": rows[0]["household_id"],

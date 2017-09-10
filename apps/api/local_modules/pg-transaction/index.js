@@ -4,31 +4,24 @@ module.exports = async function pgTransaction (pool, callback) {
   await client.query("BEGIN");
 
   try {
-    const transactionClient = Object.create(client);
-    transactionClient.release = function release () {
-      throw new Error("Cannot release client while inside transaction.");
-    };
+    //const transactionClient = Object.create(client);
+    //transactionClient.release = function release () {
+    //client.release = function release () {
+    //  throw new Error("Cannot release client while inside transaction.");
+    //};
 
-    const args = [].concat(
-      [ transactionClient ],
-      Array.from(arguments).slice(2)
-    );
-    console.log(JSON.stringify(args, null, 2));
-    const retval = await callback.apply(args);
+    const retval = await callback(client);
 
     await client.query("COMMIT");
 
-    client.release();
-
-    console.log("got here");
     return retval;
   } catch (e) {
-    console.log("rollback");
     client.query("ROLLBACK");
-    client.release();
-
     throw e;
-  };
+  } finally {
+    client.release();
+  }
+
 };
 
 module.exports.addToPool = function addPgTransactionToPool (pool) {

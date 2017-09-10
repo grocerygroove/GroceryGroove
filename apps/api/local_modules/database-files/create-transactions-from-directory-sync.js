@@ -74,6 +74,7 @@ module.exports = function createTransactionsFromDirectorySync (parents, path, op
                     executor: opts.executor,
                     generateInterface: opts.generateInterface,
                     name: transactionName,
+                    pathname,
                     postprocessors: opts.postprocessors,
                     preprocessors: opts.preprocessors,
                     transactionFn,

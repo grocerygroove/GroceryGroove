@@ -23,5 +23,5 @@ module.exports = databaseFiles.transactionsSync(`${ __dirname }/transactions`, {
     logger,
     transactionFn,
   }) => 
-    pgTransaction(conn, transactionFn, logger, args),
+  pgTransaction(conn, (async (db) => await transactionFn(db, logger, args))),
 });
