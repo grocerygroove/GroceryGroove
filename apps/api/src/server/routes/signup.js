@@ -1,6 +1,7 @@
 const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const queries = require("../../db/queries");
+const transactions = require("../../db/transactions");
 
 module.exports = {
     path: "/signup",
@@ -50,7 +51,7 @@ module.exports = {
                 const password = ctx.request.body.password;
 
                 try {
-                    yield queries.users.createUserAndHouseholdByEmail(db, logger, [
+                    yield transactions.users.createUserAndHouseholdByEmail(db, logger, [
                         email,
                         password,
                     ]);

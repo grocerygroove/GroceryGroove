@@ -67,9 +67,9 @@ tap.test("db/queries/categories/add-one", tap => {
 
     const testCategory = {
       "category_id": 12,
-      "household_id": null,
+      "household_id": defaultTestUser.primary_household_id,
       "name": "testcategory",
-      "created_by_id": null,
+      "created_by_id": defaultTestUser.user_id,
     };
 
     //Add a category, first insert should be good

@@ -4,6 +4,7 @@ const queries = require("../db/queries");
 const defaultTestUser = require("./default-test-user");
 const Pool = require('pg').Pool;
 const secondaryTestUser = require("./secondary-test-user");
+const transactions = require("../db/transactions");
 
 
 module.exports = (async function resetTestingDatabase () {
@@ -28,16 +29,16 @@ module.exports = (async function resetTestingDatabase () {
     port: process.env.DB_PORT,
     host: process.env.DB_HOST,
   });
-  await queries.users.createUserAndHouseholdByEmail(db, logger, [
-    defaultTestUser.email,
-    defaultTestUser.password,
-  ]);
-
-  //Create test user
-  await queries.users.createUserAndHouseholdByEmail(db, logger, [
-    secondaryTestUser.email,
-    secondaryTestUser.password,
-  ]);
+  //Add primary user
+  await transactions.users.createUserAndHouseholdByEmail(db, logger, {
+    email: defaultTestUser.email,
+    password: defaultTestUser.password,
+  });
+  //Add secondary user
+  await transactions.users.createUserAndHouseholdByEmail(db, logger, {
+    email: secondaryTestUser.email,
+    password: secondaryTestUser.password,
+  });
 
   await db.end();
 });

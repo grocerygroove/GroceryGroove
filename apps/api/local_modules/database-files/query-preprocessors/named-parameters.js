@@ -1,4 +1,4 @@
-const createRegex = () => /:(\w+)\b/g;
+const createRegex = () => /(?!.TEXT):(\w+)\b/g;
 
 const extractParameterNames = (sql => {
   const regex = createRegex();
