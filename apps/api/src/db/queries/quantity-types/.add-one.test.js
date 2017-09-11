@@ -1,109 +1,109 @@
 require('dotenv').load();
 global.Promise = require("bluebird");
-const a = require("../../../utils/asyncify");
-const makeDatabaseReal = require("database-connection");
-const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
-const queries = require("../../queries");
 const DuplicateNameError = require("../../../errors/duplicate-name-error");
-
-const makeDatabase = makeDatabaseReal.bind(null, {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    name: process.env.TEST_DB_NAME,
-    port: process.env.DB_PORT,
-    host: process.env.DB_HOST,
-});
-
+const resetTestingDb = require("../../../utils/reset-testing-database");
+const Pool = require('pg').Pool;
+const queries = require("../../queries");
 const tap = require("tap");
 
 tap.test("db/queries/quantity-types/add-one", tap => {
-    const logger = {
-        info: () => {},
-        child: () => { return logger; },
+  const logger = {
+    info: () => {},
+    child: () => { return logger; },
+  };
+
+  tap.test("clean insert", (async function (tap) {
+    await resetTestingDb();
+
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+
+    const qtToAdd = {
+      "quantity_type_id": 10,
+      "singular_name": "bit",
+      "plural_name": "bits",
+      "singular_abbreviation": "bt",
+      "plural_abbreviation": "bts",
     };
 
-    tap.test("clean insert", a(function* (tap) {
-        yield resetTestingDb();
+    //Add one to default user's houshold
+    await queries.quantityTypes.addOne(db, logger, {
+      householdId: defaultTestUser.primary_household_id,
+      singularName: qtToAdd.singular_name,
+      pluralName: qtToAdd.plural_name,
+      singularAbbreviation: qtToAdd.singular_abbreviation,
+      pluralAbbreviation: qtToAdd.plural_abbreviation,
+    });
 
-        const db = makeDatabase();
-
-        const qtToAdd = {
-            "quantity_type_id": 10,
-            "singular_name": "bit",
-            "plural_name": "bits",
-            "singular_abbreviation": "bt",
-            "plural_abbreviation": "bts",
-        };
-
-        //Add one to default user's houshold
-        yield queries.quantityTypes.addOne(db, logger, {
-            householdId: defaultTestUser.primary_household_id,
-            singularName: qtToAdd.singular_name,
-            pluralName: qtToAdd.plural_name,
-            singularAbbreviation: qtToAdd.singular_abbreviation,
-            pluralAbbreviation: qtToAdd.plural_abbreviation,
-        });
-
-        const rows = (yield db.query(logger, `
+    const rows = (await db.query({
+      text: `
             SELECT *
             FROM quantity_types
             WHERE singular_name = '${qtToAdd.singular_name}'
                 AND plural_name = '${qtToAdd.plural_name}'
                 AND singular_abbreviation = '${qtToAdd.singular_abbreviation}'
                 AND plural_abbreviation = '${qtToAdd.plural_abbreviation}'
-                AND household_id = '${defaultTestUser.primary_household_id}'
-        `)).asPlainObjects();
+                AND household_id = '${defaultTestUser.primary_household_id}'`,
+    })).rows;
 
-        const actual = rows[0];
-        const expected = Object.assign({}, qtToAdd, {
-            "household_id": defaultTestUser.primary_household_id,
-        });
+    const actual = rows[0];
+    const expected = Object.assign({}, qtToAdd, {
+      "household_id": defaultTestUser.primary_household_id,
+    });
 
-        tap.strictSame(actual, expected, "Add a quantity-type");
+    tap.same(actual, expected, "Add a quantity-type");
 
-        yield db.end();
-    }));
+    await db.end();
+  }));
 
-    tap.test("duplicate insert", a(function* (tap) {
-        yield resetTestingDb();
+  tap.test("duplicate insert", (async function (tap) {
+    await resetTestingDb();
 
-        const db = makeDatabase();
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
 
-        const qtToAdd = {
-            "quantity_type_id": 10,
-            "singular_name": "bit",
-            "plural_name": "bits",
-            "singular_abbreviation": "bt",
-            "plural_abbreviation": "bts",
-        };
+    const qtToAdd = {
+      "quantity_type_id": 10,
+      "singular_name": "bit",
+      "plural_name": "bits",
+      "singular_abbreviation": "bt",
+      "plural_abbreviation": "bts",
+    };
 
-        //Add a quantity-type, first insert should be good
-        yield queries.quantityTypes.addOne(db, logger, {
-            householdId: defaultTestUser.primary_household_id,
-            singularName: qtToAdd.singular_name,
-            pluralName: qtToAdd.plural_name,
-            singularAbbreviation: qtToAdd.singular_abbreviation,
-            pluralAbbreviation: qtToAdd.plural_abbreviation,
-        });
+    //Add a quantity-type, first insert should be good
+    await queries.quantityTypes.addOne(db, logger, {
+      householdId: defaultTestUser.primary_household_id,
+      singularName: qtToAdd.singular_name,
+      pluralName: qtToAdd.plural_name,
+      singularAbbreviation: qtToAdd.singular_abbreviation,
+      pluralAbbreviation: qtToAdd.plural_abbreviation,
+    });
 
-        try {
-            yield queries.quantityTypes.addOne(db, logger, {
-                householdId: defaultTestUser.primary_household_id,
-                singularName: qtToAdd.singular_name,
-                pluralName: qtToAdd.plural_name,
-                singularAbbreviation: qtToAdd.singular_abbreviation,
-                pluralAbbreviation: qtToAdd.plural_abbreviation,
-            });
-        } catch (e) {
-            tap.type(e, 'DuplicateNameError', 'Duplicate quantity type insert throws DuplicateNameError');
-        }
+    try {
+      await queries.quantityTypes.addOne(db, logger, {
+        householdId: defaultTestUser.primary_household_id,
+        singularName: qtToAdd.singular_name,
+        pluralName: qtToAdd.plural_name,
+        singularAbbreviation: qtToAdd.singular_abbreviation,
+        pluralAbbreviation: qtToAdd.plural_abbreviation,
+      });
+    } catch (e) {
+      tap.type(e, 'DuplicateNameError', 'Duplicate quantity type insert throws DuplicateNameError');
+    }
 
-        yield db.end();
+    await db.end();
+  }));
 
-
-    }));
-
-
-    tap.end();
+  tap.end();
 });
