@@ -1,9 +1,9 @@
 {
-    returns: "none",
-
     namedParameters: {
         enabled: true,
     },
+
+    returns: "none",
 }
 
 WITH insert_household_user AS (

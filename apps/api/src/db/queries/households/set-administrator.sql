@@ -1,24 +1,31 @@
 {
+    namedParameters: {
+      enabled: true,
+    },
+
     returns: "one",
 }
 WITH approved_users AS (
     SELECT household_admin, household_id
-    FROM hosueholds
-    WHERE hosuehold_id = $3
-        AND household_admin = $1
+    FROM households
+    WHERE household_id = :householdId
+        AND household_admin = :userId
 ), available_users AS (
-    SELECT user_id, household_id
-    FROM household_users
-    WHERE household_id = $3
+    SELECT hu.user_id, hu.household_id
+    FROM households_users hu
+    WHERE hu.household_id = :householdId
+      AND hu.user_id <> :userId 
 ), updated AS (
-    UPDATE households
+    UPDATE households ha
     SET household_admin = avu.user_id
-    FROM hosueholds h
+    FROM households h
         INNER JOIN approved_users au
-            ON h.hosuehold_id = au.household_id
+            ON h.household_id = au.household_id
         INNER JOIN available_users avu
-            ON avu.household_id = h.household_id
-                AND avu.user_id = $2
+            ON avu.household_id = au.household_id
+                AND avu.user_id = :userToPromote
+    WHERE h IS DISTINCT FROM ha
+    RETURNING ha.*
 )
 SELECT COUNT(*) as updated_count
 FROM updated

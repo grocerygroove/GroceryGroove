@@ -1,6 +1,4 @@
-const a = require("./asyncify");
 const execp = require("./execp");
-const queries = require("../db/queries");
 const defaultTestUser = require("./default-test-user");
 const Pool = require('pg').Pool;
 const secondaryTestUser = require("./secondary-test-user");

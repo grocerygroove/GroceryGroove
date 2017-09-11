@@ -29,10 +29,8 @@ tap.test("db/queries/households/get-household-info", tap => {
 
     const expected = {
       name: defaultTestUser.household_name,
-      admin: null,
+      admin: defaultTestUser.email,
     };
-console.log("actual", JSON.stringify(actual, null, 2));
-console.log("expected", JSON.stringify(expected, null, 2));
     tap.same(actual, expected);
 
     await db.end();
