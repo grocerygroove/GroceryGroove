@@ -16,8 +16,7 @@ WITH
     WHERE hu.household_id = :householdId
       AND hu.user_id = :userId
   )
-UPDATE users SET
-    primary_household_id = users_households.household_id
-FROM users u
-  INNER JOIN users_households
-    ON u.user_id = users_households.user_id
+UPDATE users u
+SET primary_household_id = users_households.household_id
+FROM users_households
+WHERE u.user_id = users_households.user_id

@@ -1,9 +1,13 @@
 {
-    returns: "one",
-}
+  namedParameters: {
+    enabled: true,
+  },
 
+  returns: "one",
+}
+--Used to authenticate a user by email and password
 SELECT user_id
 FROM users
-WHERE email = $1
-AND password = crypt($2, password)
+WHERE email = :email
+AND password = crypt(:password, password)
 AND activated = true
