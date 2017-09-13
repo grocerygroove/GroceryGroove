@@ -1,19 +1,17 @@
 const queries = require("../../queries");
 
 module.exports = async function (client, logger, {
-  email,
+  deviceIdentifier,
   nickname,
-  password,
 }) {
 
   const householdId = await queries.households.create(client, logger, {
     name: `${nickname}'s Household`,
   });
 
-  const userId = await queries.users.createByEmail(client, logger, {
-    email,
+  const userId = await queries.users.createByDeviceIdentifier(client, logger, {
+    deviceIdentifier,
     nickname,
-    password,
   });
 
   await queries.households.setInitialUser(client, logger, {

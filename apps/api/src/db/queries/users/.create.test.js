@@ -11,9 +11,10 @@ tap.test("db/queries/users/create-by-email", tap => {
     child: () => { return logger; },
   };
   const testEmail = "kittykat@katmail.com";
+  const nickname = "Testerman";
   const pass = "123123123";
 
-  tap.test("create-user", (async (tap) => {
+  tap.test("create-user-by-email", (async (tap) => {
     await resetTestingDb();
 
     const db = new Pool({
@@ -33,6 +34,7 @@ tap.test("db/queries/users/create-by-email", tap => {
 
     const userId = await queries.users.createByEmail(db, logger, {
       email: testEmail,
+      nickname,
       password: pass,
     });
 
@@ -40,6 +42,42 @@ tap.test("db/queries/users/create-by-email", tap => {
       text:` select count(*) as count
              from users
              where email = '${ testEmail }'`,
+    })).rows[0].count);
+
+    tap.assert(userId);
+    tap.assert(endCount > startCount);
+
+    await db.end();
+  }));
+
+  tap.test("create-user-by-device-identifier", (async (tap) => {
+    await resetTestingDb();
+
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+
+    const deviceIdentifier = "4PizHn/;8Ysd.[GK2#";
+
+    const startCount = parseInt((await db.query({
+      text:` select count(*) as count
+             from users
+             where device_identifier = '${ deviceIdentifier }'`,
+    })).rows[0].count);
+
+    const userId = await queries.users.createByDeviceIdentifier(db, logger, {
+      deviceIdentifier,
+      nickname: "Nick",
+    });
+
+    const endCount = parseInt((await db.query({
+      text:` select count(*) as count
+             from users
+             where device_identifier = '${ deviceIdentifier }'`,
     })).rows[0].count);
 
     tap.assert(userId);
@@ -65,6 +103,7 @@ tap.test("db/queries/users/create-by-email", tap => {
 
     const userId = await queries.users.createByEmail(db, logger, {
       email: testEmail,
+      nickname,
       password: pass,
     });
 

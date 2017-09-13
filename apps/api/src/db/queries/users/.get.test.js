@@ -31,6 +31,7 @@ tap.test("db/queries/user/get-one", tap => {
     const expected = {
       "user_id": defaultUser.user_id,
       "email": defaultUser.email,
+      "nickname": defaultUser.nickname,
       "device_identifier": null,
       "phone_number": null,
       "primary_household_id": defaultUser.primary_household_id,

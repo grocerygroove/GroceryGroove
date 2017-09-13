@@ -8,6 +8,7 @@
 SELECT
     user_id,
     email,
+    nickname,
     device_identifier,
     phone_number,
     primary_household_id,

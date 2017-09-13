@@ -7,6 +7,6 @@
   returns: "one",
 }
 
-INSERT INTO users (email, password)
-SELECT :email, create_hashed_password(:password::TEXT)
+INSERT INTO users (email, nickname, password)
+SELECT :email, :nickname, create_hashed_password(:password::TEXT)
 RETURNING user_id

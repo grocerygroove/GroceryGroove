@@ -37,6 +37,8 @@ tap.test("db/queries/households/set-administrator", tap => {
       userToPromote: secondaryUser.user_id,
     }));
 
+    console.log("updatedCount", updatedCount);
+
     tap.strictSame(updatedCount, 1);
 
     await db.end();

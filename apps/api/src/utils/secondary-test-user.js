@@ -3,4 +3,5 @@ module.exports = {
     "email": "testuser2@test.com",
     "password": "testPass2",
     "primary_household_id": 2,
+    "nickname": "Tester2",
 };

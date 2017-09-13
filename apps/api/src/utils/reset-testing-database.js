@@ -1,5 +1,6 @@
 const execp = require("./execp");
 const defaultTestUser = require("./default-test-user");
+const deviceIdUser = require("./device-id-test-user");
 const Pool = require('pg').Pool;
 const secondaryTestUser = require("./secondary-test-user");
 const transactions = require("../db/transactions");
@@ -30,12 +31,19 @@ module.exports = (async function resetTestingDatabase () {
   //Add primary user
   await transactions.users.createUserAndHouseholdByEmail(db, logger, {
     email: defaultTestUser.email,
+    nickname: defaultTestUser.nickname,
     password: defaultTestUser.password,
   });
   //Add secondary user
   await transactions.users.createUserAndHouseholdByEmail(db, logger, {
     email: secondaryTestUser.email,
+    nickname: secondaryTestUser.nickname,
     password: secondaryTestUser.password,
+  });
+  //Add device id user
+  await transactions.users.createUserAndHouseholdByDeviceIdentifier(db, logger, {
+    deviceIdentifier: deviceIdUser.device_identifier,
+    nickname: deviceIdUser.nickname,
   });
 
   await db.end();

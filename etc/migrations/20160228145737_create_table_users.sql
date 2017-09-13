@@ -2,6 +2,7 @@
 CREATE TABLE users(
     user_id              SERIAL,
     device_identifier    TEXT        NULL,
+    nickname             TEXT        NULL,
     email                CITEXT      NULL,
     phone_number         TEXT        NULL,
     password             TEXT        NULL,
