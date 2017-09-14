@@ -1,5 +1,4 @@
 require('dotenv').load();
-global.Promise = require("bluebird");
 const defaultUser = require("../../../utils/default-test-user");
 const Pool = require('pg').Pool;
 const queries = require("../../queries");
@@ -36,8 +35,6 @@ tap.test("db/queries/households/set-administrator", tap => {
       householdId: defaultUser.primary_household_id,
       userToPromote: secondaryUser.user_id,
     }));
-
-    console.log("updatedCount", updatedCount);
 
     tap.strictSame(updatedCount, 1);
 
