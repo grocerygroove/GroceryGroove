@@ -1,4 +1,3 @@
-const a = require("../../utils/asyncify");
 const queries = require("../../db/queries");
 
 module.exports = {
@@ -43,17 +42,17 @@ module.exports = {
                 403: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, jwt, logger } = ctx.services;
 
                 const email = ctx.request.body.email;
                 const password = ctx.request.body.password;
 
 
-                const userId = yield queries.users.checkByEmail(db, logger, [
+                const userId = await queries.users.checkByEmail(db, logger, {
                     email,
                     password,
-                ]);
+                });
 
                 if (userId) {
                     ctx.body = {
@@ -92,12 +91,12 @@ module.exports = {
                 403: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, jwt, logger } = ctx.services;
 
                 const deviceIdentifier = ctx.request.body.device_identifier;
 
-                const userId = yield queries.users.checkByDeviceIdentifier(db, logger, [
+                const userId = await queries.users.checkByDeviceIdentifier(db, logger, [
                     deviceIdentifier,
                 ]);
 

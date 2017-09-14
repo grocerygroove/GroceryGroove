@@ -1,12 +1,11 @@
-const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const queries = require("../../db/queries");
 const cacheKeys = {
     getCategoriesKey: (householdId) => {
-        return `getCategoriesHoushold${householdId}`;
+        return `getCategoriesHousehold${householdId}`;
     },
     getCategoriesInfoKey: (householdId) => {
-        return `getCategoriesInfoHoushold${householdId}`;
+        return `getCategoriesInfoHousehold${householdId}`;
     },
 };
 
@@ -35,21 +34,22 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger, cacher } = ctx.services;
                 let response;
                 const cacheKey = cacheKeys.getCategoriesKey(ctx.state.householdId);
-                const cachedResult = yield cacher.get(cacheKey);
+                const cachedResult = await cacher.get(cacheKey);
                 if (cachedResult) {
                     response = cachedResult;
                 } else {
                     //Go fetch the categories and cache them
                     response = {
-                        "category_names": yield queries.categories.getAllNames(db, logger, {
+                        "category_names": await queries.categories.getAllNames(db, logger, {
                             householdId: ctx.state.householdId,
                         }),
                     };
-                    yield cacher.set(cacheKey, response);
+
+                    await cacher.set(cacheKey, response);
                 }
                 ctx.body = response;
             }),
@@ -73,7 +73,7 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger, messenger, cacher } = ctx.services;
 
                 const categoryName = ctx.request.body.name;
@@ -82,19 +82,19 @@ module.exports = {
                     ctx.throw(400, "Must include a category name");
                 } else {
                     try {
-                        yield queries.categories.addOne(db, logger, {
+                        await queries.categories.addOne(db, logger, {
                             householdId: ctx.state.householdId,
                             createdById: ctx.state.userId,
                             name:        categoryName,
                         });
 
                         //Invalidate cache
-                        yield cacher.delMulti([
+                        await cacher.delMulti([
                             cacheKeys.getCategoriesKey(ctx.state.householdId),
                             cacheKeys.getCategoriesInfoKey(ctx.state.householdId),
                         ]);
                         //Send message out alerting new data
-                        yield messenger.addMessage(`household:'${ctx.state.householdId}' new category`);
+                        await messenger.addMessage(`household:'${ctx.state.householdId}' new category`);
                         ctx.status = 200;
                     } catch (e) {
                         if (e instanceof DuplicateNameError) {
@@ -115,21 +115,21 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger, cacher } = ctx.services;
 
                 const cacheKey = cacheKeys.getCategoriesInfoKey(ctx.state.householdId);
-                const cachedResult = yield cacher.get(cacheKey);
+                const cachedResult = await cacher.get(cacheKey);
                 if (cachedResult) {
                     response = cachedResult;
                 } else {
                     //Go fetch the categories and cache them
                     response = {
-                        categories: yield queries.categories.getAll(db, logger, {
+                        categories: await queries.categories.getAll(db, logger, {
                             householdId: ctx.state.householdId,
                         }),
                     };
-                    yield cacher.set(cacheKey, response);
+                    await cacher.set(cacheKey, response);
                 }
                 ctx.body = response;
             }),

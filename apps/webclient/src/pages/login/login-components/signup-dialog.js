@@ -8,6 +8,7 @@ import React from 'react';
 import { SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD } from '../signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_EMAIL } from '../signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_PASSWORD } from '../signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_NICKNAME } from '../signup-actions';
 import { signupByEmail } from '../signup-actions';
 import { signupCredentialChange } from '../signup-actions';
 import { signupValidationError } from '../signup-actions';
@@ -19,6 +20,7 @@ const SignupDialog = ({
   signupDialogVisible,
   signupRequestPending,
   signupEmail,
+  signupNickname,
   signupPassword,
   signupConfirmPassword,
   emailErrorText,
@@ -34,12 +36,16 @@ const SignupDialog = ({
       headerText="Create an Account"
       confirmButtonText="Submit"
       onCancelClick={toggleSignup}
-      onConfirmClick={onSignupClick.bind(null, signupEmail, signupPassword, signupConfirmPassword)} >
+      onConfirmClick={onSignupClick.bind(null, signupEmail, signupNickname, signupPassword, signupConfirmPassword)} >
       <TextBox
         label="Email Address"
         value={signupEmail}
         errorText={emailErrorText || ""}
         onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_EMAIL)}/>
+      <TextBox
+        label="Nickname"
+        value={signupNickname}
+        onChange={onSignupCredentialChange.bind(null, SIGNUP_CREDENTIAL_TYPE_NICKNAME)}/>
       <TextBox
         label="Password"
         value={signupPassword}
@@ -60,6 +66,7 @@ SignupDialog.propTypes = {
   signupDialogVisible: PropTypes.bool.isRequired,
   signupRequestPending: PropTypes.bool.isRequired,
   signupEmail: PropTypes.string.isRequired,
+  signupNickname: PropTypes.string.isRequired,
   signupPassword: PropTypes.string.isRequired,
   signupConfirmPassword: PropTypes.string.isRequired,
   emailErrorText: PropTypes.string,
@@ -74,6 +81,7 @@ const mapStateToProps = (state, ownProps) => {
     signupDialogVisible: state.getIn([ 'signup', 'signupDialogVisible' ]),
     signupRequestPending: state.getIn([ 'signup', 'requestPending' ], false),
     signupEmail: state.getIn([ 'signup', 'signupCreds', 'email' ], ''),
+    signupNickname: state.getIn([ 'signup', 'signupCreds', 'nickname' ], ''),
     signupPassword: state.getIn([ 'signup', 'signupCreds', 'password' ], ''),
     signupConfirmPassword: state.getIn([ 'signup', 'signupCreds', 'confirmPassword' ], ''),
     emailErrorText: state.getIn([ 'signup', 'signupErrors', 'emailErrorText' ]),
@@ -86,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
     onSignupCredentialChange: (credentialType, event) => {
       dispatch(signupCredentialChange(credentialType, event.target.value));
     },
-    onSignupClick: (email, password, confirmPassword) => {
+    onSignupClick: (email, nickname, password, confirmPassword) => {
       let errors = false;
       //Do syncrounous validation
       if (!validateEmail(email)) {
@@ -104,7 +112,7 @@ const mapDispatchToProps = (dispatch) => {
 
       if (!errors) {
         //Validation good
-        dispatch(signupByEmail(email, password));
+        dispatch(signupByEmail(email, nickname, password));
       }
     },
     toggleSignup: () => {

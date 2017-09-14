@@ -6,7 +6,7 @@ export default function userReducer(state = Immutable.fromJS({}), action) {
     case GET_HOUSEHOLDS_FULFILLED: {
       return state
         .set('households', action.payload)
-        .set('selectedHouseholdId', action.payload[0].household_id);
+        .set('selectedHouseholdId', action.payload[0]);
     }
     default:
       return state;

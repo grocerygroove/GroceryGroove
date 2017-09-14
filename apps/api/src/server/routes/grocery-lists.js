@@ -1,12 +1,11 @@
-const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const queries = require("../../db/queries");
 const cacheKeys = {
     getGroceryListsKey: (householdId) => {
-        return `getGroceryListsHoushold${householdId}`;
+        return `getGroceryListsHousehold${householdId}`;
     },
     getSingleGroceryListKey: (householdId, groceryListId) => {
-        return `getSingleGroceryList${groceryListId}Houshold${householdId}`;
+        return `getSingleGroceryList${groceryListId}Household${householdId}`;
     },
 };
 
@@ -39,22 +38,22 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { cacher, db, logger } = ctx.services;
                 let response;
                 const cacheKey = cacheKeys.getGroceryListsKey(ctx.state.householdId);
-                const cachedResult = yield cacher.get(cacheKey);
+                const cachedResult = await cacher.get(cacheKey);
                 if (cachedResult) {
                     response = cachedResult;
                 } else {
                     //Go get fetch the grocery lists and cache them
                     response = {
-                        "grocery_lists": yield queries.groceryLists.getAll(db, logger, {
+                        "grocery_lists": await queries.groceryLists.getAll(db, logger, {
                             householdId: ctx.state.householdId,
                             userId: ctx.state.userId,
                         }),
                     };
-                    yield cacher.set(cacheKey, response);
+                    await cacher.set(cacheKey, response);
                 }
 
                 ctx.body = response;
@@ -83,7 +82,7 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { cacher, db, logger } = ctx.services;
 
                 if (!ctx.id || !ctx.id.match(/^\d+$/)) {
@@ -91,18 +90,18 @@ module.exports = {
                 } else {
                     let response;
                     const cacheKey = cacheKeys.getSingleGroceryListKey(ctx.state.householdId, ctx.id);
-                    const cachedResult = yield cacher.get(cacheKey);
+                    const cachedResult = await cacher.get(cacheKey);
                     if (cachedResult) {
                         response = cachedResult;
                     } else {
                         response = {
-                            "grocery_list": yield queries.groceryLists.getOne(db, logger, {
+                            "grocery_list": await queries.groceryLists.getOne(db, logger, {
                                 householdId: ctx.state.householdId,
                                 userId: ctx.state.userId,
                                 groceryListId: ctx.id,
                             }),
                         };
-                        yield cacher.set(cacheKey, response);
+                        await cacher.set(cacheKey, response);
                     }
                     ctx.body = response;
                 }
@@ -136,7 +135,7 @@ module.exports = {
                 401: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { cacher, db, logger, messenger } = ctx.services;
 
                 const userId = ctx.state.userId;
@@ -144,7 +143,7 @@ module.exports = {
                 const name = ctx.request.body.name;
 
                 try {
-                    const groceryListId = yield queries.groceryLists.addOne(db, logger, {
+                    const groceryListId = await queries.groceryLists.addOne(db, logger, {
                         userId,
                         groceryListName: name,
                         householdId,
@@ -156,7 +155,7 @@ module.exports = {
                     }
 
                     //Invalidate cache
-                    yield cacher.del(cacheKeys.getGroceryListsKey(householdId));
+                    await cacher.del(cacheKeys.getGroceryListsKey(householdId));
                     //Send message
                     messenger.addMessage(`household:'${householdId}' new grocery list`);
 
@@ -164,9 +163,9 @@ module.exports = {
                         "grocery_list_id": groceryListId,
                     };
 
-                    void(queries.groceryLists.touchAccessLog(db, logger, {
+                    await queries.groceryLists.touchAccessLog(db, logger, {
                         groceryListId,
-                    }));
+                    });
 
                 } catch (e) {
                     if (e instanceof DuplicateNameError) {
@@ -223,7 +222,7 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger } = ctx.services;
 
                 const userId = ctx.state.userId;
@@ -241,7 +240,7 @@ module.exports = {
                     ctx.throw(400, "Invalid or missing 'quantity'");
                 } else {
                     ctx.body = {
-                        "grocery_list_item_id": yield queries.groceryLists.items.addOne(db, logger, {
+                        "grocery_list_item_id": await queries.groceryLists.items.addOne(db, logger, {
                             groceryListId: ctx.id,
                             userId: ctx.state.userId,
                             itemId,
@@ -250,9 +249,9 @@ module.exports = {
                         }),
                     };
 
-                    void(queries.groceryLists.touchAccessLog(db, logger, {
+                    await queries.groceryLists.touchAccessLog(db, logger, {
                         groceryListId: ctx.id,
-                    }));
+                    });
                 }
 
             }),

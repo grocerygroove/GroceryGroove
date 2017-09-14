@@ -5,9 +5,10 @@ export const SIGNUP_BY_EMAIL_PENDING = 'SIGNUP_BY_EMAIL_PENDING';
 export const SIGNUP_BY_EMAIL_REJECTED = 'SIGNUP_BY_EMAIL_REJECTED';
 export const SIGNUP_BY_EMAIL_FULFILLED = 'SIGNUP_BY_EMAIL_FULFILLED';
 
+export const SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD = 'SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD';
 export const SIGNUP_CREDENTIAL_TYPE_EMAIL = 'SIGNUP_CREDENTIAL_TYPE_EMAIL';
 export const SIGNUP_CREDENTIAL_TYPE_PASSWORD = 'SIGNUP_CREDENTIAL_TYPE_PASSWORD';
-export const SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD = 'SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD';
+export const SIGNUP_CREDENTIAL_NICKNAME = 'SIGNUP_CREDENTIAL_TYPE_NICKNAME';
 export const SIGNUP_CREDENTIAL_CHANGE = 'SIGNUP_CREDENTIAL_CHANGE';
 
 
@@ -20,13 +21,14 @@ export function toggleSignupDialog() {
   };
 }
 
-export function signupByEmail(email, password) {
+export function signupByEmail(email, nickname, password) {
   return (dispatch, getState, { api }) => {
     dispatch(signupByEmailPending());
     return api().then(client => {
       return client.signup.post_signup_by_email({
         "bodyparam-signup-by-emailpost": {
           email,
+          nickname,
           password,
         },
       });

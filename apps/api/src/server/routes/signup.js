@@ -1,6 +1,4 @@
-const a = require("../../utils/asyncify");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
-const queries = require("../../db/queries");
 const transactions = require("../../db/transactions");
 
 module.exports = {
@@ -28,6 +26,12 @@ module.exports = {
                     type: "string",
                 },
                 {
+                    name: "nickname",
+                    in: "body",
+                    required: true,
+                    type: "string",
+                },
+                {
                     name: "password",
                     in: "body",
                     required: true,
@@ -44,17 +48,19 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger } = ctx.services;
 
                 const email = ctx.request.body.email;
+                const nickname = ctx.request.body.nickname;
                 const password = ctx.request.body.password;
 
                 try {
-                    yield transactions.users.createUserAndHouseholdByEmail(db, logger, [
+                    await transactions.users.createUserAndHouseholdByEmail(db, logger, {
                         email,
+                        nickname,
                         password,
-                    ]);
+                    });
 
                     ctx.status = 200;
                     ctx.body = {
@@ -85,6 +91,12 @@ module.exports = {
                     required: true,
                     type: "string",
                 },
+                {
+                    name: "nickname",
+                    in: "body",
+                    required: true,
+                    type: "string",
+                },
             ],
 
             responses: {
@@ -92,14 +104,16 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger } = ctx.services;
 
                 const deviceIdentifier = ctx.request.body.device_identifier;
+                const nickname = ctx.request.body.nickname;
 
                 try {
-                    yield queries.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
+                    await transactions.users.createUserAndHouseholdByDeviceIdentifier(db, logger, [
                         deviceIdentifier,
+                        nickname,
                     ]);
                     ctx.status = 200;
                 } catch (e) {

@@ -28,13 +28,13 @@ module.exports = {
                 200: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger } = ctx.services;
 
                 ctx.body = {
-                    households: yield queries.users.getUserHouseholds(db, logger, [
-                        ctx.state.userId,
-                    ]),
+                    households: await queries.users.getUserHouseholds(db, logger, {
+                        userId: ctx.state.userId,
+                    }),
                 };
             }),
         },
@@ -62,7 +62,7 @@ module.exports = {
                 400: {},
             },
 
-            handler: a(function* (ctx, next) {
+            handler: (async function (ctx, next) {
                 const { db, logger } = ctx.services;
 
                 const email = ctx.request.body.email;
@@ -71,7 +71,7 @@ module.exports = {
                 if (!email || !password) {
                     ctx.throw(400, "Must pass email and password");
                 } else {
-                    yield queries.users.convertToFullAccount(db, logger, [
+                    await queries.users.convertToFullAccount(db, logger, [
                         ctx.state.userId,
                         email,
                         password,

@@ -9,6 +9,7 @@ import { SIGNUP_CREDENTIAL_CHANGE } from './signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD } from './signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_EMAIL } from './signup-actions';
 import { SIGNUP_CREDENTIAL_TYPE_PASSWORD } from './signup-actions';
+import { SIGNUP_CREDENTIAL_TYPE_NICKNAME } from './signup-actions';
 import { SIGNUP_VALIDATION_ERROR } from './signup-actions';
 import { TOGGLE_SIGNUP_DIALOG } from './signup-actions';
 
@@ -69,7 +70,10 @@ export default function signupReducer(state = Immutable.fromJS({}), action) {
       if (credType === SIGNUP_CREDENTIAL_TYPE_EMAIL) {
         return state
           .setIn([ 'signupCreds', 'email' ], action.payload.newValue);
-      } else if (credType === SIGNUP_CREDENTIAL_TYPE_PASSWORD) {
+      } else if (credType === SIGNUP_CREDENTIAL_TYPE_NICKNAME) { 
+        return state
+          .setIn([ 'signupCreds', 'nickname' ], action.payload.newValue);
+      }else if (credType === SIGNUP_CREDENTIAL_TYPE_PASSWORD) {
         return state
           .setIn([ 'signupCreds', 'password' ], action.payload.newValue);
       } else if (credType === SIGNUP_CREDENTIAL_TYPE_CONFIRM_PASSWORD) {
