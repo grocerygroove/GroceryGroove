@@ -1,115 +1,118 @@
 const queries = require("../../db/queries");
 
 module.exports = {
-    path: "/login",
+  path: "/login",
 
-    middlewares: [
-        "parseJsonBody",
-    ],
+  middlewares: [
+    "parseJsonBody",
+  ],
 
-    services: [
-        "db",
-        "jwt",
-        "logger",
-    ],
+  services: [
+    "db",
+    "jwt",
+    "logger",
+  ],
 
-    routes: [
+  routes: [
+    {
+      method: "post",
+      path: "/by-email",
+
+      produces: [
+        "application/json",
+      ],
+
+      parameters: [
         {
-            method: "post",
-            path: "/by-email",
-
-            produces: [
-                "application/json",
-            ],
-
-            parameters: [
-                {
-                    name: "email",
-                    in: "body",
-                    required: true,
-                    type: "string",
-                },
-                {
-                    name: "password",
-                    in: "body",
-                    required: true,
-                    type: "string",
-                },
-            ],
-
-            responses: {
-                200: {},
-                403: {},
-            },
-
-            handler: (async function (ctx, next) {
-                const { db, jwt, logger } = ctx.services;
-
-                const email = ctx.request.body.email;
-                const password = ctx.request.body.password;
-
-
-                const userId = await queries.users.checkByEmail(db, logger, {
-                    email,
-                    password,
-                });
-
-                if (userId) {
-                    ctx.body = {
-                        token: jwt.encode({
-                            "user_id": userId,
-                        }),
-                    };
-                } else {
-                    ctx.status = 403;
-                    ctx.body = {
-                        message: "Invalid username or password",
-                    };
-                }
-            }),
+          name: "email",
+          in: "body",
+          required: true,
+          type: "string",
         },
-
         {
-            method: "post",
-            path: "/by-device-identifier",
-
-            produces: [
-                "application/json",
-            ],
-
-            parameters: [
-                {
-                    name: "device_identifier",
-                    in: "body",
-                    required: true,
-                    type: "string",
-                },
-            ],
-
-            responses: {
-                200: {},
-                403: {},
-            },
-
-            handler: (async function (ctx, next) {
-                const { db, jwt, logger } = ctx.services;
-
-                const deviceIdentifier = ctx.request.body.device_identifier;
-
-                const userId = await queries.users.checkByDeviceIdentifier(db, logger, [
-                    deviceIdentifier,
-                ]);
-
-                if (userId) {
-                    ctx.body = {
-                        token: jwt.encode({
-                            "user_id": userId,
-                        }),
-                    };
-                } else {
-                    ctx.status = 403;
-                }
-            }),
+          name: "password",
+          in: "body",
+          required: true,
+          type: "string",
         },
-    ],
+      ],
+
+      responses: {
+        200: {},
+        403: {},
+      },
+
+      handler: (async function (ctx, next) {
+        const { db, jwt, logger } = ctx.services;
+
+        const email = ctx.request.body.email;
+        const password = ctx.request.body.password;
+
+
+        const userId = await queries.users.checkByEmail(db, logger, {
+          email,
+          password,
+        });
+
+        if (userId) {
+          ctx.body = {
+            token: jwt.encode({
+              "user_id": userId,
+            }),
+          };
+        } else {
+          ctx.status = 403;
+          ctx.body = {
+            message: "Invalid username or password",
+          };
+        }
+      }),
+    },
+
+    {
+      method: "post",
+      path: "/by-device-identifier",
+
+      produces: [
+        "application/json",
+      ],
+
+      parameters: [
+        {
+          name: "device_identifier",
+          in: "body",
+          required: true,
+          type: "string",
+        },
+      ],
+
+      responses: {
+        200: {},
+        403: {},
+      },
+
+      handler: (async function (ctx, next) {
+        const { db, jwt, logger } = ctx.services;
+
+        const deviceIdentifier = ctx.request.body.device_identifier;
+
+        const userId = await queries.users.checkByDeviceIdentifier(db, logger, {
+          deviceIdentifier,
+        });
+
+        if (userId) {
+          ctx.body = {
+            token: jwt.encode({
+              "user_id": userId,
+            }),
+          };
+        } else {
+          ctx.status = 403;
+          ctx.body = {
+            message: "Invalid device id",
+          };
+        }
+      }),
+    },
+  ],
 };

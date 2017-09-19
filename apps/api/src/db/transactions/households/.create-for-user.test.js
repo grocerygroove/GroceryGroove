@@ -1,5 +1,4 @@
 require('dotenv').load();
-global.Promise = require("bluebird");
 const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
 const Pool = require('pg').Pool;

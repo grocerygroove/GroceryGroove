@@ -25,19 +25,29 @@ tap.test("server/routes/items", tap => {
 
         services: {
           db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "items/add-and-categorize-one") {
-                return {
-                  rows: [
-                    {
-                      "item_id": 2,
-                    },
-                  ],
-                };
-              }
-              return void(0);
+            connect: (async function(){
+              return {
+                query: (async function ({
+                  name,
+                }) {
+                  if (name === "items/get-item-by-name" || 
+                        name === "items/create-item") {
+                    let returnVal = {};
+                    returnVal.rows = [
+                      {
+                        "item_id": 2,
+                      },
+                    ];
+                    return returnVal;
+                  } else if (name === "items/create-category-item") {
+                    return {
+                      rows: [],
+                    };
+                  }
+                  return void(0);
+                }),
+                release:() => Promise.resolve(void(0)),
+              };
             }),
           },
           logger,
@@ -68,19 +78,29 @@ tap.test("server/routes/items", tap => {
 
         services: {
           db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "items/add-and-categorize-one") {
-                return {
-                  rows: [
-                    {
-                      "item_id": 2,
-                    },
-                  ],
-                };
-              }
-              return void(0);
+            connect: (async function(){
+              return {
+                query: (async function ({
+                  name,
+                }) {
+                  if (name === "items/get-item-by-name" || 
+                        name === "items/create-item") {
+                    let returnVal = {};
+                    returnVal.rows = [
+                      {
+                        "item_id": 3,
+                      },
+                    ];
+                    return returnVal;
+                  } else if (name === "items/create-category-item") {
+                    return {
+                      rows: [],
+                    };
+                  }
+                  return void(0);
+                }),
+                release:() => Promise.resolve(void(0)),
+              };
             }),
           },
           logger,
@@ -88,8 +108,7 @@ tap.test("server/routes/items", tap => {
 
         state: {
           householdId: 2,
-        },
-
+        }, 
         throw: statusCode => {
           ctx.status = statusCode;
         },
@@ -115,19 +134,29 @@ tap.test("server/routes/items", tap => {
 
         services: {
           db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "items/add-and-categorize-one") {
-                return {
-                  rows: [
-                    {
-                      "item_id": 2,
-                    },
-                  ]
-                };
-              }
-              return void(0);
+            connect: (async function(){
+              return {
+                query: (async function ({
+                  name,
+                }) {
+                  if (name === "items/get-item-by-name" || 
+                        name === "items/create-item") {
+                    let returnVal = {};
+                    returnVal.rows = [
+                      {
+                        "item_id": 3,
+                      },
+                    ];
+                    return returnVal;
+                  } else if (name === "items/create-category-item") {
+                    return {
+                      rows: [],
+                    };
+                  }
+                  return void(0);
+                }),
+                release:() => Promise.resolve(void(0)),
+              };
             }),
           },
           logger,
@@ -164,13 +193,23 @@ tap.test("server/routes/items", tap => {
 
         services: {
           db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "items/add-and-categorize-one") {
-                throw new DuplicateNameError();
-              }
-              return void(0);
+            connect: (async function(){
+              return {
+                query: (async function ({
+                  name,
+                }) {
+                  if (name === "items/get-item-by-name" || 
+                        name === "items/create-item") {
+                    throw new DuplicateNameError();
+                  } else if (name === "items/create-category-item") {
+                    return {
+                      rows: [],
+                    };
+                  }
+                  return void(0);
+                }),
+                release:() => Promise.resolve(void(0)),
+              };
             }),
           },
           logger,

@@ -1,173 +1,175 @@
-const a = require("../../utils/asyncify");
 const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const tap = require("tap");
 
 tap.test("server/routes/login", tap => {
-    const logger = {
-        info: () => {},
-        child: () => logger,
-    };
-    const next = () => {};
-    const jwtService = {
-        encode: function (data) {
-            return {
-                data,
-            };
+  const logger = {
+    info: () => {},
+    child: () => logger,
+  };
+  const next = () => {};
+  const jwtService = {
+    encode: function (data) {
+      return {
+        data,
+      };
+    },
+  };
+
+  tap.test("POST /login/by-email", (async function (tap) {
+    const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
+
+    await (async function () {
+      const ctx = {
+        request: {
+          body: {
+            email: "test@test.com",
+            password: "testpass",
+          },
         },
-    };
-    tap.test("POST /login/by-email", a(function* (tap) {
-        const handler = getRoute(rootGroup, "POST", "/login/by-email").handler;
-
-        yield a(function* () {
-            const ctx = {
-                request: {
-                    body: {
-                        email: "test@test.com",
-                        password: "testpass",
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "users/check-by-email") {
+                return {
+                  rows: [
+                    {
+                      "user_id": 1,
                     },
-                },
-                services: {
-                    db: {
-                        query: a(function* (logger, {
-                            name,
-                        }) {
-                            if (name === "users/check-by-email") {
-                                return [
-                                    {
-                                        "user_id": 1,
-                                    },
-                                ];
-                            }
-                            return void(0);
-                        }),
+                  ]
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+          jwt: jwtService,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.token.data;
+      const expected = {
+        "user_id": 1,
+      };
+
+      tap.strictDeepEquals(actual, expected, "Convert a valid userid to a token");
+    })();
+
+    await (async function () {
+      const ctx = {
+        request: {
+          body: {
+            email: "test@test.com",
+            password: "testpass",
+          },
+        },
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "users/check-by-email") {
+                return {
+                  rows: [],
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+          jwt: jwtService,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.status;
+      const expected = 403;
+
+      tap.strictEqual(actual, expected, "Convert an invalid userid to an error");
+    })();
+  }));
+
+  tap.test("POST /login/by-device-identifier", (async function (tap) {
+    const handler = getRoute(rootGroup, "POST", "/login/by-device-identifier").handler;
+
+    await (async function () {
+      const ctx = {
+        request: {
+          body: {
+            "device_identifier": "testdeviceid",
+          },
+        },
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "users/check-by-device-identifier") {
+                return {
+                  rows: [
+                    {
+                      "user_id": 1,
                     },
-                    logger,
-                    jwt: jwtService,
-                },
-            };
+                  ]    
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+          jwt: jwtService,
+        },
 
-            yield handler(ctx, next);
+      };
 
-            const actual = ctx.body.token.data;
-            const expected = {
-                "user_id": 1,
-            };
+      await handler(ctx, next);
 
-            tap.strictDeepEquals(actual, expected, "Convert a valid userid to a token");
-        })();
+      const actual = ctx.body.token.data;
+      const expected = {
+        "user_id": 1,
+      };
 
-        yield a(function* () {
-            const ctx = {
-                request: {
-                    body: {
-                        email: "test@test.com",
-                        password: "testpass",
-                    },
-                },
-                services: {
-                    db: {
-                        query: a(function* (logger, {
-                            name,
-                        }) {
-                            if (name === "users/check-by-email") {
-                                return [];
-                            }
-                            return void(0);
-                        }),
-                    },
-                    logger,
-                    jwt: jwtService,
-                },
+      tap.strictDeepEquals(actual, expected, "Convert a valid deviceid to a token");
+    })();
 
-            };
+    await (async function () {
+      const ctx = {
+        request: {
+          body: {
+            "device_identifier": "testdeviceid",
+          },
+        },
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "users/check-by-device-identifier") {
+                return {
+                  rows: []
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+          jwt: jwtService,
+        },
+      };
 
-            yield handler(ctx, next);
+      await handler(ctx, next);
 
-            const actual = ctx.status;
-            const expected = 403;
+      const actual = ctx.status;
+      const expected = 403;
 
-            tap.strictEqual(actual, expected, "Convert an invalid userid to an error");
-        })();
+      tap.strictEqual(actual, expected, "Convert an invalid deviceid to an error");
+    })();
+  }));
 
-
-
-
-
-    }));
-
-    tap.test("POST /login/by-device-identifier", a(function* (tap) {
-        const handler = getRoute(rootGroup, "POST", "/login/by-device-identifier").handler;
-
-        yield a(function* () {
-            const ctx = {
-                request: {
-                    body: {
-                        "device_identifier": "testdeviceid",
-                    },
-                },
-                services: {
-                    db: {
-                        query: a(function* (logger, {
-                            name,
-                        }) {
-                            if (name === "users/check-by-device-identifier") {
-                                return [
-                                    {
-                                        "user_id": 1,
-                                    },
-                                ];
-                            }
-                            return void(0);
-                        }),
-                    },
-                    logger,
-                    jwt: jwtService,
-                },
-
-            };
-
-            yield handler(ctx, next);
-
-            const actual = ctx.body.token.data;
-            const expected = {
-                "user_id": 1,
-            };
-
-            tap.strictDeepEquals(actual, expected, "Convert a valid deviceid to a token");
-        })();
-
-        yield a(function* () {
-            const ctx = {
-                request: {
-                    body: {
-                        "device_identifier": "testdeviceid",
-                    },
-                },
-                services: {
-                    db: {
-                        query: a(function* (logger, {
-                            name,
-                        }) {
-                            if (name === "users/check-by-device-identifier") {
-                                return [];
-                            }
-                            return void(0);
-                        }),
-                    },
-                    logger,
-                    jwt: jwtService,
-                },
-            };
-
-            yield handler(ctx, next);
-
-            const actual = ctx.status;
-            const expected = 403;
-
-            tap.strictEqual(actual, expected, "Convert an invalid deviceid to an error");
-        })();
-     }));
-
-    tap.end();
+  tap.end();
 });

@@ -1,5 +1,5 @@
 const DuplicateNameError = require("../../errors/duplicate-name-error");
-const queries = require("../../db/queries");
+const transactions = require("../../db/transactions");
 
 module.exports = {
   path: "/items",
@@ -57,7 +57,7 @@ module.exports = {
         const { db, logger } = ctx.services;
 
         const itemName = ctx.request.body.name;
-        const itemDescription = ctx.request.body.description;
+        const itemDescription = ctx.request.body.description || null;
         const categoryId = ctx.request.body.category_id;
 
         if (!itemName) {
@@ -67,12 +67,12 @@ module.exports = {
         } else {
           try {
             ctx.body = {
-              "item_id": await queries.items.addAndCategorizeOne(db, logger, [
-                ctx.state.householdId,
-                itemName,
-                itemDescription,
+              "item_id": await transactions.items.addAndCategorizeItem(db, logger, {
+                householdId: ctx.state.householdId,
+                name: itemName,
+                description: itemDescription,
                 categoryId,
-              ]),
+              }),
             };
           } catch (e) {
             if (e instanceof DuplicateNameError) {
