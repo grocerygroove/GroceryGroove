@@ -295,5 +295,64 @@ module.exports = {
 
       }),
     },
+
+    {
+      method: "delete",
+      path: "/item",
+
+      middlewares: [
+        "parseJsonBody",
+      ],
+
+      produces: [
+        "application/json",
+      ],
+
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          type: "integer",
+        },
+        {
+          name: "grocery_list_item_id",
+          in: "body",
+          required: true,
+          type: "integer",
+        },
+      ],
+
+      responses: {
+        200: {},
+        400: {},
+      },
+
+      handler: (async function (ctx, next) {
+        const { db, logger } = ctx.services;
+
+        const userId = ctx.state.userId;
+        const groceryId = ctx.id;
+        const groceryListItemId = ctx.request.body.grocery_list_item_id;
+
+        if (!groceryListId || !groceryListId.toString().match(/^\d+$/)) {
+          ctx.throw(400, "Invalid or missing Grocery List id");
+        } else if (!groceryListItemId || !groceryListItemId.toString().match(/^\d+$/)) {
+          ctx.throw(400, "Invalid or missing Grocery List Item id");
+        } else {
+          const deletedCount = await queries.groceryLists.items.removeOne(db, logger, {
+            userId,
+            groceryListId,
+            groceryListItemId,
+          });
+
+          ctx.status = deletedCount == 1 ? 200 : 400;
+
+          await queries.groceryLists.touchAccessLog(db, logger, {
+            groceryListId,
+          });
+        }
+      }),
+    },
   ],
 };

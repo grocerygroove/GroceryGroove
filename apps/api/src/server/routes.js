@@ -27,7 +27,6 @@ module.exports = {
                 require("./routes/signup"),
                 require("./routes/households"),
                 require("./routes/users"),
-                require("./routes/items"),
             ],
         },
 

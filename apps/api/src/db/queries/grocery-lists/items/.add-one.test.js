@@ -13,8 +13,8 @@ const logger = {
   child: () => { return logger; },
 };
 
-tap.test("db/queries/grocery-lists/items/add-one", tap => {
-  tap.test("clean insert", (async function (tap) {
+tap.test("db/queries/grocery-lists/items/add-one", async (tap) => {
+  await (async () => {
     await resetTestingDb();
 
     const db = new Pool({
@@ -78,11 +78,11 @@ tap.test("db/queries/grocery-lists/items/add-one", tap => {
               and added_by_id = ${ defaultTestUser.user_id }`,
     })).rows[0].count);
 
-    tap.assert(endCount > startCount);
+    tap.assert(endCount > startCount, "clean insert");
     await db.end();
-  }));
+  })();
 
-  tap.test("user can insert item with custom quantity type", (async function (tap) {
+  await (async () => {
     await resetTestingDb();
 
     const db = new Pool({
@@ -160,11 +160,11 @@ tap.test("db/queries/grocery-lists/items/add-one", tap => {
               and added_by_id = ${ defaultTestUser.user_id }`,
     })).rows[0].count);
 
-    tap.assert(endCount > startCount);
+    tap.assert(endCount > startCount,"user can insert item with custom quantity type");
     await db.end();
-  }));
+  })();
 
-  tap.test("user cannot insert into grocery list they aren't a part of", (async function (tap) {
+  await (async () => {
     await resetTestingDb();
 
     const db = new Pool({
@@ -229,11 +229,11 @@ tap.test("db/queries/grocery-lists/items/add-one", tap => {
               and added_by_id = ${ defaultTestUser.user_id }`,
     })).rows[0].count);
 
-    tap.assert(endCount == startCount);
+    tap.assert(endCount == startCount, "user cannot insert into grocery list they aren't a part of");
     await db.end();
-  }));
+  })();
 
-  tap.test("user cannot insert a non-categorized item into grocery list", (async function (tap) {
+  await (async () => {
     await resetTestingDb();
 
     const db = new Pool({
@@ -297,11 +297,11 @@ tap.test("db/queries/grocery-lists/items/add-one", tap => {
               and added_by_id = ${ defaultTestUser.user_id }`,
     })).rows[0].count);
 
-    tap.assert(endCount == startCount);
+    tap.assert(endCount == startCount,"user cannot insert a non-categorized item into grocery list");
     await db.end();
-  }));
+  })();
 
-  tap.test("user cannot insert a quantity type that doesn't exist", (async function (tap) {
+  await (async () => {
     await resetTestingDb();
 
     const db = new Pool({
@@ -365,9 +365,9 @@ tap.test("db/queries/grocery-lists/items/add-one", tap => {
               and added_by_id = ${ defaultTestUser.user_id }`,
     })).rows[0].count);
 
-    tap.assert(endCount == startCount);
+    tap.assert(endCount == startCount,"user cannot insert a quantity type that doesn't exist");
     await db.end();
-  }));
+  })();
 
   tap.end();
 });
