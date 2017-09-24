@@ -1,6 +1,9 @@
 const getRoute = require("koa-group-router/get-route");
 const rootGroup = require("../routes");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
+const InvalidCategoryError = require("../../errors/invalid-category-error");
+const InvalidGroceryListError = require("../../errors/invalid-grocery-list-error");
+const InvalidQuantityTypeError = require("../../errors/invalid-quantity-type-error");
 const tap = require("tap");
 
 tap.test("server/routes/grocery-lists", tap => {
@@ -426,48 +429,124 @@ tap.test("server/routes/grocery-lists", tap => {
 
   tap.test("POST /grocery-lists/:id/item", (async function (tap) {
     const handler = getRoute(rootGroup, "POST", "/grocery-lists/:id/item").handler;
+    const goodDb = {
+      query: (async function ({
+        name,
+      }) {
+        if (name === "grocery-lists/touch-access-log") {
+          return {
+            rows: [],
+          };
+        }
+        return void(0);
+      }),
+      connect: (async function(){
+        return {
+          query: (async function ({
+            name,
+          }) {
+            if (name === "items/get-item-by-name" || 
+              name === "items/create-item") {
+              let returnVal = {};
+              returnVal.rows = [
+                {
+                  "item_id": 2,
+                },
+              ];
+              return returnVal;
+            } else if (name === "items/create-category-item") {
+              return {
+                rows: [],
+              };
+            } else if (name === "grocery-lists/get-all") {
+              return {
+                rows: [
+                  {
+                    "grocery_list_id": 1,
+                  },
+                  {
+                    "grocery_list_id": 2,
+                  },
+                  {
+                    "grocery_list_id": 3,
+                  },
+                ],
+              };
+            } else if (name === "categories/get-all") {
+              return {
+                rows: [
+                  {
+                    "category_id": 1,
+                  },
+                  {
+                    "category_id": 2,
+                  },
+                  {
+                    "category_id": 3,
+                  },
+                  {
+                    "category_id": 4,
+                  },
+                ],
+              };
+            } else if (name === "quantity-types/get-all") {
+              return {
+                rows: [
+                  {
+                    "quantity_type_id": 1,
+                  },
+                  {
+                    "quantity_type_id": 2,
+                  },
+                  {
+                    "quantity_type_id": 3,
+                  },
+                  {
+                    "quantity_type_id": 4,
+                  },
+                ],
+              };
+            } else if (name === "grocery-lists/items/add-one") {
+              return {
+                rows: [
+                  {
+                    "grocery_list_item_id": 2,
+                  },
+                ],
+              };
+            }
+            return void(0);
+          }),
+          release:() => Promise.resolve(void(0)),
+        };
+      }),
+    };
 
     await (async function () {
       const ctx = {
         body: {
         },
 
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
         id: "1",
 
         request: {
           body: {
-            "item_id": "1",
-            "quantity_type_id": "1",
-            "quantity": "2",
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
+            "quantity": 2,
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
-        },
-
-        state: {
-          userId: 1,
         },
       };
 
@@ -475,7 +554,7 @@ tap.test("server/routes/grocery-lists", tap => {
       await handler(ctx, next);
 
       const actual = ctx.body.grocery_list_item_id;
-      const expected = 1;
+      const expected = 2;
 
       tap.strictEquals(actual, expected, "Add an item to a grocery list");
     })();
@@ -485,43 +564,26 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
         id: "1",
 
         request: {
           body: {
-            "quantity_type_id": "1",
-            "quantity": "2",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
+            "quantity": 2,
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
         },
-
-        state: {
-          userId: 1,
-        },
-
         throw: (status) => {
           ctx.status = status;
         },
@@ -531,7 +593,7 @@ tap.test("server/routes/grocery-lists", tap => {
       const actual = ctx.status;
       const expected = 400;
 
-      tap.strictEquals(actual, expected, "Missing item_id results in a status of 400");
+      tap.strictEquals(actual, expected, "Missing item_name results in a status of 400");
     })();
 
     await (async function () {
@@ -539,98 +601,26 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: "1",
-
-        request: {
-          body: {
-            "item_id": "notadigit",
-            "quantity_type_id": "1",
-            "quantity": "2",
-          },
-        },
-
-        services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
-          logger,
-        },
-
         state: {
           userId: 1,
-        },
-
-        throw: (status) => {
-          ctx.status = status;
-        },
-      };
-
-      await handler(ctx, next);
-      const actual = ctx.status;
-      const expected = 400;
-
-      tap.strictEquals(actual, expected, "Invalid item_id results in a status of 400");
-    })();
-
-    await (async function () {
-      const ctx = {
-        body: {
+          householdId: 1,
         },
 
         id: "1",
 
         request: {
           body: {
-            "item_id": "1",
-            "quantity": "2",
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity": 2,
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
         },
-
-        state: {
-          userId: 1,
-        },
-
         throw: (status) => {
           ctx.status = status;
         },
@@ -648,44 +638,27 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
         id: "1",
 
         request: {
           body: {
-            "item_id": "1",
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
             "quantity_type_id": "notadigit",
-            "quantity": "2",
+            "quantity": 2,
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
         },
-
-        state: {
-          userId: 1,
-        },
-
         throw: (status) => {
           ctx.status = status;
         },
@@ -703,41 +676,25 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
         id: "1",
 
         request: {
           body: {
-            "item_id": "1",
-            "quantity_type_id": "1",
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
-        },
-
-        state: {
-          userId: 1,
         },
 
         throw: (status) => {
@@ -757,44 +714,27 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
         id: "1",
 
         request: {
           body: {
-            "item_id": "1",
-            "quantity_type_id": "1",
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
             "quantity": "notadigit",
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
         },
-
-        state: {
-          userId: 1,
-        },
-
         throw: (status) => {
           ctx.status = status;
         },
@@ -813,42 +753,25 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
         request: {
           body: {
-            "item_id": "1",
-            "quantity_type_id": "1",
-            "quantity": "2",
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
+            "quantity": 2,
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
         },
-
-        state: {
-          userId: 1,
-        },
-
         throw: (status) => {
           ctx.status = status;
         },
@@ -868,42 +791,25 @@ tap.test("server/routes/grocery-lists", tap => {
 
         id: "grocList",
 
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
         request: {
           body: {
-            "item_id": "1",
-            "quantity_type_id": "1",
-            "quantity": "2",
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
+            "quantity": 2,
           },
         },
 
         services: {
-          db: {
-            query: (async function ({
-              name,
-            }) {
-              if (name === "grocery-lists/items/add-one") {
-                let returnVal = {};
-                returnVal.rows = [
-                  {
-                    "grocery_list_item_id": 1,
-                  },
-                ];
-                return returnVal;
-              } else if (name === "grocery-lists/touch-access-log") {
-                return {
-                  rows: [],
-                };
-              }
-              return void(0);
-            }),
-          },
+          db: goodDb,
           logger,
         },
-
-        state: {
-          userId: 1,
-        },
-
         throw: (status) => {
           ctx.status = status;
         },
@@ -914,6 +820,347 @@ tap.test("server/routes/grocery-lists", tap => {
       const expected = 400;
 
       tap.strictEquals(actual, expected, "Invalid grocery list id results in a status of 400");
+    })();
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        id: 1,
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
+            "quantity": 2,
+          },
+        },
+
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/touch-access-log") {
+                return {
+                  rows: [],
+                };
+              }
+              return void(0);
+            }),
+            connect: (async function(){
+              return {
+                query: (async function ({
+                  name,
+                }) {
+                  if (name === "items/get-item-by-name" || 
+                    name === "items/create-item") {
+                    let returnVal = {};
+                    returnVal.rows = [
+                      {
+                        "item_id": 2,
+                      },
+                    ];
+                    return returnVal;
+                  } else if (name === "items/create-category-item") {
+                    return {
+                      rows: [],
+                    };
+                  } else if (name === "grocery-lists/get-all") {
+                    return {
+                      rows: [
+                        {
+                          "grocery_list_id": 1,
+                        },
+                        {
+                          "grocery_list_id": 2,
+                        },
+                        {
+                          "grocery_list_id": 3,
+                        },
+                      ],
+                    };
+                  } else if (name === "categories/get-all") {
+                    throw new InvalidCategoryError("here");
+                  } else if (name === "quantity-types/get-all") {
+                    return {
+                      rows: [
+                        {
+                          "quantity_type_id": 1,
+                        },
+                        {
+                          "quantity_type_id": 2,
+                        },
+                        {
+                          "quantity_type_id": 3,
+                        },
+                        {
+                          "quantity_type_id": 4,
+                        },
+                      ],
+                    };
+                  } else if (name === "grocery-lists/items/add-one") {
+                    return {
+                      rows: [
+                        {
+                          "grocery_list_item_id": 2,
+                        },
+                      ],
+                    };
+                  }
+                  return void(0);
+                }),
+                release:() => Promise.resolve(void(0)),
+              };
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "InvalidCategoryError results in status of 400");
+    })();
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        id: 1,
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
+            "quantity": 2,
+          },
+        },
+
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/touch-access-log") {
+                return {
+                  rows: [],
+                };
+              }
+              return void(0);
+            }),
+            connect: (async function(){
+              return {
+                query: (async function ({
+                  name,
+                }) {
+                  if (name === "items/get-item-by-name" || 
+                    name === "items/create-item") {
+                    let returnVal = {};
+                    returnVal.rows = [
+                      {
+                        "item_id": 2,
+                      },
+                    ];
+                    return returnVal;
+                  } else if (name === "items/create-category-item") {
+                    return {
+                      rows: [],
+                    };
+                  } else if (name === "grocery-lists/get-all") {
+                    return {
+                      rows: [
+                        {
+                          "grocery_list_id": 1,
+                        },
+                        {
+                          "grocery_list_id": 2,
+                        },
+                        {
+                          "grocery_list_id": 3,
+                        },
+                      ],
+                    };
+                  } else if (name === "categories/get-all") {
+                    throw new InvalidGroceryListError("here");
+                  } else if (name === "quantity-types/get-all") {
+                    return {
+                      rows: [
+                        {
+                          "quantity_type_id": 1,
+                        },
+                        {
+                          "quantity_type_id": 2,
+                        },
+                        {
+                          "quantity_type_id": 3,
+                        },
+                        {
+                          "quantity_type_id": 4,
+                        },
+                      ],
+                    };
+                  } else if (name === "grocery-lists/items/add-one") {
+                    return {
+                      rows: [
+                        {
+                          "grocery_list_item_id": 2,
+                        },
+                      ],
+                    };
+                  }
+                  return void(0);
+                }),
+                release:() => Promise.resolve(void(0)),
+              };
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "InvalidGroceryListError results in status of 400");
+    })();
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        id: 1,
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            "item_name": "Pop Tarts",
+            "item_description": "A tasty treat.",
+            "category_id": 4,
+            "quantity_type_id": 1,
+            "quantity": 2,
+          },
+        },
+
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/touch-access-log") {
+                return {
+                  rows: [],
+                };
+              }
+              return void(0);
+            }),
+            connect: (async function(){
+              return {
+                query: (async function ({
+                  name,
+                }) {
+                  if (name === "items/get-item-by-name" || 
+                    name === "items/create-item") {
+                    let returnVal = {};
+                    returnVal.rows = [
+                      {
+                        "item_id": 2,
+                      },
+                    ];
+                    return returnVal;
+                  } else if (name === "items/create-category-item") {
+                    return {
+                      rows: [],
+                    };
+                  } else if (name === "grocery-lists/get-all") {
+                    return {
+                      rows: [
+                        {
+                          "grocery_list_id": 1,
+                        },
+                        {
+                          "grocery_list_id": 2,
+                        },
+                        {
+                          "grocery_list_id": 3,
+                        },
+                      ],
+                    };
+                  } else if (name === "categories/get-all") {
+                    throw new InvalidQuantityTypeError("here");
+                  } else if (name === "quantity-types/get-all") {
+                    return {
+                      rows: [
+                        {
+                          "quantity_type_id": 1,
+                        },
+                        {
+                          "quantity_type_id": 2,
+                        },
+                        {
+                          "quantity_type_id": 3,
+                        },
+                        {
+                          "quantity_type_id": 4,
+                        },
+                      ],
+                    };
+                  } else if (name === "grocery-lists/items/add-one") {
+                    return {
+                      rows: [
+                        {
+                          "grocery_list_item_id": 2,
+                        },
+                      ],
+                    };
+                  }
+                  return void(0);
+                }),
+                release:() => Promise.resolve(void(0)),
+              };
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "InvalidQuantityTypeError results in status of 400");
     })();
   }));
 
