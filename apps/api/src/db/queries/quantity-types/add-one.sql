@@ -6,6 +6,8 @@
   namedParameters: {
     enabled: true,
   },
+
+  returns: "one",
 }
 INSERT INTO quantity_types (
   household_id, 
@@ -19,3 +21,4 @@ VALUES (
   :pluralName, 
   :singularAbbreviation, 
   :pluralAbbreviation)
+RETURNING quantity_type_id
