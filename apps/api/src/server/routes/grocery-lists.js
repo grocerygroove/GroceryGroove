@@ -298,7 +298,7 @@ module.exports = {
 
     {
       method: "delete",
-      path: "/item",
+      path: "/:id/item",
 
       middlewares: [
         "parseJsonBody",
@@ -332,7 +332,7 @@ module.exports = {
         const { db, logger } = ctx.services;
 
         const userId = ctx.state.userId;
-        const groceryId = ctx.id;
+        const groceryListId = ctx.id;
         const groceryListItemId = ctx.request.body.grocery_list_item_id;
 
         if (!groceryListId || !groceryListId.toString().match(/^\d+$/)) {

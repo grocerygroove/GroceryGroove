@@ -1164,5 +1164,218 @@ tap.test("server/routes/grocery-lists", tap => {
     })();
   }));
 
+  tap.test("DELETE /grocery-lists/:id/item", (async function (tap) {
+    const handler = getRoute(rootGroup, "DELETE", "/grocery-lists/:id/item").handler;
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        id: 1,
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            "grocery_list_item_id": 1,
+          },
+        },
+
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/touch-access-log") {
+                return {
+                  rows: [],
+                };
+              } else if (name === "grocery-lists/items/remove-one") {
+                return {
+                  rows: [
+                    {
+                      "deleted_count": 1,
+                    },
+                  ],
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 200;
+
+      tap.strictEquals(actual, expected, "Valid delete results in a status of 200");
+    })();
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        id: 1,
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            "grocery_list_item_id": 1,
+          },
+        },
+
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/touch-access-log") {
+                return {
+                  rows: [],
+                };
+              } else if (name === "grocery-lists/items/remove-one") {
+                return {
+                  rows: [
+                    {
+                      "deleted_count": 0,
+                    },
+                  ],
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Deleted count of 0 returns a status of 400");
+    })();
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            "grocery_list_item_id": 1,
+          },
+        },
+
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/touch-access-log") {
+                return {
+                  rows: [],
+                };
+              } else if (name === "grocery-lists/items/remove-one") {
+                return {
+                  rows: [
+                    {
+                      "deleted_count": 0,
+                    },
+                  ],
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Missing id results in a status of 400");
+    })();
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        id: 1,
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+          },
+        },
+
+        services: {
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/touch-access-log") {
+                return {
+                  rows: [],
+                };
+              } else if (name === "grocery-lists/items/remove-one") {
+                return {
+                  rows: [
+                    {
+                      "deleted_count": 0,
+                    },
+                  ],
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Missing grocery_list_item_id results in a status of 400");
+    })();
+  }));
+
   tap.end();
 });
