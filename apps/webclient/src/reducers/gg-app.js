@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux-immutable';
 import credentialsReducer from '../pages/login/credentials-reducer';
+import groceryListsReducer from '../pages/grocery-lists/grocery-lists-reducer';
 import loginReducer from '../pages/login/login-reducer';
 import navigationReducer from '../components/navigation-reducer';
 import settingsReducer from '../pages/settings/settings-reducer';
@@ -14,4 +15,5 @@ export default combineReducers({
   navigation: navigationReducer,
   user: userReducer,
   settings: settingsReducer,
+  groceryLists: groceryListsReducer,
 });

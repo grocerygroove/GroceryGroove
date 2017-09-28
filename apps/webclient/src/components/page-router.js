@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import GroceryListComponent from '../pages/grocery-list/grocery-list';
+import GroceryListComponent from '../pages/grocery-lists/grocery-list';
 import { listenForHashChange } from '../utils/hash-router';
 import LoginComponent from '../pages/login/login';
 import { PropTypes } from 'react';
