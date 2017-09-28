@@ -1164,8 +1164,8 @@ tap.test("server/routes/grocery-lists", tap => {
     })();
   }));
 
-  tap.test("DELETE /grocery-lists/:id/item", (async function (tap) {
-    const handler = getRoute(rootGroup, "DELETE", "/grocery-lists/:id/item").handler;
+  tap.test("DELETE /grocery-lists/:id/items/:itemId", (async function (tap) {
+    const handler = getRoute(rootGroup, "DELETE", "/grocery-lists/:id/items/:itemId").handler;
 
     await (async function () {
       const ctx = {
@@ -1173,6 +1173,7 @@ tap.test("server/routes/grocery-lists", tap => {
         },
 
         id: 1,
+        itemId: 1,
 
         state: {
           userId: 1,
@@ -1181,7 +1182,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
-            "grocery_list_item_id": 1,
           },
         },
 
@@ -1226,6 +1226,7 @@ tap.test("server/routes/grocery-lists", tap => {
         },
 
         id: 1,
+        itemId: 1,
 
         state: {
           userId: 1,
@@ -1234,7 +1235,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
-            "grocery_list_item_id": 1,
           },
         },
 
@@ -1283,9 +1283,10 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
+        itemId: 1,
+
         request: {
           body: {
-            "grocery_list_item_id": 1,
           },
         },
 

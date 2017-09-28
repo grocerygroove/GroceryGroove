@@ -298,7 +298,7 @@ module.exports = {
 
     {
       method: "delete",
-      path: "/:id/item",
+      path: "/:id/items/:itemId",
 
       middlewares: [
         "parseJsonBody",
@@ -316,8 +316,8 @@ module.exports = {
           type: "integer",
         },
         {
-          name: "grocery_list_item_id",
-          in: "body",
+          name: "itemId",
+          in: "path",
           required: true,
           type: "integer",
         },
@@ -333,7 +333,7 @@ module.exports = {
 
         const userId = ctx.state.userId;
         const groceryListId = ctx.id;
-        const groceryListItemId = ctx.request.body.grocery_list_item_id;
+        const groceryListItemId = ctx.itemId;
 
         if (!groceryListId || !groceryListId.toString().match(/^\d+$/)) {
           ctx.throw(400, "Invalid or missing Grocery List id");
