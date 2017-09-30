@@ -19,4 +19,6 @@ export default fromJS({
   signup: {
     signupDialogVisible: false,
   },
+  groceryLists: {
+  },
 });

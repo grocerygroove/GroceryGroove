@@ -1,3 +1,4 @@
+import addGroceryListReducer from '../pages/grocery-lists/components/add-grocery-list-reducer';
 import { combineReducers } from 'redux-immutable';
 import credentialsReducer from '../pages/login/credentials-reducer';
 import groceryListsReducer from '../pages/grocery-lists/grocery-lists-reducer';
@@ -15,5 +16,8 @@ export default combineReducers({
   page: pageReducer,
   user: userReducer,
   settings: settingsReducer,
-  groceryLists: groceryListsReducer,
+  groceryLists: combineReducers({
+    state: groceryListsReducer, 
+    addGroceryListDialog: addGroceryListReducer,
+  }),
 });
