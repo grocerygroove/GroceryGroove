@@ -23,7 +23,6 @@ class SnackBar extends React.PureComponent {
       'snackbar',
     ];
     if (this.props.show) {
-      console.log("show");
       classList.push('show');
     }
 

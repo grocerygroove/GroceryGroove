@@ -1,4 +1,5 @@
 import { getGroceryLists } from '../grocery-lists-actions';
+import { setSelectedGroceryList } from '../grocery-lists-actions';
 import { setSnackbarMessage } from '../../../components/page-actions';
 import { toggleSnackbar } from '../../../components/page-actions';
 
@@ -27,12 +28,14 @@ export const createGroceryList = (householdId, token, groceryListName) =>
       dispatch(createGroceryListRejected("failed"));
       throw err;
     }
-    const groceryListId = (JSON.parse(response.data)).grocery_list_id;
+    const groceryListId = parseInt((JSON.parse(response.data)).grocery_list_id);
     await dispatch(getGroceryLists(token, householdId));
     dispatch(toggleAddGroceryListDialog());
     dispatch(changeGroceryListName(""));
+    dispatch(setSelectedGroceryList(groceryListId));
     dispatch(setSnackbarMessage("Grocery List Added"));
     dispatch(toggleSnackbar());
+
     dispatch(createGroceryListFulfilled(groceryListId));
   }
 

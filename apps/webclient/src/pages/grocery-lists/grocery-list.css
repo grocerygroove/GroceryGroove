@@ -1,0 +1,41 @@
+#grocery-list-page {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "selectGroceryList selectGroceryList na addGroceryListButton"
+                       "otherContent otherContent otherContent otherContent";
+}
+
+#grocery-list-page .select-grocery-list {
+  grid-area: selectGroceryList;
+  margin-top: 10px;
+  float: left;
+}
+
+#grocery-list-page .add-grocery-list-button {
+  grid-area: addGroceryListButton;
+  margin-top: 10px;
+  float: right;
+}
+
+#grocery-list-page .other-content {
+  grid-area: otherContent;
+  margin-top: 10px;
+}
+
+@media (max-width : 960px) {
+  #grocery-list-page {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "selectGroceryList selectGroceryList addGroceryListButton"
+                         "otherContent otherContent otherContent";
+  }
+}
+
+@media (max-width : 700px) {
+  #grocery-list-page {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "selectGroceryList addGroceryListButton"
+                         "otherContent otherContent";
+  }
+}
+

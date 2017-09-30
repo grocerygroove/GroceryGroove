@@ -1,5 +1,5 @@
 div.button {
-  display: block;
+  display: inline-block;
   position: relative;
   font-family: inherit;
   padding: 6px;

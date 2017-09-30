@@ -52,3 +52,12 @@ export function setLastChecked() {
     payload: new Date(),
   };
 }
+
+export const SET_SELECTED_GROCERY_LIST = 'SET_SELECTED_GROCERY_LIST';
+
+export function setSelectedGroceryList(id) {
+  return {
+    type: SET_SELECTED_GROCERY_LIST,
+    payload: id,
+  };
+}
