@@ -6,8 +6,8 @@
 
   returns: "one",
 }
-WITH users_households AS (
-  SELECT household_id
+WITH users_households as (
+  select household_id
   FROM households_users
   WHERE user_id = :userId
 ), category_items_sub AS (

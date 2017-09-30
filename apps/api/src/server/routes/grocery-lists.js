@@ -12,6 +12,9 @@ const cacheKeys = {
   getSingleGroceryListKey: (householdId, groceryListId) => {
     return `getSingleGroceryList${groceryListId}Household${householdId}`;
   },
+  getGroceryListItemsKey: (householdId, groceryListId) => {
+    return `getGroceryListItems${groceryListId}Household${householdId}`;
+  },
 };
 
 module.exports = {
@@ -180,6 +183,55 @@ module.exports = {
           }
         }
       }),
+    },
+
+    {
+      method: "get",
+      path: "/:id/items",
+
+      produces: [
+        "application/json",
+      ],
+
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          type: "integer",
+        },
+      ],
+
+      responses: {
+        200: {},
+        400: {},
+      },
+
+      handler: (async function (ctx, next) {
+        const { cacher, db, logger } = ctx.services;
+
+        if (!ctx.id || !ctx.id.match(/^\d+$/)) {
+          ctx.throw(400, "Invalid or missing Grocery List id");
+        } else {
+          let response;
+          const cacheKey = cacheKeys.getGroceryListItemsKey(ctx.state.householdId, ctx.id);
+          const cachedResult = await cacher.get(cacheKey);
+          if (cachedResult) {
+            response = cachedResult;
+          } else {
+            response = {
+              "grocery_list_items": await queries.groceryLists.items.getAll(db, logger, {
+                householdId: ctx.state.householdId,
+                userId: ctx.state.userId,
+                groceryListId: ctx.id,
+              }),
+            };
+            await cacher.set(cacheKey, response);
+          }
+          ctx.body = response;
+        }
+      }),
+
     },
 
     {

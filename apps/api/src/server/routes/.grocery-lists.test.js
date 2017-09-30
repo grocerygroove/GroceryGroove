@@ -426,6 +426,160 @@ tap.test("server/routes/grocery-lists", tap => {
     })();
   }));
 
+  tap.test("GET /grocery-lists/:id/items", (async function (tap) {
+    const handler = getRoute(rootGroup, "GET", "/grocery-lists/:id/items").handler;
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        id: "1",
+
+        request: {
+          body: {
+          },
+        },
+
+        services: {
+          cacher,
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/items/get-all") {
+                return {
+                  rows: [
+                    {
+                      "item_id": 1,
+                      "item_name": "Bread",
+                      "item_description": "Grain thing",
+                      "category_id": 2,
+                      "category_name": "Bread/Bakery",
+                      "quantity_type_id": 1,
+                      "singular_name": "piece",
+                      "plural_name": "pieces",
+                      "singular_abbreviation": "pc",
+                      "plural_abbreviation": "pcs",
+                      "quantity": "1",
+                      "checked": false,
+                      "added_by_id": 1,
+                      "added_by_nickname": "Bobbo",
+                    },
+                    {
+                      "item_id": 2,
+                      "item_name": "Milk",
+                      "item_description": "Dairy stuff",
+                      "category_id": 4,
+                      "category_name": "Dairy",
+                      "quantity_type_id": 3,
+                      "singular_name": "gallon",
+                      "plural_name": "gallons",
+                      "singular_abbreviation": "gal",
+                      "plural_abbreviation": null,
+                      "quantity": "2",
+                      "checked": false,
+                      "added_by_id": 2,
+                      "added_by_nickname": "Jerry",
+                    }
+                  ],
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.grocery_list_items;
+      const expected = [
+        {
+          "item_id": 1,
+          "item_name": "Bread",
+          "item_description": "Grain thing",
+          "category_id": 2,
+          "category_name": "Bread/Bakery",
+          "quantity_type_id": 1,
+          "singular_name": "piece",
+          "plural_name": "pieces",
+          "singular_abbreviation": "pc",
+          "plural_abbreviation": "pcs",
+          "quantity": "1",
+          "checked": false,
+          "added_by_id": 1,
+          "added_by_nickname": "Bobbo",
+        },
+        {
+          "item_id": 2,
+          "item_name": "Milk",
+          "item_description": "Dairy stuff",
+          "category_id": 4,
+          "category_name": "Dairy",
+          "quantity_type_id": 3,
+          "singular_name": "gallon",
+          "plural_name": "gallons",
+          "singular_abbreviation": "gal",
+          "plural_abbreviation": null,
+          "quantity": "2",
+          "checked": false,
+          "added_by_id": 2,
+          "added_by_nickname": "Jerry",
+        }
+      ];
+
+      tap.deepEquals(actual, expected, "Get all grocery list items");
+    })();
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+          },
+        },
+
+        services: {
+          cacher,
+          db: {
+            query: (async function ({
+              name,
+            }) {
+              if (name === "grocery-lists/items/get-all") {
+                return {
+                  rows: [],
+                };
+              }
+              return void(0);
+            }),
+          },
+          logger,
+        },
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.status;
+      const expected = 400; 
+      tap.same(actual, expected, "Missing grocery list id results in a status of 400");
+    })();
+  }));
 
   tap.test("POST /grocery-lists/:id/item", (async function (tap) {
     const handler = getRoute(rootGroup, "POST", "/grocery-lists/:id/item").handler;
