@@ -6,6 +6,7 @@ CREATE TABLE grocery_list_items (
     category_id          INTEGER   NOT NULL,
     quantity_type_id     INTEGER   NOT NULL,
     quantity             DECIMAL   NOT NULL,
+    checked              BOOLEAN   NOT NULL DEFAULT FALSE,
     added_by_id          INTEGER    NOT NULL,
     purchased_at         TIMESTAMP     NULL,
     purchased_by_id      INTEGER       NULL,
