@@ -1,22 +1,22 @@
 import { fromJS } from 'immutable';
 
 export default fromJS({
-  signup: {
-    signupDialogVisible: false,
-  },
-  navigation: {
-    page: "login",
-    pageTitle: "Login",
-    drawerOpen: false,
-  },
   login: {
-    snackbar: {
-      open: false,
-      message: "",
-    },
     loginCreds: {
       email: "",
       password: "",
     },
+  },
+  page: {
+    page: "login",
+    pageTitle: "Login",
+    drawerOpen: false,
+    snackbar: {
+      open: false,
+      message: "",
+    },
+  },
+  signup: {
+    signupDialogVisible: false,
   },
 });

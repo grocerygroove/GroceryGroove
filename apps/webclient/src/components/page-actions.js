@@ -1,19 +1,34 @@
 import { changeHash } from '../utils/hash-router';
 import routes from '../routes';
 
-export const CHANGE_PAGE = 'CHANGE_PAGE';
-export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
+export const TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
+
+export function toggleSnackbar(on) {
+  return {
+    type: TOGGLE_SNACKBAR,
+    payload: on,
+  };
+}
+
+export const SET_SNACKBAR_MESSAGE = 'SET_SNACKBAR_MESSAGE';
+
+export function setSnackbarMessage(message) {
+  return {
+    type: SET_SNACKBAR_MESSAGE,
+    payload: message,
+  };
+}
+
+
 export const HASH_CHANGE = 'HASH_CHANGE';
 
-export function changePageAndToggleDrawer(pageName) {
-  return (dispatch, getState) => {
-    return new Promise((resolve) => {
-      return resolve(changeHash(pageName));
-    }).then(()=> {            
-      dispatch(toggleDrawer());            
-    });        
+export const changePageAndToggleDrawer = (pageName) => 
+  async (dispatch, getState) => {
+    await changeHash(pageName);
+    dispatch(toggleDrawer());            
   }
-}
+
+export const CHANGE_PAGE = 'CHANGE_PAGE';
 
 export function changePage(pageName) {
   return {
@@ -23,6 +38,8 @@ export function changePage(pageName) {
     },
   };
 }
+
+export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
 
 export function toggleDrawer() {
   return {
@@ -48,3 +65,4 @@ export function hashChange(hash) {
     }
   }
 }
+

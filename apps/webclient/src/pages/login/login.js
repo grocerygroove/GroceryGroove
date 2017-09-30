@@ -1,5 +1,5 @@
 import Button from '../../components/generic/button/Button';
-import { changePage } from '../../components/navigation-actions';
+import { changePage } from '../../components/page-actions';
 import { clearLoginErrorIfExists } from './login-actions';
 import { connect } from 'react-redux';
 import FaceIcon from 'react-icons/lib/md/face';
@@ -13,11 +13,9 @@ import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';
 import React from 'react';
 import SignupDialog from './login-components/signup-dialog';
-import SnackBar from '../../components/generic/snackbar/SnackBar';
 import TagFace from 'react-icons/lib/md/tag-faces';
 import TextBox from '../../components/generic/textbox/TextBox';
 import { toggleSignupDialog } from './signup-actions';
-import { toggleSnackbar } from './login-actions';
 import validateEmail from '../../utils/validate-email';
 import VpnKeyIcon from 'react-icons/lib/md/vpn-key';
 
@@ -33,8 +31,6 @@ const style = {
 
 
 const LoginComponent = ({
-  snackbarOpen,
-  snackbarMessage,
   loginEmail,
   loginPassword,
   emailErrorText,
@@ -84,12 +80,6 @@ const LoginComponent = ({
               secondary
               onClick={toggleSignup} />
           </span>
-
-          <SnackBar
-            show={snackbarOpen}
-            text={snackbarMessage}
-            onRequestClose={toggleSnackbar}
-          />
         </div>
         <SignupDialog />
       </div>
@@ -98,8 +88,6 @@ const LoginComponent = ({
 };
 
 LoginComponent.propTypes = {
-  snackbarOpen: PropTypes.bool.isRequired,
-  snackbarMessage: PropTypes.string,
   loginEmail: PropTypes.string.isRequired,
   loginPassword: PropTypes.string.isRequired,
   emailErrorText: PropTypes.string,
@@ -111,8 +99,6 @@ LoginComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return Object.assign({}, ownProps, {
-    snackbarOpen: state.getIn([ 'login', 'snackbar', 'open' ]),
-    snackbarMessage: state.getIn([ 'login', 'snackbar', 'message' ]),
     loginEmail: state.getIn([ 'login', 'loginCreds', 'email' ], ''),
     loginPassword: state.getIn([ 'login', 'loginCreds', 'password' ], ''),
     emailErrorText: state.getIn([ 'login', 'loginErrors', 'emailErrorText' ], ''),
@@ -121,9 +107,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleSnackbar: () => {
-      dispatch(toggleSnackbar());
-    },
     onLoginClick: (email, password) => {
       let errors = false;
       //Do some validation

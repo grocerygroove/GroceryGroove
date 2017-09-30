@@ -1,6 +1,8 @@
+import { setSnackbarMessage } from '../../components/page-actions';
+import { toggleSnackbar } from '../../components/page-actions';
+
 export const TOGGLE_SIGNUP_DIALOG = 'TOGGLE_SIGNUP_DIALOG';
 
-export const SIGNUP_BY_EMAIL = 'SIGNUP_BY_EMAIL';
 export const SIGNUP_BY_EMAIL_PENDING = 'SIGNUP_BY_EMAIL_PENDING';
 export const SIGNUP_BY_EMAIL_REJECTED = 'SIGNUP_BY_EMAIL_REJECTED';
 export const SIGNUP_BY_EMAIL_FULFILLED = 'SIGNUP_BY_EMAIL_FULFILLED';
@@ -21,26 +23,31 @@ export function toggleSignupDialog() {
   };
 }
 
-export function signupByEmail(email, nickname, password) {
-  return (dispatch, getState, { api }) => {
+export const signupByEmail = (email, nickname, password) =>
+  async (dispatch, getState, { api }) => {
     dispatch(signupByEmailPending());
-    return api().then(client => {
-      return client.signup.post_signup_by_email({
+
+    let response;
+
+    try {
+      const client = await api();
+      response = await client.signup.post_signup_by_email({
         "bodyparam-signup-by-emailpost": {
           email,
           nickname,
           password,
         },
       });
-    }).then(
-      response => dispatch(signupByEmailFulfilled(response)),
-      error => {
-        const rejectionExplaination = JSON.parse(error.statusText);
-        dispatch(signupByEmailRejected(rejectionExplaination));
-      }
-    );
-  };
-}
+    } catch(error) {
+      const rejectionExplaination = JSON.parse(error.statusText);
+      dispatch(signupByEmailRejected(rejectionExplaination));
+      throw error;
+    }
+
+    dispatch(signupByEmailFulfilled(response));
+    dispatch(setSnackbarMessage("Account Creation Successful"));
+    dispatch(toggleSnackbar());
+  }
 
 export function signupByEmailPending() {
   return {

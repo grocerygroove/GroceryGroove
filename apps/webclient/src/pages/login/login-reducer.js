@@ -10,7 +10,6 @@ import { LOGIN_CREDENTIAL_TYPE_PASSWORD } from './login-actions';
 import { LOGIN_VALIDATION_ERROR } from './login-actions';
 import { PASSWORDS_DONT_MATCH_ERROR } from '../../components/generic-errors';
 import { SIGNUP_BY_EMAIL_FULFILLED } from './signup-actions';
-import { TOGGLE_SNACKBAR } from './login-actions';
 
 export default function loginReducer(state = Immutable.fromJS({}), action) {
   switch (action.type) {
@@ -30,15 +29,6 @@ export default function loginReducer(state = Immutable.fromJS({}), action) {
         .set('requestPending', false)
         .delete('loginErrors')
         .delete('loginCreds');
-    }
-    case SIGNUP_BY_EMAIL_FULFILLED: {
-      return state
-        .updateIn([ 'snackbar', 'open' ], (prevValue) => !prevValue )
-        .setIn([ 'snackbar', 'message' ], "Account creation successful");
-    }
-    case TOGGLE_SNACKBAR: {
-      return state
-        .updateIn([ 'snackbar', 'open' ], prevValue => !prevValue);
     }
     case LOGIN_CREDENTIAL_CHANGE: {
       const credType = action.payload.type;

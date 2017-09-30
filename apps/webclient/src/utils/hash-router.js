@@ -1,4 +1,4 @@
-import { hashChange } from '../components/navigation-actions';
+import { hashChange } from '../components/page-actions';
 
 let currentHash = null;
 

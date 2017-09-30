@@ -33,7 +33,7 @@ RouterComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return Object.assign({}, ownProps, {
-    page: state.getIn([ 'navigation', 'page' ]),
+    page: state.getIn([ 'page', 'page' ]),
   });
 };
 

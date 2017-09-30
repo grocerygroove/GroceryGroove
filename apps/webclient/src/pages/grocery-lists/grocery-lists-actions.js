@@ -2,25 +2,28 @@ export const GET_GROCERY_LISTS_PENDING = 'GET_GROCERY_LISTS_PENDING';
 export const GET_GROCERY_LISTS_REJECTED = 'GET_GROCERY_LISTS_REJECTED';
 export const GET_GROCERY_LISTS_FULFILLED = 'GET_GROCERY_LISTS_FULFILLED';
 
-export function getGroceryLists(token, householdId) {
-  return (dispatch, getState, { api }) => {
+export const getGroceryLists = (token, householdId) =>
+  async (dispatch, getState, { api }) => {
+
     dispatch(getGroceryListsPending());
-    return api().then(client => {
-      return client['grocery-lists'].get_grocery_lists({
+
+    let response;
+
+    try {
+      const client = await api();
+      response = await client['grocery-lists'].get_grocery_lists({
         "token": token,
         "household_id": householdId,
       });
-    }).then(
-      response => {
-        const groceryLists = (JSON.parse(response.data)).grocery_lists;
-        dispatch(getGroceryListsFulfilled(groceryLists));
-      },
-      error => {
-        dispatch(getGroceryListsRejected("failed"));
-      }
-    );
-  };
-}
+
+    } catch (err) {
+      dispatch(getGroceryListsRejected("failed"));
+      throw err;
+    }
+    const groceryLists = (JSON.parse(response.data)).grocery_lists;
+    dispatch(getGroceryListsFulfilled(groceryLists));
+    dispatch(setLastChecked());
+  }
 
 export function getGroceryListsPending() {
   return {
@@ -38,5 +41,14 @@ export function getGroceryListsFulfilled(groceryLists) {
   return {
     type: GET_GROCERY_LISTS_FULFILLED,
     payload: groceryLists,
+  };
+}
+
+export const SET_LAST_CHECKED = 'SET_LAST_CHECKED';
+
+export function setLastChecked() {
+  return {
+    type: SET_LAST_CHECKED,
+    payload: new Date(),
   };
 }

@@ -1,9 +1,7 @@
-import { getHouseholds } from '../../actions/user-actions';
 import { changeHash } from '../../utils/hash-router';
+import { getHouseholds } from '../../actions/user-actions';
 
-export const TOGGLE_SNACKBAR = 'TOGGLE_SNACKBAR';
 
-export const LOGIN_BY_EMAIL = 'LOGIN_BY_EMAIL';
 export const LOGIN_BY_EMAIL_PENDING = 'LOGIN_BY_EMAIL_PENDING';
 export const LOGIN_BY_EMAIL_REJECTED = 'LOGIN_BY_EMAIL_REJECTED';
 export const LOGIN_BY_EMAIL_FULFILLED = 'LOGIN_BY_EMAIL_FULFILLED';
@@ -16,40 +14,32 @@ export const LOGIN_VALIDATION_ERROR = 'LOGIN_VALIDATION_ERROR';
 export const CLEAR_LOGIN_ERROR_IF_EXISTS = 'CLEAR_LOGIN_ERROR_IF_EXISTS';
 
 
-export function toggleSnackbar() {
-  return {
-    type: TOGGLE_SNACKBAR,
-  };
-}
-
-export function loginByEmail(email, password) {
-  return (dispatch, getState, { api }) => {
+export const loginByEmail = (email, password) => 
+  async (dispatch, getState, { api }) => {
     dispatch(loginByEmailPending());
-    return api().then(client => {
-      return client.login.post_login_by_email({
+
+    let response;
+
+    try {
+      const client = await api();
+      response = await client.login.post_login_by_email({
         "bodyparam-login-by-emailpost": {
           email,
           password,
         },
       });
-    }).then(
-      response => {
-        (async () => {
-          const token = (JSON.parse(response.data)).token;
-          await dispatch(loginByEmailFulfilled(token));                
-          await dispatch(getHouseholds(token));
-          changeHash('grocery-list');
-        })();
-      },
-      error => {
-        const statusText = JSON.parse(error.statusText);
-        const returnValue = (statusText && statusText.message) ? statusText.message : void(0);
-        dispatch(loginByEmailRejected(returnValue));
-        throw error;
-      }
-    );
-  };
-}
+    } catch(err) {
+      const statusText = JSON.parse(error.statusText);
+      const returnValue = (statusText && statusText.message) ? statusText.message : void(0);
+      dispatch(loginByEmailRejected(returnValue));
+      throw error;
+    }
+
+    const token = (JSON.parse(response.data)).token;
+    dispatch(loginByEmailFulfilled(token));                
+    await dispatch(getHouseholds(token));
+    changeHash('grocery-list');
+  }
 
 export function loginByEmailPending() {
   return {

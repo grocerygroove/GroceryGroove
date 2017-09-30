@@ -1,6 +1,6 @@
 import AppBar from './generic/appbar/AppBar';
 import IconButton from './generic/button/IconButton';
-import { changePageAndToggleDrawer } from './navigation-actions';
+import { changePageAndToggleDrawer } from './page-actions';
 import { changeHash } from '../utils/hash-router';
 import { clear } from "redux-localstorage-simple";
 import { connect } from 'react-redux';
@@ -11,9 +11,10 @@ import MdList from 'react-icons/lib/md/list';
 import mergeDeep from 'immutable';
 import { PropTypes } from 'react';
 import React from 'react'; 
-import renderIf from 'render-if';
 import SignoutIcon from 'react-icons/lib/md/input';
-import { toggleDrawer } from './navigation-actions';
+import SnackBar from './generic/snackbar/SnackBar';
+import { toggleDrawer } from './page-actions';
+import { toggleSnackbar } from './page-actions';
 
 
 const style = {
@@ -26,19 +27,22 @@ const PageComponent = ({
   pageTitle,
   styleOverride,
   children,
+  snackbarOpen,
+  snackbarMessage,
   drawerOpen, 
   page,
+  toggleSnackbar,
   changePageAndToggleDrawer,
   toggleDrawer,
   doSignout,
 }) => {
   return (
     <div>        
-      {renderIf(page !== "login") (
+      {  page !== "login" &&
         <AppBar
           text={pageTitle}
           onButtonClick={toggleDrawer}/>
-      )}
+      }
       <NavDrawer
         open={drawerOpen}
         onOutClick={toggleDrawer}>
@@ -65,6 +69,11 @@ const PageComponent = ({
         id="page-content-view"
         style={styleOverride ? styleOverride.pageview : {}}>
         {children}
+        <SnackBar
+          show={snackbarOpen}
+          text={snackbarMessage}
+          onRequestClose={toggleSnackbar.bind(null, false)}
+        />
       </div>
     </div>
   );
@@ -74,6 +83,8 @@ PageComponent.propTypes = {
   pageTitle: PropTypes.string,
   styleOverride: PropTypes.object,
   children: PropTypes.element,
+  snackbarOpen: PropTypes.bool.isRequired,
+  snackbarMessage: PropTypes.string,
   drawerOpen: PropTypes.bool.isRequired,
   page: PropTypes.string.isRequired,    
   changePageAndToggleDrawer: PropTypes.func.isRequired,
@@ -83,13 +94,18 @@ PageComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return Object.assign({}, ownProps, {
-    drawerOpen: state.getIn([ 'navigation', 'drawerOpen' ]),
-    page: state.getIn([ 'navigation', 'page' ]),
+    snackbarOpen: state.getIn([ 'page', 'snackbar', 'open' ]),
+    snackbarMessage: state.getIn([ 'page', 'snackbar', 'message' ]),
+    drawerOpen: state.getIn([ 'page', 'drawerOpen' ]),
+    page: state.getIn([ 'page', 'page' ]),
   });
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    toggleSnackbar: (display) => {
+      dispatch(toggleSnackbar(display));
+    },
     changePageAndToggleDrawer: (pagename) => {
       dispatch(changePageAndToggleDrawer(pagename));
     },
