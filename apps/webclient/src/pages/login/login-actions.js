@@ -28,7 +28,7 @@ export const loginByEmail = (email, password) =>
           password,
         },
       });
-    } catch(err) {
+    } catch(error) {
       const statusText = JSON.parse(error.statusText);
       const returnValue = (statusText && statusText.message) ? statusText.message : void(0);
       dispatch(loginByEmailRejected(returnValue));

@@ -1,4 +1,5 @@
 import AddGroceryListDialog from './components/add-grocery-list-dialog';
+import AddItemDialog from './components/add-item-dialog';
 import Button from '../../components/generic/button/Button';
 import { connect } from 'react-redux';
 import { getGroceryLists } from './grocery-lists-actions';
@@ -6,10 +7,27 @@ import { getGroceryListItems } from './grocery-lists-actions';
 import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';
 import React from 'react';
+import { toggleAddItemDialog } from './components/add-item-actions';
 import { toggleAddGroceryListDialog } from './components/add-grocery-list-actions';
 import { setSelectedGroceryList } from './grocery-lists-actions';
 
 const FIVE_MINS = 1000 * 60 * 5;
+
+const getCategoryGroups = (items) => {
+
+  //Get distinct categories
+  const categories = items.map(x => x.category_name)
+    .filter((value, index, arr) => {
+      return arr.indexOf(value) === index;
+    });
+
+  const mapping = {};
+  categories.forEach(x => {
+    mapping[x] = items.filter(y => y.category_name === x);
+  });
+
+  return mapping;
+};
 
 const GroceryListComponent = ({
   lastCheckedGroceryList,
@@ -21,15 +39,17 @@ const GroceryListComponent = ({
   getGroceryLists,
   getGroceryListItems,
   toggleAddGroceryListDialog,
+  toggleAddItemDialog,
   setSelectedGroceryList,
 }) => {    
   if (!lastCheckedGroceryList || ((new Date) - lastCheckedGroceryList) > FIVE_MINS) {
     getGroceryLists(token, selectedHouseholdId);
   }
   if(lastCheckedGroceryList && groceryLists.length > 0 && !selectedGroceryListId) {
-    setSelectedGroceryList(groceryLists[0].grocery_list_id);
-    getGroceryListItems(token, selectedHouseholdId, groceryLists[0].grocery_list_id);
+    setSelectedGroceryList(token, selectedHouseholdId, groceryLists[0].grocery_list_id);
   }
+
+  const categoryGroups = getCategoryGroups(groceryListItems);
 
   return (
     <PageComponent pageTitle="Grocery List">
@@ -48,7 +68,7 @@ const GroceryListComponent = ({
           <div id='grocery-list-page'>
             <select
               className={'select-grocery-list'}
-              onChange={event => setSelectedGroceryList(event.target.value)}>
+              onChange={event => setSelectedGroceryList(token, selectedHouseholdId, event.target.value)}>
               {groceryLists.map(x => {
                 return (<option value={x.grocery_list_id}>{x.name}</option>);
               })}
@@ -60,8 +80,28 @@ const GroceryListComponent = ({
               onClick={toggleAddGroceryListDialog}
             />
             <div className="other-content">
-              {JSON.stringify(groceryLists,null,2)}
+              <Button
+                classNames={[ 'add-item-button' ]}
+                text="Add Item"
+                primary={true}
+                onClick={toggleAddItemDialog}
+              />
+              {
+                Object.keys(categoryGroups).map(x => {
+                  return (
+                    <div className="categoryList">
+                      <h2>{x}</h2>
+                      {
+                        categoryGroups[x].map(y => {
+                          return <p>{JSON.stringify(y)}</p>;
+                        })
+                      }
+                    </div>
+                  );
+                })
+              }
             </div>
+            <AddItemDialog />
             <AddGroceryListDialog />
           </div>
       }
@@ -77,6 +117,7 @@ GroceryListComponent.propTypes = {
   selectedGroceryListId: PropTypes.number,
   getGroceryLists: PropTypes.func.isRequired,
   toggleAddGroceryListDialog: PropTypes.func.isRequired,
+  toggleAddItemDialog: PropTypes.func.isRequired,
   setSelectedGroceryList: PropTypes.func.isRequired,
   groceryListItems: PropTypes.array.isRequired,
 };
@@ -88,7 +129,7 @@ const mapStateToProps = (state, ownProps) => {
     token: state.getIn([ 'credentials', 'token' ]),
     selectedHouseholdId: state.getIn([ 'user', 'selectedHouseholdId' ]),
     selectedGroceryListId: state.getIn([ 'groceryLists', 'state', 'selectedGroceryListId' ]),
-    groceryListItems: state.getIn([ 'groceryLists', 'state', 'selectedGroceryListItems' ]),
+    groceryListItems: state.getIn([ 'groceryLists', 'state', 'selectedGroceryListItems' ]).toJS(),
   });
 };
 
@@ -103,8 +144,11 @@ const mapDispatchToProps = (dispatch) => {
     toggleAddGroceryListDialog: () => {
       dispatch(toggleAddGroceryListDialog());
     },
-    setSelectedGroceryList: (id) => {
-      dispatch(setSelectedGroceryList(parseInt(id)));
+    toggleAddItemDialog: () => {
+      dispatch(toggleAddItemDialog());
+    },
+    setSelectedGroceryList: (token, householdId, id) => {
+      dispatch(setSelectedGroceryList(token, householdId, parseInt(id)));
     },
   };
 };

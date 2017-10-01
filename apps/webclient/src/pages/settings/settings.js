@@ -1,6 +1,6 @@
 import Chip from '../../components/generic/chip/Chip';
 import { connect } from 'react-redux';
-import { getCategories } from './settings-actions';
+import { getCategories } from '../../actions/categories-actions';
 import IconButton from '../../components/generic/button/IconButton';
 import MdAdd from 'react-icons/lib/md/add';
 import PageComponent from '../../components/page-component';
@@ -13,9 +13,6 @@ const SettingsComponent = ({
   selectedHousholdId,
   getCategories,
 }) => {
-  if (categories.length === 0) {
-    getCategories(token, selectedHousholdId);
-  }
 
   return (
     <PageComponent pageTitle="Settings">
@@ -50,7 +47,7 @@ SettingsComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return Object.assign({}, ownProps, {
-    categories: state.getIn([ 'settings', 'categories' ]).toJS(),
+    categories: state.get('categories').toJS(),
     token: state.getIn([ 'credentials', 'token' ]),
     selectedHousholdId: state.getIn([ 'user', 'selectedHouseholdId' ]),
   });

@@ -55,12 +55,14 @@ export function setLastChecked() {
 
 export const SET_SELECTED_GROCERY_LIST = 'SET_SELECTED_GROCERY_LIST';
 
-export function setSelectedGroceryList(id) {
-  return {
-    type: SET_SELECTED_GROCERY_LIST,
-    payload: id,
-  };
-}
+export const setSelectedGroceryList = (token, householdId, id) => 
+  async (dispatch, getState, { api }) => {
+    dispatch({
+      type: SET_SELECTED_GROCERY_LIST,
+      payload: id,
+    });
+    await dispatch(getGroceryListItems(token, householdId, id));
+  }
 
 export const GET_GROCERY_LIST_ITEMS_PENDING = 'GET_GROCERY_LIST_ITEMS_PENDING';
 export const GET_GROCERY_LIST_ITEMS_REJECTED = 'GET_GROCERY_LIST_ITEMS_REJECTED';
@@ -87,7 +89,7 @@ export const getGroceryListItems = (token, householdId, groceryListId) =>
     }
     const groceryListItems = (JSON.parse(response.data)).grocery_list_items;
     console.log(JSON.stringify(groceryListItems, null, 2));
-    dispatch(getGroceryListsFulfilled(groceryListItems));
+    dispatch(getGroceryListItemsFulfilled(groceryListItems));
   }
 
 export function getGroceryListItemsPending() {
