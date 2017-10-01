@@ -30,7 +30,7 @@ IconButton.propTypes = {
   classNames: PropTypes.arrayOf(PropTypes.string),
   secondary: PropTypes.bool,
   onClick: PropTypes.func,
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.element,
 };
 
 export default IconButton;

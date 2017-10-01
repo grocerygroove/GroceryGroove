@@ -1,5 +1,5 @@
-import addGroceryListItemReducer from '../pages/grocery-lists/components/add-item-reducer';
-import addGroceryListReducer from '../pages/grocery-lists/components/add-grocery-list-reducer';
+import addGroceryListItemReducer from '../pages/grocery-lists/components/add-item/add-item-reducer';
+import addGroceryListReducer from '../pages/grocery-lists/components/add-grocery-list/add-grocery-list-reducer';
 import { combineReducers } from 'redux-immutable';
 import credentialsReducer from '../pages/login/credentials-reducer';
 import groceryListsReducer from '../pages/grocery-lists/grocery-lists-reducer';

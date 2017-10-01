@@ -1,16 +1,12 @@
-import { getGroceryLists } from '../grocery-lists-actions';
-import { setSelectedGroceryList } from '../grocery-lists-actions';
-import { setSnackbarMessage } from '../../../components/page-actions';
-import { toggleSnackbar } from '../../../components/page-actions';
+import { getGroceryLists } from '../../grocery-lists-actions';
+import { setSelectedGroceryList } from '../../grocery-lists-actions';
+import { setSnackbarMessage } from '../../../../components/page-actions';
+import { toggleSnackbar } from '../../../../components/page-actions';
 
-export const CREATE_GROCERY_LIST_PENDING = "CREATE_GROCERY_LIST_PENDING";
-export const CREATE_GROCERY_LIST_REJECTED = "CREATE_GROCERY_LIST_REJECTED";
 export const CREATE_GROCERY_LIST_FULFILLED = "CREATE_GROCERY_LIST_FULFILLED";
 
-export const createGroceryList = (householdId, token, groceryListName) => 
+export const createGroceryList = (token, householdId, groceryListName) => 
   async (dispatch, getState, { api }) => {
-
-    dispatch(createGroceryListPending());
 
     let response;
 
@@ -25,13 +21,13 @@ export const createGroceryList = (householdId, token, groceryListName) =>
       });
 
     } catch (err) {
-      dispatch(createGroceryListRejected("failed"));
+      dispatch(setSnackbarMessage("Add Grocery List Failed"));
+      dispatch(toggleSnackbar());
       throw err;
     }
     const groceryListId = parseInt((JSON.parse(response.data)).grocery_list_id);
     await dispatch(getGroceryLists(token, householdId));
     dispatch(toggleAddGroceryListDialog());
-    dispatch(changeGroceryListName(""));
     dispatch(setSelectedGroceryList(groceryListId));
     dispatch(setSnackbarMessage("Grocery List Added"));
     dispatch(toggleSnackbar());
@@ -39,31 +35,10 @@ export const createGroceryList = (householdId, token, groceryListName) =>
     dispatch(createGroceryListFulfilled(groceryListId));
   }
 
-export function createGroceryListPending() {
-  return {
-    type: CREATE_GROCERY_LIST_PENDING,
-  };
-}
-
-export function createGroceryListRejected(message) {
-  return {
-    type: CREATE_GROCERY_LIST_REJECTED,
-  };
-}
-
 export function createGroceryListFulfilled(groceryListId) {
   return {
     type: CREATE_GROCERY_LIST_FULFILLED,
     payload: groceryListId,
-  };
-}
-
-export const CHANGE_GROCERY_LIST_NAME = "CHANGE_GROCERY_LIST_NAME";
-
-export function changeGroceryListName(groceryListName) {
-  return {
-    type: CHANGE_GROCERY_LIST_NAME,
-    payload: groceryListName,
   };
 }
 

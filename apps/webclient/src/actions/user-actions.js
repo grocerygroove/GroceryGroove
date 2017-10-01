@@ -1,13 +1,11 @@
 import { getCategories } from './categories-actions';
 import { getQuantityTypes } from './quantity-types-actions';
 export const GET_HOUSEHOLDS_FULFILLED = 'GET_HOUSEHOLDS_FULFILLED';
-export const GET_HOUSEHOLDS_PENDING = 'GET_HOUSEHOLDS_PENDING';
 export const GET_HOUSEHOLDS_REJECTED = 'GET_HOUSEHOLDS_REJECTED';
 
 
 export const getHouseholds = (token) => 
   async (dispatch, getState, { api }) => {
-    dispatch(getHouseholdsPending());
 
     let response;
     try {
@@ -20,15 +18,10 @@ export const getHouseholds = (token) =>
       throw error;
     }
     const households = (JSON.parse(response.data)).households;
-    await dispatch(setSelectedHousehold(token, households[0]))
+    await (dispatch(setSelectedHousehold(token, households[0])));
     dispatch(getHouseholdsFulfilled(households));
   }
 
-export function getHouseholdsPending() {
-  return {
-    type: GET_HOUSEHOLDS_PENDING,
-  };
-}
 
 export function getHouseholdsRejected(message) {
   return {
@@ -53,4 +46,5 @@ export const setSelectedHousehold = (token, householdId) =>
     });
     await dispatch(getCategories(token, householdId));
     await dispatch(getQuantityTypes(token, householdId));
+    return;
   }

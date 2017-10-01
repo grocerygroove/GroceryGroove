@@ -1,8 +1,4 @@
-import { GET_GROCERY_LISTS_REJECTED } from './grocery-lists-actions';
-import { GET_GROCERY_LISTS_PENDING } from './grocery-lists-actions';
 import { GET_GROCERY_LISTS_FULFILLED } from './grocery-lists-actions';
-import { GET_GROCERY_LIST_ITEMS_REJECTED } from './grocery-lists-actions';
-import { GET_GROCERY_LIST_ITEMS_PENDING } from './grocery-lists-actions';
 import { GET_GROCERY_LIST_ITEMS_FULFILLED } from './grocery-lists-actions';
 import { SET_LAST_CHECKED } from './grocery-lists-actions';
 import { SET_SELECTED_GROCERY_LIST } from './grocery-lists-actions';

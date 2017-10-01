@@ -3,21 +3,32 @@ import React from 'react';
 
 class SnackBar extends React.PureComponent {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      timeoutHandle: null,
+    };
+  }
+
   componentDidMount() {
     if (this.props.show) {
       //Following the autoHideDuration, call the requestClose func
-      this.timeoutHandle = setTimeout(this.props.onRequestClose, this.props.autoHideDuration);
+      this.setState({
+        timeoutHandle: setTimeout(this.props.onRequestClose, this.props.autoHideDuration),
+      });
     }
   }
 
   componentDidUpdate() {
     if (this.props.show) {
       //Following the autoHideDuration, call the requestClose func
-      this.timeoutHandle = setTimeout(this.props.onRequestClose, this.props.autoHideDuration);
+      this.setState({
+        timeoutHandle: setTimeout(this.props.onRequestClose, this.props.autoHideDuration),
+      });
     }
   }
 
-  componentWillUnmount() { clearTimeout(this.timeoutHandle);  this.props.onRequestClose(); } 
+  componentWillUnmount() { clearTimeout(this.state.timeoutHandle);  this.props.onRequestClose(); } 
   render() {
     let classList = [
       'snackbar',
