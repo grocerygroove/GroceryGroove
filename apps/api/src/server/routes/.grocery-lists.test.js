@@ -105,7 +105,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         services: {
           cacher,
@@ -161,6 +163,8 @@ tap.test("server/routes/grocery-lists", tap => {
       const ctx = {
         body: {
         },
+        params: {
+        },
 
         services: {
           cacher,
@@ -214,7 +218,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: "notadigit",
+        params: {
+          id: "notadigit",
+        },
 
         services: {
           cacher,
@@ -438,7 +444,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         request: {
           body: {
@@ -542,6 +550,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
+        params: {
+        },
+
         state: {
           userId: 1,
           householdId: 1,
@@ -588,6 +599,10 @@ tap.test("server/routes/grocery-lists", tap => {
         name,
       }) {
         if (name === "grocery-lists/touch-access-log") {
+          return {
+            rows: [],
+          };
+        } else if (name === "grocery-lists/items/get-all") {
           return {
             rows: [],
           };
@@ -686,7 +701,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         request: {
           body: {
@@ -701,6 +718,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
       };
 
@@ -723,7 +741,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         request: {
           body: {
@@ -737,6 +757,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
         throw: (status) => {
           ctx.status = status;
@@ -760,7 +781,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         request: {
           body: {
@@ -774,6 +797,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
         throw: (status) => {
           ctx.status = status;
@@ -797,7 +821,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         request: {
           body: {
@@ -812,6 +838,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
         throw: (status) => {
           ctx.status = status;
@@ -835,7 +862,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         request: {
           body: {
@@ -849,6 +878,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
 
         throw: (status) => {
@@ -873,7 +903,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        id: "1",
+        params: {
+          id: "1",
+        },
 
         request: {
           body: {
@@ -888,6 +920,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
         throw: (status) => {
           ctx.status = status;
@@ -906,6 +939,10 @@ tap.test("server/routes/grocery-lists", tap => {
       const ctx = {
         body: {
         },
+        
+        params: {
+
+        },
 
         state: {
           userId: 1,
@@ -925,6 +962,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
         throw: (status) => {
           ctx.status = status;
@@ -943,7 +981,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: "grocList",
+        params: {
+          id: "grocList",
+        },
 
         state: {
           userId: 1,
@@ -963,6 +1003,7 @@ tap.test("server/routes/grocery-lists", tap => {
         services: {
           db: goodDb,
           logger,
+          cacher,
         },
         throw: (status) => {
           ctx.status = status;
@@ -981,7 +1022,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: 1,
+        params: {
+          id: 1,
+        },
 
         state: {
           userId: 1,
@@ -1095,7 +1138,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: 1,
+        params: {
+          id: 1,
+        },
 
         state: {
           userId: 1,
@@ -1208,7 +1253,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: 1,
+        params: {
+          id: 1,
+        },
 
         state: {
           userId: 1,
@@ -1326,8 +1373,10 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: 1,
-        itemId: 1,
+        params: {
+          id: 1,
+          itemId: 1,
+        },
 
         state: {
           userId: 1,
@@ -1379,8 +1428,10 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: 1,
-        itemId: 1,
+        params: {
+          id: 1,
+          itemId: 1,
+        },
 
         state: {
           userId: 1,
@@ -1437,7 +1488,9 @@ tap.test("server/routes/grocery-lists", tap => {
           householdId: 1,
         },
 
-        itemId: 1,
+        params: {
+          itemId: 1,
+        },
 
         request: {
           body: {
@@ -1484,7 +1537,9 @@ tap.test("server/routes/grocery-lists", tap => {
         body: {
         },
 
-        id: 1,
+        params: {
+          id: 1,
+        },
 
         state: {
           userId: 1,

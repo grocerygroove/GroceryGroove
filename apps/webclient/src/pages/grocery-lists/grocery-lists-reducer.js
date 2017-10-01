@@ -10,6 +10,7 @@ export default function groceryListsReducer(
     lists: [],
     lastChecked: null,
     selectedGroceryListId: null,
+    selectedGroceryListItems: [],
   }), action) {
 
   switch (action.type) {

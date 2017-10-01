@@ -93,11 +93,11 @@ module.exports = {
       handler: (async function (ctx, next) {
         const { cacher, db, logger } = ctx.services;
 
-        if (!ctx.id || !ctx.id.match(/^\d+$/)) {
+        if (!ctx.params.id || !ctx.params.id.match(/^\d+$/)) {
           ctx.throw(400, "Invalid or missing Grocery List id");
         } else {
           let response;
-          const cacheKey = cacheKeys.getSingleGroceryListKey(ctx.state.householdId, ctx.id);
+          const cacheKey = cacheKeys.getSingleGroceryListKey(ctx.state.householdId, ctx.params.id);
           const cachedResult = await cacher.get(cacheKey);
           if (cachedResult) {
             response = cachedResult;
@@ -106,7 +106,7 @@ module.exports = {
               "grocery_list": await queries.groceryLists.getOne(db, logger, {
                 householdId: ctx.state.householdId,
                 userId: ctx.state.userId,
-                groceryListId: ctx.id,
+                groceryListId: ctx.params.id,
               }),
             };
             await cacher.set(cacheKey, response);
@@ -210,11 +210,11 @@ module.exports = {
       handler: (async function (ctx, next) {
         const { cacher, db, logger } = ctx.services;
 
-        if (!ctx.id || !ctx.id.match(/^\d+$/)) {
+        if (!ctx.params.id || !ctx.params.id.match(/^\d+$/)) {
           ctx.throw(400, "Invalid or missing Grocery List id");
         } else {
           let response;
-          const cacheKey = cacheKeys.getGroceryListItemsKey(ctx.state.householdId, ctx.id);
+          const cacheKey = cacheKeys.getGroceryListItemsKey(ctx.state.householdId, ctx.params.id);
           const cachedResult = await cacher.get(cacheKey);
           if (cachedResult) {
             response = cachedResult;
@@ -223,7 +223,7 @@ module.exports = {
               "grocery_list_items": await queries.groceryLists.items.getAll(db, logger, {
                 householdId: ctx.state.householdId,
                 userId: ctx.state.userId,
-                groceryListId: ctx.id,
+                groceryListId: ctx.params.id,
               }),
             };
             await cacher.set(cacheKey, response);
@@ -292,11 +292,11 @@ module.exports = {
       },
 
       handler: (async function (ctx, next) {
-        const { db, logger } = ctx.services;
+        const { db, logger, cacher } = ctx.services;
 
         const userId = ctx.state.userId;
         const householdId = ctx.state.householdId;
-        const groceryListId = ctx.id;
+        const groceryListId = ctx.params.id;
         const itemName = ctx.request.body.item_name;
         const itemDescription = ctx.request.body.item_description || null;
         const categoryId = ctx.request.body.category_id;
@@ -327,6 +327,17 @@ module.exports = {
                 quantity,
               }),                   
             };
+
+            //Cache the updated list
+            const cacheKey = cacheKeys.getGroceryListItemsKey(ctx.state.householdId, ctx.params.id);
+            const groceryListItems = {
+              "grocery_list_items": await queries.groceryLists.items.getAll(db, logger, {
+                householdId,
+                userId,
+                groceryListId: parseInt(groceryListId),
+              }),
+            };
+            await cacher.set(cacheKey, groceryListItems);
 
             await queries.groceryLists.touchAccessLog(db, logger, {
               groceryListId,
@@ -384,8 +395,8 @@ module.exports = {
         const { db, logger } = ctx.services;
 
         const userId = ctx.state.userId;
-        const groceryListId = ctx.id;
-        const groceryListItemId = ctx.itemId;
+        const groceryListId = ctx.params.id;
+        const groceryListItemId = ctx.params.itemId;
 
         if (!groceryListId || !groceryListId.toString().match(/^\d+$/)) {
           ctx.throw(400, "Invalid or missing Grocery List id");

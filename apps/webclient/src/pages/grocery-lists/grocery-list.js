@@ -2,6 +2,7 @@ import AddGroceryListDialog from './components/add-grocery-list-dialog';
 import Button from '../../components/generic/button/Button';
 import { connect } from 'react-redux';
 import { getGroceryLists } from './grocery-lists-actions';
+import { getGroceryListItems } from './grocery-lists-actions';
 import PageComponent from '../../components/page-component';
 import { PropTypes } from 'react';
 import React from 'react';
@@ -16,7 +17,9 @@ const GroceryListComponent = ({
   token,
   selectedHouseholdId,
   selectedGroceryListId,
+  groceryListItems,
   getGroceryLists,
+  getGroceryListItems,
   toggleAddGroceryListDialog,
   setSelectedGroceryList,
 }) => {    
@@ -25,6 +28,7 @@ const GroceryListComponent = ({
   }
   if(lastCheckedGroceryList && groceryLists.length > 0 && !selectedGroceryListId) {
     setSelectedGroceryList(groceryLists[0].grocery_list_id);
+    getGroceryListItems(token, selectedHouseholdId, groceryLists[0].grocery_list_id);
   }
 
   return (
@@ -74,6 +78,7 @@ GroceryListComponent.propTypes = {
   getGroceryLists: PropTypes.func.isRequired,
   toggleAddGroceryListDialog: PropTypes.func.isRequired,
   setSelectedGroceryList: PropTypes.func.isRequired,
+  groceryListItems: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -83,6 +88,7 @@ const mapStateToProps = (state, ownProps) => {
     token: state.getIn([ 'credentials', 'token' ]),
     selectedHouseholdId: state.getIn([ 'user', 'selectedHouseholdId' ]),
     selectedGroceryListId: state.getIn([ 'groceryLists', 'state', 'selectedGroceryListId' ]),
+    groceryListItems: state.getIn([ 'groceryLists', 'state', 'selectedGroceryListItems' ]),
   });
 };
 
@@ -90,6 +96,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getGroceryLists: (token, householdId) => {
       dispatch(getGroceryLists(token, householdId));
+    },
+    getGroceryListItems: (token, householdId, groceryListId) => {
+      dispatch(getGroceryListItems(token, householdId, groceryListId));
     },
     toggleAddGroceryListDialog: () => {
       dispatch(toggleAddGroceryListDialog());

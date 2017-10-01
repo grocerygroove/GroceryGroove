@@ -61,3 +61,50 @@ export function setSelectedGroceryList(id) {
     payload: id,
   };
 }
+
+export const GET_GROCERY_LIST_ITEMS_PENDING = 'GET_GROCERY_LIST_ITEMS_PENDING';
+export const GET_GROCERY_LIST_ITEMS_REJECTED = 'GET_GROCERY_LIST_ITEMS_REJECTED';
+export const GET_GROCERY_LIST_ITEMS_FULFILLED = 'GET_GROCERY_LIST_ITEMS_FULFILLED';
+
+export const getGroceryListItems = (token, householdId, groceryListId) =>
+  async (dispatch, getState, { api }) => {
+
+    dispatch(getGroceryListItemsPending());
+
+    let response;
+
+    try {
+      const client = await api();
+      response = await client['grocery-lists'].get_grocery_lists_id_items({
+        "token": token,
+        "household_id": householdId,
+        "id": groceryListId,
+      });
+
+    } catch (err) {
+      dispatch(getGroceryListItemsRejected("failed"));
+      throw err;
+    }
+    const groceryListItems = (JSON.parse(response.data)).grocery_list_items;
+    console.log(JSON.stringify(groceryListItems, null, 2));
+    dispatch(getGroceryListsFulfilled(groceryListItems));
+  }
+
+export function getGroceryListItemsPending() {
+  return {
+    type: GET_GROCERY_LIST_ITEMS_PENDING,
+  };
+}
+
+export function getGroceryListItemsRejected(message) {
+  return {
+    type: GET_GROCERY_LIST_ITEMS_REJECTED,
+  };
+}
+
+export function getGroceryListItemsFulfilled(groceryListItems) {
+  return {
+    type: GET_GROCERY_LIST_ITEMS_FULFILLED,
+    payload: groceryListItems,
+  };
+}
