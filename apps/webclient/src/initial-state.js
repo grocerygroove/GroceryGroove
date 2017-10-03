@@ -2,9 +2,11 @@ import { fromJS } from 'immutable';
 
 export default fromJS({
   login: {
-    loginCreds: {
-      email: "",
-      password: "",
+    state: {
+      loginCreds: {
+        email: "",
+        password: "",
+      },
     },
   },
   page: {
@@ -15,9 +17,6 @@ export default fromJS({
       open: false,
       message: "",
     },
-  },
-  signup: {
-    signupDialogVisible: false,
   },
   groceryLists: {
   },

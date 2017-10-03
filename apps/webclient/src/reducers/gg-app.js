@@ -7,14 +7,16 @@ import loginReducer from '../pages/login/login-reducer';
 import pageReducer from '../components/page-reducer';
 import categoriesReducer from './categories-reducer';
 import quantityTypesReducer from './quantity-types-reducer';
-import signupReducer from '../pages/login/signup-reducer';
+import signupReducer from '../pages/login/components/signup/signup-reducer';
 import userReducer from './user-reducer';
 
 
 export default combineReducers({
   credentials: credentialsReducer,
-  login: loginReducer,
-  signup: signupReducer,
+  login: combineReducers({
+    state: loginReducer,
+    signup: signupReducer,
+  }),
   page: pageReducer,
   user: userReducer,
   categories: categoriesReducer,
