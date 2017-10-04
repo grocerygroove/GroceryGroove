@@ -19,7 +19,7 @@ class SnackBar extends React.PureComponent {
     }
   }
 
-  componentDidUpdate() {
+  componentWillReceiveProps() {
     if (this.props.show) {
       //Following the autoHideDuration, call the requestClose func
       this.setState({
