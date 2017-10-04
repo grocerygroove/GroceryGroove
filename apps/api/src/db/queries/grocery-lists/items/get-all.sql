@@ -20,7 +20,6 @@ SELECT
   --Item
   i.item_id,
   i.name as item_name, 
-  i.description as item_description,
 
   --Category
   c.category_id,

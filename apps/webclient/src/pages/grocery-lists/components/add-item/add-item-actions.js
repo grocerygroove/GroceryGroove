@@ -13,7 +13,7 @@ export function toggleAddItemDialog() {
 
 export const ADD_ITEM_FULFILLED = "ADD_ITEM_FULFILLED";
 
-export const addItem = (name, description, categoryId, quantityTypeId, quantity) =>
+export const addItem = (name, categoryId, quantityTypeId, quantity) =>
   async (dispatch, getState, { api }) => {
 
     let response;

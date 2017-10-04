@@ -24,13 +24,11 @@ tap.test("db/queries/items/get-item-by-name", tap => {
     const params = {
       householdId: 1,
       name: "Pop Tarts",
-      description: "A tasty tart",
     };
 
     const itemId = await queries.items.createItem(db, logger, {
       householdId: params.householdId,
       name: params.name,
-      description: params.description,
     });
 
     //Insert an item

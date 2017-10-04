@@ -202,8 +202,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(createGroceryList(token, householdId, groceryListName));
     },
 
-    addItem: (name, description, category, quantityType, quantity) => {
-      dispatch(addItem(name, description, category, quantityType, quantity));
+    addItem: (name, category, quantityType, quantity) => {
+      dispatch(addItem(name, category, quantityType, quantity));
     },
   };
 };

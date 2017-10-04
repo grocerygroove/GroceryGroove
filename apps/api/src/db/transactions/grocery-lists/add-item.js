@@ -9,7 +9,6 @@ module.exports = async function(client, logger, {
   householdId,
   groceryListId,
   itemName,
-  itemDescription,
   categoryId,
   quantityTypeId,
   quantity,
@@ -41,7 +40,6 @@ module.exports = async function(client, logger, {
   const itemId = await addAndCategorizeItem(client, logger, {
     householdId,
     name: itemName,
-    description: itemDescription || null,
     categoryId,
   });
 

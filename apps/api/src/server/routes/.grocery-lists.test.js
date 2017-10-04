@@ -465,7 +465,6 @@ tap.test("server/routes/grocery-lists", tap => {
                     {
                       "item_id": 1,
                       "item_name": "Bread",
-                      "item_description": "Grain thing",
                       "category_id": 2,
                       "category_name": "Bread/Bakery",
                       "quantity_type_id": 1,
@@ -481,7 +480,6 @@ tap.test("server/routes/grocery-lists", tap => {
                     {
                       "item_id": 2,
                       "item_name": "Milk",
-                      "item_description": "Dairy stuff",
                       "category_id": 4,
                       "category_name": "Dairy",
                       "quantity_type_id": 3,
@@ -511,7 +509,6 @@ tap.test("server/routes/grocery-lists", tap => {
         {
           "item_id": 1,
           "item_name": "Bread",
-          "item_description": "Grain thing",
           "category_id": 2,
           "category_name": "Bread/Bakery",
           "quantity_type_id": 1,
@@ -527,7 +524,6 @@ tap.test("server/routes/grocery-lists", tap => {
         {
           "item_id": 2,
           "item_name": "Milk",
-          "item_description": "Dairy stuff",
           "category_id": 4,
           "category_name": "Dairy",
           "quantity_type_id": 3,
@@ -708,7 +704,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": 2,
@@ -747,7 +742,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": 2,
@@ -788,7 +782,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity": 2,
           },
@@ -828,7 +821,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": "notadigit",
             "quantity": 2,
@@ -869,7 +861,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
           },
@@ -910,7 +901,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": "notadigit",
@@ -952,7 +942,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": 2,
@@ -993,7 +982,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": 2,
@@ -1034,7 +1022,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": 2,
@@ -1150,7 +1137,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": 2,
@@ -1265,7 +1251,6 @@ tap.test("server/routes/grocery-lists", tap => {
         request: {
           body: {
             "item_name": "Pop Tarts",
-            "item_description": "A tasty treat.",
             "category_id": 4,
             "quantity_type_id": 1,
             "quantity": 2,

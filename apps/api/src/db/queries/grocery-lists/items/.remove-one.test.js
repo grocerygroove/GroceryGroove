@@ -36,7 +36,6 @@ tap.test("db/queries/grocery-lists/items/remove-one", async (tap) => {
     const itemId = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: itemName,
-      description: itemDescription,
       categoryId,
     });
 

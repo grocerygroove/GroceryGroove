@@ -260,12 +260,6 @@ module.exports = {
           type: "string",
         },
         {
-          name: "item_description",
-          in: "body",
-          required: false,
-          type: "string",
-        },
-        {
           name: "category_id",
           in: "body",
           required: true,
@@ -298,7 +292,6 @@ module.exports = {
         const householdId = ctx.state.householdId;
         const groceryListId = ctx.params.id;
         const itemName = ctx.request.body.item_name;
-        const itemDescription = ctx.request.body.item_description || null;
         const categoryId = ctx.request.body.category_id;
         const quantityTypeId = ctx.request.body.quantity_type_id;
         const quantity = ctx.request.body.quantity;
@@ -321,7 +314,6 @@ module.exports = {
                 householdId,
                 groceryListId: parseInt(groceryListId),
                 itemName,
-                itemDescription,
                 categoryId: parseInt(categoryId),
                 quantityTypeId: parseInt(quantityTypeId),
                 quantity,

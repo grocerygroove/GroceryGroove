@@ -29,7 +29,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const groceryListItem = {
       "item_id": null,
       "item_name": "Bread",
-      "item_description": "Grain thing",
       "category_id": 2,
       "category_name": "Bread/Bakery",
       "quantity_type_id": 1,
@@ -46,7 +45,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const groceryListItem2 = {
       "item_id": null,
       "item_name": "Milk",
-      "item_description": "Dairy stuff",
       "category_id": 4,
       "category_name": "Dairy",
       "quantity_type_id": 3,
@@ -71,7 +69,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const itemId1 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem.item_name,
-      description: groceryListItem.item_description,
       categoryId: groceryListItem.category_id,
     });
 
@@ -83,7 +80,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
       itemName: groceryListItem.item_name,
-      itemDescription: groceryListItem.item_description,
       categoryId: groceryListItem.category_id,
       quantityTypeId: groceryListItem.quantity_type_id,
       quantity: groceryListItem.quantity,
@@ -92,7 +88,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem2.item_name,
-      description: groceryListItem2.item_description,
       categoryId: groceryListItem2.category_id,
     });
 
@@ -104,7 +99,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
       itemName: groceryListItem2.item_name,
-      itemDescription: groceryListItem2.item_description,
       categoryId: groceryListItem2.category_id,
       quantityTypeId: groceryListItem2.quantity_type_id,
       quantity: groceryListItem2.quantity,
@@ -136,7 +130,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const groceryListItem = {
       "item_id": null,
       "item_name": "Bread",
-      "item_description": "Grain thing",
       "category_id": 2,
       "category_name": "Bread/Bakery",
       "quantity_type_id": 1,
@@ -153,7 +146,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const groceryListItem2 = {
       "item_id": null,
       "item_name": "Milk",
-      "item_description": "Dairy stuff",
       "category_id": 4,
       "category_name": "Dairy",
       "quantity_type_id": 3,
@@ -178,7 +170,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const itemId1 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem.item_name,
-      description: groceryListItem.item_description,
       categoryId: groceryListItem.category_id,
     });
 
@@ -190,7 +181,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
       itemName: groceryListItem.item_name,
-      itemDescription: groceryListItem.item_description,
       categoryId: groceryListItem.category_id,
       quantityTypeId: groceryListItem.quantity_type_id,
       quantity: groceryListItem.quantity,
@@ -199,7 +189,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem2.item_name,
-      description: groceryListItem2.item_description,
       categoryId: groceryListItem2.category_id,
     });
 
@@ -211,7 +200,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
       itemName: groceryListItem2.item_name,
-      itemDescription: groceryListItem2.item_description,
       categoryId: groceryListItem2.category_id,
       quantityTypeId: groceryListItem2.quantity_type_id,
       quantity: groceryListItem2.quantity,
@@ -243,7 +231,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const groceryListItem = {
       "item_id": null,
       "item_name": "Bread",
-      "item_description": "Grain thing",
       "category_id": 2,
       "category_name": "Bread/Bakery",
       "quantity_type_id": 1,
@@ -260,7 +247,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const groceryListItem2 = {
       "item_id": null,
       "item_name": "Milk",
-      "item_description": "Dairy stuff",
       "category_id": 4,
       "category_name": "Dairy",
       "quantity_type_id": 3,
@@ -291,7 +277,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const itemId1 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem.item_name,
-      description: groceryListItem.item_description,
       categoryId: groceryListItem.category_id,
     });
 
@@ -303,7 +288,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
       itemName: groceryListItem.item_name,
-      itemDescription: groceryListItem.item_description,
       categoryId: groceryListItem.category_id,
       quantityTypeId: groceryListItem.quantity_type_id,
       quantity: groceryListItem.quantity,
@@ -312,7 +296,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem2.item_name,
-      description: groceryListItem2.item_description,
       categoryId: groceryListItem2.category_id,
     });
 
@@ -324,7 +307,6 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
       itemName: groceryListItem2.item_name,
-      itemDescription: groceryListItem2.item_description,
       categoryId: groceryListItem2.category_id,
       quantityTypeId: groceryListItem2.quantity_type_id,
       quantity: groceryListItem2.quantity,

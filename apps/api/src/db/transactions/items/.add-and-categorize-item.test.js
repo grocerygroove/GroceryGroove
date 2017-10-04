@@ -25,7 +25,6 @@ tap.test("db/transactions/items/add-and-categorize-item", tap => {
     const itemId = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: "Pop Tarts",
-      description: "A tasty tart",
       categoryId: 1,
     });
 

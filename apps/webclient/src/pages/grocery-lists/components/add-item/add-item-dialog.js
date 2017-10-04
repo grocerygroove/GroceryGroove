@@ -8,7 +8,6 @@ class AddItemDialog extends React.PureComponent {
     super(props);
     this.state = {
       name: "",
-      description: "",
       category: this.props.categories[0].name,
       quantityType: this.props.quantityTypes[0].quantity_type_id,
       quantity: "1",
@@ -20,15 +19,6 @@ class AddItemDialog extends React.PureComponent {
     this.setState((prevState) =>{
       return Object.assign(prevState,{
         name: event.target.value,
-      });
-    });
-  }
-
-  changeDescription(event) {
-    event.persist();
-    this.setState((prevState) =>{
-      return Object.assign(prevState,{
-        description: event.target.value,
       });
     });
   }
@@ -75,7 +65,6 @@ class AddItemDialog extends React.PureComponent {
 
     const {
       name,
-      description,
       category,
       quantityType,
       quantity,
@@ -89,7 +78,6 @@ class AddItemDialog extends React.PureComponent {
         onCancelClick={toggleDialog}
         onConfirmClick={onCreateClick.bind(null,
           name,
-          description,
           category,
           quantityType,
           quantity
@@ -98,10 +86,6 @@ class AddItemDialog extends React.PureComponent {
           label="Name"
           value={name}
           onChange={this.changeName.bind(this)}/>
-        <TextBox
-          label="Description"
-          value={description || ""}
-          onChange={this.changeDescription.bind(this)}/>
         <select
           className={'categories-select'}
           onChange={this.changeCategory.bind(this)}>

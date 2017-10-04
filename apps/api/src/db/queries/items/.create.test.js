@@ -25,29 +25,25 @@ tap.test("db/queries/items/create-item", tap => {
     const params = {
       householdId: 1,
       name: "Pop Tarts",
-      description: "A tasty tart",
     };
 
     const startCount = parseInt((await db.query({
       text:` select count(*) as count
              from items
              where household_id = '${ params.householdId }'
-              and name = '${ params.name }'
-              and description = '${ params.description }'`,
+              and name = '${ params.name }'`,
     })).rows[0].count);
 
     const itemId = await queries.items.createItem(db, logger, {
       householdId: params.householdId,
       name: params.name,
-      description: params.description,
     });
 
     const endCount = parseInt((await db.query({
       text:` select count(*) as count
              from items
              where household_id = '${ params.householdId }'
-              and name = '${ params.name }'
-              and description = '${ params.description }'`,
+              and name = '${ params.name }'`,
     })).rows[0].count);
 
     tap.assert(itemId);
@@ -69,20 +65,17 @@ tap.test("db/queries/items/create-item", tap => {
     const params = {
       householdId: 1,
       name: "Pop Tarts",
-      description: "A tasty tart",
     };
 
     await queries.items.createItem(db, logger, {
       householdId: params.householdId,
       name: params.name,
-      description: params.description,
     });
 
     try {
       await queries.items.createItem(db, logger, {
         householdId: params.householdId,
         name: params.name,
-        description: params.description,
       });
     } catch (e) {
       tap.type(e, 'DuplicateNameError', "Duplicate item insert throws DuplicateNameError");
@@ -110,7 +103,6 @@ tap.test("db/queries/items/create-category-item", tap => {
     const itemId = await queries.items.createItem(db, logger, {
       householdId: 1,
       name: "Pop Tarts",
-      description: "A tasty tart",
     });
 
     const params = {

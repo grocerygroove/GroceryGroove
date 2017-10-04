@@ -10,7 +10,7 @@
     returns: "one",
 }
 
-INSERT INTO items (household_id, name, description)
-SELECT :householdId, :name, :description
+INSERT INTO items (household_id, name)
+SELECT :householdId, :name
 
 RETURNING item_id 
