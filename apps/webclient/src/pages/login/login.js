@@ -10,7 +10,7 @@ import { loginByEmail } from './login-actions';
 import { loginCredentialChange } from './login-actions';
 import { loginValidationError } from './login-actions';
 import PageComponent from '../../components/page-component';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import React from 'react';
 import SignupDialog from './components/signup/signup-dialog';
 import { signupByEmail } from './components/signup/signup-actions';

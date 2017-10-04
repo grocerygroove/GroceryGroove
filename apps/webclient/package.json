@@ -30,6 +30,7 @@
     "immutable": "^3.8.1",
     "normalize.css": "^6.0.0",
     "npm-css": "^0.2.3",
+    "prop-types": "^15.6.0",
     "react": "^15.3.2",
     "react-dom": "^15.4.0",
     "react-icons": "^2.2.5",
@@ -39,7 +40,6 @@
     "redux-localstorage-simple": "^1.2.0",
     "redux-reset": "^0.2.0",
     "redux-thunk": "^2.1.0",
-    "render-if": "^0.1.1",
     "swagger-client": "^2.1.23",
     "utf-8-validate": "^1.2.1",
     "ws": "^1.1.1"

@@ -1,5 +1,5 @@
 import Modal from '../../../../components/generic/modal/Modal';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import React from 'react';
 import TextBox from '../../../../components/generic/textbox/TextBox';
 import validateEmail from '../../../../utils/validate-email';

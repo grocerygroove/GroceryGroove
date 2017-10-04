@@ -9,7 +9,7 @@ import initalState from '../initial-state';
 import NavDrawer from './generic/navdrawer/NavDrawer';
 import MdList from 'react-icons/lib/md/list';
 import mergeDeep from 'immutable';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import React from 'react'; 
 import SignoutIcon from 'react-icons/lib/md/input';
 import SnackBar from './generic/snackbar/SnackBar';

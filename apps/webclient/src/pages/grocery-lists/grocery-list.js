@@ -7,7 +7,7 @@ import { createGroceryList } from './components/add-grocery-list/add-grocery-lis
 import { getGroceryLists } from './grocery-lists-actions';
 import { getGroceryListItems } from './grocery-lists-actions';
 import PageComponent from '../../components/page-component';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { toggleAddItemDialog } from './components/add-item/add-item-actions';
 import { toggleAddGroceryListDialog } from './components/add-grocery-list/add-grocery-list-actions';

@@ -1,5 +1,5 @@
 import MenuIcon from 'react-icons/lib/md/dehaze';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const AppBar = ({
