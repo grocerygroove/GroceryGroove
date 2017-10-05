@@ -1,9 +1,8 @@
-import AddGroceryListDialog from './components/add-grocery-list/add-grocery-list-dialog';
 import { addItem } from './components/add-item/add-item-actions';
+import AddGroceryListDialog from './components/add-grocery-list/add-grocery-list-dialog';
 import AddItemDialog from './components/add-item/add-item-dialog';
 import Button from '../../components/generic/button/Button';
 import { connect } from 'react-redux';
-import { createGroceryList } from './components/add-grocery-list/add-grocery-list-actions';
 import { getGroceryLists } from './grocery-lists-actions';
 import { getGroceryListItems } from './grocery-lists-actions';
 import PageComponent from '../../components/page-component';
@@ -30,7 +29,6 @@ const getCategoryGroups = (items) => {
 
   return mapping;
 };
-
 const GroceryListComponent = ({
   token,
   selectedHouseholdId,
@@ -38,7 +36,6 @@ const GroceryListComponent = ({
   lastCheckedGroceryList,
   groceryLists,
   groceryListItems,
-  addGroceryListDialogVisible,
   addItemDialogVisible,
   categories,
   quantityTypes,
@@ -48,7 +45,6 @@ const GroceryListComponent = ({
   setSelectedGroceryList,
   toggleAddGroceryListDialog,
   toggleAddItemDialog,
-  addGroceryList,
   addItem,
 }) => {    
   if (!lastCheckedGroceryList || ((new Date) - lastCheckedGroceryList) > FIVE_MINS) {
@@ -70,10 +66,8 @@ const GroceryListComponent = ({
             onClick={toggleAddGroceryListDialog}
           />
           <AddGroceryListDialog 
-            modalVisible={addGroceryListDialogVisible}
             selectedHouseholdId={selectedHouseholdId}
             token={token}
-            onCreateClick={addGroceryList}
             toggleDialog={toggleAddGroceryListDialog}/>
         </div>
       );
@@ -87,12 +81,6 @@ const GroceryListComponent = ({
               return (<option key={x.grocery_list_id} value={x.grocery_list_id}>{x.name}</option>);
             })}
           </select>
-          <Button
-            classNames={[ 'add-grocery-list-button' ]}
-            text="Create a Grocery List"
-            primary={true}
-            onClick={toggleAddGroceryListDialog}
-          />
           <div className="other-content">
             <Button
               classNames={[ 'add-item-button' ]}
@@ -123,10 +111,8 @@ const GroceryListComponent = ({
             onCreateClick={addItem}
             toggleDialog={toggleAddItemDialog}/>
           <AddGroceryListDialog 
-            modalVisible={addGroceryListDialogVisible}
             selectedHouseholdId={selectedHouseholdId}
             token={token}
-            onCreateClick={addGroceryList}
             toggleDialog={toggleAddGroceryListDialog}/>
         </div>
       );
@@ -135,7 +121,16 @@ const GroceryListComponent = ({
   };
 
   return (
-    <PageComponent pageTitle="Grocery List">
+    <PageComponent 
+      pageTitle="Grocery List"
+      headerRightElement={
+          <Button
+            classNames={[ 'add-grocery-list-button' ]}
+            text="Create a Grocery List"
+            primary={true}
+            onClick={toggleAddGroceryListDialog}
+          />
+      }>
       {pageContent()}
     </PageComponent>
   );
@@ -148,7 +143,6 @@ GroceryListComponent.propTypes = {
   lastCheckedGroceryList: PropTypes.object,
   groceryLists: PropTypes.array.isRequired,
   groceryListItems: PropTypes.array.isRequired,
-  addGroceryListDialogVisible: PropTypes.bool.isRequired,
   addItemDialogVisible: PropTypes.bool.isRequired,
   categories: PropTypes.array.isRequired,
   quantityTypes: PropTypes.array.isRequired,
@@ -157,7 +151,6 @@ GroceryListComponent.propTypes = {
   toggleAddItemDialog: PropTypes.func.isRequired,
   setSelectedGroceryList: PropTypes.func.isRequired,
   getGroceryLists: PropTypes.func.isRequired,
-  addGroceryList: PropTypes.func.isRequired,
   addItem: PropTypes.func.isRequired,
 };
 
@@ -172,8 +165,6 @@ const mapStateToProps = (state, ownProps) => {
     categories: state.get('categories').toJS(),
     quantityTypes: state.get('quantityTypes').toJS(),
 
-    //Add grocery list dialog
-    addGroceryListDialogVisible: state.getIn([ 'groceryLists', 'addGroceryListDialog', 'visible' ]),
 
     //Add item dialog
     addItemDialogVisible: state.getIn([ 'groceryLists', 'addItemDialog', 'visible' ]),
@@ -196,10 +187,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     toggleAddItemDialog: () => {
       dispatch(toggleAddItemDialog());
-    },
-
-    addGroceryList: (token, householdId, groceryListName) => {
-      dispatch(createGroceryList(token, householdId, groceryListName));
     },
 
     addItem: (name, category, quantityType, quantity) => {

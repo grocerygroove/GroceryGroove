@@ -27,3 +27,9 @@
   color: #3E4545;
   font-size: 28px;
 }
+
+.appbar > .header-right {
+  float: right;
+  padding: 10px;
+  height: calc(100% - 20px);
+}

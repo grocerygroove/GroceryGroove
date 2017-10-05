@@ -4,6 +4,7 @@ import React from 'react';
 
 const AppBar = ({
   text,
+  headerRightElement,
   onButtonClick,
 }) => {
   return (
@@ -14,12 +15,14 @@ const AppBar = ({
         <MenuIcon />
       </button>
       <span className='text'>{text || ''}</span>
+      <span className='header-right'>{headerRightElement}</span>
     </div>
   );
 };
 
 AppBar.propTypes = {
   text: PropTypes.string,
+  headerRightElement: PropTypes.element,
   onButtonClick: PropTypes.func,
 };
 

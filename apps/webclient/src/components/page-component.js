@@ -25,6 +25,7 @@ const style = {
 
 const PageComponent = ({
   pageTitle,
+  headerRightElement,
   styleOverride,
   children,
   snackbarOpen,
@@ -41,7 +42,8 @@ const PageComponent = ({
       {  page !== "login" &&
         <AppBar
           text={pageTitle}
-          onButtonClick={toggleDrawer}/>
+          onButtonClick={toggleDrawer}
+          headerRightElement={headerRightElement}/>
       }
       <NavDrawer
         open={drawerOpen}
@@ -81,6 +83,7 @@ const PageComponent = ({
 
 PageComponent.propTypes = {
   pageTitle: PropTypes.string,
+  headerRightElement: PropTypes.element,
   styleOverride: PropTypes.object,
   children: PropTypes.element,
   snackbarOpen: PropTypes.bool.isRequired,
