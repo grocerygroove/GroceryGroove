@@ -1,4 +1,3 @@
-import { addItem } from './components/add-item/add-item-actions';
 import AddGroceryListDialog from './components/add-grocery-list/add-grocery-list-dialog';
 import AddItemDialog from './components/add-item/add-item-dialog';
 import Button from '../../components/generic/button/Button';
@@ -36,7 +35,6 @@ const GroceryListComponent = ({
   lastCheckedGroceryList,
   groceryLists,
   groceryListItems,
-  addItemDialogVisible,
   categories,
   quantityTypes,
 
@@ -45,7 +43,6 @@ const GroceryListComponent = ({
   setSelectedGroceryList,
   toggleAddGroceryListDialog,
   toggleAddItemDialog,
-  addItem,
 }) => {    
   if (!lastCheckedGroceryList || ((new Date) - lastCheckedGroceryList) > FIVE_MINS) {
     getGroceryLists(token, selectedHouseholdId);
@@ -59,12 +56,7 @@ const GroceryListComponent = ({
     if(lastCheckedGroceryList && groceryLists.length == 0) {
       return (
         <div id='noGroceryLists'>
-          <p>You don't have any grocery lists. Would you like to add one?</p>
-          <Button
-            text="Create a Grocery List"
-            primary={true}
-            onClick={toggleAddGroceryListDialog}
-          />
+          <p>You don't currently have any grocery lists.</p>
           <AddGroceryListDialog 
             selectedHouseholdId={selectedHouseholdId}
             token={token}
@@ -104,11 +96,9 @@ const GroceryListComponent = ({
           <AddItemDialog 
             categories={categories}
             quantityTypes={quantityTypes}
-            householdId={selectedHouseholdId}
-            groceryListId={selectedGroceryListId}
+            selectedHouseholdId={selectedHouseholdId}
+            selectedGroceryListId={selectedGroceryListId}
             token={token}
-            modalVisible={addItemDialogVisible}
-            onCreateClick={addItem}
             toggleDialog={toggleAddItemDialog}/>
           <AddGroceryListDialog 
             selectedHouseholdId={selectedHouseholdId}
@@ -143,7 +133,6 @@ GroceryListComponent.propTypes = {
   lastCheckedGroceryList: PropTypes.object,
   groceryLists: PropTypes.array.isRequired,
   groceryListItems: PropTypes.array.isRequired,
-  addItemDialogVisible: PropTypes.bool.isRequired,
   categories: PropTypes.array.isRequired,
   quantityTypes: PropTypes.array.isRequired,
 
@@ -151,7 +140,6 @@ GroceryListComponent.propTypes = {
   toggleAddItemDialog: PropTypes.func.isRequired,
   setSelectedGroceryList: PropTypes.func.isRequired,
   getGroceryLists: PropTypes.func.isRequired,
-  addItem: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -164,10 +152,6 @@ const mapStateToProps = (state, ownProps) => {
     groceryListItems: state.getIn([ 'groceryLists', 'state', 'selectedGroceryListItems' ]).toJS(),
     categories: state.get('categories').toJS(),
     quantityTypes: state.get('quantityTypes').toJS(),
-
-
-    //Add item dialog
-    addItemDialogVisible: state.getIn([ 'groceryLists', 'addItemDialog', 'visible' ]),
   });
 };
 
@@ -187,10 +171,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     toggleAddItemDialog: () => {
       dispatch(toggleAddItemDialog());
-    },
-
-    addItem: (name, category, quantityType, quantity) => {
-      dispatch(addItem(name, category, quantityType, quantity));
     },
   };
 };
