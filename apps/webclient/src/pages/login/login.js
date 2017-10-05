@@ -4,8 +4,6 @@ import { clearLoginErrorIfExists } from './login-actions';
 import { connect } from 'react-redux';
 import FaceIcon from 'react-icons/lib/md/face';
 import { INVALID_EMAIL_ERROR } from '../../components/generic-errors';
-import { LOGIN_CREDENTIAL_TYPE_EMAIL } from './login-actions';
-import { LOGIN_CREDENTIAL_TYPE_PASSWORD } from './login-actions';
 import { loginByEmail } from './login-actions';
 import { loginCredentialChange } from './login-actions';
 import { loginValidationError } from './login-actions';
@@ -30,74 +28,105 @@ const style = {
   },
 };
 
+class LoginComponent extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+    };
+  }
 
-const LoginComponent = ({
-  loginEmail,
-  loginPassword,
-  emailErrorText,
-  signupDialogVisible,
-  signupErrors,
-  onLoginClick,
-  onLoginCredentialChange,
-  toggleSignup,
-  onSignupClick,
-}) => {
-  const emailGood = (email) => {
-    return (loginEmail && loginEmail !== "" && validateEmail(loginEmail));
-  };
+  
+  changeEmail(event) {
+    event.persist();
+    this.setState((prevState) => {
+      return Object.assign(prevState, {
+        email: event.target.value,
+      });
+    });
+  }
 
-  return (
-    <PageComponent styleOverride={style}>
-      <div className='loginPage'>
-        <div className='login'>
-          <h1 className='header'>Grocery Groove</h1>
-          <span className='loginCredSpan'>
-            <div className='iconDiv'>
-              <FaceIcon className={emailGood(loginEmail) ? 'back' : 'front'} />
-              <TagFace className={!emailGood(loginEmail) ? 'back' : 'front'} />
-            </div>
-            <TextBox
-              label="Email Address"
-              errorText={emailErrorText || ""}
-              value={loginEmail}
-              onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_EMAIL)}/>
-          </span>
-          <span className='loginCredSpan'>
-            <div className='iconDiv'>
-              <VpnKeyIcon />
-            </div>
-            <TextBox
-              label="Password"
-              value={loginPassword}
-              onChange={onLoginCredentialChange.bind(null, LOGIN_CREDENTIAL_TYPE_PASSWORD)}
-              isPasswordField/>
-          </span>
-          <span className='buttonSpan'>
-            <Button
-              classNames={['loginButton']}
-              text="Login"
-              primary={true}
-              onClick={onLoginClick.bind(null, loginEmail, loginPassword)}/>
-            <Button
-              classNames={['loginButton']}
-              text="Signup"
-              secondary
-              onClick={toggleSignup} />
-          </span>
+  changePassword(event) {
+    event.persist();
+    this.setState((prevState) => {
+      return Object.assign(prevState, {
+        password: event.target.value,
+      });
+    });
+  }
+
+  render() {
+    const {
+      emailErrorText,
+      signupDialogVisible,
+      signupErrors,
+      onLoginClick,
+      onLoginCredentialChange,
+      toggleSignup,
+      onSignupClick,
+    } = this.props;
+
+    const {
+      email,
+      password,
+    } = this.state;
+
+    const emailGood = (email) => {
+      return (email && email !== "" && validateEmail(email));
+    };
+
+    return (
+      <PageComponent styleOverride={style}>
+        <div className='loginPage'>
+          <div className='login'>
+            <h1 className='header'>Grocery Groove</h1>
+            <span className='loginCredSpan'>
+              <div className='iconDiv'>
+                <FaceIcon className={emailGood(email) ? 'back' : 'front'} />
+                <TagFace className={!emailGood(email) ? 'back' : 'front'} />
+              </div>
+              <TextBox
+                label="Email Address"
+                errorText={emailErrorText || ""}
+                value={email}
+                onChange={this.changeEmail.bind(this)}/>
+            </span>
+            <span className='loginCredSpan'>
+              <div className='iconDiv'>
+                <VpnKeyIcon />
+              </div>
+              <TextBox
+                label="Password"
+                value={password}
+                onChange={this.changePassword.bind(this)}
+                isPasswordField/>
+            </span>
+            <span className='buttonSpan'>
+              <Button
+                classNames={['loginButton']}
+                text="Login"
+                primary={true}
+                onClick={onLoginClick.bind(null, email, password)}/>
+              <Button
+                classNames={['loginButton']}
+                text="Signup"
+                secondary
+                onClick={toggleSignup} />
+            </span>
+          </div>
+          <SignupDialog 
+            dialogVisible={signupDialogVisible}
+            signupErrors={signupErrors}
+            onSignupClick={onSignupClick}
+            toggleDialog={toggleSignup}/>
         </div>
-        <SignupDialog 
-          dialogVisible={signupDialogVisible}
-          signupErrors={signupErrors}
-          onSignupClick={onSignupClick}
-          toggleDialog={toggleSignup}/>
-      </div>
-    </PageComponent>
-  );
-};
+      </PageComponent>
+    );
+  }
+}
 
 LoginComponent.propTypes = {
-  loginEmail: PropTypes.string.isRequired,
-  loginPassword: PropTypes.string.isRequired,
   emailErrorText: PropTypes.string,
   signupDialogVisible: PropTypes.bool.isRequired,
   signupErrors: PropTypes.object,
@@ -109,8 +138,6 @@ LoginComponent.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return Object.assign({}, ownProps, {
-    loginEmail: state.getIn([ 'login', 'state', 'loginCreds', 'email' ], ''),
-    loginPassword: state.getIn([ 'login', 'state', 'loginCreds', 'password' ], ''),
     emailErrorText: state.getIn([ 'login', 'state', 'loginErrors', 'emailErrorText' ], ''),
     signupDialogVisible: state.getIn([ 'login', 'signup', 'visible' ]),
     signupErrors: state.getIn([ 'login', 'signup', 'errors' ]).toJS(),
