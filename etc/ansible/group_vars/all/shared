@@ -14,7 +14,7 @@ deploy_user: ubuntu
 dev_group: node-dev
 log_path: /var/log
 node_environment: production
-postgres_version: 9.6
+postgres_version: 10
 purpose: deploy
 queueworker_path: /opt/gg/apps/queueworker
 rambler_conf_path: /etc/rambler

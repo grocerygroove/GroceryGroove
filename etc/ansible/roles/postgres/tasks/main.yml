@@ -42,6 +42,7 @@
     db={{ db_name }}
     name={{ db_owner_username }}
     password={{ db_owner_password }}
+    encrypted=yes
     priv="ALL"
   become: true
   become_user: postgres
@@ -52,6 +53,7 @@
     db={{ test_db_name }}
     name={{ db_owner_username }}
     password={{ db_owner_password }}
+    encrypted=yes
     priv="ALL"
   become: true
   become_user: postgres
