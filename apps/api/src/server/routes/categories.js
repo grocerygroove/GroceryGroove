@@ -44,7 +44,7 @@ module.exports = {
                 } else {
                     //Go fetch the categories and cache them
                     response = {
-                        "category_names": await queries.categories.getAllNames(db, logger, {
+                        "categories": await queries.categories.getAll(db, logger, {
                             householdId: ctx.state.householdId,
                         }),
                     };

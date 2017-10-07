@@ -19,7 +19,7 @@ export const getCategories = (token, householdId) =>
       dispatch(getCategoriesRejected("failed"));
       throw error;
     }
-    const categories = (JSON.parse(response.data)).category_names;
+    const categories = (JSON.parse(response.data)).categories;
     dispatch(getCategoriesFulfilled(categories));
   }
 

@@ -29,13 +29,25 @@ tap.test("server/routes/categories", tap => {
           query: (async function ({
             name,
           }) {
-            if (name === "categories/get-all-names") {
+            if (name === "categories/get-all") {
               return {
                 rows: [
-                  "cleaners",
-                  "dairy",
-                  "produce",
-                  "meats", 
+                  {
+                    "id": 1,
+                    "name": "cleaners",
+                  },
+                  {
+                    "id": 2,
+                    "name": "produce",
+                  },
+                  {
+                    "id": 3,
+                    "name": "meats",
+                  },
+                  {
+                    "id": 4,
+                    "name": "dairy",
+                  },
                 ],
               };
             }
@@ -54,12 +66,24 @@ tap.test("server/routes/categories", tap => {
 
     await handler(ctx, next);
 
-    const actual = ctx.body.category_names;
+    const actual = ctx.body.categories;
     const expected = [
-      "cleaners",
-      "dairy",
-      "produce",
-      "meats",
+      {
+        "id": 1,
+        "name": "cleaners",
+      },
+      {
+        "id": 2,
+        "name": "produce",
+      },
+      {
+        "id": 3,
+        "name": "meats",
+      },
+      {
+        "id": 4,
+        "name": "dairy",
+      },
     ];
     tap.strictDeepEquals(actual, expected, "Get list of categories");
   }));

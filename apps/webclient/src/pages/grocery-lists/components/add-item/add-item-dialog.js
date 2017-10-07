@@ -11,7 +11,7 @@ class AddItemDialog extends React.PureComponent {
     this.state = {
       name: "",
       nameErrorText: "",
-      category: this.props.categories[0].name,
+      category: this.props.categories[0].category_id,
       quantityType: this.props.quantityTypes[0].quantity_type_id,
       quantity: "1",
       quantityErrorText: "",
@@ -104,6 +104,9 @@ class AddItemDialog extends React.PureComponent {
       return;
 
     this.props.addItem(
+      token,
+      selectedHouseholdId,
+      selectedGroceryListId,
       name,
       category,
       quantityType,
@@ -151,7 +154,7 @@ class AddItemDialog extends React.PureComponent {
             className={'categories-select'}
             onChange={this.changeCategory.bind(this)}>
             {categories.map(x => {
-              return (<option key={x.name} value={x.name}>{x.name}</option>);
+              return (<option key={x.category_id} value={x.category_id}>{x.name}</option>);
             })}
           </select>
         </span>
@@ -195,9 +198,24 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addItem: (name, category, quantityType, quantity) => {
-      dispatch(addItem(name, category, quantityType, quantity));
-    },
+    addItem: (
+      token,
+      selectedhouseholdid,
+      selectedgrocerylistid,
+      name,
+      category,
+      quantitytype,
+      quantity) => {
+
+        dispatch(addItem(
+          token,
+          selectedhouseholdid,
+          selectedgrocerylistid,
+          name,
+          category,
+          quantitytype,
+          quantity));
+      },
   };
 };
 
