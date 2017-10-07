@@ -17,6 +17,7 @@ WITH users_households as (
   WHERE grocery_list_id = :groceryListId
 )
 SELECT
+  gli.grocery_list_item_id,
   --Item
   i.item_id,
   i.name as item_name, 

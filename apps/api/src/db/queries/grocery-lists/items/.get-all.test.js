@@ -27,6 +27,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const testGroceryListName = "Awesome List";
 
     const groceryListItem = {
+      "grocery_list_item_id": null,
       "item_id": null,
       "item_name": "Bread",
       "category_id": 2,
@@ -43,6 +44,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     };
 
     const groceryListItem2 = {
+      "grocery_list_item_id": null,
       "item_id": null,
       "item_name": "Milk",
       "category_id": 4,
@@ -75,7 +77,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     groceryListItem.item_id = itemId1;
 
     //Add item to grocery list
-    await transactions.groceryLists.addItem(db, logger, {
+    const groceryListItemId1 = await transactions.groceryLists.addItem(db, logger, {
       userId: defaultTestUser.user_id,
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
@@ -84,6 +86,8 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       quantityTypeId: groceryListItem.quantity_type_id,
       quantity: groceryListItem.quantity,
     });
+    groceryListItem.grocery_list_item_id = groceryListItemId1;
+
 
     const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
@@ -94,7 +98,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     groceryListItem2.item_id = itemId2;
 
     //Add item to grocery list
-    await transactions.groceryLists.addItem(db, logger, {
+    const groceryListItemId2 = await transactions.groceryLists.addItem(db, logger, {
       userId: defaultTestUser.user_id,
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
@@ -103,6 +107,8 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       quantityTypeId: groceryListItem2.quantity_type_id,
       quantity: groceryListItem2.quantity,
     });
+
+    groceryListItem2.grocery_list_item_id = groceryListItemId2;
 
     const actual = await queries.groceryLists.items.getAll(db, logger, {
       userId: defaultTestUser.user_id,
@@ -128,6 +134,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const testGroceryListName = "Awesome List";
 
     const groceryListItem = {
+      "grocery_list_item_id": null,
       "item_id": null,
       "item_name": "Bread",
       "category_id": 2,
@@ -144,6 +151,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     };
 
     const groceryListItem2 = {
+      "grocery_list_item_id": null,
       "item_id": null,
       "item_name": "Milk",
       "category_id": 4,
@@ -176,7 +184,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     groceryListItem.item_id = itemId1;
 
     //Add item to grocery list
-    await transactions.groceryLists.addItem(db, logger, {
+    const groceryListItemId1 = await transactions.groceryLists.addItem(db, logger, {
       userId: defaultTestUser.user_id,
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
@@ -185,6 +193,8 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       quantityTypeId: groceryListItem.quantity_type_id,
       quantity: groceryListItem.quantity,
     });
+
+    groceryListItem.grocery_list_item_id = groceryListItemId1;
 
     const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
@@ -195,7 +205,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     groceryListItem2.item_id = itemId2;
 
     //Add item to grocery list
-    await transactions.groceryLists.addItem(db, logger, {
+    const groceryListItemId2 = await transactions.groceryLists.addItem(db, logger, {
       userId: defaultTestUser.user_id,
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
@@ -204,6 +214,8 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       quantityTypeId: groceryListItem2.quantity_type_id,
       quantity: groceryListItem2.quantity,
     });
+
+    groceryListItem.grocery_list_item_id = groceryListItemId1;
 
     const actual = await queries.groceryLists.items.getAll(db, logger, {
       userId: secondaryTestUser.user_id,
@@ -229,6 +241,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     const testGroceryListName = "Awesome List";
 
     const groceryListItem = {
+      "grocery_list_item_id": null,
       "item_id": null,
       "item_name": "Bread",
       "category_id": 2,
@@ -245,6 +258,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     };
 
     const groceryListItem2 = {
+      "grocery_list_item_id": null,
       "item_id": null,
       "item_name": "Milk",
       "category_id": 4,
@@ -283,7 +297,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     groceryListItem.item_id = itemId1;
 
     //Add item to grocery list
-    await transactions.groceryLists.addItem(db, logger, {
+    const groceryListItemId1 = await transactions.groceryLists.addItem(db, logger, {
       userId: defaultTestUser.user_id,
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
@@ -292,6 +306,8 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       quantityTypeId: groceryListItem.quantity_type_id,
       quantity: groceryListItem.quantity,
     });
+
+    groceryListItem.grocery_list_item_id = groceryListItemId1;
 
     const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
@@ -302,7 +318,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     groceryListItem2.item_id = itemId2;
 
     //Add item to grocery list
-    await transactions.groceryLists.addItem(db, logger, {
+    const groceryListItemId2 = await transactions.groceryLists.addItem(db, logger, {
       userId: secondaryTestUser.user_id,
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
@@ -311,6 +327,8 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       quantityTypeId: groceryListItem2.quantity_type_id,
       quantity: groceryListItem2.quantity,
     });
+
+    groceryListItem2.grocery_list_item_id = groceryListItemId2;
 
     const actual = await queries.groceryLists.items.getAll(db, logger, {
       userId: defaultTestUser.user_id,

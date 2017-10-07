@@ -52,6 +52,8 @@ const GroceryListComponent = ({
   }
 
   const categoryGroups = getCategoryGroups(groceryListItems);
+  const selectedGroceryList = groceryLists.filter(x => x.grocery_list_id == selectedGroceryListId)[0];
+
   const pageContent = () => {
     if(lastCheckedGroceryList && groceryLists.length == 0) {
       return (
@@ -66,28 +68,26 @@ const GroceryListComponent = ({
     } else if(lastCheckedGroceryList && groceryLists.length > 0 && selectedGroceryListId) {
       return (
         <div id='grocery-list-page'>
-          <select
-            className={'select-grocery-list'}
-            onChange={event => setSelectedGroceryList(token, selectedHouseholdId, event.target.value)}>
-            {groceryLists.map(x => {
-              return (<option key={x.grocery_list_id} value={x.grocery_list_id}>{x.name}</option>);
-            })}
-          </select>
-          <div className="other-content">
-            <Button
-              classNames={[ 'add-item-button' ]}
-              text="Add Item"
-              primary={true}
-              onClick={toggleAddItemDialog}
-            />
+          <div id='grocery-list'>
+            <div id='grocery-list-header'>
+              <h1>{selectedGroceryList.name}</h1>
+              <Button
+                classNames={[ 'add-item-button', 'pull-right' ]}
+                text="Add Item"
+                primary={true}
+                onClick={toggleAddItemDialog}
+              />
+            </div>
             {
-              Object.keys(categoryGroups).map(x => {
+              Object.keys(categoryGroups).filter(x => categoryGroups.hasOwnProperty(x)).map(x => {
                 return (
                   <div key={x} className="categoryList">
-                    <h2>{x}</h2>
-                    { categoryGroups[x].map(y => { return <p key={y}>{JSON.stringify(y)}</p>;
-                      })
-                    }
+                    <h2 className="category-header">{x}</h2>
+                    <div className="category-items">
+                      { categoryGroups[x].map(y => { 
+                        return <p key={y.grocery_list_item_id}>{y.item_name}</p>;
+                      })}
+                    </div>
                   </div>
                 );
               })
