@@ -85,7 +85,16 @@ const GroceryListComponent = ({
                     <h2 className="category-header">{x}</h2>
                     <div className="category-items">
                       { categoryGroups[x].map(y => { 
-                        return <p key={y.grocery_list_item_id}>{y.item_name}</p>;
+                        return <div key={y.grocery_list_item_id}
+                                    className="category-item">
+                          <input type="checkbox" 
+                            className="item-check"
+                            checked={y.checked ? "checked" : ""}/> 
+                          <span className="item-name">{y.item_name}</span>
+                          <span className="item-quantity">{y.quantity}</span>
+                          <span className="item-quantity-type">{y.singular_name}</span>
+                          <span className="item-added-by">{y.added_by_nickname}</span>
+                        </div>;
                       })}
                     </div>
                   </div>
