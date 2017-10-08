@@ -62,3 +62,28 @@
   padding: 5px;
 }
 
+#grocery-list .categoryList .category-items .category-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 2fr 4fr;
+  grid-template-areas: "itemCheck itemName itemQuantity itemQuantityType itemAddedByNickname";
+}
+
+#grocery-list .categoryList .category-items .category-item .item-check {
+  grid-area: itemCheck;
+}
+#grocery-list .categoryList .category-items .category-item .item-name {
+  grid-area: itemName;
+}
+#grocery-list .categoryList .category-items .category-item .item-quantity {
+  grid-area: itemQuantity;
+  text-align: center;
+}
+#grocery-list .categoryList .category-items .category-item .item-quantity-type {
+  grid-area: itemQuantityType;
+}
+#grocery-list .categoryList .category-items .category-item .item-added-by {
+  grid-area: itemAddedByNickname;
+  text-align: right;
+  font-style: italic;
+}

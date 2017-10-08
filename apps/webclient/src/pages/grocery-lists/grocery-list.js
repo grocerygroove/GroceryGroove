@@ -79,6 +79,10 @@ const GroceryListComponent = ({
               />
             </div>
             {
+              Object.keys(categoryGroups).filter(x => categoryGroups.hasOwnProperty(x)).length == 0 &&
+                <p>You don't currently have any items.</p>
+            }
+            {
               Object.keys(categoryGroups).filter(x => categoryGroups.hasOwnProperty(x)).map(x => {
                 return (
                   <div key={x} className="categoryList">
@@ -88,11 +92,12 @@ const GroceryListComponent = ({
                         return <div key={y.grocery_list_item_id}
                                     className="category-item">
                           <input type="checkbox" 
-                            className="item-check"
-                            checked={y.checked ? "checked" : ""}/> 
+                            className="item-check"/> 
                           <span className="item-name">{y.item_name}</span>
                           <span className="item-quantity">{y.quantity}</span>
-                          <span className="item-quantity-type">{y.singular_name}</span>
+                          <span className="item-quantity-type">
+                            {y.quantity == 1 ? y.singular_name : y.plural_name || y.singular_name}
+                          </span>
                           <span className="item-added-by">{y.added_by_nickname}</span>
                         </div>;
                       })}
