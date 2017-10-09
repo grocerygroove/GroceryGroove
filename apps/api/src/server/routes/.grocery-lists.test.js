@@ -3,6 +3,7 @@ const rootGroup = require("../routes");
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const InvalidCategoryError = require("../../errors/invalid-category-error");
 const InvalidGroceryListError = require("../../errors/invalid-grocery-list-error");
+const InvalidGroceryListItemError = require("../../errors/invalid-grocery-list-item-error");
 const InvalidQuantityTypeError = require("../../errors/invalid-quantity-type-error");
 const tap = require("tap");
 
@@ -1348,6 +1349,1015 @@ tap.test("server/routes/grocery-lists", tap => {
 
       tap.strictEquals(actual, expected, "InvalidQuantityTypeError results in status of 400");
     })();
+  }));
+
+  tap.test("PUT /grocery-lists/:id/item/:itemId", (async function (tap) {
+    const handler = getRoute(rootGroup, "PUT", "/grocery-lists/:id/item/:itemId").handler;
+    const goodDb = {
+      query: (async function ({
+        name,
+      }) {
+        if (name === "grocery-lists/touch-access-log") {
+          return {
+            rows: [],
+          };
+        } else if (name === "grocery-lists/items/get-all") {
+          return {
+            rows: [],
+          };
+        }
+        return void(0);
+      }),
+      connect: (async function(){
+        return {
+          query: (async function ({
+            name,
+          }) {
+            if (name === "items/get-item-by-name" || 
+              name === "items/create-item") {
+              let returnVal = {};
+              returnVal.rows = [
+                {
+                  "item_id": 2,
+                },
+              ];
+              return returnVal;
+            } else if (name === "items/create-category-item") {
+              return {
+                rows: [],
+              };
+            } else if (name === "grocery-lists/get-all") {
+              return {
+                rows: [
+                  {
+                    "grocery_list_id": 1,
+                  },
+                  {
+                    "grocery_list_id": 2,
+                  },
+                  {
+                    "grocery_list_id": 3,
+                  },
+                ],
+              };
+            } else if (name === "categories/get-all") {
+              return {
+                rows: [
+                  {
+                    "category_id": 1,
+                  },
+                  {
+                    "category_id": 2,
+                  },
+                  {
+                    "category_id": 3,
+                  },
+                  {
+                    "category_id": 4,
+                  },
+                ],
+              };
+            } else if (name === "quantity-types/get-all") {
+              return {
+                rows: [
+                  {
+                    "quantity_type_id": 1,
+                  },
+                  {
+                    "quantity_type_id": 2,
+                  },
+                  {
+                    "quantity_type_id": 3,
+                  },
+                  {
+                    "quantity_type_id": 4,
+                  },
+                ],
+              };
+            } else if (name === "grocery-lists/items/add-one") {
+              return {
+                rows: [
+                  {
+                    "grocery_list_item_id": 2,
+                  },
+                ],
+              };
+            } else if (name === "grocery-lists/items/get-all") {
+              return {
+                rows: [
+                  {
+                    "grocery_list_item_id": 1,
+                    "item_name": "Plop Tarts",
+                    "category_id": 1,
+                  },
+                  {
+                    "grocery_list_item_id": 2,
+                    "item_name": "Bread",
+                    "category_id": 2,
+                  },
+                ],
+              };
+            } else if (name === "grocery-lists/items/update-one") {
+              return {
+                rows: [
+                  {
+                    "updated": true,
+                  },
+                ],
+              };
+            }
+
+            return void(0);
+          }),
+          release:() => Promise.resolve(void(0)),
+        };
+      }),
+    };
+
+    const categoryErrorDb = {
+      query: (async function ({
+        name,
+      }) {
+        if (name === "grocery-lists/touch-access-log") {
+          return {
+            rows: [],
+          };
+        } else if (name === "grocery-lists/items/get-all") {
+          return {
+            rows: [],
+          };
+        }
+        return void(0);
+      }),
+      connect: (async function(){
+        return {
+          query: (async function ({
+            name,
+          }) {
+            if (name === "grocery-lists/get-all") {
+              throw new InvalidCategoryError("blah");
+
+              return void(0);
+            }
+          }),
+          release:() => Promise.resolve(void(0)),
+        };
+      }),
+    };
+
+    const groceryListErrorDb = {
+      query: (async function ({
+        name,
+      }) {
+        if (name === "grocery-lists/touch-access-log") {
+          return {
+            rows: [],
+          };
+        } else if (name === "grocery-lists/items/get-all") {
+          return {
+            rows: [],
+          };
+        }
+        return void(0);
+      }),
+      connect: (async function(){
+        return {
+          query: (async function ({
+            name,
+          }) {
+            if (name === "grocery-lists/get-all") {
+              throw new InvalidGroceryListError("blah");
+
+              return void(0);
+            }
+          }),
+          release:() => Promise.resolve(void(0)),
+        };
+      }),
+    };
+
+    const groceryListItemErrorDb = {
+      query: (async function ({
+        name,
+      }) {
+        if (name === "grocery-lists/touch-access-log") {
+          return {
+            rows: [],
+          };
+        } else if (name === "grocery-lists/items/get-all") {
+          return {
+            rows: [],
+          };
+        }
+        return void(0);
+      }),
+      connect: (async function(){
+        return {
+          query: (async function ({
+            name,
+          }) {
+            if (name === "grocery-lists/get-all") {
+              throw new InvalidGroceryListItemError("blah");
+
+              return void(0);
+            }
+          }),
+          release:() => Promise.resolve(void(0)),
+        };
+      }),
+    };
+
+    const quantityTypeErrorDb = {
+      query: (async function ({
+        name,
+      }) {
+        if (name === "grocery-lists/touch-access-log") {
+          return {
+            rows: [],
+          };
+        } else if (name === "grocery-lists/items/get-all") {
+          return {
+            rows: [],
+          };
+        }
+        return void(0);
+      }),
+      connect: (async function(){
+        return {
+          query: (async function ({
+            name,
+          }) {
+            if (name === "grocery-lists/get-all") {
+              throw new InvalidQuantityTypeError("blah");
+
+              return void(0);
+            }
+          }),
+          release:() => Promise.resolve(void(0)),
+        };
+      }),
+    };
+
+    await (async function () {
+      const ctx = {
+        body: {
+
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            item_name: "Pastry Tarts",
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.item_updated;
+      const expected = true;
+
+      tap.strictEquals(actual, expected, "Successful update item name");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            category_id: 4,
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.item_updated;
+      const expected = true;
+
+      tap.strictEquals(actual, expected, "Successful update category id");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            quantity_type_id: 1,
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.item_updated;
+      const expected = true;
+
+      tap.strictEquals(actual, expected, "Successful update quantity type id");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            quantity: 1.57,
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.item_updated;
+      const expected = true;
+
+      tap.strictEquals(actual, expected, "Successful update quantity");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            checked: true,
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.item_updated;
+      const expected = true;
+
+      tap.strictEquals(actual, expected, "Successful update checked");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            purchased: true,
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.item_updated;
+      const expected = true;
+
+      tap.strictEquals(actual, expected, "Successful update purchased");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            unit_cost: 1.56,
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+      };
+
+      await handler(ctx, next);
+
+      const actual = ctx.body.item_updated;
+      const expected = true;
+
+      tap.strictEquals(actual, expected, "Successful update unit cost");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Missing grocery list id returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Missing grocery list item id returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: "blahblah",
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid grocery list id format returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: "blah blah",
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid grocery list item id format returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            item_name: "",
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid item name format returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            category_id: "blueblueblue",
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid category id format returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            quantity_type_id: "blueblueblue",
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid quantity type id format returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            quantity: "blueblueblue",
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid quantity format returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            unit_cost: "blueblueblue",
+          },
+        },
+
+        services: {
+          db: goodDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid unit cost format returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            unit_cost: 1.34,
+          },
+        },
+
+        services: {
+          db: categoryErrorDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid category error returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            unit_cost: 1.34,
+          },
+        },
+
+        services: {
+          db: quantityTypeErrorDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid quantity type error returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            unit_cost: 1.34,
+          },
+        },
+
+        services: {
+          db: groceryListErrorDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid grocery list error returns a status of 400");
+    })(); 
+
+    await (async function () {
+      const ctx = {
+        body: {
+        },
+
+        params: {
+          id: 1,
+          itemId: 1,
+        },
+
+        state: {
+          userId: 1,
+          householdId: 1,
+        },
+
+        request: {
+          body: {
+            unit_cost: 1.34,
+          },
+        },
+
+        services: {
+          db: groceryListItemErrorDb,
+          logger,
+          cacher,
+        },
+
+        throw: (status) => {
+          ctx.status = status;
+        },
+      };
+
+      await handler(ctx, next);
+      const actual = ctx.status;
+      const expected = 400;
+
+      tap.strictEquals(actual, expected, "Invalid grocery list item error returns a status of 400");
+    })(); 
+
   }));
 
   tap.test("DELETE /grocery-lists/:id/items/:itemId", (async function (tap) {

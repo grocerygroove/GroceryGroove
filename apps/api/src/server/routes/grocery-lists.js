@@ -1,6 +1,7 @@
 const DuplicateNameError = require("../../errors/duplicate-name-error");
 const InvalidCategoryError = require("../../errors/invalid-category-error");
 const InvalidGroceryListError = require("../../errors/invalid-grocery-list-error");
+const InvalidGroceryListItemError = require("../../errors/invalid-grocery-list-item-error");
 const InvalidQuantityTypeError = require("../../errors/invalid-quantity-type-error");
 const queries = require("../../db/queries");
 const transactions = require("../../db/transactions");
@@ -345,6 +346,173 @@ module.exports = {
             } else {
               throw e;
             }
+          }
+        }
+
+      }),
+    },
+
+    {
+      method: "put",
+      path: "/:id/item/:itemId",
+
+      middlewares: [
+        "parseJsonBody",
+      ],
+
+      produces: [
+        "application/json",
+      ],
+
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          type: "integer",
+        },
+        {
+          name: "itemId",
+          in: "path",
+          required: true,
+          type: "integer",
+        },
+        {
+          name: "item_name",
+          in: "body",
+          required: false,
+          type: "string",
+        },
+        {
+          name: "category_id",
+          in: "body",
+          required: false,
+          type: "integer",
+        },
+        {
+          name: "quantity_type_id",
+          in: "body",
+          required: false,
+          type: "integer",
+        },
+        {
+          name: "quantity",
+          in: "body",
+          required: false,
+          type: "number",
+          format: "double",
+        },
+        {
+          name: "checked",
+          in: "body",
+          required: false,
+          type: "bool",
+        },
+        {
+          name: "purchased",
+          in: "body",
+          required: false,
+          type: "bool",
+        },
+        {
+          name: "unit_cost",
+          in: "body",
+          required: false,
+          type: "number",
+          format: "double",
+        },
+      ],
+
+      responses: {
+        200: {},
+        400: {},
+      },
+
+      handler: (async function (ctx, next) {
+        const { db, logger, cacher } = ctx.services;
+
+        //Required
+        const userId = ctx.state.userId;
+        const householdId = ctx.state.householdId;
+        const groceryListId = ctx.params.id;
+        const groceryListItemId = ctx.params.itemId;
+
+        //Not required
+        const itemName = typeof(ctx.request.body.item_name) == "undefined" ? null : ctx.request.body.item_name;
+        const categoryId = ctx.request.body.category_id || null;
+        const quantityTypeId = ctx.request.body.quantity_type_id || null;
+        const quantity = ctx.request.body.quantity || null;
+        const checked = typeof(ctx.request.body.checked) == "undefined" ? null : ctx.request.body.checked;
+        const purchased = typeof(ctx.request.body.purchased) == "undefined" ? null : ctx.request.body.purchased;
+        const unitCost = ctx.request.body.unit_cost || null;
+
+        //Required
+        if (!groceryListId || !groceryListId.toString().match(/^\d+$/)) {
+          ctx.throw(400, "Invalid or missing Grocery List id");
+        } else if (!groceryListItemId || !groceryListItemId.toString().match(/^\d+$/)) {
+          ctx.throw(400, "Invalid or missing Grocery List Item id");
+        } 
+
+        //Not required
+        if (typeof(itemName) == "string" && itemName.length == 0) {
+          ctx.throw(400, "Invalid 'item_name' format");
+        } 
+        if (categoryId && !categoryId.toString().match(/^\d+$/)) {
+          ctx.throw(400, "Invalid 'category_id' format");
+        } 
+        if (quantityTypeId && !quantityTypeId.toString().match(/^\d+$/)) {
+          ctx.throw(400, "Invalid 'quantity_type_id' format");
+        } 
+        if (quantity && !quantity.toString().match(/^[+-]?\d+(\.\d+)?$/)) {
+          ctx.throw(400, "Invalid 'quantity' format");
+        } 
+        if (unitCost && !unitCost.toString().match(/^[+-]?\d+(\.\d+)?$/)) {
+          ctx.throw(400, "Invalid 'unit_cost' format");
+        } 
+        
+        try { 
+          ctx.body = {
+            "item_updated": await transactions.groceryLists.updateItem(db, logger, {
+              userId,
+              householdId,
+              groceryListId: parseInt(groceryListId),
+              groceryListItemId: parseInt(groceryListItemId),
+              itemName,
+              categoryId: parseInt(categoryId),
+              quantityTypeId: parseInt(quantityTypeId),
+              quantity,
+              checked,
+              purchased,
+              unitCost,
+            }),                   
+          };
+
+          //Cache the updated list
+          const cacheKey = cacheKeys.getGroceryListItemsKey(ctx.state.householdId, ctx.params.id);
+          const groceryListItems = {
+            "grocery_list_items": await queries.groceryLists.items.getAll(db, logger, {
+              householdId,
+              userId,
+              groceryListId: parseInt(groceryListId),
+            }),
+          };
+          await cacher.set(cacheKey, groceryListItems);
+
+          await queries.groceryLists.touchAccessLog(db, logger, {
+            groceryListId,
+          });
+
+        } catch(e) {
+          if (e instanceof InvalidCategoryError) {
+            ctx.throw(400, "Invalid category");
+          } else if (e instanceof InvalidGroceryListError) {
+            ctx.throw(400, "Invalid grocery list");
+          } else if (e instanceof InvalidGroceryListItemError) {
+            ctx.throw(400, "Invalid grocery list item");
+          } else if (e instanceof InvalidQuantityTypeError) {
+            ctx.throw(400, "Invalid quantity type");
+          } else {
+            throw e;
           }
         }
 
