@@ -3,6 +3,7 @@ const resetTestingDb = require("../../../utils/reset-testing-database");
 const defaultTestUser = require("../../../utils/default-test-user");
 const InvalidCategoryError = require("../../../errors/invalid-category-error");
 const InvalidGroceryListError = require("../../../errors/invalid-grocery-list-error");
+const InvalidGroceryListItemError = require("../../../errors/invalid-grocery-list-item-error");
 const InvalidQuantityTypeError = require("../../../errors/invalid-quantity-type-error");
 const Pool = require('pg').Pool;
 const queries = require("../../queries");
@@ -490,31 +491,172 @@ tap.test("db/transactions/grocery-lists/update-item", async (tap) => {
       quantity: 2,
     });
 
-    const updatedGroceryListItemId = await transactions.groceryLists.updateItem(db, logger, {
+    try {
+      const updatedGroceryListItemId = await transactions.groceryLists.updateItem(db, logger, {
+        userId: defaultTestUser.user_id,
+        householdId: defaultTestUser.primary_household_id,
+        groceryListId: 24,
+        groceryListItemId,
+        itemName: null,
+        categoryId: null,
+        quantityTypeId: null,
+        quantity: null,
+        checked: null,
+        purchased: null,
+        unitCost: null,
+      });
+    } catch (e) {
+      tap.type(e, 'InvalidGroceryListError', 'Invalid grocery list id throws InvalidGroceryListError');
+    } finally {
+      await db.end();
+    }
+  })();
+
+  await (async () => {
+    await resetTestingDb();
+
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+
+    //Add a grocery list
+    const groceryListId = await queries.groceryLists.addOne(db, logger, {
+      userId: defaultTestUser.user_id,
+      householdId: defaultTestUser.primary_household_id,
+      groceryListName: "Super List",
+    });
+
+    const groceryListItemId = await transactions.groceryLists.addItem(db, logger, {
       userId: defaultTestUser.user_id,
       householdId: defaultTestUser.primary_household_id,
       groceryListId,
-      groceryListItemId,
-      itemName: null,
-      categoryId: null,
-      quantityTypeId: null,
-      quantity: null,
-      checked: null,
-      purchased: null,
-      unitCost: 4.40,
+      itemName: "Pop Tarts",
+      categoryId: 3,
+      quantityTypeId: 4,
+      quantity: 2,
     });
 
-    const count = parseInt((await db.query({
-      text:` select count(*) as count
-             from grocery_list_items gli
-             where grocery_list_id = ${ groceryListId }
-              and grocery_list_item_id = ${ groceryListItemId }
-              and unit_cost = '$4.40'`,
-    })).rows[0].count);
+    try {
+      const updatedGroceryListItemId = await transactions.groceryLists.updateItem(db, logger, {
+        userId: defaultTestUser.user_id,
+        householdId: defaultTestUser.primary_household_id,
+        groceryListId,
+        groceryListItemId: 55,
+        itemName: null,
+        categoryId: null,
+        quantityTypeId: null,
+        quantity: null,
+        checked: null,
+        purchased: null,
+        unitCost: null,
+      });
+    } catch (e) {
+      tap.type(e, 'InvalidGroceryListItemError', 'Invalid grocery list item id throws InvalidGroceryListItemError');
+    } finally {
+      await db.end();
+    }
+  })();
 
-    tap.assert(count == 1, "update unit cost");
+  await (async () => {
+    await resetTestingDb();
 
-    await db.end();
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+
+    //Add a grocery list
+    const groceryListId = await queries.groceryLists.addOne(db, logger, {
+      userId: defaultTestUser.user_id,
+      householdId: defaultTestUser.primary_household_id,
+      groceryListName: "Super List",
+    });
+
+    const groceryListItemId = await transactions.groceryLists.addItem(db, logger, {
+      userId: defaultTestUser.user_id,
+      householdId: defaultTestUser.primary_household_id,
+      groceryListId,
+      itemName: "Pop Tarts",
+      categoryId: 3,
+      quantityTypeId: 4,
+      quantity: 2,
+    });
+
+    try {
+      const updatedGroceryListItemId = await transactions.groceryLists.updateItem(db, logger, {
+        userId: defaultTestUser.user_id,
+        householdId: defaultTestUser.primary_household_id,
+        groceryListId,
+        groceryListItemId,
+        itemName: null,
+        categoryId: 55,
+        quantityTypeId: null,
+        quantity: null,
+        checked: null,
+        purchased: null,
+        unitCost: null,
+      });
+    } catch (e) {
+      tap.type(e, 'InvalidCategoryError', 'Invalid category id throws InvalidCategoryError');
+    } finally {
+      await db.end();
+    }
+  })();
+
+  await (async () => {
+    await resetTestingDb();
+
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+
+    //Add a grocery list
+    const groceryListId = await queries.groceryLists.addOne(db, logger, {
+      userId: defaultTestUser.user_id,
+      householdId: defaultTestUser.primary_household_id,
+      groceryListName: "Super List",
+    });
+
+    const groceryListItemId = await transactions.groceryLists.addItem(db, logger, {
+      userId: defaultTestUser.user_id,
+      householdId: defaultTestUser.primary_household_id,
+      groceryListId,
+      itemName: "Pop Tarts",
+      categoryId: 3,
+      quantityTypeId: 4,
+      quantity: 2,
+    });
+
+    try {
+      const updatedGroceryListItemId = await transactions.groceryLists.updateItem(db, logger, {
+        userId: defaultTestUser.user_id,
+        householdId: defaultTestUser.primary_household_id,
+        groceryListId,
+        groceryListItemId,
+        itemName: null,
+        categoryId: null,
+        quantityTypeId: 55,
+        quantity: null,
+        checked: null,
+        purchased: null,
+        unitCost: null,
+      });
+    } catch (e) {
+      tap.type(e, 'InvalidQuantityTypeError', 'Invalid quantity type id throws InvalidQuantityTypeError');
+    } finally {
+      await db.end();
+    }
   })();
 
   tap.end();

@@ -1,6 +1,7 @@
 const addAndCategorizeItem = require("../items/add-and-categorize-item");
 const InvalidCategoryError = require("../../../errors/invalid-category-error");
 const InvalidGroceryListError = require("../../../errors/invalid-grocery-list-error");
+const InvalidGroceryListItemError = require("../../../errors/invalid-grocery-list-item-error");
 const InvalidQuantityTypeError = require("../../../errors/invalid-quantity-type-error");
 const queries = require("../../queries");
 
@@ -37,8 +38,16 @@ module.exports = async function(client, logger, {
   const quantityTypeIds = (await queries.quantityTypes.getAll(client, logger, {
     householdId,
   })).map(x => x.quantity_type_id);
-  if(quantityTypeId && quantityTypeIds.indexOf(quantityTypeId) == -1)
+  if(quantityTypeId && quantityTypeIds.indexOf(quantityTypeId) == -1) 
     return Promise.reject(new InvalidQuantityTypeError(__filename));
+
+  const groceryListItems = await queries.groceryLists.items.getAll(client, logger, {
+    userId,
+    groceryListId,
+  });
+  const thisGroceryListItem = groceryListItems.filter(x => x.grocery_list_item_id == groceryListItemId)[0];
+  if(!thisGroceryListItem)
+    return Promise.reject(new InvalidGroceryListItemError(__filename));
 
   //If itemName or categoryId has been passed in 
   //to be updated, ensure item is added
@@ -48,16 +57,7 @@ module.exports = async function(client, logger, {
   let categoryIdLocal = categoryId;
   if (itemName || categoryId) {
 
-    let thisGroceryListItem = null;
     if (!itemNameLocal || !categoryIdLocal) {
-      const groceryListItems = await queries.groceryLists.items.getAll(client, logger, {
-        userId,
-        groceryListId,
-      });
-      thisGroceryListItem = groceryListItems.filter(x => x.grocery_list_item_id == groceryListItemId)[0];
-      if(!thisGroceryListItem) {
-        throw new Error("Invalid grocery list item");
-      }
 
       if (!itemNameLocal) {
         itemNameLocal = thisGroceryListItem.item_name;
