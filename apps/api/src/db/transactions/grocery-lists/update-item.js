@@ -40,40 +40,52 @@ module.exports = async function(client, logger, {
   if(quantityTypeId && quantityTypeIds.indexOf(quantityTypeId) == -1)
     return Promise.reject(new InvalidQuantityTypeError(__filename));
 
-  //If itemName is passed in to be updated, ensure item is added
+  //If itemName or categoryId has been passed in 
+  //to be updated, ensure item is added
   //and categorized
   let itemId = null;
-  if (itemName) {
+  let itemNameLocal = itemName;
+  let categoryIdLocal = categoryId;
+  if (itemName || categoryId) {
+
+    let thisGroceryListItem = null;
+    if (!itemNameLocal || !categoryIdLocal) {
+      const groceryListItems = await queries.groceryLists.items.getAll(client, logger, {
+        userId,
+        groceryListId,
+      });
+      thisGroceryListItem = groceryListItems.filter(x => x.grocery_list_item_id == groceryListItemId)[0];
+      if(!thisGroceryListItem) {
+        throw new Error("Invalid grocery list item");
+      }
+
+      if (!itemNameLocal) {
+        itemNameLocal = thisGroceryListItem.item_name;
+      }
+
+      if (!categoryIdLocal) {
+        categoryIdLocal = thisGroceryListItem.category_id;
+      }
+    }
+
     //Check to see whether item exists
     itemId = await queries.items.getItemByName(client, logger, {
       householdId,
-      name: itemName,
+      name: itemNameLocal,
     });
 
     if(!itemId) { //Add item
       itemId = await queries.items.createItem(client, logger, {
         householdId,
-        name: itemName,
+        name: itemNameLocal,
       });
     }
-    let categoryIdLocal = categoryId;
-    if(!categoryIdLocal) {
-      //If category id isn't passed in, get it
-      const groceryListItems = queries.groceryLists.items.getAll(client, logger, {
-        userId,
-        groceryListId,
-      });
-      const thisGroceryListItem = groceryListItems.filter(x => x.grocery_list_item_id == groceryListItemId)[0];
-      if(!thisGroceryListItem) {
-        throw new Error("Invalid grocery list item");
-      }
-      categoryIdLocal = thisGroceryListItem.category_id;
-      //Ensure item is categorized
-      await queries.items.createCategoryItem(client, logger, {
-        itemId,
-        categoryId: categoryIdLocal,
-      });
-    }
+
+    //Ensure item is categorized
+    await queries.items.createCategoryItem(client, logger, {
+      itemId,
+      categoryId: categoryIdLocal,
+    });
   }
 
   let purchasedAt = null;
@@ -89,7 +101,7 @@ module.exports = async function(client, logger, {
     groceryListId,
     groceryListItemId,
     itemId,
-    categoryId,
+    categoryId: categoryIdLocal,
     quantityTypeId,
     quantity,
     checked,
