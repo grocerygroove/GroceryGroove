@@ -354,7 +354,7 @@ module.exports = {
 
     {
       method: "put",
-      path: "/:id/item/:itemId",
+      path: "/:id/item",
 
       middlewares: [
         "parseJsonBody",
@@ -372,8 +372,8 @@ module.exports = {
           type: "integer",
         },
         {
-          name: "itemId",
-          in: "path",
+          name: "item_id",
+          in: "body",
           required: true,
           type: "integer",
         },
@@ -434,8 +434,8 @@ module.exports = {
         //Required
         const userId = ctx.state.userId;
         const householdId = ctx.state.householdId;
-        const groceryListId = ctx.params.id;
-        const groceryListItemId = ctx.params.itemId;
+        const groceryListId = parseInt(ctx.params.id);
+        const groceryListItemId = parseInt(ctx.request.body.item_id);
 
         //Not required
         const itemName = typeof(ctx.request.body.item_name) == "undefined" ? null : ctx.request.body.item_name;

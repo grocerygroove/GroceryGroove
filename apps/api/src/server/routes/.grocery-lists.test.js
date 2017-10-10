@@ -1351,8 +1351,8 @@ tap.test("server/routes/grocery-lists", tap => {
     })();
   }));
 
-  tap.test("PUT /grocery-lists/:id/item/:itemId", (async function (tap) {
-    const handler = getRoute(rootGroup, "PUT", "/grocery-lists/:id/item/:itemId").handler;
+  tap.test("PUT /grocery-lists/:id/item", (async function (tap) {
+    const handler = getRoute(rootGroup, "PUT", "/grocery-lists/:id/item").handler;
     const goodDb = {
       query: (async function ({
         name,
@@ -1606,7 +1606,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -1616,6 +1615,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             item_name: "Pastry Tarts",
           },
         },
@@ -1643,7 +1643,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -1653,6 +1652,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             category_id: 4,
           },
         },
@@ -1680,7 +1680,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -1690,6 +1689,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             quantity_type_id: 1,
           },
         },
@@ -1717,7 +1717,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -1727,6 +1726,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             quantity: 1.57,
           },
         },
@@ -1754,7 +1754,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -1764,6 +1763,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             checked: true,
           },
         },
@@ -1791,7 +1791,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -1801,6 +1800,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             purchased: true,
           },
         },
@@ -1828,7 +1828,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -1838,6 +1837,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             unit_cost: 1.56,
           },
         },
@@ -1863,7 +1863,6 @@ tap.test("server/routes/grocery-lists", tap => {
         },
 
         params: {
-          itemId: 1,
         },
 
         state: {
@@ -1873,6 +1872,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
           },
         },
 
@@ -1938,7 +1938,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: "blahblah",
-          itemId: 1,
         },
 
         state: {
@@ -1948,6 +1947,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
           },
         },
 
@@ -1976,7 +1976,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: "blah blah",
         },
 
         state: {
@@ -1986,6 +1985,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: "blah blah",
           },
         },
 
@@ -2014,7 +2014,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2024,6 +2023,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             item_name: "",
           },
         },
@@ -2053,7 +2053,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2063,6 +2062,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             category_id: "blueblueblue",
           },
         },
@@ -2092,7 +2092,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2102,6 +2101,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             quantity_type_id: "blueblueblue",
           },
         },
@@ -2131,7 +2131,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2141,6 +2140,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             quantity: "blueblueblue",
           },
         },
@@ -2170,7 +2170,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2180,6 +2179,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             unit_cost: "blueblueblue",
           },
         },
@@ -2209,7 +2209,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2219,6 +2218,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             unit_cost: 1.34,
           },
         },
@@ -2248,7 +2248,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2258,6 +2257,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             unit_cost: 1.34,
           },
         },
@@ -2287,7 +2287,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2297,6 +2296,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             unit_cost: 1.34,
           },
         },
@@ -2326,7 +2326,6 @@ tap.test("server/routes/grocery-lists", tap => {
 
         params: {
           id: 1,
-          itemId: 1,
         },
 
         state: {
@@ -2336,6 +2335,7 @@ tap.test("server/routes/grocery-lists", tap => {
 
         request: {
           body: {
+            item_id: 1,
             unit_cost: 1.34,
           },
         },

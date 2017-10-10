@@ -7,6 +7,7 @@ export const getGroceryLists = (token, householdId) =>
 
     try {
       const client = await api();
+      console.log(Object.keys(client['grocery-lists']));
       response = await client['grocery-lists'].get_grocery_lists({
         "token": token,
         "household_id": householdId,
@@ -75,3 +76,80 @@ export function getGroceryListItemsFulfilled(groceryListItems) {
     payload: groceryListItems,
   };
 }
+
+export const updateGroceryListItem = (
+  token, 
+  householdId, 
+  groceryListId, 
+  groceryListItemId, 
+  {
+    itemName,
+    categoryId,
+    quantityTypeId,
+    quantity,
+    checked,
+    purchased,
+    unitCost,
+  }) => 
+  async (dispatch, getState, { api }) => {
+    let response;
+
+    try {
+      const client = await api();
+      console.log(JSON.stringify({
+        token,
+        "household_id": householdId,
+        "id": groceryListId,
+        "bodyparam-grocery-lists-{id}-itemput": {
+          "item_id": groceryListItemId,
+          "item_name": itemName,
+          "category_id": categoryId,
+          "quantity_type_id": quantityTypeId,
+          quantity,
+          checked,
+          purchased,
+          "unit_cost": unitCost,
+        },
+      },null,2));
+      response = await client['grocery-lists'].put_grocery_lists_id_item({
+        token,
+        "household_id": householdId,
+        "id": groceryListId,
+        "bodyparam-grocery-lists-{id}-itemput": {
+          "item_id": groceryListItemId,
+          "item_name": itemName,
+          "category_id": categoryId,
+          "quantity_type_id": quantityTypeId,
+          quantity,
+          checked,
+          purchased,
+          "unit_cost": unitCost,
+        },
+      });
+    } catch (err) {
+      throw err;
+    }
+    if (response.item_updated === true) {
+      dispatch(getGroceryListItems(token, householdId, groceryListId));
+    }
+  }
+
+export const setGroceryListItemChecked = (
+  token, 
+  householdId, 
+  groceryListId, 
+  groceryListItemId, 
+  checked,
+) =>
+  async (dispatch, getState, { api }) => {
+    console.log(`toggling: ${checked}`)
+    dispatch(updateGroceryListItem(
+      token, 
+      householdId, 
+      groceryListId, 
+      groceryListItemId, 
+      {
+        checked,
+      }
+    ));
+  }

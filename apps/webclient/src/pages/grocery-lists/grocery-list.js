@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { toggleAddItemDialog } from './components/add-item/add-item-actions';
 import { toggleAddGroceryListDialog } from './components/add-grocery-list/add-grocery-list-actions';
+import { setGroceryListItemChecked } from './grocery-lists-actions';
 import { setSelectedGroceryList } from './grocery-lists-actions';
 
 const FIVE_MINS = 1000 * 60 * 5;
@@ -41,6 +42,7 @@ const GroceryListComponent = ({
   getGroceryLists,
   getGroceryListItems,
   setSelectedGroceryList,
+  setGroceryListItemChecked,
   toggleAddGroceryListDialog,
   toggleAddItemDialog,
 }) => {    
@@ -90,7 +92,16 @@ const GroceryListComponent = ({
                     <div className="category-items">
                       { categoryGroups[x].map(y => { 
                         return <div key={y.grocery_list_item_id}
-                                    className="category-item">
+                          className="category-item"
+                          checked={y.checked}
+                          onChange={setGroceryListItemChecked.bind(
+                            null,
+                            token,
+                            selectedHouseholdId,
+                            selectedGroceryListId,
+                            y.grocery_list_item_id,
+                            !y.checked
+                          )}>
                           <input type="checkbox" 
                             className="item-check"/> 
                           <span className="item-name">{y.item_name}</span>
@@ -153,6 +164,7 @@ GroceryListComponent.propTypes = {
   toggleAddGroceryListDialog: PropTypes.func.isRequired,
   toggleAddItemDialog: PropTypes.func.isRequired,
   setSelectedGroceryList: PropTypes.func.isRequired,
+  setGroceryListItemChecked: PropTypes.func.isRequired,
   getGroceryLists: PropTypes.func.isRequired,
 };
 
@@ -179,6 +191,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setSelectedGroceryList: (token, householdId, id) => {
       dispatch(setSelectedGroceryList(token, householdId, parseInt(id)));
+    },
+    setGroceryListItemChecked: (token, householdId, groceryListId, groceryListItemId, checked) => {
+      dispatch(setGroceryListItemChecked(token, householdId, groceryListId, groceryListItemId, checked));
     },
     toggleAddGroceryListDialog: () => {
       dispatch(toggleAddGroceryListDialog());
