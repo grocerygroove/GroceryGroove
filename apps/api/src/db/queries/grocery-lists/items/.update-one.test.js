@@ -1,5 +1,6 @@
 require('dotenv').load();
 const defaultTestUser = require("../../../../utils/default-test-user");
+const InvalidQuantityTypeError = require('../../../../errors/invalid-quantity-type-error');
 const Pool = require('pg').Pool;
 const queries = require("../../../queries");
 const secondaryTestUser = require("../../../../utils/secondary-test-user");
@@ -185,6 +186,72 @@ tap.test("db/queries/grocery-lists/items/update-one", async (tap) => {
     tap.assert(endCount < startCount, "update to nonexistant itemId doesn't update");
 
     await db.end();
+  })();
+
+  await (async () => {
+    await resetTestingDb();
+
+    const db = new Pool({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.TEST_DB_NAME,
+      port: process.env.DB_PORT,
+      host: process.env.DB_HOST,
+    });
+
+    const quantityTypeId = 1;
+    const quantity = 2;
+    const categoryId = 1;
+    const itemName = "Pop Tarts";
+    const itemDescription = "A tasty tart treat.";
+    const testGroceryListName = "Awesome List";
+
+    //Add and categorize an item
+    const itemId = await transactions.items.addAndCategorizeItem(db, logger, {
+      householdId: defaultTestUser.primary_household_id,
+      name: itemName,
+      description: itemDescription,
+      categoryId,
+    });
+
+    //Create a grocery list
+    const groceryListId = await queries.groceryLists.addOne(db, logger, {
+      userId: defaultTestUser.user_id,
+      groceryListName: testGroceryListName,
+      householdId: defaultTestUser.primary_household_id,
+    });
+
+    const groceryListItemId = await queries.groceryLists.items.addOne(db, logger, {
+      userId: defaultTestUser.user_id,
+      groceryListId,
+      itemId,
+      categoryId,
+      quantityTypeId,
+      quantity,
+    });
+
+    const updateParams = {
+      householdId: defaultTestUser.primary_household_id,
+      userId: defaultTestUser.user_id,
+      groceryListId,
+      groceryListItemId,
+      itemId: itemId,
+      categoryId,
+      quantityTypeId: 4000,
+      quantity,
+      checked: true,
+      purchasedAt: null,
+      purchasedById: null,
+      unitCost: null,
+    };
+
+    try {
+      await queries.groceryLists.items.updateOne(db, logger, updateParams);
+    } catch (e) {
+      tap.type(e, 'InvalidQuantityTypeError', 'Invalid quantity type throws and InvalidQuantityTypeError');
+    } finally {
+      await db.end();
+    }
   })();
 
   tap.end();

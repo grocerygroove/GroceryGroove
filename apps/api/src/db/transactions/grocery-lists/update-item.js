@@ -2,7 +2,6 @@ const addAndCategorizeItem = require("../items/add-and-categorize-item");
 const InvalidCategoryError = require("../../../errors/invalid-category-error");
 const InvalidGroceryListError = require("../../../errors/invalid-grocery-list-error");
 const InvalidGroceryListItemError = require("../../../errors/invalid-grocery-list-item-error");
-const InvalidQuantityTypeError = require("../../../errors/invalid-quantity-type-error");
 const queries = require("../../queries");
 
 module.exports = async function(client, logger, {
@@ -33,13 +32,6 @@ module.exports = async function(client, logger, {
   })).map(x => x.category_id);
   if(categoryId && categoryIds.indexOf(categoryId) == -1)
     return Promise.reject(new InvalidCategoryError(__filename));
-
-  //Ensure quantity type is valid (if passed in)
-  const quantityTypeIds = (await queries.quantityTypes.getAll(client, logger, {
-    householdId,
-  })).map(x => x.quantity_type_id);
-  if(quantityTypeId && quantityTypeIds.indexOf(quantityTypeId) == -1) 
-    return Promise.reject(new InvalidQuantityTypeError(__filename));
 
   const groceryListItems = await queries.groceryLists.items.getAll(client, logger, {
     userId,

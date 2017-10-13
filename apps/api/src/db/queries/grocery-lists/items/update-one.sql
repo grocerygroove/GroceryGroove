@@ -4,6 +4,13 @@
       enabled: true,
   },
 
+  errorStateToExceptionMap: {
+    "23503": (error) => {
+      if (error.constraint == "grocery_list_items_quantity_type_id_fkey")
+        return require('../../../../errors/invalid-quantity-type-error');
+    },
+  },
+
   params: [
     "householdId",
     "userId",
@@ -36,20 +43,11 @@ WITH users_households as (
     INNER JOIN users_households uh
       ON gl.household_id = uh.household_id
   WHERE grocery_list_id = :groceryListId
-), valid_quantity_type AS (
-  SELECT quantity_type_id, :userId as user_id
-  FROM quantity_types
-  WHERE quantity_type_id = :quantityTypeId
-    AND household_id IS NULL
-      OR household_id IN (
-      SELECT household_id
-      FROM users_households
-    )
 )
 UPDATE grocery_list_items gli
 SET item_id = COALESCE(cis.item_id, gli.item_id),
     category_id = COALESCE(cis.category_id, gli.category_id),
-    quantity_type_id = COALESCE(vqt.quantity_type_id, gli.quantity_type_id),
+    quantity_type_id = COALESCE(:quantityTypeId, gli.quantity_type_id),
     quantity = COALESCE(:quantity, gli.quantity),
     checked = COALESCE(:checked, gli.checked),
     purchased_at = COALESCE(:purchasedAt, gli.purchased_at),
@@ -60,8 +58,6 @@ FROM approved_grocery_list agl
     ON uh.user_id = agl.user_id
   LEFT JOIN category_items_sub cis
     ON uh.user_id = cis.user_id
-  LEFT JOIN valid_quantity_type vqt
-    ON uh.user_id = vqt.user_id
 WHERE gli.grocery_list_id = agl.grocery_list_id
   AND grocery_list_item_id = :groceryListItemId
 RETURNING grocery_list_item_id;
