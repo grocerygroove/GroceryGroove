@@ -2,9 +2,9 @@
 const createSwagger = require("./create-swagger");
 
 const swaggerObject = (function () {
-    let cache = null;
+    let cache;
     return function () {
-        if (cache == null) {
+        if (!cache) {
             cache = createSwagger(module.exports);
         }
         return cache;
