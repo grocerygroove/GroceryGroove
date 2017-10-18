@@ -29,7 +29,7 @@ module.exports = {
         const { db, logger } = ctx.services;
 
         ctx.body = {
-          "quantity_types": await queries.quantityTypes.getAll(db, logger, {}),
+          "quantity_types": await queries.quantityTypes.getAll(db, logger),
         };
       }),
     },
