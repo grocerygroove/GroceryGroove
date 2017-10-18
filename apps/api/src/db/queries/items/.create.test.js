@@ -53,7 +53,7 @@ tap.test("db/queries/items/create-item", tap => {
   }));
 
   tap.test("duplicate insert", (async (tap) => {
-    await resetTestingDb();
+   await resetTestingDb();
 
     const db = new Pool({
       user: process.env.DB_USER,
@@ -84,54 +84,5 @@ tap.test("db/queries/items/create-item", tap => {
     await db.end();
   }));
 
-  tap.end();
-});
-
-tap.test("db/queries/items/create-category-item", tap => {
-
-  tap.test("insert-category-item", (async (tap) => {
-    await resetTestingDb();
-
-    const db = new Pool({
-      user: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.TEST_DB_NAME,
-      port: process.env.DB_PORT,
-      host: process.env.DB_HOST,
-    });
-
-    const itemId = await queries.items.createItem(db, logger, {
-      householdId: 1,
-      name: "Pop Tarts",
-    });
-
-    const params = {
-      categoryId: 1,
-      itemId: itemId,
-    };
-
-    const startCount = parseInt((await db.query({
-      text:` select count(*) as count
-             from category_items
-             where category_id = ${ params.categoryId }
-              and item_id = ${ params.itemId }`,
-    })).rows[0].count);
-
-    await queries.items.createCategoryItem(db, logger, {
-      categoryId: params.categoryId,
-      itemId: params.itemId,
-    });
-
-    const endCount = parseInt((await db.query({
-      text:` select count(*) as count
-             from category_items
-             where category_id = ${ params.categoryId }
-              and item_id = ${ params.itemId }`,
-    })).rows[0].count);
-
-    tap.assert(endCount > startCount);
-
-    await db.end();
-  }));
   tap.end();
 });

@@ -1,4 +1,3 @@
-const addAndCategorizeItem = require("../items/add-and-categorize-item");
 const InvalidCategoryError = require("../../../errors/invalid-category-error");
 const InvalidGroceryListError = require("../../../errors/invalid-grocery-list-error");
 const InvalidGroceryListItemError = require("../../../errors/invalid-grocery-list-item-error");
@@ -41,43 +40,23 @@ module.exports = async function(client, logger, {
   if(!thisGroceryListItem)
     return Promise.reject(new InvalidGroceryListItemError(__filename));
 
-  //If itemName or categoryId has been passed in 
-  //to be updated, ensure item is added
-  //and categorized
+  //If itemName has been passed in,
+  //go fetch the itemId if it exists,
+  //if not, add the item
   let itemId = null;
-  let itemNameLocal = itemName;
-  let categoryIdLocal = categoryId;
-  if (itemName || categoryId) {
-
-    if (!itemNameLocal || !categoryIdLocal) {
-
-      if (!itemNameLocal) {
-        itemNameLocal = thisGroceryListItem.item_name;
-      }
-
-      if (!categoryIdLocal) {
-        categoryIdLocal = thisGroceryListItem.category_id;
-      }
-    }
-
-    //Check to see whether item exists
+  if (itemName) {
     itemId = await queries.items.getItemByName(client, logger, {
       householdId,
-      name: itemNameLocal,
+      name: itemName,
     });
 
-    if(!itemId) { //Add item
+    if(!itemId) {
+      //Create item
       itemId = await queries.items.createItem(client, logger, {
         householdId,
-        name: itemNameLocal,
+        name: itemName,
       });
     }
-
-    //Ensure item is categorized
-    await queries.items.createCategoryItem(client, logger, {
-      itemId,
-      categoryId: categoryIdLocal,
-    });
   }
 
   let purchasedAt = null;
@@ -93,7 +72,7 @@ module.exports = async function(client, logger, {
     groceryListId,
     groceryListItemId,
     itemId,
-    categoryId: categoryIdLocal,
+    categoryId,
     quantityTypeId,
     quantity,
     checked,

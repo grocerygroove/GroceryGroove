@@ -17,11 +17,6 @@ WITH users_households as (
   select household_id
   FROM households_users
   WHERE user_id = :userId
-), category_items_sub AS (
-  SELECT category_id, item_id, :userId as user_id
-  FROM category_items
-  WHERE category_id = :categoryId
-    AND item_id = :itemId
 ), approved_grocery_list AS (
   SELECT grocery_list_id, :userId as user_id
   FROM grocery_lists gl
@@ -38,12 +33,10 @@ INSERT INTO grocery_list_items (
   added_by_id)
 SELECT 
   agl.grocery_list_id, 
-  cis.item_id, 
-  cis.category_id,
+  :itemId, 
+  :categoryId,
   :quantityTypeId, 
   :quantity, 
   :userId
 FROM approved_grocery_list agl
-  INNER JOIN category_items_sub cis
-    ON agl.user_id = cis.user_id
 RETURNING grocery_list_item_id;

@@ -1,4 +1,3 @@
-const addAndCategorizeItem = require("../items/add-and-categorize-item");
 const InvalidCategoryError = require("../../../errors/invalid-category-error");
 const InvalidGroceryListError = require("../../../errors/invalid-grocery-list-error");
 const queries = require("../../queries");
@@ -28,12 +27,17 @@ module.exports = async function(client, logger, {
   if(categoryIds.indexOf(categoryId) == -1)
     return Promise.reject(new InvalidCategoryError(__filename));
 
-  //Add and categorize item
-  const itemId = await addAndCategorizeItem(client, logger, {
+  let itemId = await queries.items.getItemByName(client, logger, {
     householdId,
     name: itemName,
-    categoryId,
   });
+
+  if(!itemId) {
+    itemId = await queries.items.createItem(client, logger, {
+      householdId,
+      name: itemName,
+    });
+  }
 
   return await queries.groceryLists.items.addOne(client, logger, {
     userId,

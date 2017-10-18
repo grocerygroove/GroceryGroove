@@ -68,10 +68,9 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
     });
 
-    const itemId1 = await transactions.items.addAndCategorizeItem(db, logger, {
+    const itemId1 = await queries.items.createItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem.item_name,
-      categoryId: groceryListItem.category_id,
     });
 
     groceryListItem.item_id = itemId1;
@@ -89,10 +88,9 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
     groceryListItem.grocery_list_item_id = groceryListItemId1;
 
 
-    const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
+    const itemId2 = await queries.items.createItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem2.item_name,
-      categoryId: groceryListItem2.category_id,
     });
 
     groceryListItem2.item_id = itemId2;
@@ -175,10 +173,9 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
     });
 
-    const itemId1 = await transactions.items.addAndCategorizeItem(db, logger, {
+    const itemId1 = await queries.items.createItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem.item_name,
-      categoryId: groceryListItem.category_id,
     });
 
     groceryListItem.item_id = itemId1;
@@ -196,7 +193,7 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
 
     groceryListItem.grocery_list_item_id = groceryListItemId1;
 
-    const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
+    const itemId2 = await queries.items.createItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem2.item_name,
       categoryId: groceryListItem2.category_id,
@@ -288,10 +285,9 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
       householdId: defaultTestUser.primary_household_id,
     });
 
-    const itemId1 = await transactions.items.addAndCategorizeItem(db, logger, {
+    const itemId1 = await queries.items.createItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem.item_name,
-      categoryId: groceryListItem.category_id,
     });
 
     groceryListItem.item_id = itemId1;
@@ -309,10 +305,9 @@ tap.test("db/queries/grocery-lists/items/get-all", async (tap) => {
 
     groceryListItem.grocery_list_item_id = groceryListItemId1;
 
-    const itemId2 = await transactions.items.addAndCategorizeItem(db, logger, {
+    const itemId2 = await queries.items.createItem(db, logger, {
       householdId: defaultTestUser.primary_household_id,
       name: groceryListItem2.item_name,
-      categoryId: groceryListItem2.category_id,
     });
 
     groceryListItem2.item_id = itemId2;
