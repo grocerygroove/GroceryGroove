@@ -438,13 +438,20 @@ module.exports = {
         const groceryListItemId = parseInt(ctx.request.body.item_id);
 
         //Not required
-        const itemName = typeof(ctx.request.body.item_name) == "undefined" ? null : ctx.request.body.item_name;
-        const categoryId = ctx.request.body.category_id || null;
-        const quantityTypeId = ctx.request.body.quantity_type_id || null;
-        const quantity = ctx.request.body.quantity || null;
-        const checked = typeof(ctx.request.body.checked) == "undefined" ? null : ctx.request.body.checked;
-        const purchased = typeof(ctx.request.body.purchased) == "undefined" ? null : ctx.request.body.purchased;
-        const unitCost = ctx.request.body.unit_cost || null;
+        const itemName = typeof(ctx.request.body.item_name) == "undefined" 
+          ? null : ctx.request.body.item_name;
+        const categoryId = typeof(ctx.request.body.category_id) == "undefined" 
+          ? null : ctx.request.body.category_id;
+        const quantityTypeId = typeof(ctx.request.body.quantity_type_id) == "undefined" 
+          ? null : ctx.request.body.quantity_type_id;
+        const quantity = typeof(ctx.request.body.quantity) == "undefined" 
+          ? null : ctx.request.body.quantity;
+        const checked = typeof(ctx.request.body.checked) == "undefined" 
+          ? null : ctx.request.body.checked;
+        const purchased = typeof(ctx.request.body.purchased) == "undefined" 
+          ? null : ctx.request.body.purchased;
+        const unitCost = typeof(ctx.request.body.unit_cost) == "undefined" 
+          ? null : ctx.request.body.unit_cost;
 
         //Required
         if (!groceryListId || !groceryListId.toString().match(/^\d+$/)) {
@@ -478,14 +485,16 @@ module.exports = {
               groceryListId: parseInt(groceryListId),
               groceryListItemId: parseInt(groceryListItemId),
               itemName,
-              categoryId: parseInt(categoryId),
-              quantityTypeId: parseInt(quantityTypeId),
+              categoryId: categoryId ? parseInt(categoryId) : categoryId,
+              quantityTypeId: quantityTypeId ? parseInt(quantityTypeId) : quantityTypeId,
               quantity,
               checked,
               purchased,
               unitCost,
             }),                   
           };
+          console.log("got here")
+          console.log(ctx.body.item_updated);
 
           //Cache the updated list
           const cacheKey = cacheKeys.getGroceryListItemsKey(ctx.state.householdId, ctx.params.id);

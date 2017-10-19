@@ -96,21 +96,6 @@ export const updateGroceryListItem = (
 
     try {
       const client = await api();
-      console.log(JSON.stringify({
-        token,
-        "household_id": householdId,
-        "id": groceryListId,
-        "bodyparam-grocery-lists-{id}-itemput": {
-          "item_id": groceryListItemId,
-          "item_name": itemName,
-          "category_id": categoryId,
-          "quantity_type_id": quantityTypeId,
-          quantity,
-          checked,
-          purchased,
-          "unit_cost": unitCost,
-        },
-      },null,2));
       response = await client['grocery-lists'].put_grocery_lists_id_item({
         token,
         "household_id": householdId,
@@ -129,7 +114,7 @@ export const updateGroceryListItem = (
     } catch (err) {
       throw err;
     }
-    if (response.item_updated === true) {
+    if (response.obj.item_updated === true) {
       dispatch(getGroceryListItems(token, householdId, groceryListId));
     }
   }

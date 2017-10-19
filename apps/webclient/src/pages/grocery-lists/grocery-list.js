@@ -92,18 +92,18 @@ const GroceryListComponent = ({
                     <div className="category-items">
                       { categoryGroups[x].map(y => { 
                         return <div key={y.grocery_list_item_id}
-                          className="category-item"
-                          checked={y.checked}
-                          onChange={setGroceryListItemChecked.bind(
-                            null,
-                            token,
-                            selectedHouseholdId,
-                            selectedGroceryListId,
-                            y.grocery_list_item_id,
-                            !y.checked
-                          )}>
+                          className="category-item">
                           <input type="checkbox" 
-                            className="item-check"/> 
+                            className="item-check"
+                            checked={y.checked}
+                            onChange={setGroceryListItemChecked.bind(
+                              null,
+                              token,
+                              selectedHouseholdId,
+                              selectedGroceryListId,
+                              y.grocery_list_item_id,
+                              !y.checked
+                            )}/> 
                           <span className="item-name">{y.item_name}</span>
                           <span className="item-quantity">{y.quantity}</span>
                           <span className="item-quantity-type">

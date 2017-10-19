@@ -80,6 +80,7 @@ module.exports = async function(client, logger, {
     purchasedById,
     unitCost,
   });
+  console.log("got past");
 
   return !!updatedId;
 };
