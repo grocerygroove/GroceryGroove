@@ -68,6 +68,19 @@
   grid-template-columns: 1fr 3fr 1fr 2fr 4fr;
   grid-template-areas: "itemCheck itemName itemQuantity itemQuantityType itemAddedByNickname";
 }
+#grocery-list .categoryList .category-items .category-item.checked {
+  opacity: 0.6;
+  position: relative;
+}
+
+#grocery-list .categoryList .category-items .category-item.checked::before {
+  content: '';
+  border-bottom: 1px solid #3E4545;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 50%;
+}
 
 #grocery-list .categoryList .category-items .category-item .item-check {
   grid-area: itemCheck;
