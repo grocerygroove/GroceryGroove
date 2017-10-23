@@ -127,7 +127,6 @@ export const setGroceryListItemChecked = (
   checked,
 ) =>
   async (dispatch, getState, { api }) => {
-    console.log(`toggling: ${checked}`)
     dispatch(updateGroceryListItem(
       token, 
       householdId, 

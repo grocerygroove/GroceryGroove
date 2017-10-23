@@ -23,15 +23,6 @@ export const addItem = (
   quantityTypeId, 
   quantity) => 
   async (dispatch, getState, { api }) => {
-    console.log(JSON.stringify({
-      token,
-      householdId,
-      groceryListId,
-      name,
-      categoryId,
-      quantityTypeId,
-      quantity
-    }, null, 2));
 
     let response;
     try{

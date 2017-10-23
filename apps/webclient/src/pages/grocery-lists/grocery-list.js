@@ -24,11 +24,29 @@ const getCategoryGroups = (items) => {
 
   const mapping = {};
   distinctCategories.forEach(x => {
-    mapping[x] = items.filter(y => y.category_name === x);
+    mapping[x] = items
+      .filter(y => y.category_name === x)
+      .sort((a,b) =>  {
+        if(a.checked && !b.checked)
+          return 1;
+        else if(b.checked && !a.checked)
+          return -1;
+        else if (a.item_name.toUpperCase() > b.item_name.toUpperCase())
+          return 1;
+        else if (a.item_name.toUpperCase() < b.item_name.toUpperCase())
+          return -1;
+        else
+          return 0;
+      });
   });
 
   return mapping;
 };
+
+const allChecked = (x) => {
+  return x.map(y => y.checked).indexOf(false) == -1;
+};
+
 const GroceryListComponent = ({
   token,
   selectedHouseholdId,
@@ -85,9 +103,22 @@ const GroceryListComponent = ({
                 <p>You don't currently have any items.</p>
             }
             {
-              Object.keys(categoryGroups).filter(x => categoryGroups.hasOwnProperty(x)).map(x => {
+              Object.keys(categoryGroups)
+                .filter(x => categoryGroups.hasOwnProperty(x))
+                .sort((a,b) => {
+                  if(allChecked(categoryGroups[a]) 
+                    && !allChecked(categoryGroups[b]))
+                    return 1;
+                  else if(allChecked(categoryGroups[b]) 
+                    && !allChecked(categoryGroups[a]))
+                    return -1;
+                  else
+                    return 0;
+                })
+                .map(x => {
                 return (
-                  <div key={x} className="categoryList">
+                  <div key={x} 
+                    className={`categoryList ${allChecked(categoryGroups[x]) ? 'all-checked' : ''}`}>
                     <h2 className="category-header">{x}</h2>
                     <div className="category-items">
                       { categoryGroups[x].map(y => { 
