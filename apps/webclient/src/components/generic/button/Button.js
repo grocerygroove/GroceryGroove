@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import renderIf from 'render-if';
 
 const Button = ({
   text,
@@ -19,9 +18,9 @@ const Button = ({
   return (
     <div className={classList.join(' ')}>
       {children}
-      {renderIf(text)(
+      { text &&
         <span>{text}</span>
-      )}
+      }
       <div 
         className="overlay"
         onClick={onClick}></div>
