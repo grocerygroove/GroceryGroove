@@ -15,4 +15,5 @@
 /* Page Stylesheets */
 @import '../pages/login/login.css';
 @import '../pages/grocery-lists/grocery-list.css';
+@import '../pages/grocery-lists/components/add-item/add-item-dialog.css';
 @import '../pages/settings/settings.css';

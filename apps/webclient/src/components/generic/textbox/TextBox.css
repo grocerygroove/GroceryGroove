@@ -23,6 +23,9 @@
   -webkit-transition: border-color 0.45s linear;
   transition: border-color 0.45s linear;
 }
+.textBox > input.width-10-ch {
+  width: 10ch;
+}
 
 .textBox > input.text:focus {
   border-color:	#7f52be;

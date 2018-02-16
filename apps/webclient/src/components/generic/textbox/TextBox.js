@@ -3,12 +3,19 @@ import React from 'react';
 
 const TextBox = ({
   label,
+  classNames,
   isPasswordField = false,
   value = "",
   onChange,
   style,
   errorText = "",
 }) => {
+  let classList = [
+    'text',
+  ];
+  if (classNames) {
+    classList = [].concat(classList, classNames);
+  }
   var styleOveride = Object.assign({
     text: {},
     label: {},
@@ -16,7 +23,7 @@ const TextBox = ({
   return (
     <div className='textBox'>
       <input
-        className='text'
+        className={classList.join(' ')}
         placeholder={label}
         style={styleOveride.text}
         type={isPasswordField ? "password" : "textbox"}
@@ -30,6 +37,7 @@ const TextBox = ({
 
 TextBox.propTypes = {
   label: PropTypes.string.isRequired,
+  classNames: PropTypes.arrayOf(PropTypes.string),
   isPasswordField: PropTypes.bool,
   value: PropTypes.string,
   onChange: PropTypes.func,
