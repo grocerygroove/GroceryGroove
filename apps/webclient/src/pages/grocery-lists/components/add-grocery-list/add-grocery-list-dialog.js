@@ -69,6 +69,7 @@ class AddGroceryListDialog extends React.PureComponent {
         onCancelClick={toggleDialog}
         onConfirmClick={this.onCreateClick.bind(this)}>
         <TextBox
+          size="fill"
           label="Grocery List Name"
           value={newGroceryListName}
           errorText={nameErrorText}

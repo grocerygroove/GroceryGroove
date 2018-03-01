@@ -145,6 +145,7 @@ class AddItemDialog extends React.PureComponent {
         onConfirmClick={this.onCreateClick.bind(this)}>
         <TextBox
           label="Name"
+          size="fill"
           value={name}
           errorText={nameErrorText}
           onChange={this.changeName.bind(this)}/>
@@ -161,23 +162,21 @@ class AddItemDialog extends React.PureComponent {
           </span>
         </div>
         <div className={'relative'}>
-          <span>
-            <TextBox
-              label="Quantity"
-              classNames={['width-10-ch']}
-              value={quantity}
-              errorText={quantityErrorText}
-              onChange={this.changeQuantity.bind(this)}/>
-            <span className={'quantity-types-span'}>
-              Quantity Type: 
-              <select
-                className={'quantity-types-select'}
-                onChange={this.changeQuantityType.bind(this)}>
-                {quantityTypes.map(x => {
-                  return (<option key={x.quantity_type_id} value={x.quantity_type_id}>{x.singular_name}</option>);
-                })}
-              </select>
-            </span>
+          <TextBox
+            size="sm"
+            label="Quantity"
+            value={quantity}
+            errorText={quantityErrorText}
+            onChange={this.changeQuantity.bind(this)}/>
+          <span className={'quantity-types-span'}>
+            Quantity Type: 
+            <select
+              className={'quantity-types-select'}
+              onChange={this.changeQuantityType.bind(this)}>
+              {quantityTypes.map(x => {
+                return (<option key={x.quantity_type_id} value={x.quantity_type_id}>{x.singular_name}</option>);
+              })}
+            </select>
           </span>
         </div>
       </Modal>

@@ -87,6 +87,7 @@ class LoginComponent extends React.PureComponent {
                 <TagFace className={!emailGood(email) ? 'back' : 'front'} />
               </div>
               <TextBox
+                size="fill"
                 label="Email Address"
                 errorText={emailErrorText || ""}
                 value={email}
@@ -97,6 +98,7 @@ class LoginComponent extends React.PureComponent {
                 <VpnKeyIcon />
               </div>
               <TextBox
+                size="fill"
                 label="Password"
                 value={password}
                 onChange={this.changePassword.bind(this)}

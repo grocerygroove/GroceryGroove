@@ -1,10 +1,22 @@
 .textBox {
   position: relative;
-  width: 100%;
-  padding-top: 10px;
+  display: inline-block;
   height: 45px;
-  display: inline-flex;
+  width: 120px;
+  padding-top: 10px;
   margin-bottom: 3vh;
+}
+.textBox.textBox-fill {
+  width: 100%;
+}
+.textBox.textBox-lg {
+  width: 200px;
+}
+.textBox.textBox-md {
+  width: 120px;
+}
+.textBox.textBox-sm {
+  width: 80px;
 }
 .textBox > input.text {
   font-weight: 500;
